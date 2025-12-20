@@ -2,27 +2,75 @@
 @model LoginViewModel
 
 @{
-    Layout = "";
+    ViewData["Title"] = "Вход";
 }
 
-<form asp-controller="Account" asp-action="Login" method="post">
-    @Html.AntiForgeryToken()
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-sm border-success">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4 fw-bold">Вход</h2>
 
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+                    <p class="text-center text-muted">
+                        Нямаш профил?
+                        <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold text-success">Регистрирай се</a>
+                    </p>
+
+                    <form asp-controller="Account" asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Имейл</label>
+                            <input asp-for="Email" class="form-control border-success" placeholder="example@mail.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Парола</label>
+                            <div class="input-group">
+                                <input asp-for="Password" type="password" class="form-control border-success" id="passwordInput" />
+                                <button class="btn btn-outline-success" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input border-success" type="checkbox" id="rememberMe" name="RememberMe">
+                                <label class="form-check-label small" for="rememberMe">Запомни ме</label>
+                            </div>
+                            <a href="#" class="text-decoration-none small text-success">Забравена парола?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Вход</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-
-    <button type="submit">Login</button>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Скрипт за показване/скриване на паролата
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('passwordInput');
+            const icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    </script>
 }

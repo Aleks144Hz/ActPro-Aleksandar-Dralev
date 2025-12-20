@@ -1,0 +1,140 @@
+﻿@page
+@model ActPro.Pages.ReservationModel
+@{
+    ViewData["Title"] = "Резервация";
+    bool IsLoggedIn = false; // Тук ще ползваш User.Identity.IsAuthenticated
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h1 class="display-6 fw-bold">Спортна зала "Арена Запад"</h1>
+            <p class="text-muted fs-5">Професионално игрище за мини футбол</p>
+        </div>
+        <div class="text-end">
+            <span class="fs-4 fw-bold text-warning">⭐ 9.8/10</span>
+            <button class="btn btn-outline-danger btn-sm ms-2"><i class="bi bi-heart"></i></button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="row g-2">
+                <div class="col-12">
+                    <img src="https://via.placeholder.com/800x400" class="img-fluid rounded w-100" alt="Main">
+                </div>
+                <div class="col-6">
+                    <img src="https://via.placeholder.com/400x200" class="img-fluid rounded w-100" alt="Sub 1">
+                </div>
+                <div class="col-6">
+                    <img src="https://via.placeholder.com/400x200" class="img-fluid rounded w-100" alt="Sub 2">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-success shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-body text-center">
+                    <h2 class="card-title text-success mb-3">19.99 лв/ч</h2>
+                    <p class="text-muted">Свободни часове за днес: 4</p>
+
+                    <button type="button" class="btn btn-success btn-lg w-100 py-3" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        Запази
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 p-3 border-secondary">
+                <h5>Подробно описание</h5>
+                <p>
+                    Обектът разполага с две съблекални, бани с топла вода и паркинг.
+                    Настилката е последно поколение изкуствена трева. Осигурени са топки и потници.
+                </p>
+            </div>
+
+            <button class="btn btn-light w-100 py-3 border">Коментари (12)</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-success">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">Избери дата и час</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h4 class="mb-3">11.12.2025</h4>
+                <div class="d-flex justify-content-between align-items-center mb-4 overflow-auto">
+                    <button class="btn btn-outline-success"><i class="bi bi-arrow-left"></i></button>
+                    @for (int i = 11; i <= 17; i++)
+                    {
+                        <div class="text-center border rounded p-2 mx-1 @(i == 13 ? "bg-success text-white" : "")">
+                            <small class="d-block">@(DateTime.Now.AddDays(i - 11).ToString("ddd"))</small>
+                            <strong>@i</strong>
+                        </div>
+                    }
+                    <button class="btn btn-outline-success"><i class="bi bi-arrow-right"></i></button>
+                </div>
+
+                <div class="row row-cols-4 g-2 mb-4">
+                    @foreach (var hour in new[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00" })
+                    {
+                        <div class="col">
+                            <input type="radio" class="btn-check" name="timeSlot" id="time_@hour" autocomplete="off">
+                            <label class="btn btn-outline-success w-100 rounded-pill" for="time_@hour">@hour</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                @if (IsLoggedIn)
+                {
+                    <button type="button" class="btn btn-success px-5">Резервирай</button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-success px-5" data-bs-target="#guestModal" data-bs-toggle="modal">
+                        Резервирай
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="guestModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header">
+                <h5 class="modal-title">Данни за резервация</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-end text-muted small">*ако няма профил*</p>
+                <form>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-label">Име</label>
+                            <input type="text" class="form-control border-success">
+                        </div>
+                        <div class="col">
+                            <label class="form-label">Фамилия</label>
+                            <input type="text" class="form-control border-success">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Телефонен номер</label>
+                        <input type="tel" class="form-control border-success">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2">Завърши резервацията</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

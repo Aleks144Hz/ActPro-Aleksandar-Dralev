@@ -29,6 +29,7 @@ namespace ActPro.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Activity>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(50);

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Моят Профил";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm text-center p-4 h-100">
+                <div class="mb-3">
+                    <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail" alt="User Photo" style="width: 150px; height: 150px;">
+                </div>
+
+                <h4 class="fw-bold">Иван Иванов</h4>
+                <p class="text-muted mb-1">ivan.ivanov@example.com</p>
+                <p class="text-muted">+359 888 123 456</p>
+
+                <hr class="my-4">
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary">
+                        <i class="bi bi-pencil-square me-2"></i>Редактирай профила
+                    </button>
+                    <button class="btn btn-outline-danger" onclick="return confirm('Сигурни ли сте, че искате да изтриете профила си?');">
+                        <i class="bi bi-trash me-2"></i>Изтриване на профил
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold text-primary"><i class="bi bi-heart-fill me-2"></i>Моите Фаворити</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Обект</th>
+                                    <th>Град</th>
+                                    <th>Рейтинг</th>
+                                    <th>Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="rounded me-2" alt="img">
+                                            <span class="fw-bold">Спортна зала "Арена"</span>
+                                        </div>
+                                    </td>
+                                    <td>София</td>
+                                    <td><span class="badge bg-warning text-dark">⭐ 9.8</span></td>
+                                    <td>
+                                        <a href="/Reservation" class="btn btn-sm btn-primary">Виж</a>
+                                        <button class="btn btn-sm btn-danger"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="rounded me-2" alt="img">
+                                            <span class="fw-bold">Тенис кортове "Изток"</span>
+                                        </div>
+                                    </td>
+                                    <td>Пловдив</td>
+                                    <td><span class="badge bg-warning text-dark">⭐ 9.5</span></td>
+                                    <td>
+                                        <a href="/Reservation" class="btn btn-sm btn-primary">Виж</a>
+                                        <button class="btn btn-sm btn-danger"><i class="bi bi-x-lg"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @if (true) // Проверка ако няма фаворити
+                    {
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
