@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ActPro.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace ActPro.DAL
         public string LastName { get; set; }
         public DateTime CreatedOn { get; set; }
         public string? ProfilePicturePath { get; set; }
-
+        public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
     }
 }

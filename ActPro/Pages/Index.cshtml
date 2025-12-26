@@ -1,7 +1,70 @@
 ﻿@page 
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home Page";
+    bool IsUserLoggedIn = true; 
 }
 
+<div class="container-fluid p-0">
+    <section class="search-bar py-5 bg-primary text-white shadow-sm">
+        <div class="container">
+            <form asp-page="/Search" method="get" class="row g-3 justify-content-center">
+                <div class="col-md-4">
+                    <label class="form-label">Населено място</label>
+                    <input class="form-control" list="citiesOptions" name="city" placeholder="Избери или въведи град...">
+                    <datalist id="citiesOptions">
+                        <option value="София"></option>
+                        <option value="Пловдив"></option>
+                        <option value="Варна"></option>
+                        <option value="Бургас"></option>
+                    </datalist>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Активност</label>
+                    <input class="form-control" list="activitiesOptions" name="activity" placeholder="Избери или въведи активност...">
+                    <datalist id="activitiesOptions">
+                        <option value="Фитнес"></option>
+                        <option value="Йога"></option>
+                        <option value="Плуване"></option>
+                        <option value="Тенис"></option>
+                    </datalist>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-warning w-100 fw-bold">ТЪРСИ</button>
+                </div>
+            </form>
+        </div>
+    </section>
 
+    <main class="container my-5">
+        <h2 class="mb-4">Топ обекти с най-висок рейтинг</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @* Примерна итерация на топ обекти *@
+            @for (int i = 1; i <= 3; i++)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Обект @i">
+                        <div class="card-body">
+                            <h5 class="card-title">Обект @i</h5>
+                            <p class="card-text text-muted small">Рейтинг: ⭐ 4.9</p>
+                            <a href="/Venue/@i" class="stretched-link text-decoration-none">Виж детайли</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+</div>
+
+<style>
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+
+    .search-bar {
+        border-radius: 8px;
+        margin: 0 1rem;
+    }
+</style>

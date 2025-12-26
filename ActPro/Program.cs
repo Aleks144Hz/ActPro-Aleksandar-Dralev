@@ -24,11 +24,12 @@ namespace ActPro
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            builder.Services.AddMvc(options =>
+            builder.Services.AddControllersWithViews(options =>
             {
-                options.EnableEndpointRouting = false;
-            }).AddDataAnnotationsLocalization()
-              .AddViewLocalization();
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            })
+            .AddDataAnnotationsLocalization()
+            .AddViewLocalization();
 
             builder.Services.AddControllersWithViews(
                 options =>
@@ -48,7 +49,11 @@ namespace ActPro
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
             app.UseRouting();
+            
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -101,6 +101,197 @@ namespace ActPro.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ActPro.DAL.Entities.Activity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Activities");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AspNetUserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CommentText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("PlaceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaceId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AspNetUserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PlaceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id")
+                        .HasName("PK_Favorites1");
+
+                    b.HasIndex("AspNetUserId");
+
+                    b.HasIndex("PlaceId");
+
+                    b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Place", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ActivityId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Places");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.PlaceImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("ImageURL");
+
+                    b.Property<int?>("PlaceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaceId");
+
+                    b.ToTable("PlaceImages");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AspNetUserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("PlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly?>("ReservationDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly?>("ReservationTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlaceId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -234,6 +425,75 @@ namespace ActPro.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ActPro.DAL.Entities.Comment", b =>
+                {
+                    b.HasOne("ActPro.DAL.Entities.Place", "Place")
+                        .WithMany("Comments")
+                        .HasForeignKey("PlaceId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Comments_Places");
+
+                    b.Navigation("Place");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Favorite", b =>
+                {
+                    b.HasOne("ActPro.DAL.ApplicationUser", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("AspNetUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Favorites1_AspNetUsers");
+
+                    b.HasOne("ActPro.DAL.Entities.Place", "Place")
+                        .WithMany("Favorites")
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Favorites1_Places");
+
+                    b.Navigation("Place");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Place", b =>
+                {
+                    b.HasOne("ActPro.DAL.Entities.Activity", "Activity")
+                        .WithMany("Places")
+                        .HasForeignKey("ActivityId")
+                        .HasConstraintName("FK_Places_Activities");
+
+                    b.HasOne("ActPro.DAL.Entities.City", "City")
+                        .WithMany("Places")
+                        .HasForeignKey("CityId")
+                        .HasConstraintName("FK_Places_Cities");
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.PlaceImage", b =>
+                {
+                    b.HasOne("ActPro.DAL.Entities.Place", "Place")
+                        .WithMany("PlaceImages")
+                        .HasForeignKey("PlaceId")
+                        .HasConstraintName("FK_PlaceImages_Places");
+
+                    b.Navigation("Place");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Reservation", b =>
+                {
+                    b.HasOne("ActPro.DAL.Entities.Place", "Place")
+                        .WithMany("Reservations")
+                        .HasForeignKey("PlaceId")
+                        .HasConstraintName("FK_Reservations_Places");
+
+                    b.Navigation("Place");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -283,6 +543,32 @@ namespace ActPro.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ActPro.DAL.ApplicationUser", b =>
+                {
+                    b.Navigation("Favorites");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Activity", b =>
+                {
+                    b.Navigation("Places");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.City", b =>
+                {
+                    b.Navigation("Places");
+                });
+
+            modelBuilder.Entity("ActPro.DAL.Entities.Place", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Favorites");
+
+                    b.Navigation("PlaceImages");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

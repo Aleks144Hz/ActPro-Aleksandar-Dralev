@@ -29,6 +29,7 @@ namespace ActPro.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Activity>(entity =>
             {
                 entity.Property(e => e.Name).HasMaxLength(50);
@@ -56,7 +57,13 @@ namespace ActPro.DAL.Data
 
                 entity.Property(e => e.AspNetUserId).HasMaxLength(450);
 
-                entity.HasOne(d => d.Place).WithMany(p => p.Favorites)
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Favorites)
+                    .HasForeignKey(d => d.AspNetUserId)
+                    .HasConstraintName("FK_Favorites1_AspNetUsers");
+
+                entity.HasOne(d => d.Place)
+                    .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.PlaceId)
                     .HasConstraintName("FK_Favorites1_Places");
             });

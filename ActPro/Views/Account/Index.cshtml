@@ -1,0 +1,108 @@
+﻿@model ActPro.DAL.ApplicationUser
+@using System.Linq
+@using ActPro.DAL.Entities
+@{
+    ViewData["Title"] = "Моят Профил";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm text-center p-4 h-100">
+                <div class="mb-3">
+                    <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail" alt="User Photo" style="width: 150px; height: 150px;">
+                </div>
+
+                <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
+                <p class="text-muted mb-1">@Model.Email</p>
+                <p class="text-muted">@(Model.PhoneNumber ?? "Не е посочен")</p>
+
+                <hr class="my-4">
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-primary">
+                        <i class="bi bi-pencil-square me-2"></i>Редактирай профила
+                    </button>
+                    <a asp-controller="Account" asp-action="ConfirmDelete" class="btn btn-outline-danger">
+                        <i class="bi bi-trash me-2"></i>Изтриване на профил
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h5 class="mb-0 fw-bold text-primary">
+                        <i class="bi bi-heart-fill me-2 text-danger"></i>Моите Фаворити
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Обект</th>
+                                    <th>Град</th>
+                                    <th>Рейтинг</th>
+                                    <th class="text-center">Действие</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Favorites != null && Model.Favorites.Any())
+                                {
+                                    @foreach (var favorite in Model.Favorites)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (favorite.Place.PlaceImages != null && favorite.Place.PlaceImages.Any())
+                                                    {
+                                                        <img src="@favorite.Place.PlaceImages.First().ImageUrl" class="rounded me-2" alt="img" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="bi bi-image text-muted"></i>
+                                                        </div>
+                                                    }
+                                                    <span class="fw-bold text-dark">@favorite.Place.Name</span>
+                                                </div>
+                                            </td>
+                                            <td>@favorite.Place.City</td>
+                                            <td>
+                                                <span class="badge bg-warning text-dark">
+                                                    ⭐ @favorite.Place.Rating.ToString()
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a asp-controller="Places" asp-action="Details" asp-route-id="@favorite.PlaceId" class="btn btn-sm btn-outline-primary">
+                                                        Виж
+                                                    </a>
+                                                    <form asp-controller="Favorites" asp-action="Remove" asp-route-id="@favorite.PlaceId" method="post" onsubmit="return confirm('Сигурни ли сте?');">
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-1">
+                                                            <i class="bi bi-x-lg"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">
+                                            <i class="bi bi-heart me-2"></i>Все още нямате добавени любими обекти.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
