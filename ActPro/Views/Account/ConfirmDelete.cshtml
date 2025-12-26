@@ -1,0 +1,32 @@
+﻿@model DeleteProfileViewModel
+@{
+    ViewData["Title"] = "Изтриване на профил";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-body p-5">
+                    <h3 class="text-danger fw-bold mb-4"><i class="bi bi-exclamation-triangle-fill me-2"></i>Изтриване на профил</h3>
+                    <p class="text-muted">Тази операция е необратима. Всички ваши данни и любими обекти ще бъдат изтрити завинаги.</p>
+
+                    <form asp-action="DeleteProfile" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Въведете вашата парола, за да потвърдите:</label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-light">Отказ</a>
+                            <button type="submit" class="btn btn-danger">Изтрий профила ми</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

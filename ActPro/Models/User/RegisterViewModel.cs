@@ -14,6 +14,7 @@ namespace ActPro.Models.User
         [EmailAddress(ErrorMessage = "Невалиден имейл формат")]
         public string Email { get; set; }
 
+        [Required(ErrorMessage = "Телефонен номер е задължителен")]
         [Phone(ErrorMessage = "Невалиден телефонен номер")]
         public string PhoneNumber { get; set; }
 
@@ -23,6 +24,8 @@ namespace ActPro.Models.User
 
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Паролите не съвпадат")]
+
+        [Required (ErrorMessage = "Паролата за потвърждение е задължителна")]
         public string ConfirmPassword { get; set; }
     }
 }

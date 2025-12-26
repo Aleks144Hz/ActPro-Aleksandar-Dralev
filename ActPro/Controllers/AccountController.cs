@@ -1,9 +1,11 @@
-﻿using ActPro.Models;
-using ActPro.DAL;
+﻿using ActPro.DAL;
+using ActPro.DAL.Data;
+using ActPro.Models;
+using ActPro.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ActPro.Models.User;
+using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Controllers
 {
@@ -12,21 +14,37 @@ namespace ActPro.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
-        // --- LOGIN ЛОГИКА ---
+        // --- ACCOUNT / PROFILE (Index) ---
+        [Authorize] // Вече е метод директно в основния клас
+        public async Task<IActionResult> Index()
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = await _context.Users
+                .Include(u => u.Favorites)
+                    .ThenInclude(f => f.Place)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
+
+        // --- LOGIN ---
         [HttpGet]
         public IActionResult Login()
         {
-            if (User.Identity.IsAuthenticated) return RedirectToPage("/Index");
-            return View(); // Търси Views/Account/Login.cshtml автоматично
+            if (User.Identity.IsAuthenticated) return RedirectToAction("/Index");
+            return View();
         }
 
         [HttpPost]
@@ -40,21 +58,18 @@ namespace ActPro.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToPage("/Index"); // Препраща към Home (Razor Page)
+                    return RedirectToPage("/Index");
                 }
-
                 ModelState.AddModelError(string.Empty, "Невалидна парола.");
             }
             else
             {
                 ModelState.AddModelError(string.Empty, "Потребителят не е намерен.");
             }
-
             return View(model);
         }
 
-        // --- REGISTER ЛОГИКА ---
-
+        // --- REGISTER ---
         [HttpGet]
         public IActionResult Register()
         {
@@ -79,9 +94,8 @@ namespace ActPro.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Автоматично добавяме роля "User" (увери се, че ролята съществува в базата)
+                    // Провери дали ролята съществува, преди да я добавиш
                     await _userManager.AddToRoleAsync(user, "User");
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToPage("/Index");
                 }
@@ -94,23 +108,50 @@ namespace ActPro.Controllers
             return View(model);
         }
 
-        // --- ACCOUNT / PROFILE ЛОГИКА ---
-
-        [Authorize] // Само за логнати потребители
-        public async Task<IActionResult> Index()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return NotFound();
-
-            // Тук можеш да подадеш данните към View-то
-            return View(user);
-        }
-
+        // --- LOGOUT ---
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToPage("/Index");
+        }
+        // --- DELETE PROFILE ---
+        [HttpGet]
+        [Authorize]
+        public IActionResult ConfirmDelete()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProfile(DeleteProfileViewModel model)
+        {
+            if (!ModelState.IsValid) return View("ConfirmDelete", model);
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+
+            var passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!passwordCheck)
+            {
+                ModelState.AddModelError(string.Empty, "Грешна парола. Моля, опитайте отново.");
+                return View("ConfirmDelete", model);
+            }
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View("ConfirmDelete", model);
         }
     }
 }

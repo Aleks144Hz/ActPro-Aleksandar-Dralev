@@ -2,7 +2,7 @@
 @model ActPro.Pages.ReservationModel
 @{
     ViewData["Title"] = "Резервация";
-    bool IsLoggedIn = false; // Тук ще ползваш User.Identity.IsAuthenticated
+    bool IsLoggedIn = false;
 }
 
 <div class="container mt-4 mb-5">
@@ -116,7 +116,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p class="text-end text-muted small">*ако няма профил*</p>
                 <form>
                     <div class="row mb-3">
                         <div class="col">

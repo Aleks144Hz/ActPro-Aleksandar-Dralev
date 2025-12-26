@@ -6,34 +6,6 @@
 }
 
 <div class="container-fluid p-0">
-    <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-4 border-bottom bg-light px-4">
-        <a href="/" class="d-flex align-items-center mb-2 mb-md-0 text-dark text-decoration-none">
-            <img src="~/images/logo.png" alt="Logo" style="height: 40px;" />
-        </a>
-
-        <div class="d-flex align-items-center">
-            <a asp-page="/Registration" class="btn btn-outline-primary me-2">Регистрация</a>
-
-            <div class="dropdown">
-                <a href="@(IsUserLoggedIn ? "/Account" : "/Login")" class="d-block link-dark text-decoration-none" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
-                </a>
-                
-                @if (IsUserLoggedIn)
-                {
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" asp-page="/Account">Профил</a></li>
-                        <li><a class="dropdown-item" asp-page="/Visits">Мои посещения</a></li>
-                        <li><a class="dropdown-item" asp-page="/Favorites">Любими</a></li>
-                        <li><a class="dropdown-item" asp-page="/Activities">Занимания</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" asp-page="/Logout">Изход</a></li>
-                    </ul>
-                }
-            </div>
-        </div>
-    </header>
-
     <section class="search-bar py-5 bg-primary text-white shadow-sm">
         <div class="container">
             <form asp-page="/Search" method="get" class="row g-3 justify-content-center">

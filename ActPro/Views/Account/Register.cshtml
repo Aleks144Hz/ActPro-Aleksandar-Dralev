@@ -3,63 +3,72 @@
     ViewData["Title"] = "Регистрация";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4">
-                    <h2 class="text-center mb-4 fw-bold">Регистрация</h2>
+<div class="container d-flex align-items-center justify-content-center min-vh-100 py-5">
+    <div class="col-md-8 col-lg-6 col-xl-5">
 
-                    <p class="text-center text-muted">
-                        Вече имаш профил? <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold">Влез</a>
-                    </p>
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4 fw-bold text-dark">Присъедини се към нас</h2>
 
-                    <form asp-controller="Account" asp-action="Register" method="post">
-                        @Html.AntiForgeryToken()
+                <p class="text-center text-muted mb-4">
+                    Вече имаш акаунт?
+                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold text-primary">Влез тук</a>
+                </p>
 
-                        <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+                <form asp-controller="Account" asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
 
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <label class="form-label">Име</label>
-                                <input asp-for="FirstName" class="form-control" />
-                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input asp-for="FirstName" class="form-control"/>
+                                <label asp-for="FirstName">Име</label>
                             </div>
-                            <div class="col-6">
-                                <label class="form-label">Фамилия</label>
-                                <input asp-for="LastName" class="form-control" />
-                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            <span asp-validation-for="FirstName" class="text-danger small ps-1"></span>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input asp-for="LastName" class="form-control"/>
+                                <label asp-for="LastName">Фамилия</label>
                             </div>
+                            <span asp-validation-for="LastName" class="text-danger small ps-1"></span>
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Имейл</label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger small"></span>
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" class="form-control"/>
+                        <label asp-for="Email">Имейл</label>
+                        <span asp-validation-for="Email" class="text-danger small ps-1"></span>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Телефонен номер</label>
-                            <input asp-for="PhoneNumber" class="form-control" />
-                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="PhoneNumber" class="form-control"/>
+                        <label asp-for="PhoneNumber">Телефон</label>
+                        <span asp-validation-for="PhoneNumber" class="text-danger small ps-1"></span>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Парола</label>
-                            <input asp-for="Password" type="password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger small"></span>
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" type="password" class="form-control"/>
+                        <label asp-for="Password">Парола</label>
+                        <span asp-validation-for="Password" class="text-danger small ps-1"></span>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Потвърди паролата</label>
-                            <input asp-for="ConfirmPassword" type="password" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
-                        </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control"/>
+                        <label asp-for="ConfirmPassword">Потвърди парола</label>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small ps-1"></span>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Регистрирай се</button>
-                    </form>
-                </div>
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold fs-5 shadow-sm">Регистрирай се</button>
+                </form>
             </div>
         </div>
+
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
