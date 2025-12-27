@@ -100,6 +100,9 @@ body {
     border-radius: 12px;
     border: none;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    left: 65% !important;
+    right: auto !important;
+    transform: translateX(-65%) translateY(10px) !important;
 }
 
 .dropdown-item {
@@ -107,7 +110,18 @@ body {
     transition: background 0.2s;
 }
 
-    .dropdown-item:hover {
-        background-color: #f8f9fa;
-        color: #0d6efd;
-    }
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+.profile-dropdown .dropdown-toggle::after {
+    vertical-align: middle;
+    color: #6c757d; /* Сивкав цвят за стрелката */
+}
+
+.profile-dropdown a:hover i {
+    filter: brightness(0.8); /* Леко потъмняване на иконата при посочване */
+}
+.nav-item{
+    margin-left: 50%;
+}

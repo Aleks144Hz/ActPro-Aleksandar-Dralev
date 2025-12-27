@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ActPro.Models
+namespace ActPro.Models.User
 {
     public class LoginViewModel
     {

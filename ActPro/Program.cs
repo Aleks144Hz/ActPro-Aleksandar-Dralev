@@ -31,12 +31,6 @@ namespace ActPro
             .AddDataAnnotationsLocalization()
             .AddViewLocalization();
 
-            builder.Services.AddControllersWithViews(
-                options =>
-                {
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                    options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
-                });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
