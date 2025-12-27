@@ -1,32 +1,31 @@
-﻿@page 
-@model IndexModel
+﻿@using ActPro.Models
+@model ActPro.Models.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
-    bool IsUserLoggedIn = true; 
 }
 
 <div class="container-fluid p-0">
     <section class="search-bar py-5 bg-primary text-white shadow-sm">
         <div class="container">
-            <form asp-page="/Search" method="get" class="row g-3 justify-content-center">
+            <form asp-controller="Search" asp-action="Index" method="get" class="row g-3 justify-content-center">
                 <div class="col-md-4">
                     <label class="form-label">Населено място</label>
                     <input class="form-control" list="citiesOptions" name="city" placeholder="Избери или въведи град...">
                     <datalist id="citiesOptions">
-                        <option value="София"></option>
-                        <option value="Пловдив"></option>
-                        <option value="Варна"></option>
-                        <option value="Бургас"></option>
+                        @foreach (var cityName in Model.CityNames)
+                        {
+                            <option value="@cityName"></option>
+                        }
                     </datalist>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Активност</label>
                     <input class="form-control" list="activitiesOptions" name="activity" placeholder="Избери или въведи активност...">
                     <datalist id="activitiesOptions">
-                        <option value="Фитнес"></option>
-                        <option value="Йога"></option>
-                        <option value="Плуване"></option>
-                        <option value="Тенис"></option>
+                        @foreach (var actName in Model.ActivityNames)
+                        {
+                            <option value="@actName"></option>
+                        }
                     </datalist>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
@@ -37,18 +36,23 @@
     </section>
 
     <main class="container my-5">
-        <h2 class="mb-4">Топ обекти с най-висок рейтинг</h2>
+        <h2 class="mb-4 text-center">Топ обекти с най-висок рейтинг</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            @* Примерна итерация на топ обекти *@
-            @for (int i = 1; i <= 3; i++)
+            @foreach (var place in Model.TopPlaces)
             {
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Обект @i">
+                    <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                        <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/300x200")"
+                             class="card-img-top" alt="@place.Name" style="height: 200px; object-fit: cover;">
+
                         <div class="card-body">
-                            <h5 class="card-title">Обект @i</h5>
-                            <p class="card-text text-muted small">Рейтинг: ⭐ 4.9</p>
-                            <a href="/Venue/@i" class="stretched-link text-decoration-none">Виж детайли</a>
+                            <h5 class="card-title fw-bold">@place.Name</h5>
+                            <p class="text-muted small mb-2">
+                                <i class="bi bi-geo-alt"></i> @place.City?.Name
+                            </p>
+                            <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
+                            <a asp-controller="Places" asp-action="Details" asp-route-id="@place.Id"
+                               class="btn btn-primary w-100 rounded-pill">Виж детайли</a>
                         </div>
                     </div>
                 </div>

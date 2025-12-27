@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ActPro.Pages
+namespace ActPro.Views.Search
 {
     public class SearchModel : PageModel
     {

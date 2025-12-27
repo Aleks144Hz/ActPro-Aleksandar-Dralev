@@ -1,6 +1,5 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
-using ActPro.Models;
 using ActPro.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +24,7 @@ namespace ActPro.Controllers
         }
 
         // --- ACCOUNT / PROFILE (Index) ---
-        [Authorize] // Вече е метод директно в основния клас
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -58,9 +57,9 @@ namespace ActPro.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    return RedirectToPage("/Index");
+                    return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Невалидна парола.");
+                ModelState.AddModelError(string.Empty, "Грешна парола.");
             }
             else
             {
@@ -94,10 +93,9 @@ namespace ActPro.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Провери дали ролята съществува, преди да я добавиш
                     await _userManager.AddToRoleAsync(user, "User");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToPage("/Index");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 foreach (var error in result.Errors)
@@ -113,7 +111,7 @@ namespace ActPro.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToPage("/Index");
+            return RedirectToAction("Index", "Home");
         }
         // --- DELETE PROFILE ---
         [HttpGet]
