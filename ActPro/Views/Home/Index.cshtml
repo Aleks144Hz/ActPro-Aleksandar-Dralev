@@ -51,7 +51,7 @@
                                 <i class="bi bi-geo-alt"></i> @place.City?.Name
                             </p>
                             <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
-                            <a asp-controller="Places" asp-action="Details" asp-route-id="@place.Id"
+                            <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id"
                                class="btn btn-primary w-100 rounded-pill">Виж детайли</a>
                         </div>
                     </div>

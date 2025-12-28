@@ -3,56 +3,87 @@
     ViewData["Title"] = "Търсене";
     var city = Context.Request.Query["city"];
     var activity = Context.Request.Query["activity"];
+    var currentMin = Context.Request.Query["minPrice"].ToString() ?? "€ 0";
+    var currentMax = Context.Request.Query["maxPrice"].ToString() ?? "€ 200+";
 }
 
 <div class="container-fluid mt-4">
     <div class="row">
         <aside class="col-md-3 mb-4">
+            <div class="mb-3 position-relative shadow-sm">
+                <img src="https://via.placeholder.com/400x150?text=Карта+на+района" class="img-fluid w-100 rounded" style="object-fit: cover; height: 120px;">
+                <button class="btn btn-success btn-sm position-absolute bottom-0 start-50 translate-middle-x mb-2">Показване на картата</button>
+            </div>
+
             <div class="card shadow-sm border-success">
                 <div class="card-body">
                     <h5 class="card-title text-center mb-3">Филтрирай по</h5>
 
-                    <form method="get" asp-controller="Search" asp-action="Index">
+                    <form method="get" asp-controller="Search" asp-action="Index" id="filterForm">
                         <input type="hidden" name="city" value="@city" />
                         <input type="hidden" name="activity" value="@activity" />
+                        <input type="hidden" name="sortOrder" id="currentSortOrder" value="@Context.Request.Query["sortOrder"]" />
 
-                        <label class="form-label fw-bold">Цена</label>
-                        <div class="d-flex justify-content-between">
-                            <input type="number" class="form-control me-1" placeholder="0" name="minPrice">
-                            <input type="number" class="form-control ms-1" placeholder="999" name="maxPrice">
+                        <label class="form-label fw-bold">Цена (евро/ч)</label>
+                        <div class="price-slider-wrapper">
+                            <input type="range" name="minPrice" class="form-range custom-range" min="0" max="200" id="minPriceRange" value="@currentMin">
+                            <input type="range" name="maxPrice" class="form-range custom-range" min="0" max="200" id="maxPriceRange" value="@currentMax">
+                        </div>
+                        <div class="d-flex justify-content-between text-muted small mt-2">
+                            <span id="minPriceDisplay">@currentMin €</span>
+                            <span id="maxPriceDisplay">@currentMax €</span>
                         </div>
                         <hr />
-
                         <label class="form-label fw-bold">Капацитет</label>
-                        <input type="range" class="form-range" min="0" max="30" id="capacityRange">
-                        <div class="d-flex justify-content-between text-muted small">
-                            <span>0</span>
-                            <span>30+</span>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="form-check d-flex justify-content-between align-items-center">
+                                <div>
+                                    <input class="form-check-input" type="radio" name="capacityGroup" value="small" id="smallCheck" @(Context.Request.Query["capacityGroup"] == "small" ? "checked" : "")>
+                                    <label class="form-check-label" for="smallCheck">1-4 души</label>
+                                </div>
+                                <span class="badge rounded-pill bg-light text-dark border">@ViewBag.SmallCount</span>
+                            </div>
+                            <div class="form-check d-flex justify-content-between align-items-center">
+                                <div>
+                                    <input class="form-check-input" type="radio" name="capacityGroup" value="medium" id="mediumCheck" @(Context.Request.Query["capacityGroup"] == "medium" ? "checked" : "")>
+                                    <label class="form-check-label" for="mediumCheck">5-14 души</label>
+                                </div>
+                                <span class="badge rounded-pill bg-light text-dark border">@ViewBag.MediumCount</span>
+                            </div>
+                            <div class="form-check d-flex justify-content-between align-items-center">
+                                <div>
+                                    <input class="form-check-input" type="radio" name="capacityGroup" value="large" id="largeCheck" @(Context.Request.Query["capacityGroup"] == "large" ? "checked" : "")>
+                                    <label class="form-check-label" for="largeCheck">15-30 души</label>
+                                </div>
+                                <span class="badge rounded-pill bg-light text-dark border">@ViewBag.LargeCount</span>
+                            </div>
                         </div>
+
                         <hr />
-
                         <label class="form-label fw-bold">Работно време</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="weekendCheck">
-                            <label class="form-check-label" for="weekendCheck">Уикенд</label>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="form-check d-flex justify-content-between align-items-center">
+                                <div>
+                                    <input class="form-check-input" type="radio" name="timeGroup" value="small" id="weekendCheck" @(Context.Request.Query["timeGroup"] == "small" ? "checked" : "")>
+                                    <label class="form-check-label" for="weekendCheck">През уикенда</label>
+                                </div>
+                                <span class="badge rounded-pill bg-light text-dark border">@ViewBag.SmallCount</span>
+                            </div>
+                            <div class="form-check d-flex justify-content-between align-items-center">
+                                <div>
+                                    <input class="form-check-input" type="radio" name="timeGroup" value="small" id="weekdayCheck" @(Context.Request.Query["timeGroup"] == "small" ? "checked" : "")>
+                                    <label class="form-check-label" for="weekdayCheck">През седмицата</label>
+                                </div>
+                                <span class="badge rounded-pill bg-light text-dark border">@ViewBag.SmallCount</span>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="weekdayCheck">
-                            <label class="form-check-label" for="weekdayCheck">През седмицата</label>
-                        </div>
-
-                        <button type="submit" class="btn btn-outline-success w-100 mt-3">Приложи</button>
+                        <button type="submit" class="btn btn-success w-100 mt-3 shadow-sm">Приложи</button>
                     </form>
                 </div>
             </div>
         </aside>
 
         <main class="col-md-9">
-            <div class="mb-3 position-relative">
-                <img src="https://via.placeholder.com/800x200?text=Карта+на+района" class="img-fluid w-100 rounded" style="object-fit: cover; height: 150px;">
-                <button class="btn btn-success btn-sm position-absolute bottom-0 start-50 translate-middle-x mb-2">Показване на картата</button>
-            </div>
-
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="mb-0">@city: открити @Model.Count() места за @activity</h4>
                 <div class="dropdown">
@@ -60,9 +91,18 @@
                         Подреди по
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Цена (възходяща)</a></li>
-                        <li><a class="dropdown-item" href="#">Рейтинг</a></li>
-                        <li><a class="dropdown-item" href="#">Капацитет</a></li>
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="submitWithSort('price_asc')">Цена (най-ниска)</button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="submitWithSort('price_desc')">Цена (най-висока)</button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="submitWithSort('rating_des')">Рейтинг (низходящ ред)</button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item" onclick="submitWithSort('rating_asc')">Рейтинг (възходящ ред)</button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -89,7 +129,7 @@
                                     </div>
                                     <p class="card-text text-muted">@place.Description</p>
                                     <div class="mt-auto d-flex justify-content-between align-items-center">
-                                        <h4 class="text-success mb-0">@place.Price лв/ч</h4>
+                                        <h4 class="text-success mb-0">@place.Price евро/ч</h4>
                                         <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id" class="btn btn-success stretched-link">Виж повече</a>
                                     </div>
                                 </div>
@@ -101,3 +141,110 @@
         </main>
     </div>
 </div>
+<style>
+    .price-slider-wrapper 
+    {
+        position: relative;
+        height: 30px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .custom-range 
+    {
+        position: absolute;
+        width: 100%;
+        pointer-events: none;
+        appearance: none;
+        -webkit-appearance: none;
+        background: none;
+        margin: 0;
+        outline: none;
+    }
+    .custom-range::-webkit-slider-thumb 
+    {
+        pointer-events: auto;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #198754;
+        border: 2px solid #ffffff;
+        cursor: pointer;
+        -webkit-appearance: none;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        position: relative;
+        margin-top: -6px;
+    }
+    #minPriceRange::-webkit-slider-runnable-track 
+    {
+        width: 100%;
+        background: #dee2e6;
+        border-radius: 3px;
+    }
+    #maxPriceRange::-webkit-slider-runnable-track 
+    {
+        background: none;
+    }
+</style>
+<script>
+    function submitWithSort(order)
+    {
+        const form = document.getElementById('filterForm');
+        const sortInput = document.getElementById('currentSortOrder');
+
+        if (form && sortInput) 
+        {
+            sortInput.value = order;
+            form.submit();
+        }
+        else 
+        {
+            console.error("Формата или полето за сортиране не са намерени!");
+        }
+    }
+    const minR = document.getElementById('minPriceRange');
+    const maxR = document.getElementById('maxPriceRange');
+    const minD = document.getElementById('minPriceDisplay');
+    const maxD = document.getElementById('maxPriceDisplay');
+
+    function updatePrice()
+    {
+        let v1 = parseInt(minR.value);
+        let v2 = parseInt(maxR.value);
+        if (v1 > v2 - 5)
+        {
+            if (this.id === 'minPriceRange') minR.value = v2 - 5;
+            else maxR.value = v1 + 5;
+        }
+
+        minD.innerText = minR.value + " €";
+        maxD.innerText = maxR.value + " €";
+    }
+
+    minR.addEventListener('input', updatePrice);
+    maxR.addEventListener('input', updatePrice);
+
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has('minPrice')) minR.value = 0;
+        if (!params.has('maxPrice')) maxR.value = 200;
+
+        updatePrice.call(minR);
+    });
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('click', function() 
+        {
+            if (this.previousValue === 'true') 
+            {
+                this.checked = false;
+                this.previousValue = 'false';
+            } 
+            else 
+            {
+                document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => r.previousValue = 'false');
+                this.previousValue = 'true';
+            }
+        });
+    });
+</script>
