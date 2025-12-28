@@ -1,5 +1,6 @@
 ﻿using ActPro.DAL.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Controllers
@@ -12,12 +13,10 @@ namespace ActPro.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(string city, string activity)
+        public async Task<IActionResult> Index(string city, string activity, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
-            var query = _context.Places
-                .Include(p => p.City)
-                .Include(p => p.PlaceImages)
-                .AsQueryable();
+            var query = _context.Places.Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).AsQueryable();
+
             if (!string.IsNullOrEmpty(city))
             {
                 query = query.Where(p => p.City.Name == city);
@@ -26,6 +25,42 @@ namespace ActPro.Controllers
             {
                 query = query.Where(p => p.Activity.Name == activity);
             }
+            if (minPrice.HasValue)
+            {
+                query = query.Where(p => p.Price >= minPrice.Value);
+            }
+            if (maxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price <= maxPrice.Value);
+            }
+            if (!string.IsNullOrEmpty(capacityGroup))
+            {
+                query = capacityGroup switch
+                {
+                    "small" => query.Where(p => p.Capacity >= 1 && p.Capacity <= 4),
+                    "medium" => query.Where(p => p.Capacity >= 5 && p.Capacity <= 14),
+                    "large" => query.Where(p => p.Capacity >= 15 && p.Capacity <= 30),
+                    _ => query
+                };
+            }
+            ViewBag.SmallCount = await _context.Places.CountAsync(p => p.Capacity >= 1 && p.Capacity <= 4);
+            ViewBag.MediumCount = await _context.Places.CountAsync(p => p.Capacity >= 5 && p.Capacity <= 14);
+            ViewBag.LargeCount = await _context.Places.CountAsync(p => p.Capacity >= 15 && p.Capacity <= 30);
+
+
+            query = sortOrder switch
+            {
+                "price_asc" => query.OrderBy(p => p.Price),
+                "price_desc" => query.OrderByDescending(p => p.Price),
+                "rating_des" => query.OrderByDescending(p => p.Rating),
+                "rating_asc" => query.OrderBy(p => p.Rating),
+                _ => query.OrderBy(p => p.Name)
+            };
+            ViewBag.CurrentCity = city;
+            ViewBag.CurrentActivity = activity;
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.CurrentCapacity = capacityGroup;
+
             var results = await query.ToListAsync();
             return View("Search", results);
         }

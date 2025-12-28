@@ -1,16 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Резервация";
-    bool IsLoggedIn = false;
-}
+﻿@model ActPro.DAL.Entities.Place
 
+@{
+    ViewData["Title"] = Model.Name;
+    bool IsLoggedIn = User.Identity?.IsAuthenticated ?? false;
+    var mainImage = Model.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/800x400?text=Няма+снимка";
+    var subImages = Model.PlaceImages?.Skip(1).Take(2).ToList();
+}
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
-            <h1 class="display-6 fw-bold">Спортна зала "Арена Запад"</h1>
-            <p class="text-muted fs-5">Професионално игрище за мини футбол</p>
+            <h1 class="display-6 fw-bold">@Model.Name</h1>
+            <p class="text-muted fs-5">@Model.Activity?.Name в @Model.City?.Name</p>
         </div>
         <div class="text-end">
-            <span class="fs-4 fw-bold text-warning">⭐ 9.8/10</span>
+            <span class="fs-4 fw-bold text-warning">⭐ @Model.Rating/10</span>
             <button class="btn btn-outline-danger btn-sm ms-2"><i class="bi bi-heart"></i></button>
         </div>
     </div>
@@ -19,13 +22,15 @@
         <div class="col-md-8">
             <div class="row g-2">
                 <div class="col-12">
-                    <img src="https://via.placeholder.com/800x400" class="img-fluid rounded w-100" alt="Main">
+                    <img src="@mainImage" class="img-fluid rounded w-100 shadow-sm" style="height: 400px; object-fit: cover;" alt="Main Image">
                 </div>
                 <div class="col-6">
-                    <img src="https://via.placeholder.com/400x200" class="img-fluid rounded w-100" alt="Sub 1">
+                    <img src="@(subImages?.Count > 0 ? subImages[0].ImageUrl : "https://via.placeholder.com/400x200")"
+                         class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 1">
                 </div>
                 <div class="col-6">
-                    <img src="https://via.placeholder.com/400x200" class="img-fluid rounded w-100" alt="Sub 2">
+                    <img src="@(subImages?.Count > 1 ? subImages[1].ImageUrl : "https://via.placeholder.com/400x200")"
+                         class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 2">
                 </div>
             </div>
         </div>
@@ -33,11 +38,11 @@
         <div class="col-md-4">
             <div class="card border-success shadow-sm sticky-top" style="top: 20px;">
                 <div class="card-body text-center">
-                    <h2 class="card-title text-success mb-3">19.99 лв/ч</h2>
-                    <p class="text-muted">Свободни часове за днес: 4</p>
+                    <h2 class="card-title text-success mb-3">@Model.Price €/ч</h2>
+                    <p class="text-muted">Капацитет: до @Model.Capacity души</p>
 
-                    <button type="button" class="btn btn-success btn-lg w-100 py-3" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        Запази
+                    <button type="button" class="btn btn-success btn-lg w-100 py-3 shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        Запази час
                     </button>
                 </div>
             </div>
@@ -46,15 +51,29 @@
 
     <div class="row">
         <div class="col-md-8">
-            <div class="card mb-4 p-3 border-secondary">
-                <h5>Подробно описание</h5>
-                <p>
-                    Обектът разполага с две съблекални, бани с топла вода и паркинг.
-                    Настилката е последно поколение изкуствена трева. Осигурени са топки и потници.
+            <div class="card mb-4 p-4 border-light shadow-sm">
+                <h5 class="fw-bold">Описание на обекта</h5>
+                <p class="text-secondary">
+                    @Model.Description
                 </p>
+                <hr />
+                <div class="row text-center">
+                    <div class="col-4">
+                        <i class="bi bi-people fs-3 text-success"></i>
+                        <p class="small mb-0">@Model.Capacity души</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-geo-alt fs-3 text-success"></i>
+                        <p class="small mb-0">@Model.City?.Name</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-shield-check fs-3 text-success"></i>
+                        <p class="small mb-0">Проверен</p>
+                    </div>
+                </div>
             </div>
 
-            <button class="btn btn-light w-100 py-3 border">Коментари (12)</button>
+            <button class="btn btn-light w-100 py-3 border shadow-sm">Коментари и отзиви</button>
         </div>
     </div>
 </div>
@@ -63,25 +82,25 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-success">
             <div class="modal-header bg-light">
-                <h5 class="modal-title">Избери дата и час</h5>
+                <h5 class="modal-title fw-bold">График за @Model.Name</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <h4 class="mb-3">11.12.2025</h4>
-                <div class="d-flex justify-content-between align-items-center mb-4 overflow-auto">
-                    <button class="btn btn-outline-success"><i class="bi bi-arrow-left"></i></button>
-                    @for (int i = 11; i <= 17; i++)
+                <h4 class="mb-3 text-center">@DateTime.Now.ToString("dd MMMM yyyy")</h4>
+
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                    @for (int i = 0; i < 7; i++)
                     {
-                        <div class="text-center border rounded p-2 mx-1 @(i == 13 ? "bg-success text-white" : "")">
-                            <small class="d-block">@(DateTime.Now.AddDays(i - 11).ToString("ddd"))</small>
-                            <strong>@i</strong>
+                        var date = DateTime.Now.AddDays(i);
+                        <div class="text-center border rounded p-2 mx-1 @(i == 0 ? "bg-success text-white" : "bg-white")" style="min-width: 60px; cursor: pointer;">
+                            <small class="d-block">@date.ToString("ddd")</small>
+                            <strong>@date.Day</strong>
                         </div>
                     }
-                    <button class="btn btn-outline-success"><i class="bi bi-arrow-right"></i></button>
                 </div>
 
-                <div class="row row-cols-4 g-2 mb-4">
-                    @foreach (var hour in new[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00" })
+                <div class="row row-cols-4 g-2 mb-4 text-center">
+                    @foreach (var hour in new[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00" })
                     {
                         <div class="col">
                             <input type="radio" class="btn-check" name="timeSlot" id="time_@hour" autocomplete="off">
@@ -90,17 +109,10 @@
                     }
                 </div>
             </div>
-            <div class="modal-footer d-flex justify-content-center">
-                @if (IsLoggedIn)
-                {
-                    <button type="button" class="btn btn-success px-5">Резервирай</button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-success px-5" data-bs-target="#guestModal" data-bs-toggle="modal">
-                        Резервирай
-                    </button>
-                }
+            <div class="modal-footer d-flex justify-content-center border-0 pb-4">
+                <button type="button" class="btn btn-success btn-lg px-5 shadow" data-bs-target="#guestModal" data-bs-toggle="modal">
+                    Резервирай
+                </button>
             </div>
         </div>
     </div>
@@ -110,26 +122,30 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-success">
             <div class="modal-header">
-                <h5 class="modal-title">Данни за резервация</h5>
+                <h5 class="modal-title fw-bold">Финализиране на резервацията</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form asp-controller="Reservation" asp-action="Book" method="post">
+                    <input type="hidden" name="placeId" value="@Model.Id" />
+                    <input type="hidden" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <input type="hidden" name="timeSlot" id="selectedTime" value="10:00" />
+
                     <div class="row mb-3">
                         <div class="col">
-                            <label class="form-label">Име</label>
-                            <input type="text" class="form-control border-success">
+                            <label class="form-label small fw-bold">Име</label>
+                            <input type="text" name="firstName" class="form-control border-success"required>
                         </div>
                         <div class="col">
-                            <label class="form-label">Фамилия</label>
-                            <input type="text" class="form-control border-success">
+                            <label class="form-label small fw-bold">Фамилия</label>
+                            <input type="text" name="lastName" class="form-control border-success" required>
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">Телефонен номер</label>
-                        <input type="tel" class="form-control border-success">
+                        <label class="form-label small fw-bold">Телефонен номер</label>
+                        <input type="tel" name="phoneNumber" class="form-control border-success" required>
                     </div>
-                    <button type="submit" class="btn btn-success w-100 py-2">Завърши резервацията</button>
+                    <button type="submit" class="btn btn-success w-100 py-3 shadow-sm">Потвърди резервацията</button>
                 </form>
             </div>
         </div>
