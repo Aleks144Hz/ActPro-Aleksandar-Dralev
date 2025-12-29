@@ -13,6 +13,10 @@ namespace ActPro
     {
         public static void Main(string[] args)
         {
+            var cultureInfo = new System.Globalization.CultureInfo("bg-BG");
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")));

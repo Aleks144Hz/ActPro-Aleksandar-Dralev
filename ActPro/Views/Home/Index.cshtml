@@ -1,40 +1,54 @@
 ﻿@using ActPro.Models
 @model ActPro.Models.HomeViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Начало";
 }
 
 <div class="container-fluid p-0">
     <section class="search-bar py-5 bg-primary text-white shadow-sm">
         <div class="container">
-            <form asp-controller="Search" asp-action="Index" method="get" class="row g-3 justify-content-center">
-                <div class="col-md-4">
-                    <label class="form-label">Населено място</label>
-                    <input class="form-control" list="citiesOptions" name="city" placeholder="Избери или въведи град...">
-                    <datalist id="citiesOptions">
-                        @foreach (var cityName in Model.CityNames)
-                        {
-                            <option value="@cityName"></option>
-                        }
-                    </datalist>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Активност</label>
-                    <input class="form-control" list="activitiesOptions" name="activity" placeholder="Избери или въведи активност...">
-                    <datalist id="activitiesOptions">
-                        @foreach (var actName in Model.ActivityNames)
-                        {
-                            <option value="@actName"></option>
-                        }
-                    </datalist>
-                </div>
-                <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-warning w-100 fw-bold">ТЪРСИ</button>
-                </div>
-            </form>
+            <div class="search-container-styled">
+                <form asp-controller="Search" asp-action="Index" method="get" id="mainSearchForm">
+                    <div class="row align-items-center">
+                        <div class="col-md-5 position-relative divider-end">
+                            <label class="search-label-small">Населено място</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-map-marker-alt input-icon"></i>
+                                <input type="text"
+                                       class="form-control form-control-custom"
+                                       id="cityInput"
+                                       name="city"
+                                       placeholder="Избери или въведи град"
+                                       autocomplete="off"
+                                       required
+                                       oninvalid="this.setCustomValidity('Моля, изберете населено място!')"
+                                       oninput="this.setCustomValidity('')">
+                            </div>
+                            <div id="cityList" class="custom-dropdown-list"></div>
+                        </div>
+                        <div class="col-md-5 position-relative">
+                            <label class="search-label-small">Какво ще спортувате?</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-running input-icon"></i>
+                                <input type="text"
+                                       class="form-control form-control-custom"
+                                       id="activityInput"
+                                       name="activity"
+                                       placeholder="Избери или въведи активност"
+                                       autocomplete="off">
+                            </div>
+                            <div id="activityList" class="custom-dropdown-list"></div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm" style="border-radius: 25px; height: 50px;">
+                                ТЪРСИ
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
-
     <main class="container my-5">
         <h2 class="mb-4 text-center">Топ обекти с най-висок рейтинг</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -60,15 +74,68 @@
         </div>
     </main>
 </div>
+<script>
+    const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
+    const activitiesData = @Html.Raw(Json.Serialize(Model.ActivityNames));
+    function setupAutocomplete(inputId, listId, dataArray, iconClass)
+    {
+        const input = document.getElementById(inputId);
+        const list = document.getElementById(listId);
 
-<style>
-    .dropdown:hover .dropdown-menu {
-        display: block;
-        margin-top: 0;
-    }
+        function renderList(items)
+        {
+            list.innerHTML = '';
+            if (items.length === 0)
+            {
+                list.style.display = 'none';
+                return;
+            }
+            items.forEach(item =>
+                {
+                const div = document.createElement('div');
+                div.className = 'dropdown-item-custom';
+                div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
+                div.addEventListener('click', function()
+                {
+                    input.value = item;
+                    input.setCustomValidity('');
+                    list.style.display = 'none';
+                    input.focus();
+                });
+                list.appendChild(div);
+            });
+            list.style.display = 'block';
+        }
+        function handleFilter()
+        {
+            const text = input.value.toLowerCase().trim();
+            const filtered = dataArray
+                .filter(item => item.toString().toLowerCase().trim().startsWith(text))
+                .sort();
+            renderList(filtered);
+        }
+        input.addEventListener('focus', handleFilter);
+        input.addEventListener('input', handleFilter);
 
-    .search-bar {
-        border-radius: 8px;
-        margin: 0 1rem;
+        document.addEventListener('click', function(e)
+        {
+            if (e.target !== input && !list.contains(e.target))
+            {
+                list.style.display = 'none';
+            }
+        });
+        list.addEventListener('click', function(e)
+        {
+            e.stopPropagation();
+        });
     }
-</style>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
+        setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
+    });
+</script>
+@section Styles 
+{
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true"/>
+}
