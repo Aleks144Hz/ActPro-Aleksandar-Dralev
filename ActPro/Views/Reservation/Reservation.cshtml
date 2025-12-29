@@ -1,5 +1,4 @@
 ﻿@model ActPro.DAL.Entities.Place
-
 @{
     ViewData["Title"] = Model.Name;
     bool IsLoggedIn = User.Identity?.IsAuthenticated ?? false;
@@ -82,22 +81,33 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-success">
             <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">График за @Model.Name</h5>
+                <h5 class="modal-title fw-bold">@Model.Name</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <h4 class="mb-3 text-center">@DateTime.Now.ToString("dd MMMM yyyy")</h4>
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <button class="btn btn-outline-success rounded-circle me-2" id="prevDay" type="button">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
 
-                <div class="d-flex justify-content-center align-items-center mb-4">
-                    @for (int i = 0; i < 7; i++)
-                    {
-                        var date = DateTime.Now.AddDays(i);
-                        <div class="text-center border rounded p-2 mx-1 @(i == 0 ? "bg-success text-white" : "bg-white")" style="min-width: 60px; cursor: pointer;">
-                            <small class="d-block">@date.ToString("ddd")</small>
-                            <strong>@date.Day</strong>
-                        </div>
-                    }
+                    <div id="dateScrollContainer" class="d-flex overflow-hidden" style="max-width: 545px; scroll-behavior: smooth;">
+                        @for (int i = 0; i < 31; i++)
+                        {
+                            var date = DateTime.Now.AddDays(i);
+                            <div class="text-center border rounded p-2 mx-1 date-item @(i == 0 ? "bg-success text-white" : "bg-white")"
+                                 style="min-width: 70px; cursor: pointer;"
+                                 data-date="@date.ToString("yyyy-MM-dd")">
+                                <small class="d-block">@(i == 0 ? "Днес" : date.ToString("ddd").ToUpper())</small>
+                                <strong>@date.Day</strong>
+                                <small class="d-block" style="font-size: 0.7rem;">@date.ToString("MMM")</small>
+                            </div>
+                        }
+                    </div>
+                    <button class="btn btn-outline-success rounded-circle ms-2" id="nextDay" type="button">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
                 </div>
+                <input type="hidden" id="selectedDate" name="reservationDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
 
                 <div class="row row-cols-4 g-2 mb-4 text-center">
                     @foreach (var hour in new[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00" })
@@ -122,7 +132,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-success">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold">Финализиране на резервацията</h5>
+                <h5 class="modal-title fw-bold">Завършване на резервацията</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -134,7 +144,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label class="form-label small fw-bold">Име</label>
-                            <input type="text" name="firstName" class="form-control border-success"required>
+                            <input type="text" name="firstName" class="form-control border-success" required>
                         </div>
                         <div class="col">
                             <label class="form-label small fw-bold">Фамилия</label>
@@ -151,3 +161,51 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.date-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.date-item').forEach(el => {
+                el.classList.remove('bg-success', 'text-white', 'border-success', 'shadow-sm');
+                el.classList.add('bg-white', 'text-dark');
+            });
+            this.classList.add('bg-success', 'text-white', 'border-success', 'shadow-sm');
+            this.classList.remove('bg-white', 'text-dark');
+            const pickedDate = this.getAttribute('data-date');
+            document.getElementById('selectedDate').value = pickedDate;
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function ()
+    {
+            const container = document.getElementById('dateScrollContainer');
+            function scrollDays(direction)
+            {
+                const firstItem = container.querySelector('.date-item');
+                if (firstItem)
+                {
+                    const itemWidth = firstItem.offsetWidth + 8;
+                    const scrollStep = itemWidth * 1;
+                    if (direction === 'next')
+                    {
+                        container.scrollLeft += scrollStep;
+                    }
+                    else
+                    {
+                        container.scrollLeft -= scrollStep;
+                    }
+                }
+            }
+            document.getElementById('nextDay').addEventListener('click', () => scrollDays('next'));
+            document.getElementById('prevDay').addEventListener('click', () => scrollDays('prev'));
+            document.querySelectorAll('.date-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.querySelectorAll('.date-item').forEach(el => {
+                        el.classList.remove('bg-success', 'text-white');
+                        el.classList.add('bg-white');
+                    });
+                    this.classList.add('bg-success', 'text-white');
+                    this.classList.remove('bg-white');
+                    document.getElementById('selectedDate').value = this.getAttribute('data-date');
+                });
+            });
+    });
+</script>

@@ -1,78 +1,103 @@
-html {
-  font-size: 14px;
+html 
+{
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
-@media (min-width: 768px) {
-  html {
+@media (min-width: 768px) 
+{
+  html 
+  {
     font-size: 16px;
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus 
+{
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+body 
+{
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    margin-bottom: 60px;
 }
 
-body {
-  margin-bottom: 60px;
+main 
+{
+    flex: 1;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+footer 
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #f5f5f5;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder 
+{
   color: var(--bs-secondary-color);
   text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder 
+{
   text-align: start;
 }
-.auth-wrapper {
-    min-height: 80vh; /* Заема почти целия екран */
+
+.auth-wrapper 
+{
+    min-height: 80vh;
     display: flex;
     align-items: center;
-    justify_content: center;
-    background-color: #f8f9fa; /* Лек сив фон */
+    justify-content: center;
+    background-color: #f8f9fa;
 }
 
-/* Самата карта (бялата кутия) */
-.auth-card {
+.auth-card 
+{
     background: white;
     padding: 2.5rem;
     border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Мека сянка */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     width: 100%;
-    max-width: 500px; /* Максимална ширина */
+    max-width: 500px;
     transition: transform 0.3s ease;
 }
 
-    .auth-card:hover {
-        transform: translateY(-5px); /* Леко повдигане при посочване */
-    }
+.auth-card:hover 
+{
+    transform: translateY(-5px);
+}
 
-/* Заглавието */
-.auth-title {
+.auth-title 
+{
     font-weight: 700;
     color: #333;
     margin-bottom: 1.5rem;
     text-align: center;
 }
 
-/* Полетата за въвеждане */
-.form-floating > .form-control {
+.form-floating > .form-control 
+{
     border-radius: 10px;
     border: 1px solid #e0e0e0;
 }
 
-    .form-floating > .form-control:focus {
-        border-color: #86b7fe;
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-    }
+.form-floating > .form-control:focus 
+{
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
 
-/* Бутонът */
-.btn-auth {
+.btn-auth 
+{
     width: 100%;
     padding: 0.8rem;
     border-radius: 10px;
@@ -84,44 +109,55 @@ body {
     transition: all 0.3s;
 }
 
-.btn-auth:hover {
+.btn-auth:hover 
+{
     background-color: #0b5ed7;
     box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
 }
-@media (min-width: 992px) {
-    .profile-dropdown:hover .dropdown-menu {
+
+@media (min-width: 992px) 
+{
+    .profile-dropdown:hover .dropdown-menu 
+    {
         display: block;
-        margin-top: 0; /* Махаме разстоянието, за да не се затваря при движение */
+        margin-top: 0;
     }
 }
 
-/* Стилизиране на самото меню */
-.dropdown-menu {
+.dropdown-menu 
+{
     border-radius: 12px;
     border: none;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
     left: 65% !important;
     right: auto !important;
     transform: translateX(-65%) translateY(10px) !important;
+    z-index: 2100
 }
 
-.dropdown-item {
+.dropdown-item 
+{
     padding: 10px 20px;
     transition: background 0.2s;
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover 
+{
     background-color: #f8f9fa;
     color: #0d6efd;
 }
-.profile-dropdown .dropdown-toggle::after {
-    vertical-align: middle;
-    color: #6c757d; /* Сивкав цвят за стрелката */
+
+.profile-dropdown a:hover i 
+{
+    filter: brightness(0.8);
 }
 
-.profile-dropdown a:hover i {
-    filter: brightness(0.8); /* Леко потъмняване на иконата при посочване */
-}
-.nav-item{
+.nav-item
+{
     margin-left: 50%;
+}
+
+.navbar
+{
+    z-index: 2000 !important;
 }
