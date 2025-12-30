@@ -26,4 +26,8 @@
     <ProjectReference Include="..\ActPro.DAL\ActPro.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\profiles\" />
+  </ItemGroup>
+
 </Project>

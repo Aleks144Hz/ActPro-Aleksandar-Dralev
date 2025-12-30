@@ -8,32 +8,36 @@
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm text-center p-4 h-100">
-                <div class="mb-3">
-                    <img src="https://via.placeholder.com/150" class="rounded-circle img-thumbnail" alt="User Photo" style="width: 150px; height: 150px;">
+                <div class="mb-3 position-relative d-inline-block">
+                    <img id="profileImageDisplay"
+                         src="@(string.IsNullOrEmpty(Model.ProfilePicturePath)
+                                         ? "https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
+                                         : "/images/profiles/" + Model.ProfilePicturePath)"
+                         class="rounded-circle img-thumbnail shadow-sm"
+                         style="width: 150px; height: 150px; object-fit: cover;"
+                         alt="Профилна снимка">
                 </div>
-
                 <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
                 <p class="text-muted mb-1">@Model.Email</p>
-                <p class="text-muted">@(Model.PhoneNumber ?? "Не е посочен")</p>
+                <p class="text-muted">@Model.PhoneNumber</p>
 
                 <hr class="my-4">
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-outline-primary">
-                        <i class="bi bi-pencil-square me-2"></i>Редактирай профила
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="bi bi-pencil-fill me-2"></i>Редактирай профила
                     </button>
-                    <a asp-controller="Account" asp-action="ConfirmDelete" class="btn btn-outline-danger">
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
                         <i class="bi bi-trash me-2"></i>Изтриване на профил
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
-
         <div class="col-md-8">
             <div class="card shadow-sm h-100 border-0">
                 <div class="card-header bg-white py-3 border-bottom-0">
                     <h5 class="mb-0 fw-bold text-primary">
-                        <i class="bi bi-heart-fill me-2 text-danger"></i>Моите Фаворити
+                        <i class="bi bi-star-fill me-2 text-warning"></i>Моите Фаворити
                     </h5>
                 </div>
                 <div class="card-body">
@@ -41,9 +45,9 @@
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Обект</th>
-                                    <th>Град</th>
-                                    <th>Рейтинг</th>
+                                    <th style="cursor:pointer;" onclick="sortTable(0)">Обект <i class="bi bi-arrow-down-up small"></i></th>
+                                    <th style="cursor:pointer;" onclick="sortTable(1)">Град <i class="bi bi-arrow-down-up small"></i></th>
+                                    <th style="cursor:pointer;" onclick="sortTable(2)">Рейтинг <i class="bi bi-arrow-down-up small"></i></th>
                                     <th class="text-center">Действие</th>
                                 </tr>
                             </thead>
@@ -68,22 +72,19 @@
                                                     <span class="fw-bold text-dark">@favorite.Place.Name</span>
                                                 </div>
                                             </td>
-                                            <td>@favorite.Place.City</td>
+                                            <td>@favorite.Place.City?.Name</td>
                                             <td>
-                                                <span class="badge bg-warning text-dark">
-                                                    ⭐ @favorite.Place.Rating.ToString()
+                                                <span class="badge bg-success-subtle text-dark">
+                                                    ⭐ @favorite.Place.Rating.ToString()/5
                                                 </span>
                                             </td>
                                             <td class="text-center">
-                                                <div class="btn-group" role="group">
-                                                    <a asp-controller="Places" asp-action="Details" asp-route-id="@favorite.PlaceId" class="btn btn-sm btn-outline-primary">
-                                                        Виж
-                                                    </a>
-                                                    <form asp-controller="Favorites" asp-action="Remove" asp-route-id="@favorite.PlaceId" method="post" onsubmit="return confirm('Сигурни ли сте?');">
-                                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-1">
-                                                            <i class="bi bi-x-lg"></i>
-                                                        </button>
-                                                    </form>
+                                                <div class="btn-group">
+                                                    <a asp-controller="Reservation" asp-action="Index" asp-route-id="@favorite.PlaceId" class="btn btn-sm btn-outline-primary">Виж</a>
+
+                                                    <button type="button" class="btn btn-sm btn-outline-danger ms-1 remove-favorite" data-id="@favorite.PlaceId">
+                                                        <i class="bi bi-x-lg"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -93,7 +94,7 @@
                                 {
                                     <tr>
                                         <td colspan="4" class="text-center py-4 text-muted">
-                                            <i class="bi bi-heart me-2"></i>Все още нямате добавени любими обекти.
+                                            <i class="bi bi-star me-2"></i>Все още нямате добавени любими обекти.
                                         </td>
                                     </tr>
                                 }
@@ -105,3 +106,101 @@
         </div>
     </div>
 </div>
+@await Html.PartialAsync("ConfirmDelete", new ActPro.Models.User.DeleteProfileViewModel())
+@await Html.PartialAsync("EditProfile", new ActPro.Models.User.EditProfileViewModel 
+{
+    FirstName = Model.FirstName,
+    LastName = Model.LastName,
+    PhoneNumber = Model.PhoneNumber
+})
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () 
+        {
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <text>
+                var myModal = new bootstrap.Modal(document.getElementById('deleteProfileModal'));
+                myModal.show();
+                </text>
+            }
+        $(document).on('click', '.remove-favorite', function () 
+        {
+            if (!confirm('Сигурни ли сте, че искате да премахнете обекта от любими?')) return;
+
+            var btn = $(this);
+            var id = btn.data('id');
+            var row = btn.closest('tr');
+
+            $.post('/Account/ToggleFavorite', { placeId: id }, function (response) 
+            {
+                if (response.success && !response.isFavorite) 
+                {
+                    row.fadeOut(300, function() { $(this).remove(); });
+                }
+            });
+            });
+        });
+       function sortTable(n) 
+       {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.querySelector(".table");
+            switching = true;
+            dir = "asc";
+
+            while (switching) 
+            {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    var xContent = x.textContent.toLowerCase().trim();
+                    var yContent = y.textContent.toLowerCase().trim();
+
+                    if (n === 2) 
+                    {
+                        xContent = parseFloat(xContent.replace(/[^0-9.]/g, '')) || 0;
+                        yContent = parseFloat(yContent.replace(/[^0-9.]/g, '')) || 0;
+                    }
+
+                    if (dir == "asc") 
+                    {
+                        if (xContent > yContent) 
+                        {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                    else if (dir == "desc") 
+                    {
+                        if (xContent < yContent) 
+                        {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) 
+                {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } 
+                else 
+                {
+                    if (switchcount == 0 && dir == "asc") 
+                    {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+}

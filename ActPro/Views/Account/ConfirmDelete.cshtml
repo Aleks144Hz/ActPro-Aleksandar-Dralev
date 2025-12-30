@@ -1,30 +1,28 @@
-﻿@model DeleteProfileViewModel
-@{
-    ViewData["Title"] = "Изтриване на профил";
-}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow border-0">
-                <div class="card-body p-5">
-                    <h3 class="text-danger fw-bold mb-4"><i class="bi bi-exclamation-triangle-fill me-2"></i>Изтриване на профил</h3>
-                    <p class="text-muted">Тази операция е необратима. Всички ваши данни и любими обекти ще бъдат изтрити завинаги.</p>
+﻿@model ActPro.Models.User.DeleteProfileViewModel
 
-                    <form asp-action="DeleteProfile" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="modal fade" id="deleteProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Изтриване на профил</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-dark">Тази операция е необратима. Всички ваши данни и любими обекти ще бъдат изтрити завинаги.</p>
+                <form asp-controller="Account" asp-action="DeleteProfile" method="post">
+                    @Html.AntiForgeryToken()
 
-                        <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Въведете вашата парола, за да потвърдите:</label>
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-bold">Въведете вашата парола, за да потвърдите:</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
 
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-light">Отказ</a>
-                            <button type="submit" class="btn btn-danger">Изтрий профила ми</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отказ</button>
+                        <button type="submit" class="btn btn-danger">Изтрий</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

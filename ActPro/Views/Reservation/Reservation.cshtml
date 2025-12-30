@@ -1,22 +1,29 @@
-﻿@model ActPro.DAL.Entities.Place
+﻿@model ActPro.Models.ReservationViewModel
 @{
-    ViewData["Title"] = Model.Name;
+    ViewData["Title"] = Model.Place.Name;
     bool IsLoggedIn = User.Identity?.IsAuthenticated ?? false;
-    var mainImage = Model.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/800x400?text=Няма+снимка";
-    var subImages = Model.PlaceImages?.Skip(1).Take(2).ToList();
+    var mainImage = Model.Place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/800x400?text=Няма+снимка";
+    var subImages = Model.Place.PlaceImages?.Skip(1).Take(2).ToList();
+    var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var userCommentsCount = Model.Place.Comments.Count(c => c.AspNetUserId == currentUserId);
 }
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
-            <h1 class="display-6 fw-bold">@Model.Name</h1>
-            <p class="text-muted fs-5">@Model.Activity?.Name в @Model.City?.Name</p>
+            <h1 class="display-6 fw-bold">@Model.Place.Name</h1>
+            <p class="text-muted fs-5">@Model.Place.Activity?.Name в @Model.Place.City?.Name</p>
         </div>
         <div class="text-end">
-            <span class="fs-4 fw-bold text-warning">⭐ @Model.Rating/10</span>
-            <button class="btn btn-outline-danger btn-sm ms-2"><i class="bi bi-heart"></i></button>
+            <span class="fs-4 fw-bold text-warning">
+                <button type="button"
+                        class="btn @(Model.IsFavorite ? "btn-warning" : "btn-outline-warning") btn-sm ms-2 favorite-btn-large"
+                        data-id="@Model.Place.Id">
+                    <i class="bi @(Model.IsFavorite ? "bi-star-fill" : "bi-star")"></i>
+                </button> @Model.Place.Rating/5
+            </span>
+
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-8">
             <div class="row g-2">
@@ -33,12 +40,11 @@
                 </div>
             </div>
         </div>
-
         <div class="col-md-4">
             <div class="card border-success shadow-sm sticky-top" style="top: 20px;">
                 <div class="card-body text-center">
-                    <h2 class="card-title text-success mb-3">@Model.Price €/ч</h2>
-                    <p class="text-muted">Капацитет: до @Model.Capacity души</p>
+                    <h2 class="card-title text-success mb-3">@Model.Place.Price €/ч</h2>
+                    <p class="text-muted">Капацитет: до @Model.Place.Capacity души</p>
 
                     <button type="button" class="btn btn-success btn-lg w-100 py-3 shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
                         Запази час
@@ -47,23 +53,22 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4 p-4 border-light shadow-sm">
                 <h5 class="fw-bold">Описание на обекта</h5>
                 <p class="text-secondary">
-                    @Model.Description
+                    @Model.Place.Description
                 </p>
                 <hr />
                 <div class="row text-center">
                     <div class="col-4">
                         <i class="bi bi-people fs-3 text-success"></i>
-                        <p class="small mb-0">@Model.Capacity души</p>
+                        <p class="small mb-0">@Model.Place.Capacity души</p>
                     </div>
                     <div class="col-4">
                         <i class="bi bi-geo-alt fs-3 text-success"></i>
-                        <p class="small mb-0">@Model.City?.Name</p>
+                        <p class="small mb-0">@Model.Place.City?.Name</p>
                     </div>
                     <div class="col-4">
                         <i class="bi bi-shield-check fs-3 text-success"></i>
@@ -71,17 +76,116 @@
                     </div>
                 </div>
             </div>
+            <button class="btn btn-light w-100 py-3 border shadow-sm mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#reviewsSection">
+                <i class="bi bi-chat-left-text me-2"></i> Коментари и отзиви
+            </button>
 
-            <button class="btn btn-light w-100 py-3 border shadow-sm">Коментари и отзиви</button>
+            <div class="collapse" id="reviewsSection">
+                <div class="card card-body border-light shadow-sm mb-4">
+                    <div class="reviews-list">
+                        @if (Model.Place.Comments != null && Model.Place.Comments.Any())
+                        {
+                            @foreach (var review in Model.Place.Comments.OrderByDescending(r => r.CreatedAt))
+                            {
+                                <div class="d-flex mb-4 border-bottom pb-3">
+                                    <div class="flex-shrink-0">
+                                        @{
+                                            var profilePicName = review.User?.ProfilePicturePath;
+                                            var fullPath = !string.IsNullOrEmpty(profilePicName)
+                                            ? "/images/profiles/" + profilePicName
+                                            : null;
+                                            var initial = review.User?.FirstName?[0].ToString().ToUpper() ?? "U";
+                                        }
+                                        @if (!string.IsNullOrEmpty(fullPath))
+                                        {
+                                            <img src="@fullPath"
+                                                 class="rounded-circle shadow-sm"
+                                                 style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #dee2e6;"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            <div class="bg-success text-white rounded-circle shadow-sm fw-bold align-items-center justify-content-center"
+                                                 style="width: 50px; height: 50px; display: none; font-size: 1.2rem;">
+                                                @initial
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm"
+                                                 style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                                @initial
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="ms-3 w-100">
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="mb-0 fw-bold">@review.User?.FirstName @review.User?.LastName
+                                            @if (review.AspNetUserId == currentUserId)
+                                            {
+                                                <form asp-action="DeleteReview" method="post" style="display:inline;">
+                                                    <input type="hidden" name="reviewId" value="@review.Id" />
+                                                    <input type="hidden" name="placeId" value="@Model.Place.Id" />
+                                                    <button type="submit" class="btn btn-link text-danger p-0 ms-2" title="Изтрий коментара" onclick="return confirm('Сигурни ли сте?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            }</h6>
+                                            <span class="text-warning small">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <i class="bi @(i <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                                                }
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">@review.CreatedAt?.ToString("dd.MM.yyyy HH:mm")</small>
+                                        <p class="text-dark mt-2 mb-0">@review.CommentText</p>
+                                    </div>
+                                </div>
+                            }
+                            <hr />
+                        }
+                        else
+                        {
+                            <p class="text-muted text-center my-4 italic">Все още няма добавени отзиви.</p>
+                        }
+                        @if (IsLoggedIn)
+                        {
+                            if (userCommentsCount < 3)
+                            {
+                                <h6 class="fw-bold mb-3">Остави отзив</h6>
+                                <form asp-action="AddReview" method="post">
+                                    <input type="hidden" name="placeId" value="@Model.Place.Id" />
+                                    <div class="star-rating mb-2">
+                                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
+                                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
+                                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
+                                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
+                                        <input type="radio" id="star1" name="rating" value="1" required /><label for="star1"></label>
+                                    </div>
+                                    <textarea name="commentText" class="form-control mb-2" rows="3" placeholder="Сподели мнение..." required></textarea>
+                                    <button type="submit" class="btn btn-success">Публикувай</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info py-2 small">Достигнали сте лимита от 3 коментара за това място.</div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-sm alert-light border text-center small">
+                                За да оставите коментар <a asp-controller="Account" asp-action="Login">присъединeте се</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="bookingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-success">
             <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">@Model.Name</h5>
+                <h5 class="modal-title fw-bold">@Model.Place.Name</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -127,8 +231,7 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="guestModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="guestModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-success">
             <div class="modal-header">
@@ -137,7 +240,7 @@
             </div>
             <div class="modal-body">
                 <form asp-controller="Reservation" asp-action="Book" method="post">
-                    <input type="hidden" name="placeId" value="@Model.Id" />
+                    <input type="hidden" name="placeId" value="@Model.Place.Id" />
                     <input type="hidden" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                     <input type="hidden" name="timeSlot" id="selectedTime" value="10:00" />
 
@@ -161,6 +264,11 @@
         </div>
     </div>
 </div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/reservation.css" asp-append-version="true" />
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.querySelectorAll('.date-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -207,5 +315,49 @@
                     document.getElementById('selectedDate').value = this.getAttribute('data-date');
                 });
             });
+    });
+    $(document).ready(function() 
+    {
+        $(document).on('click', '.favorite-btn-large', function (e) 
+        {
+            e.preventDefault();
+
+            var btn = $(this);
+            var pId = btn.attr('data-id');
+
+            $.ajax({
+                url: '/Account/ToggleFavorite',
+                type: 'POST',
+                data: { placeId: pId },
+                success: function (response) 
+                {
+                    if (response.success) 
+                    {
+                        var icon = btn.find('i');
+                        if (response.isFavorite) 
+                        {
+                            btn.removeClass('btn-outline-warning').addClass('btn-warning');
+                            icon.removeClass('bi-star').addClass('bi-star-fill');
+                        } 
+                        else 
+                        {
+                            btn.removeClass('btn-warning').addClass('btn-outline-warning');
+                            icon.removeClass('bi-star-fill').addClass('bi-star');
+                        }
+                    }
+                },
+                error: function (xhr) 
+                {
+                    if (xhr.status === 401) 
+                    {
+                        alert("Трябва да сте влезли в профила си!");
+                    } 
+                    else 
+                    {
+                        alert("Грешка при комуникация със сървъра. Статус: " + xhr.status);
+                    }
+                }
+            });
+        });
     });
 </script>
