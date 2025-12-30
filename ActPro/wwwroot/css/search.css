@@ -76,3 +76,25 @@
     border-top-left-radius: calc(0.375rem - 1px);
     border-bottom-left-radius: calc(0.375rem - 1px);
 }
+
+#largeMapModal .modal-xl 
+{
+    max-width: 80%; 
+}
+
+#largeMapModal .modal-content 
+{
+    height: 85vh;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#largeMapFrame 
+{
+    min-height: 400px;
+}
+
+#largeMapModal .modal-header 
+{
+    border-bottom: none;
+}

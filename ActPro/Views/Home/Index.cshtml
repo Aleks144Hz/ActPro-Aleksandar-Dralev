@@ -74,39 +74,114 @@
         </div>
     </main>
 </div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
 <script>
-    const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
+       const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
     const activitiesData = @Html.Raw(Json.Serialize(Model.ActivityNames));
-    function setupAutocomplete(inputId, listId, dataArray, iconClass)
+
+    function setupAutocomplete(inputId, listId, dataArray, iconClass) 
     {
         const input = document.getElementById(inputId);
         const list = document.getElementById(listId);
 
-        function renderList(items)
+        const popularItemsMap = 
+        {
+            'cityInput': ["София", "Пловдив", "Варна", "Бургас", "Благоевград"],
+            'activityInput': ["Футбол", "Волейбол", "Баскетбол", "Тенис", "Фитнес"]
+        };
+
+        const labelsMap = 
+        {
+            'cityInput': "Известни локации",
+            'activityInput': "Популярни активности"
+        };
+
+        function renderList(items) 
         {
             list.innerHTML = '';
-            if (items.length === 0)
+            const inputValue = input.value.toLowerCase().trim();
+            if (inputValue === '') 
+            {
+                const label = document.createElement('div');
+                label.className = 'dropdown-header-custom';
+                label.innerHTML = `<strong>${labelsMap[inputId]}</strong>`;
+                list.appendChild(label);
+
+                popularItemsMap[inputId].forEach(item => {
+                    list.appendChild(createItemDiv(item));
+                });
+
+                const divider = document.createElement('div');
+                divider.className = 'dropdown-header-custom mt-2';
+                divider.innerHTML = `<strong>Всички предложения</strong>`;
+                list.appendChild(divider);
+            }
+
+            if (items.length === 0 && inputValue !== '') 
             {
                 list.style.display = 'none';
                 return;
             }
-            items.forEach(item =>
-                {
-                const div = document.createElement('div');
-                div.className = 'dropdown-item-custom';
-                div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
-                div.addEventListener('click', function()
-                {
-                    input.value = item;
-                    input.setCustomValidity('');
-                    list.style.display = 'none';
-                    input.focus();
-                });
-                list.appendChild(div);
+            items.forEach(item => {
+                list.appendChild(createItemDiv(item));
             });
             list.style.display = 'block';
         }
-        function handleFilter()
+        function createItemDiv(item) 
+        {
+            const div = document.createElement('div');
+            div.className = 'dropdown-item-custom';
+            div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
+            const activityIcons = {
+                    'Айкидо': 'fas fa-user-ninja',
+                    'Акробатика': 'fas fa-child',
+                    'Бадминтон': 'fas fa-table-tennis',
+                    'Балет': 'fas fa-shoe-prints',
+                    'Баскетбол': 'fas fa-basketball-ball',
+                    'Бейзбол': 'fas fa-baseball-ball',
+                    'Билярд': 'fas fa-circle',
+                    'Бокс': 'fas fa-fist-raised',
+                    'Борба': 'fas fa-hand-rock',
+                    'Боулинг': 'fas fa-bowling-ball',
+                    'Волейбол': 'fas fa-volleyball-ball',
+                    'Гимнастика': 'fas fa-walking',
+                    'Голф': 'fas fa-golf-ball',
+                    'Дартс': 'fas fa-bullseye',
+                    'Джудо': 'fas fa-user-ninja',
+                    'Йога': 'fas fa-spa',
+                    'Карате': 'fas fa-hand-rock',
+                    'Конна езда': 'fas fa-horse',
+                    'Крикет': 'fas fa-baseball-ball',
+                    'Лека атлетика': 'fas fa-running',
+                    'ММА': 'fas fa-fist-raised',
+                    'Падел': 'fas fa-table-tennis',
+                    'Плуване': 'fas fa-swimmer',
+                    'Ски': 'fas fa-skiing',
+                    'Стрелба': 'fas fa-crosshairs',
+                    'Таекуондо': 'fas fa-user-ninja',
+                    'Танци': 'fas fa-music',
+                    'Тенис': 'fas fa-table-tennis',
+                    'Тенис на маса': 'fas fa-table-tennis',
+                    'Фехтовка': 'fas fa-pen-nib',
+                    'Фитнес': 'fas fa-dumbbell',
+                    'Футбол': 'fas fa-futbol',
+                    'Хандбал': 'fas fa-volleyball-ball'
+             };
+            const currentIcon = activityIcons[item] || iconClass;
+            div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
+            div.addEventListener('click', function() 
+            {
+                input.value = item;
+                input.setCustomValidity('');
+                list.style.display = 'none';
+                input.focus();
+            });
+            return div;
+        }
+        function handleFilter() 
         {
             const text = input.value.toLowerCase().trim();
             const filtered = dataArray
@@ -116,26 +191,17 @@
         }
         input.addEventListener('focus', handleFilter);
         input.addEventListener('input', handleFilter);
-
         document.addEventListener('click', function(e)
         {
-            if (e.target !== input && !list.contains(e.target))
+            if (e.target !== input && !list.contains(e.target)) 
             {
                 list.style.display = 'none';
             }
         });
-        list.addEventListener('click', function(e)
-        {
-            e.stopPropagation();
-        });
     }
-    document.addEventListener("DOMContentLoaded", function()
+    document.addEventListener("DOMContentLoaded", function() 
     {
         setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
         setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
     });
 </script>
-@section Styles 
-{
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true"/>
-}

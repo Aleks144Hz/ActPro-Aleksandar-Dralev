@@ -1,4 +1,4 @@
-﻿namespace ActPro.Models
+﻿namespace ActPro.Helpers
 {
     public class MessageConstants
     {

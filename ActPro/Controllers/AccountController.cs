@@ -1,37 +1,42 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
+using ActPro.DAL.Entities;
 using ActPro.Models.User;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
-
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context)
+            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // --- ACCOUNT / PROFILE (Index) ---
-        [Authorize]
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
             var user = await _context.Users
-                .Include(u => u.Favorites)
-                    .ThenInclude(f => f.Place)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+            .Include(u => u.Favorites)
+            .ThenInclude(f => f.Place)
+            .ThenInclude(p => p.PlaceImages) 
+            .Include(u => u.Favorites)
+            .ThenInclude(f => f.Place)
+            .ThenInclude(p => p.City)     
+            .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null) return NotFound();
 
@@ -40,6 +45,7 @@ namespace ActPro.Controllers
 
         // --- LOGIN ---
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated) return RedirectToAction("/Index");
@@ -70,6 +76,7 @@ namespace ActPro.Controllers
 
         // --- REGISTER ---
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
@@ -113,6 +120,7 @@ namespace ActPro.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
         // --- DELETE PROFILE ---
         [HttpGet]
         [Authorize]
@@ -120,36 +128,114 @@ namespace ActPro.Controllers
         {
             return View();
         }
-
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProfile(DeleteProfileViewModel model)
         {
-            if (!ModelState.IsValid) return View("ConfirmDelete", model);
+            var userId = _userManager.GetUserId(User);
+            var user = await _context.Users
+                .Include(u => u.Favorites).ThenInclude(f => f.Place)
+                .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.PlaceImages)
+                .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.City)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return NotFound();
-
-            var passwordCheck = await _userManager.CheckPasswordAsync(user, model.Password);
-            if (!passwordCheck)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Грешна парола. Моля, опитайте отново.");
-                return View("ConfirmDelete", model);
+                return View("Index", user);
             }
-            var result = await _userManager.DeleteAsync(user);
 
+            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, model.Password);
+
+            if (!isPasswordCorrect)
+            {
+                ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
+                return View("Index", user);
+            }
+
+            var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
                 await _signInManager.SignOutAsync();
                 return RedirectToAction("Index", "Home");
             }
 
-            foreach (var error in result.Errors)
+            ModelState.AddModelError(string.Empty, "Грешка при изтриване.");
+            return View("Index", user);
+        }
+
+        // --- EDIT PROFILE ---
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+            string oldFileName = user.ProfilePicturePath;
+            bool isNewPictureUploaded = false;
+            user.FirstName = !string.IsNullOrWhiteSpace(model.FirstName) ? model.FirstName : user.FirstName;
+            user.LastName = !string.IsNullOrWhiteSpace(model.LastName) ? model.LastName : user.LastName;
+            user.PhoneNumber = model.PhoneNumber;
+
+            if (model.ProfilePicture != null && model.ProfilePicture.Length > 0)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles");
+                if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+                var newFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.ProfilePicture.FileName);
+                var filePath = Path.Combine(folderPath, newFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ProfilePicture.CopyToAsync(stream);
+                }
+                user.ProfilePicturePath = newFileName;
+                isNewPictureUploaded = true;
             }
-            return View("ConfirmDelete", model);
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                if (isNewPictureUploaded && !string.IsNullOrEmpty(oldFileName))
+                {
+                    var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles", oldFileName);
+
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        try
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Неуспешно триене: " + ex.Message);
+                        }
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        //--- FAVORITES ---
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        [Authorize]
+        public async Task<IActionResult> ToggleFavorite(int placeId)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            var existingFavorite = await _context.Favorites
+                .FirstOrDefaultAsync(f => f.PlaceId == placeId && f.AspNetUserId == userId);
+
+            if (existingFavorite != null)
+            {
+                _context.Favorites.Remove(existingFavorite);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true, isFavorite = false });
+            }
+
+            var favorite = new Favorite { AspNetUserId = userId, PlaceId = placeId };
+            _context.Favorites.Add(favorite);
+            await _context.SaveChangesAsync();
+            return Json(new { success = true, isFavorite = true });
         }
     }
 }

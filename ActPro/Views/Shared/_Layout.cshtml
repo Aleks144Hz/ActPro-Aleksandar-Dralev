@@ -48,7 +48,17 @@
                         {
                             <li class="nav-item d-flex align-items-center profile-dropdown">
                                 <a class="nav-link d-flex align-items-center py-0" asp-controller="Account" asp-action="Index">
-                                    <i class="bi bi-person-circle fs-3 text-primary"></i>
+                                    @if (user != null && !string.IsNullOrEmpty(user.ProfilePicturePath))
+                                    {
+                                        <img src="/images/profiles/@user.ProfilePicturePath"
+                                             class="rounded-circle shadow-sm border"
+                                             style="width: 45px; height: 45px; object-fit: cover;"
+                                             alt="Profile" />
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-person-circle fs-1 text-primary"></i>
+                                    }
                                 </a>
                                 <div class="dropdown">
                                     <a class="nav-link" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
