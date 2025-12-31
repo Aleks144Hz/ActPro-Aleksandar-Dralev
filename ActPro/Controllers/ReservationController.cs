@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace ActPro.Controllers
 {
@@ -44,9 +45,46 @@ namespace ActPro.Controllers
             return View("Reservation", viewModel);
         }
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Unauthorized();
+            DateOnly parsedDate = DateOnly.FromDateTime(date);
+            if (!TimeOnly.TryParse(timeSlot, out TimeOnly parsedTime))
+            {
+                return RedirectToAction("Index", new { id = placeId });
+            }
+
+            var combinedDateTime = parsedDate.ToDateTime(parsedTime);
+            if (combinedDateTime < DateTime.Now)
+            {
+                TempData["Error"] = "Часът вече е минал.";
+                return RedirectToAction("Index", new { id = placeId });
+            }
+            bool isTaken = await _context.Reservations.AnyAsync(r =>
+                r.PlaceId == placeId && r.ReservationDate == parsedDate && r.ReservationTime == parsedTime);
+
+            if (isTaken)
+            {
+                TempData["Error"] = "Този час току-що беше зает!";
+                return RedirectToAction("Index", new { id = placeId });
+            }
+            var reservation = new Reservation
+            {
+                PlaceId = placeId,
+                ReservationDate = parsedDate,
+                ReservationTime = parsedTime,
+                FirstName = user.FirstName, 
+                LastName = user.LastName,  
+                Phone = user.PhoneNumber,   
+                AspNetUserId = user.Id,
+                CreatedAt = DateTime.Now
+            };
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Confirmation", new { id = placeId });
         }
         public IActionResult Confirmation(int id)
@@ -128,6 +166,22 @@ namespace ActPro.Controllers
                 }
             }
             return RedirectToAction("Index", new { id = placeId });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetOccupiedSlots(int placeId, DateTime date)
+        {
+            var parsedDate = DateOnly.FromDateTime(date);
+            var reservations = await _context.Reservations
+                .Where(r => r.PlaceId == placeId && r.ReservationDate == parsedDate)
+                .Select(r => r.ReservationTime)
+                .ToListAsync();
+            var occupiedSlots = reservations
+                .Where(t => t.HasValue)
+                .Select(t => t.Value.ToString("HH:mm"))
+                .ToList();
+
+            return Json(occupiedSlots);
         }
     }
 }

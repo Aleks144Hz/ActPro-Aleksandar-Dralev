@@ -17,6 +17,8 @@ namespace ActPro.Controllers
         public async Task<IActionResult> Index(string city, string activity, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
             var query = _context.Places.Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).AsQueryable();
+            ViewBag.CitiesList = await _context.Cities.Select(c => c.Name).ToListAsync();
+            ViewBag.ActivitiesList = await _context.Activities.Select(a => a.Name).ToListAsync();
 
             if (!string.IsNullOrEmpty(city))
             {
@@ -38,6 +40,8 @@ namespace ActPro.Controllers
             ViewBag.SmallCount = await query.CountAsync(p => p.Capacity >= 1 && p.Capacity <= 4);
             ViewBag.MediumCount = await query.CountAsync(p => p.Capacity >= 5 && p.Capacity <= 14);
             ViewBag.LargeCount = await query.CountAsync(p => p.Capacity >= 15);
+            ViewBag.Cities = await _context.Cities.ToListAsync();
+            ViewBag.Activities = await _context.Activities.ToListAsync();
 
             if (!string.IsNullOrEmpty(capacityGroup))
             {

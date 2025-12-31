@@ -11,8 +11,8 @@
                 <div class="mb-3 position-relative d-inline-block">
                     <img id="profileImageDisplay"
                          src="@(string.IsNullOrEmpty(Model.ProfilePicturePath)
-                                         ? "https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
-                                         : "/images/profiles/" + Model.ProfilePicturePath)"
+                         ? "https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
+                         : "/images/profiles/" + Model.ProfilePicturePath)"
                          class="rounded-circle img-thumbnail shadow-sm"
                          style="width: 150px; height: 150px; object-fit: cover;"
                          alt="Профилна снимка">
@@ -37,7 +37,7 @@
             <div class="card shadow-sm h-100 border-0">
                 <div class="card-header bg-white py-3 border-bottom-0">
                     <h5 class="mb-0 fw-bold text-primary">
-                        <i class="bi bi-star-fill me-2 text-warning"></i>Моите Фаворити
+                        <i class="bi bi-star-fill me-2 text-warning"></i>Фаворити
                     </h5>
                 </div>
                 <div class="card-body">
@@ -92,7 +92,7 @@
                                 }
                                 else
                                 {
-                                    <tr>
+                                    <tr class="no-favorites-row">
                                         <td colspan="4" class="text-center py-4 text-muted">
                                             <i class="bi bi-star me-2"></i>Все още нямате добавени любими обекти.
                                         </td>
@@ -100,6 +100,12 @@
                                 }
                             </tbody>
                         </table>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <nav>
+                                <ul class="pagination pagination-sm mb-0" id="favoritesPagination">
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,100 +113,141 @@
     </div>
 </div>
 @await Html.PartialAsync("ConfirmDelete", new ActPro.Models.User.DeleteProfileViewModel())
-@await Html.PartialAsync("EditProfile", new ActPro.Models.User.EditProfileViewModel 
+@await Html.PartialAsync("EditProfile", new ActPro.Models.User.EditProfileViewModel
 {
     FirstName = Model.FirstName,
     LastName = Model.LastName,
     PhoneNumber = Model.PhoneNumber
 })
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
 @section Scripts
 {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
     <script>
-        $(document).ready(function () 
+         $(document).ready(function ()
+         {
+             const rowsPerPage = 5;
+             let currentPage = 1;
+
+             function paginateTable()
+             {
+                 const rows = $('.table tbody tr:not(.no-favorites-row)');
+                 const totalRows = rows.length;
+                 const totalPages = Math.ceil(totalRows / rowsPerPage);
+                 rows.hide();
+                 rows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).show();
+                 const paginationHtml = $('#favoritesPagination');
+                 paginationHtml.empty();
+                 if (totalPages > 1)
+                 {
+                     for (let i = 1; i <= totalPages; i++)
+                     {
+                         const li = $(`<li class="page-item ${i === currentPage ? 'active' : ''}">
+                                         <a class="page-link" href="javascript:void(0);">${i}</a>
+                                      </li>`);
+                         li.click(function ()
+                         {
+                             currentPage = i;
+                             paginateTable();
+                         });
+                         paginationHtml.append(li);
+                     }
+                 }
+             }
+             paginateTable();
+
+             $(document).on('click', '.remove-favorite', function ()
+             {
+                 if (!confirm('Сигурни ли сте, че искате да премахнете обекта от любими?')) return;
+                 var btn = $(this);
+                 var id = btn.data('id');
+                 var row = btn.closest('tr');
+                 $.post('/Account/ToggleFavorite', { placeId: id }, function (response)
+                 {
+                     if (response.success && !response.isFavorite)
+                     {
+                         row.fadeOut(300, function ()
+                         {
+                             $(this).remove();
+                             const remainingRows = $('.table tbody tr:not(.no-favorites-row)').length;
+                             if (remainingRows > 0 && $('.table tbody tr:visible').length === 0)
+                             {
+                                 currentPage = Math.max(1, currentPage - 1);
+                             }
+                             paginateTable();
+                         });
+                     }
+                 });
+             });
+             const originalSortTable = window.sortTable;
+             window.sortTable = function(n)
+             {
+                 originalSortTable(n);
+                 currentPage = 1;
+                 paginateTable();
+             };
+         });
+        function sortTable(n)
         {
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <text>
-                var myModal = new bootstrap.Modal(document.getElementById('deleteProfileModal'));
-                myModal.show();
-                </text>
-            }
-        $(document).on('click', '.remove-favorite', function () 
-        {
-            if (!confirm('Сигурни ли сте, че искате да премахнете обекта от любими?')) return;
+             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+             table = document.querySelector(".table");
+             switching = true;
+             dir = "asc";
 
-            var btn = $(this);
-            var id = btn.data('id');
-            var row = btn.closest('tr');
+             while (switching)
+             {
+                 switching = false;
+                 rows = table.rows;
 
-            $.post('/Account/ToggleFavorite', { placeId: id }, function (response) 
-            {
-                if (response.success && !response.isFavorite) 
-                {
-                    row.fadeOut(300, function() { $(this).remove(); });
-                }
-            });
-            });
-        });
-       function sortTable(n) 
-       {
-            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-            table = document.querySelector(".table");
-            switching = true;
-            dir = "asc";
+                 for (i = 1; i < (rows.length - 1); i++) {
+                     shouldSwitch = false;
+                     x = rows[i].getElementsByTagName("TD")[n];
+                     y = rows[i + 1].getElementsByTagName("TD")[n];
+                     var xContent = x.textContent.toLowerCase().trim();
+                     var yContent = y.textContent.toLowerCase().trim();
 
-            while (switching) 
-            {
-                switching = false;
-                rows = table.rows;
+                     if (n === 2)
+                     {
+                         xContent = parseFloat(xContent.replace(/[^0-9.]/g, '')) || 0;
+                         yContent = parseFloat(yContent.replace(/[^0-9.]/g, '')) || 0;
+                     }
 
-                for (i = 1; i < (rows.length - 1); i++) {
-                    shouldSwitch = false;
-                    x = rows[i].getElementsByTagName("TD")[n];
-                    y = rows[i + 1].getElementsByTagName("TD")[n];
-                    var xContent = x.textContent.toLowerCase().trim();
-                    var yContent = y.textContent.toLowerCase().trim();
-
-                    if (n === 2) 
-                    {
-                        xContent = parseFloat(xContent.replace(/[^0-9.]/g, '')) || 0;
-                        yContent = parseFloat(yContent.replace(/[^0-9.]/g, '')) || 0;
-                    }
-
-                    if (dir == "asc") 
-                    {
-                        if (xContent > yContent) 
-                        {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                    else if (dir == "desc") 
-                    {
-                        if (xContent < yContent) 
-                        {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                }
-                if (shouldSwitch) 
-                {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    switchcount++;
-                } 
-                else 
-                {
-                    if (switchcount == 0 && dir == "asc") 
-                    {
-                        dir = "desc";
-                        switching = true;
-                    }
-                }
-            }
-        }
+                     if (dir == "asc")
+                     {
+                         if (xContent > yContent)
+                         {
+                             shouldSwitch = true;
+                             break;
+                         }
+                     }
+                     else if (dir == "desc")
+                     {
+                         if (xContent < yContent)
+                         {
+                             shouldSwitch = true;
+                             break;
+                         }
+                     }
+                 }
+                 if (shouldSwitch)
+                 {
+                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                     switching = true;
+                     switchcount++;
+                 }
+                 else
+                 {
+                     if (switchcount == 0 && dir == "asc")
+                     {
+                         dir = "desc";
+                         switching = true;
+                     }
+                 }
+             }
+         }
     </script>
 }

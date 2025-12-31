@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Успешна резервация";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card shadow p-5 border-success">
+        <div class="card-body">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            <h1 class="display-4 fw-bold mt-3">Благодарим ви!</h1>
+            <p class="lead">Вашата резервация беше направена успешно.</p>
+            <hr />
+            <p>Можете да прегледате вашите резервации в профила си или да се върнете към началото.</p>
+            <div class="mt-4">
+                <a href="/" class="btn btn-success btn-lg px-4 me-2">Начало</a>
+                <a asp-controller="Reservation" asp-action="Index" asp-route-id="@ViewBag.PlaceId" class="btn btn-outline-secondary btn-lg px-4">Назад към обекта</a>
+            </div>
+        </div>
+    </div>
+</div>

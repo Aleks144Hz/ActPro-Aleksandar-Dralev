@@ -25,11 +25,9 @@
             </div>
             <div class="card shadow-sm border-success">
                 <div class="card-body">
-                    <h5 class="card-title text-center mb-3">Филтрирай по</h5>
+                    <h5 class="card-title text-center mb-3">Филтрирай</h5>
 
                     <form method="get" asp-controller="Search" asp-action="Index" id="filterForm">
-                        <input type="hidden" name="city" value="@city" />
-                        <input type="hidden" name="activity" value="@activity" />
                         <input type="hidden" name="sortOrder" id="currentSortOrder" value="@Context.Request.Query["sortOrder"]" />
 
                         <label class="form-label fw-bold">Цена (евро/ч)</label>
@@ -41,6 +39,41 @@
                         <div class="d-flex justify-content-between text-muted small mt-2">
                             <span id="minPriceDisplay">@currentMin €</span>
                             <span id="maxPriceDisplay">@currentMax €</span>
+                        </div>
+                        <hr />
+                        <div class="mb-4 position-relative">
+                            <label class="search-label-small">Населено място</label>
+                            <div class="input-wrapper" style="position: relative;">
+                                <i class="fas fa-map-marker-alt input-icon" style="left: 15px; top: 12px;"></i>
+                                <input type="text"
+                                       class="form-control form-control-custom"
+                                       id="cityInput"
+                                       name="city"
+                                       value="@city"
+                                       placeholder="Избери град"
+                                       style="padding-left: 40px; border: 1px solid #ced4da; border-radius: 25px; background: #f9f9f9;"
+                                       autocomplete="off"
+                                       required
+                                       oninvalid="this.setCustomValidity('Моля, изберете населено място!')"
+                                       oninput="this.setCustomValidity('')">
+
+                            </div>
+                            <div id="cityList" class="custom-dropdown-list" style="width: 100%; left: 0;"></div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label class="search-label-small">Активност</label>
+                            <div class="input-wrapper" style="position: relative;">
+                                <i class="fas fa-running input-icon" style="left: 15px; top: 12px;"></i>
+                                <input type="text"
+                                       class="form-control form-control-custom"
+                                       id="activityInput"
+                                       name="activity"
+                                       value="@activity"
+                                       placeholder="Избери спорт"
+                                       style="padding-left: 40px; border: 1px solid #ced4da; border-radius: 25px; background: #f9f9f9;"
+                                       autocomplete="off">
+                            </div>
+                            <div id="activityList" class="custom-dropdown-list" style="width: 100%; left: 0;"></div>
                         </div>
                         <hr />
                         <label class="form-label fw-bold">Капацитет</label>
@@ -68,6 +101,9 @@
                             </div>
                         </div>
                         <hr />
+                        <a href="javascript:void(0);" onclick="resetSecondaryFilters('@city')" class="text-success text-decoration-none small fw-bold">
+                            <i class="bi bi-x-circle me-1"></i>Изчисти
+                        </a>
                         <button type="submit" class="btn btn-success w-100 mt-3 shadow-sm">Приложи</button>
                     </form>
                 </div>
@@ -76,12 +112,33 @@
 
         <main class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="mb-0">@city: открити @Model.Count() места за @activity</h4>
+                @if (string.IsNullOrEmpty(activity))
+                {
+                    if (Model.Count() == 1)
+                    {
+                        <h4 class="mb-0"> @city: <small class="text-muted"> открито @Model.Count() място за спорт</small></h4>
+                    }
+                    else
+                    {
+                        <h4 class="mb-0"> @city: <small class="text-muted"> открити @Model.Count() места за спорт</small></h4>
+                    }
+                }
+                else
+                {
+                    if (Model.Count() == 1)
+                    {
+                        <h4 class="mb-0">@city: @activity <small class="text-muted"> - открито @Model.Count() място</small></h4>
+                    }
+                    else
+                    {
+                        <h4 class="mb-0">@city: @activity <small class="text-muted"> - открити @Model.Count() места</small></h4>
+                    }
+                }
                 <div class="dropdown">
                     <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         Подреди по
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <button type="button" class="dropdown-item" onclick="submitWithSort('price_asc')">Цена (най-ниска)</button>
                         </li>
@@ -101,32 +158,48 @@
             <div class="d-flex flex-column gap-3">
                 @if (!Model.Any())
                 {
-                    <div class="alert alert-info">Няма места за резервиране, които да съответстват на вашите критерии за търсене. Опитайте да ги промените.</div>
+                    <div class="no-results-container text-center py-5 shadow-sm border rounded-4 bg-white">
+                        <div class="no-results-icon-wrapper mb-4">
+                            <i class="fas fa-search-location fa-4x text-success-dm opacity-25"></i>
+                            <div class="icon-pulse"></div>
+                        </div>
+                        <h3 class="fw-bold text-dark">Опа! Нищо не открихме.</h3>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">
+                            В момента няма места, които да отговарят на избраните критерии за град <strong>@city</strong>.
+                            Опитайте да промените цената или да потърсите друга активност.
+                        </p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-success px-4 rounded-pill shadow-sm">
+                                <i class="bi bi-search me-2"></i>Ново търсене
+                            </a>
+                        </div>
+                    </div>
                 }
-
                 @foreach (var place in Model)
                 {
-                    <div class="card border-success shadow-sm">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/400x220")"
-                                     class="img-fluid search-card-img" alt="@place.Name">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body d-flex flex-column h-100">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title">@place.Name</h5>
-                                        <span class="badge bg-success-subtle text-dark">⭐ @place.Rating/5</span>
-                                    </div>
-                                    <p class="card-text text-muted">@place.Description</p>
-                                    <div class="mt-auto d-flex justify-content-between align-items-center">
-                                        <h4 class="text-success mb-0">@place.Price евро/ч</h4>
-                                        <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id" class="btn btn-success stretched-link">Виж повече</a>
+                    <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id" class="text-decoration-none text-dark">
+                        <div class="card border-success shadow-sm mb-3 search-result-card">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/400x220")"
+                                            class="img-fluid search-card-img" alt="@place.Name">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body d-flex flex-column h-100">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title text-dark">@place.Name</h5>
+                                            <span class="badge bg-success-subtle text-dark">⭐ @place.Rating/5</span>
+                                        </div>
+                                        <p class="card-text text-muted">@place.Description</p>
+                                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                                            <h4 class="text-success mb-0">@place.Price евро/ч</h4>
+                                            <span class="btn btn-success">Вижте повече</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 }
             </div>
         </main>
@@ -228,4 +301,166 @@
             }
         });
     });
+    const citiesData = @Html.Raw(Json.Serialize(ViewBag.CitiesList));
+    const activitiesData = @Html.Raw(Json.Serialize(ViewBag.ActivitiesList));
+
+    function setupAutocomplete(inputId, listId, dataArray, iconClass)
+    {
+        const input = document.getElementById(inputId);
+        const list = document.getElementById(listId);
+
+        const popularItemsMap =
+        {
+            'cityInput': ["София", "Пловдив", "Варна", "Бургас", "Благоевград"],
+            'activityInput': ["Футбол", "Волейбол", "Баскетбол", "Тенис", "Фитнес"]
+        };
+
+        const labelsMap =
+        {
+            'cityInput': "Известни локации",
+            'activityInput': "Популярни активности"
+        };
+
+        function renderList(items)
+        {
+            list.innerHTML = '';
+            const inputValue = input.value.toLowerCase().trim();
+            if (inputValue === '')
+            {
+                const label = document.createElement('div');
+                label.className = 'dropdown-header-custom';
+                label.innerHTML = `<strong>${labelsMap[inputId]}</strong>`;
+                list.appendChild(label);
+
+                popularItemsMap[inputId].forEach(item => {
+                    list.appendChild(createItemDiv(item));
+                });
+
+                const divider = document.createElement('div');
+                divider.className = 'dropdown-header-custom mt-2';
+                divider.innerHTML = `<strong>Всички предложения</strong>`;
+                list.appendChild(divider);
+            }
+
+            if (items.length === 0 && inputValue !== '')
+            {
+                list.style.display = 'none';
+                return;
+            }
+            items.forEach(item => {
+                list.appendChild(createItemDiv(item));
+            });
+            list.style.display = 'block';
+        }
+        function createItemDiv(item)
+        {
+            const div = document.createElement('div');
+            div.className = 'dropdown-item-custom';
+            div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
+            const activityIcons = {
+                    'Айкидо': 'fas fa-user-ninja',
+                    'Акробатика': 'fas fa-child',
+                    'Бадминтон': 'fas fa-table-tennis',
+                    'Балет': 'fas fa-shoe-prints',
+                    'Баскетбол': 'fas fa-basketball-ball',
+                    'Бейзбол': 'fas fa-baseball-ball',
+                    'Билярд': 'fas fa-circle',
+                    'Бокс': 'fas fa-fist-raised',
+                    'Борба': 'fas fa-hand-rock',
+                    'Боулинг': 'fas fa-bowling-ball',
+                    'Волейбол': 'fas fa-volleyball-ball',
+                    'Гимнастика': 'fas fa-walking',
+                    'Голф': 'fas fa-golf-ball',
+                    'Дартс': 'fas fa-bullseye',
+                    'Джудо': 'fas fa-user-ninja',
+                    'Йога': 'fas fa-spa',
+                    'Карате': 'fas fa-hand-rock',
+                    'Конна езда': 'fas fa-horse',
+                    'Крикет': 'fas fa-baseball-ball',
+                    'Лека атлетика': 'fas fa-running',
+                    'ММА': 'fas fa-fist-raised',
+                    'Падел': 'fas fa-table-tennis',
+                    'Плуване': 'fas fa-swimmer',
+                    'Ски': 'fas fa-skiing',
+                    'Стрелба': 'fas fa-crosshairs',
+                    'Таекуондо': 'fas fa-user-ninja',
+                    'Танци': 'fas fa-music',
+                    'Тенис': 'fas fa-table-tennis',
+                    'Тенис на маса': 'fas fa-table-tennis',
+                    'Фехтовка': 'fas fa-pen-nib',
+                    'Фитнес': 'fas fa-dumbbell',
+                    'Футбол': 'fas fa-futbol',
+                    'Хандбал': 'fas fa-volleyball-ball'
+             };
+            const currentIcon = activityIcons[item] || iconClass;
+            div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
+            div.addEventListener('click', function()
+            {
+                input.value = item;
+                input.setCustomValidity('');
+                list.style.display = 'none';
+                input.focus();
+            });
+            return div;
+        }
+        function handleFilter()
+        {
+            const text = input.value.toLowerCase().trim();
+            const filtered = dataArray
+                .filter(item => item.toString().toLowerCase().trim().startsWith(text))
+                .sort();
+            renderList(filtered);
+        }
+        input.addEventListener('focus', handleFilter);
+        input.addEventListener('input', handleFilter);
+        document.addEventListener('click', function(e)
+        {
+            if (e.target !== input && !list.contains(e.target))
+            {
+                list.style.display = 'none';
+            }
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function()
+    {
+        setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
+        setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
+    });
+    function resetSecondaryFilters(lastValidCity)
+    {
+        const cityInput = document.getElementById('cityInput');
+        const activityInput = document.getElementById('activityInput');
+        const minR = document.getElementById('minPriceRange');
+        const maxR = document.getElementById('maxPriceRange');
+        const form = document.getElementById('filterForm');
+
+        if (cityInput && (!cityInput.value.trim())) 
+        {
+            cityInput.value = lastValidCity || "";
+        }
+
+        if (activityInput) 
+        {
+            activityInput.value = "";
+        }
+
+        if (minR && maxR) 
+        {
+            minR.value = 0;
+            maxR.value = 200;
+            updatePrice.call(minR);
+        }
+
+        document.querySelectorAll('input[name="capacityGroup"]').forEach(radio => {
+            radio.checked = false;
+            radio.previousValue = 'false';
+        });
+
+        cityInput.setCustomValidity('');
+
+        if (form) 
+        {
+            form.submit();
+        }
+    }
 </script>
