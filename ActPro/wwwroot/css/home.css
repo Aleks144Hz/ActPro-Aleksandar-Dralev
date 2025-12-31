@@ -74,11 +74,10 @@
     color: #333;
     transition: background 0.2s;
 }
-.dropdown-header-custom 
-{
+.dropdown-header-custom {
     padding: 8px 15px;
     font-size: 0.8rem;
-    color: #6c757d;
+    color: #198754;
     background-color: #f8f9fa;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -130,4 +129,14 @@
     z-index: 1000;
     display: none;
     margin-top: 5px;
+}
+.custom-dropdown-list::-webkit-scrollbar 
+{
+    width: 10px;
+}
+
+.custom-dropdown-list::-webkit-scrollbar-thumb 
+{
+    background: #ccc;
+    border-radius: 100px;
 }

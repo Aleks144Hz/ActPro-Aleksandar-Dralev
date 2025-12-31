@@ -61,7 +61,6 @@
     margin-top: -6px;
 }
 
-
 .custom-range::-webkit-slider-runnable-track 
 {
     background: transparent !important;
@@ -97,4 +96,227 @@
 #largeMapModal .modal-header 
 {
     border-bottom: none;
+}
+
+.mb-4.position-relative 
+{
+    margin-bottom: 1.5rem !important;
+}
+
+.search-label-small 
+{
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+
+    letter-spacing: 0.5px;
+}
+
+.form-control-custom 
+{
+    border: 2px solid #e9ecef !important;
+    background-color: #f8f9fa !important;
+    border-radius: 25px !important;
+    padding: 10px 15px 10px 45px !important;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    height: 45px;
+}
+
+.form-control-custom:focus 
+{
+    border-color: #198754 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.1) !important;
+    outline: none;
+}
+
+.input-icon 
+{
+    position: absolute;
+    left: 18px;
+    top: 40px;
+    color: #198754;
+    font-size: 1.2rem;
+    z-index: 5;
+    pointer-events: none;
+    margin-top: 1px;
+}
+
+.custom-dropdown-list 
+{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #198754;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999 !important;
+    display: none;
+    pointer-events: auto;
+}
+
+.dropdown-header-custom
+{
+    padding: 8px 15px;
+    font-size: 0.75rem;
+    color: #198754;
+    background-color: #f8f9fa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-item-custom
+{
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #495057;
+    transition: background 0.2s ease;
+}
+
+.dropdown-item-custom:hover 
+{
+    background-color: #e9f7ef;
+    color: #198754;
+}
+
+.dropdown-item-custom i 
+{
+    margin-right: 12px;
+    width: 18px;
+    text-align: center;
+    color: #6c757d;
+}
+.dropdown-item-custom:hover i 
+{
+    color: #198754;
+}
+
+.dropdown 
+{
+    position: relative;
+    z-index: 1020;
+    right: 20px;
+}
+
+.dropdown-menu
+{
+    margin-top: 40px !important;
+    min-width: 220px;
+    border: 1px solid #198754 !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+}
+
+.dropdown-toggle::after
+{
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.dropdown-item 
+{
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover 
+{
+    background-color: #e9f7ef;
+    color: #198754;
+}
+
+.btn-outline-success.dropdown-toggle 
+{
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-weight: 600;
+    border-width: 2px;
+}
+
+.custom-dropdown-list::-webkit-scrollbar
+{
+    width: 10px;
+}
+
+.custom-dropdown-list::-webkit-scrollbar-thumb 
+{
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.no-results-container 
+{
+    background: #ffffff;
+    border: 1px solid #e9ecef !important;
+    transition: transform 0.3s ease;
+}
+
+.no-results-icon-wrapper 
+{
+    position: relative;
+    display: inline-block;
+}
+
+.text-success-dm 
+{
+    color: #198754;
+}
+
+.icon-pulse 
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(25, 135, 84, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulse-animation 2s infinite;
+}
+
+.btn-success 
+{
+    background-color: #198754;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-success:hover 
+{
+    background-color: #157347;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3) !important;
+}
+
+.text-success.text-decoration-none.small:hover 
+{
+    color: #157347 !important;
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+.search-result-card {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: block;
+}
+
+.custom-dropdown-list:empty 
+{
+    display: none !important;
+    pointer-events: none !important;
 }
