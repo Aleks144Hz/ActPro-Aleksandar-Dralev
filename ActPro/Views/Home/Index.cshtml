@@ -82,28 +82,28 @@
        const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
     const activitiesData = @Html.Raw(Json.Serialize(Model.ActivityNames));
 
-    function setupAutocomplete(inputId, listId, dataArray, iconClass) 
+    function setupAutocomplete(inputId, listId, dataArray, iconClass)
     {
         const input = document.getElementById(inputId);
         const list = document.getElementById(listId);
 
-        const popularItemsMap = 
+        const popularItemsMap =
         {
             'cityInput': ["София", "Пловдив", "Варна", "Бургас", "Благоевград"],
             'activityInput': ["Футбол", "Волейбол", "Баскетбол", "Тенис", "Фитнес"]
         };
 
-        const labelsMap = 
+        const labelsMap =
         {
             'cityInput': "Известни локации",
             'activityInput': "Популярни активности"
         };
 
-        function renderList(items) 
+        function renderList(items)
         {
             list.innerHTML = '';
             const inputValue = input.value.toLowerCase().trim();
-            if (inputValue === '') 
+            if (inputValue === '')
             {
                 const label = document.createElement('div');
                 label.className = 'dropdown-header-custom';
@@ -120,7 +120,7 @@
                 list.appendChild(divider);
             }
 
-            if (items.length === 0 && inputValue !== '') 
+            if (items.length === 0 && inputValue !== '')
             {
                 list.style.display = 'none';
                 return;
@@ -130,7 +130,7 @@
             });
             list.style.display = 'block';
         }
-        function createItemDiv(item) 
+        function createItemDiv(item)
         {
             const div = document.createElement('div');
             div.className = 'dropdown-item-custom';
@@ -172,7 +172,7 @@
              };
             const currentIcon = activityIcons[item] || iconClass;
             div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
-            div.addEventListener('click', function() 
+            div.addEventListener('click', function()
             {
                 input.value = item;
                 input.setCustomValidity('');
@@ -181,7 +181,7 @@
             });
             return div;
         }
-        function handleFilter() 
+        function handleFilter()
         {
             const text = input.value.toLowerCase().trim();
             const filtered = dataArray
@@ -193,13 +193,13 @@
         input.addEventListener('input', handleFilter);
         document.addEventListener('click', function(e)
         {
-            if (e.target !== input && !list.contains(e.target)) 
+            if (e.target !== input && !list.contains(e.target))
             {
                 list.style.display = 'none';
             }
         });
     }
-    document.addEventListener("DOMContentLoaded", function() 
+    document.addEventListener("DOMContentLoaded", function()
     {
         setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
         setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');

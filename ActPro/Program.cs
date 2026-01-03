@@ -23,6 +23,7 @@ namespace ActPro
 
             // Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(IdentityHelper.GetIdentityOptions)
+                            .AddErrorDescriber<BulgarianIdentityErrorDescriber>() 
                             .AddEntityFrameworkStores<ApplicationDbContext>()
                             .AddDefaultTokenProviders();
             // Add services to the container.

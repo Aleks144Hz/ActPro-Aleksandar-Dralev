@@ -2,7 +2,7 @@
 @using System.Linq
 @using ActPro.DAL.Entities
 @{
-    ViewData["Title"] = "Моят Профил";
+    ViewData["Title"] = "Профил";
 }
 <div class="container mt-5 mb-5">
     <div class="row">
@@ -20,16 +20,25 @@
                 <h4 class="fw-bold">@Model.FirstName @Model.LastName</h4>
                 <p class="text-muted mb-1">@Model.Email</p>
                 <p class="text-muted">@Model.PhoneNumber</p>
-
+                <div>
+                    <div class="d-block mt-2">
+                        <button type="button" class="fw-bold text-info-emphasis px-3 py-2 border-0 shadow-sm"
+                                data-bs-toggle="modal" data-bs-target="#creditsInfoModal">
+                            <i class="bi bi-gem me-2"></i><strong>@Model.Credits</strong> ActPro Кредити
+                        </button>
+                    </div>                   
+                </div>
                 <hr class="my-4">
-
-                <div class="d-grid gap-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <div class="d-grid gap-2 mt-auto pt-4">
+                    <button type="button" class="btn btn-outline-primary shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                         <i class="bi bi-pencil-fill me-2"></i>Редактирай профила
                     </button>
-                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
+                    <button type="button" class="btn btn-outline-danger shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
                         <i class="bi bi-trash me-2"></i>Изтриване на профил
                     </button>
+                    <a asp-controller="Reservation" asp-action="MyReservations" class="btn btn-outline-success shadow-sm mb-2">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Моите резервации (@ViewBag.ResCount)
+                    </a>
                 </div>
             </div>
         </div>
@@ -81,7 +90,6 @@
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a asp-controller="Reservation" asp-action="Index" asp-route-id="@favorite.PlaceId" class="btn btn-sm btn-outline-primary">Виж</a>
-
                                                     <button type="button" class="btn btn-sm btn-outline-danger ms-1 remove-favorite" data-id="@favorite.PlaceId">
                                                         <i class="bi bi-x-lg"></i>
                                                     </button>
@@ -100,11 +108,13 @@
                                 }
                             </tbody>
                         </table>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <nav>
-                                <ul class="pagination pagination-sm mb-0" id="favoritesPagination">
-                                </ul>
-                            </nav>
+                        <div class="pagination-container">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <nav>
+                                    <ul class="pagination pagination-sm mb-0" id="favoritesPagination">
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,7 +122,56 @@
         </div>
     </div>
 </div>
-@await Html.PartialAsync("ConfirmDelete", new ActPro.Models.User.DeleteProfileViewModel())
+<div class="modal fade" id="creditsInfoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header border-0 pb-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-gem text-info" style="font-size: 3rem;"></i>
+                </div>
+                <h4 class="fw-bold mb-3">ActPro Кредити</h4>
+                <p class="text-muted">Събирайте кредити чрез активност в платформата и отключвайте ексклузивни нива и отстъпки!</p>
+                <div class="row g-2 mt-4 text-start">
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <h5 class="mb-0 fw-bold text-success">+3.0</h5>
+                            <small class="text-muted">за резервация</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-3 text-center">
+                            <h5 class="mb-0 fw-bold text-info">+0.5</h5>
+                            <small class="text-muted">за коментар</small>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <h6 class="fw-bold mb-3">Нива и Привилегии</h6>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                        <span><i class="bi bi-award text-bronze me-2"></i>Бронз (0-99 кр.)</span>
+                        <span class="badge bg-secondary rounded-pill">Начало</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                        <span><i class="bi bi-award text-silver me-2"></i>Сребро (100-499 кр.)</span>
+                        <span class="badge bg-primary rounded-pill">5% отстъпка</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                        <span><i class="bi bi-award text-warning me-2"></i>Злато (500+ кр.)</span>
+                        <span class="badge bg-warning text-dark rounded-pill">10% отстъпка</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center pb-4">
+                <button type="button" class="btn btn-primary px-5 rounded-pill" data-bs-dismiss="modal">Разбрах!</button>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("DeleteProfile", new ActPro.Models.User.DeleteProfileViewModel())
 @await Html.PartialAsync("EditProfile", new ActPro.Models.User.EditProfileViewModel
 {
     FirstName = Model.FirstName,
@@ -132,7 +191,13 @@
          {
              const rowsPerPage = 5;
              let currentPage = 1;
-
+             @if (ViewData["ShowDeleteModal"] != null && (bool)ViewData["ShowDeleteModal"])
+             {
+                <text>
+                    var deleteModal = new bootstrap.Modal(document.getElementById('deleteProfileModal'));
+                    deleteModal.show();
+                </text>
+             }
              function paginateTable()
              {
                  const rows = $('.table tbody tr:not(.no-favorites-row)');
@@ -161,8 +226,7 @@
              paginateTable();
 
              $(document).on('click', '.remove-favorite', function ()
-             {
-                 if (!confirm('Сигурни ли сте, че искате да премахнете обекта от любими?')) return;
+             {           
                  var btn = $(this);
                  var id = btn.data('id');
                  var row = btn.closest('tr');
@@ -178,6 +242,8 @@
                              {
                                  currentPage = Math.max(1, currentPage - 1);
                              }
+                             toastr.success("Обектът беше премахнат успешно!");
+                             paginateTable()
                              paginateTable();
                          });
                      }

@@ -25,7 +25,6 @@
                     <i class="bi @(Model.IsFavorite ? "bi-star-fill" : "bi-star")"></i>
                 </button> @Model.Place.Rating/5
             </span>
-
         </div>
     </div>
     <div class="row mb-4">
@@ -49,7 +48,6 @@
                 <div class="card-body text-center">
                     <h2 class="card-title text-success mb-3">@Model.Place.Price €/ч</h2>
                     <p class="text-muted">Капацитет: до @Model.Place.Capacity души</p>
-
                     <button type="button" class="btn btn-success btn-lg w-100 py-3 shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
                         Запази час
                     </button>
@@ -128,7 +126,9 @@
                                                     <form asp-action="DeleteReview" method="post" style="display:inline;">
                                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                                         <input type="hidden" name="placeId" value="@Model.Place.Id" />
-                                                        <button type="submit" class="btn btn-link text-danger p-0 ms-2" title="Изтрий коментара" onclick="return confirm('Сигурни ли сте?')">
+                                                        <button type="submit"
+                                                                class="btn btn-link text-danger p-0 ms-2"
+                                                                title="Изтрий коментара">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
@@ -142,7 +142,7 @@
                                             </span>
                                         </div>
                                         <small class="text-muted">@review.CreatedAt?.ToString("dd.MM.yyyy HH:mm")</small>
-                                        <p class="text-dark mt-2 mb-0">@review.CommentText</p>
+                                        <p class="text-dark mt-2 mb-0 comment-text">@review.CommentText</p>
                                     </div>
                                 </div>
                             }
@@ -166,7 +166,14 @@
                                         <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
                                         <input type="radio" id="star1" name="rating" value="1" required /><label for="star1"></label>
                                     </div>
-                                    <textarea name="commentText" class="form-control mb-2" rows="3" placeholder="Сподели мнение..." required></textarea>
+                                    <textarea name="commentText" id="commentArea"
+                                      class="form-control mb-2" rows="3"
+                                      placeholder="Сподели мнение..."
+                                      maxlength="250"></textarea>
+                                    <div id="charCounter" class="text-muted small position-absolute"
+                                         style="bottom: 15px; right: 10px;">
+                                        0 / 250
+                                    </div>
                                     <button type="submit" class="btn btn-success">Публикувай</button>
                                 </form>
                             }
@@ -233,7 +240,7 @@
             </div>
             <div class="modal-footer d-flex justify-content-center border-0 pb-4">
                 <button type="button" class="btn btn-success btn-lg px-5 shadow" onclick="handleBookingClick()">
-                   Резервирай
+                    Резервирай
                 </button>
             </div>
         </div>
@@ -264,13 +271,13 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-    document.addEventListener("DOMContentLoaded", function () 
+    document.addEventListener("DOMContentLoaded", function ()
     {
         const container = document.getElementById('dateScrollContainer');
         const selectedDateInput = document.getElementById('selectedDate');
 
         document.querySelectorAll('.date-item').forEach(item => {
-            item.addEventListener('click', function() 
+            item.addEventListener('click', function()
             {
                 document.querySelectorAll('.date-item').forEach(el => {
                     el.classList.remove('bg-success', 'text-white', 'border-success', 'shadow-sm');
@@ -283,12 +290,12 @@
                 updateTimeSlots();
             });
         });
-        window.scrollDays = function(direction) 
+        window.scrollDays = function(direction)
         {
             const currentActive = container.querySelector('.date-item.bg-success');
             let target = (direction === 'next') ? currentActive.nextElementSibling : currentActive.previousElementSibling;
 
-            if (target && target.classList.contains('date-item')) 
+            if (target && target.classList.contains('date-item'))
             {
                 target.click();
                 target.scrollIntoView({
@@ -302,18 +309,19 @@
         document.getElementById('prevDay').addEventListener('click', () => scrollDays('prev'));
 
         const bookingModalEl = document.getElementById('bookingModal');
-        if (bookingModalEl) 
+        if (bookingModalEl)
         {
-            bookingModalEl.addEventListener('show.bs.modal', function () 
+            bookingModalEl.addEventListener('show.bs.modal', function ()
             {
                 updateTimeSlots();
             });
         }
         updateTimeSlots();
     });
-    $(document).ready(function() 
+
+    $(document).ready(function()
     {
-        $(document).on('click', '.favorite-btn-large', function (e) 
+        $(document).on('click', '.favorite-btn-large', function (e)
         {
             e.preventDefault();
             var btn = $(this);
@@ -322,17 +330,17 @@
                 url: '/Account/ToggleFavorite',
                 type: 'POST',
                 data: { placeId: pId },
-                success: function (response) 
+                success: function (response)
                 {
-                    if (response.success) 
+                    if (response.success)
                     {
                         var icon = btn.find('i');
-                        if (response.isFavorite) 
+                        if (response.isFavorite)
                         {
                             btn.removeClass('btn-outline-warning').addClass('btn-warning');
                             icon.removeClass('bi-star').addClass('bi-star-fill');
-                        } 
-                        else 
+                        }
+                        else
                         {
                             btn.removeClass('btn-warning').addClass('btn-outline-warning');
                             icon.removeClass('bi-star-fill').addClass('bi-star');
@@ -341,12 +349,13 @@
                 },
                 error: function (xhr) 
                 {
-                    alert(xhr.status === 401 ? "Трябва да сте влезли в профила си!" : "Грешка при комуникация.");
+                    toastr.error(xhr.status === 401 ? "Трябва да сте влезли в профила си!" : "Грешка при комуникация.");
                 }
             });
         });
     });
-    function updateTimeSlots() 
+
+    function updateTimeSlots()
     {
         const selectedDateStr = document.getElementById('selectedDate').value;
         const placeId = "@Model.Place.Id";
@@ -354,7 +363,7 @@
         const now = new Date();
         const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
 
-        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots) 
+        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots)
         {
             document.querySelectorAll('input[name="timeSlot"]').forEach(input => {
                 const label = document.querySelector(`label[for="${input.id}"]`);
@@ -362,7 +371,7 @@
                 const isOccupied = occupiedSlots.includes(hourValue);
                 let isPast = false;
 
-                if (selectedDateStr === todayStr) 
+                if (selectedDateStr === todayStr)
                 {
                     const [hour, minute] = hourValue.split(':');
                     const slotTime = new Date();
@@ -376,8 +385,8 @@
                     label.classList.add('slot-occupied');
                     label.style.opacity = "0.5";
                     label.title = isPast ? "Този час вече е минал" : "Този час вече е зает";
-                } 
-                else 
+                }
+                else
                 {
                     input.disabled = false;
                     label.classList.remove('slot-occupied');
@@ -387,19 +396,20 @@
             });
         });
     }
+
     function handleBookingClick() 
     {
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         if (!selectedTimeInput) 
         {
-            alert("Моля, изберете час за вашата резервация!");
+            toastr.info("Моля, изберете час за вашата резервация!");
             return;
         }
-        if (isUserLoggedIn) 
+        if (isUserLoggedIn)
         {
             executeBooking();
-        } 
-        else 
+        }
+        else
         {
             const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
             bookingModal.hide();
@@ -407,7 +417,8 @@
             authModal.show();
         }
     }
-    function executeBooking() 
+
+    function executeBooking()
     {
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         const date = document.getElementById('selectedDate').value;
@@ -419,7 +430,7 @@
         form.method = 'POST';
         form.action = '@Url.Action("Book", "Reservation")';
 
-        const data = 
+        const data =
         {
             'placeId': placeId,
             'date': date,
@@ -427,7 +438,7 @@
             '__RequestVerificationToken': token
         };
 
-        for (const key in data) 
+        for (const key in data)
         {
             const input = document.createElement('input');
             input.type = 'hidden';
@@ -437,5 +448,26 @@
         }
         document.body.appendChild(form);
         form.submit();
+    }
+ 
+    const textArea = document.getElementById('commentArea');
+    const charCounter = document.getElementById('charCounter');
+
+    if (textArea && charCounter) 
+    {
+        textArea.addEventListener('input', function () 
+        {
+            const length = textArea.value.length;
+            charCounter.textContent = `${length} / 250`;
+
+            if (length >= 250)
+            {
+                charCounter.classList.replace('text-muted', 'text-danger');
+            } 
+            else 
+            {
+                charCounter.classList.replace('text-danger', 'text-muted');
+            }
+        });
     }
 </script>

@@ -15,5 +15,6 @@ namespace ActPro.DAL
         public DateTime CreatedOn { get; set; }
         public string? ProfilePicturePath { get; set; }
         public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+        public double Credits { get; set; } = 0;
     }
 }

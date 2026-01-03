@@ -91,3 +91,38 @@ input[name="timeSlot"]:checked + .time-slot-label
 {
     display: none;
 }
+
+.hover-shadow:hover 
+{
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
+}
+
+.transition
+{
+    transition: all 0.3s ease;
+}
+
+.hover-success:hover 
+{
+    color: #28a745 !important;
+    text-decoration: underline !important;
+}
+
+.modal.fade .modal-dialog 
+{
+    transform: scale(0.8);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog 
+{
+    transform: scale(1);
+}
+.comment-text 
+{
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
+}

@@ -1,12 +1,14 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Helpers;
 using ActPro.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -16,13 +18,15 @@ namespace ActPro.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConfiguration _configuration;
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _configuration = configuration;
         }
 
         // --- ACCOUNT / PROFILE (Index) ---
@@ -39,6 +43,9 @@ namespace ActPro.Controllers
             .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null) return NotFound();
+
+            ViewBag.ResCount = await _context.Reservations
+            .CountAsync(r => r.AspNetUserId == user.Id);
 
             return View(user);
         }
@@ -63,13 +70,14 @@ namespace ActPro.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    TempData["Success"] = "Добре дошли!";
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError(string.Empty, "Грешна парола.");
+                ModelState.AddModelError("Password", NotValidPassword);
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Потребителят не е намерен.");
+                ModelState.AddModelError("Email", UserIsNotRegistered);
             }
             return View(model);
         }
@@ -85,6 +93,20 @@ namespace ActPro.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            string captchaResponse = Request.Form["g-recaptcha-response"];
+            string secretKey = _configuration["GoogleReCaptcha:SecretKey"];
+
+            if (string.IsNullOrEmpty(captchaResponse) || !(await IsReCaptchaValid(captchaResponse, secretKey)))
+            {
+                ModelState.AddModelError("CaptchaResponse", "Моля потвърдете, че не сте робот.");
+                return View(model);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -102,15 +124,35 @@ namespace ActPro.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, "User");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    TempData["Success"] = "Регистрацията е успешна! Добре дошли.";
                     return RedirectToAction("Index", "Home");
                 }
 
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    if (error.Code.Contains("Password"))
+                    {
+                        ModelState.AddModelError("Password", error.Description);
+                    }
+                    else if (error.Code.Contains("Email") || error.Code.Contains("UserName"))
+                    {
+                        ModelState.AddModelError("Email", error.Description);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", error.Description);
+                    }
                 }
             }
             return View(model);
+        }
+        private async Task<bool> IsReCaptchaValid(string response, string secret)
+        {
+            using var client = new HttpClient();
+            var verifyUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={response}";
+            var result = await client.PostAsync(verifyUrl, null);
+            var jsonString = await result.Content.ReadAsStringAsync();
+            return jsonString.Contains("\"success\": true");
         }
 
         // --- LOGOUT ---
@@ -118,6 +160,7 @@ namespace ActPro.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            TempData["Success"] = "Довиждане!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -141,6 +184,7 @@ namespace ActPro.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewData["ShowDeleteModal"] = true;
                 return View("Index", user);
             }
 
@@ -149,6 +193,7 @@ namespace ActPro.Controllers
             if (!isPasswordCorrect)
             {
                 ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
+                ViewData["ShowDeleteModal"] = true;
                 return View("Index", user);
             }
 
@@ -156,10 +201,12 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignOutAsync();
+                TempData["Success"] = SuccessfulDeletedAccount;
                 return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError(string.Empty, "Грешка при изтриване.");
+            ViewData["ShowDeleteModal"] = true;
             return View("Index", user);
         }
 
@@ -209,6 +256,7 @@ namespace ActPro.Controllers
                         }
                     }
                 }
+                TempData["Success"] = SuccessfulUserEdit;
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
@@ -229,13 +277,13 @@ namespace ActPro.Controllers
             {
                 _context.Favorites.Remove(existingFavorite);
                 await _context.SaveChangesAsync();
-                return Json(new { success = true, isFavorite = false });
+                return Json(new { success = true, isFavorite = false, message = "Премахнато от любими" });
             }
 
             var favorite = new Favorite { AspNetUserId = userId, PlaceId = placeId };
-            _context.Favorites.Add(favorite);
+            _context.Favorites.Add(favorite); 
             await _context.SaveChangesAsync();
-            return Json(new { success = true, isFavorite = true });
+            return Json(new { success = true, isFavorite = true, message = "Добавено в любими!" });
         }
     }
 }

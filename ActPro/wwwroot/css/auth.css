@@ -1,0 +1,139 @@
+﻿body 
+{
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.card.shadow-lg 
+{
+    border-radius: 25px !important;
+    border: none !important;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+}
+
+.btn-success
+{
+    border-radius: 12px !important;
+    background: linear-gradient(45deg, #198754, #28a745) !important;
+    border: none !important;
+    padding: 12px !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-success:hover 
+{
+    background: linear-gradient(45deg, #157347, #198754) !important;
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 15px rgba(25, 135, 84, 0.3) !important;
+}
+
+#togglePassword 
+{
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    border-left: none !important;
+    background-color: transparent !important;
+    border-color: #dee2e6 !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+#togglePassword:hover 
+{
+    color: #198754 !important;
+    background-color: #f8f9fa !important;
+}
+
+.g-recaptcha 
+{
+    margin: 10px auto !important;
+    display: table !important;
+}
+
+.text-danger.small 
+{
+    font-weight: 500 !important;
+    display: block !important;
+    margin-top: 4px !important;
+    animation: fadeInDown 0.3s ease-out !important;
+}
+
+hr 
+{
+    opacity: 0.1;
+}
+
+.input-group > .form-floating > .form-control 
+{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right: none !important;
+}
+
+.form-check-input:checked 
+{
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+}
+
+.form-check-input:focus 
+{
+    box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.15) !important;
+    border-color: #198754 !important;
+}
+
+.text-danger.small 
+{
+    display: block !important;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+.text-success 
+{
+    color: #198754 !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.text-success:hover 
+{
+    color: #157347 !important;
+    text-decoration: underline !important;
+}
+
+.form-floating > label 
+{
+    color: #6c757d !important;
+}
+
+@media (max-width: 576px) 
+{
+    .card-body 
+    {
+        padding: 1.5rem !important;
+    }
+    .card.shadow-lg 
+    {
+        border-radius: 15px !important;
+    }
+}
+
+@keyframes fadeInDown 
+{
+    from 
+    {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to 
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

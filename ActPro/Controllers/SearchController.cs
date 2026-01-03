@@ -13,6 +13,7 @@ namespace ActPro.Controllers
         {
             _context = context;
         }
+
         //--- SEARCH PAGE ---
         public async Task<IActionResult> Index(string city, string activity, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
@@ -68,7 +69,7 @@ namespace ActPro.Controllers
             ViewBag.CurrentCapacity = capacityGroup;
 
             var results = await query.ToListAsync();
-            return View("Search", results);
+            return View("Index", results);
         }
     }
 }
