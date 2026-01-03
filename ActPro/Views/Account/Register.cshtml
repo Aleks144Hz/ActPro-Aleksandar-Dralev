@@ -1,24 +1,19 @@
 ﻿@model ActPro.Models.User.RegisterViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     ViewData["Title"] = "Регистрация";
 }
 <div class="container d-flex align-items-center justify-content-center min-vh-100 py-5">
     <div class="col-md-8 col-lg-6 col-xl-5">
-
         <div class="card shadow-lg border-0">
             <div class="card-body p-5">
                 <h2 class="text-center mb-4 fw-bold text-dark">Присъедини се към нас</h2>
-
                 <p class="text-center text-muted mb-4">
                     Вече имаш акаунт?
-                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold text-primary">Влез тук</a>
+                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold text-success">Влез тук</a>
                 </p>
-
                 <form asp-controller="Account" asp-action="Register" method="post">
                     @Html.AntiForgeryToken()
-
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-
                     <div class="row g-3 mb-3">
                         <div class="col-6">
                             <div class="form-floating">
@@ -35,39 +30,42 @@
                             <span asp-validation-for="LastName" class="text-danger small ps-1"></span>
                         </div>
                     </div>
-
                     <div class="form-floating mb-3">
                         <input asp-for="Email" class="form-control"/>
                         <label asp-for="Email">Имейл</label>
                         <span asp-validation-for="Email" class="text-danger small ps-1"></span>
                     </div>
-
                     <div class="form-floating mb-3">
-                        <input asp-for="PhoneNumber" class="form-control"/>
-                        <label asp-for="PhoneNumber">Телефон</label>
+                        <input asp-for="PhoneNumber" class="form-control" type="tel" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                         <label asp-for="PhoneNumber">Телефон</label>
                         <span asp-validation-for="PhoneNumber" class="text-danger small ps-1"></span>
                     </div>
-
                     <div class="form-floating mb-3">
                         <input asp-for="Password" type="password" class="form-control"/>
                         <label asp-for="Password">Парола</label>
                         <span asp-validation-for="Password" class="text-danger small ps-1"></span>
                     </div>
-
                     <div class="form-floating mb-4">
                         <input asp-for="ConfirmPassword" type="password" class="form-control"/>
                         <label asp-for="ConfirmPassword">Потвърди парола</label>
                         <span asp-validation-for="ConfirmPassword" class="text-danger small ps-1"></span>
                     </div>
-
-                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold fs-5 shadow-sm">Регистрирай се</button>
+                    <div class="mb-4 d-flex flex-column align-items-center">
+                        <div class="g-recaptcha" data-sitekey="@Configuration["GoogleReCaptcha:SiteKey"]"></div>
+                        <span asp-validation-for="CaptchaResponse" class="text-danger small mt-2"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-5 shadow-sm">Регистрирай се</button>
                 </form>
             </div>
         </div>
-
     </div>
 </div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+}
 @section Scripts 
 {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

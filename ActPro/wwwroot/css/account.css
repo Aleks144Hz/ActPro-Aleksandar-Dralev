@@ -18,3 +18,137 @@
     background-color: #e9ecef;
     color: #157347;
 }
+
+.pagination-container 
+{
+    margin-top: auto;
+    padding-top: 40px;
+}
+
+.card.shadow-sm 
+{
+    border: none;
+    border-radius: 20px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.text-info-emphasis
+{
+    background: linear-gradient(45deg, #0dcaf0, #008cba);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(13, 202, 240, 0.3);
+    margin-top: 10px;
+}
+
+.d-grid .btn 
+{
+    border-radius: 12px;
+    padding: 10px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-outline-success 
+{
+    border-width: 2px;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.btn-outline-primary
+{
+    border-width: 2px;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.btn-outline-danger 
+{
+    border-width: 2px;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.text-bronze
+{
+    color: #cd7f32;
+}
+
+.card-body 
+{
+    display: flex;
+    flex-direction: column;
+    min-height: 550px;
+}
+
+.table thead 
+{
+    background-color: #f8f9fa;
+}
+
+.table thead th 
+{
+    border: none;
+    color: #6c757d;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 15px;
+}
+
+.table tbody td 
+{
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.table img 
+{
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-group .btn 
+{
+    border-radius: 8px !important;
+    margin: 0 2px;
+}
+
+.text-info-emphasis:hover 
+{
+    background-color: #e9ecef !important;
+    transform: scale(1.03);
+    transition: all 0.2s ease;
+}
+
+.text-silver 
+{
+    color: #a9a9a9;
+}
+
+.modal.fade .modal-dialog 
+{
+    transform: scale(0.8);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog 
+{
+    transform: scale(1);
+}
+
+.g-recaptcha 
+{
+    transform: scale(0.9);
+    transform-origin: 0 0;
+}
+
+@media (max-width: 400px) 
+{
+    .g-recaptcha
+    {
+        transform: scale(0.75);
+    }
+}

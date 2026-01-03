@@ -42,7 +42,7 @@ namespace ActPro.Controllers
                 IsFavorite = userId != null && await _context.Favorites.AnyAsync(f => f.PlaceId == id && f.AspNetUserId == userId)
             };
 
-            return View("Reservation", viewModel);
+            return View("Index", viewModel);
         }
         [HttpPost]
         [Authorize]
@@ -76,14 +76,16 @@ namespace ActPro.Controllers
                 PlaceId = placeId,
                 ReservationDate = parsedDate,
                 ReservationTime = parsedTime,
-                FirstName = user.FirstName, 
-                LastName = user.LastName,  
-                Phone = user.PhoneNumber,   
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.PhoneNumber,
                 AspNetUserId = user.Id,
                 CreatedAt = DateTime.Now
             };
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
+            user.Credits += 3;
+            await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Confirmation", new { id = placeId });
         }
@@ -128,8 +130,11 @@ namespace ActPro.Controllers
                 allRatings.Add(rating);
                 place.Rating = (int)Math.Round(allRatings.Average());
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            user.Credits += 0.5;
+            await _userManager.UpdateAsync(user);
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Коментарът е добавен успешно.";
 
             return RedirectToAction("Index", new { id = placeId });
         }
@@ -161,13 +166,23 @@ namespace ActPro.Controllers
                     {
                         place.Rating = 0;
                     }
-
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Коментарът е изтрит успешно.";
                 }
             }
+            var user = await _userManager.GetUserAsync(User);
+            if (user.Credits >= 0.5)
+            {
+                user.Credits -= 0.5;
+            }
+            else
+            {
+                user.Credits = 0;
+            }
+            await _userManager.UpdateAsync(user);
             return RedirectToAction("Index", new { id = placeId });
         }
-
+        //--- GET OCCUPIED SLOTS FOR A DATE ---
         [HttpGet]
         public async Task<JsonResult> GetOccupiedSlots(int placeId, DateTime date)
         {
@@ -180,8 +195,34 @@ namespace ActPro.Controllers
                 .Where(t => t.HasValue)
                 .Select(t => t.Value.ToString("HH:mm"))
                 .ToList();
-
             return Json(occupiedSlots);
+        }
+
+        //--- MY RESERVATIONS PAGE ---
+        [Authorize]
+        public async Task<IActionResult> MyReservations(int page = 1)
+        {
+            var userId = _userManager.GetUserId(User);
+            int pageSize = 10;
+            var totalReservations = await _context.Reservations
+                .Where(r => r.AspNetUserId == userId)
+                .CountAsync();
+
+            var reservations = await _context.Reservations
+                .Include(r => r.Place)
+                .ThenInclude(p => p.City)
+                .Where(r => r.AspNetUserId == userId)
+                .OrderByDescending(r => r.ReservationDate)
+                .ThenByDescending(r => r.ReservationTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalReservations / pageSize);
+            ViewBag.TotalCount = totalReservations;
+
+            return View(reservations);
         }
     }
 }
