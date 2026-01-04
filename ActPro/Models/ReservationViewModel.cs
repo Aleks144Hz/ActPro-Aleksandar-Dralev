@@ -2,7 +2,7 @@
 
 namespace ActPro.Models
 {
-    internal class ReservationViewModel
+    public class ReservationViewModel
     {
         public Place Place { get; set; }
         public bool IsFavorite { get; set; }

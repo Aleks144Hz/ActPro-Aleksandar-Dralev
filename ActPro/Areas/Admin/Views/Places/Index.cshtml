@@ -12,9 +12,9 @@
             <div class="col-md-9">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2><i class="bi bi-geo-alt"></i> Управление на обекти</h2>
-                    <a asp-action="Create" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPlaceModal">
                         <i class="bi bi-plus-circle"></i> Добави нов обект
-                    </a>
+                    </button>
                 </div>
                 <div class="card shadow-sm">
                     <table class="table table-hover align-middle mb-0 admin-table">
@@ -46,9 +46,14 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">
-                                                <i class="bi bi-pencil-square"></i> Редактирай
-                                            </a>
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#manageScheduleModal-@item.Id">
+                                                <i class="bi bi-calendar-x"></i> График
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-info text-white"
+                                                    data-bs-toggle="modal" data-bs-target="#editPlaceModal-@item.Id">
+                                                <i class="bi bi-pencil-square" style="font-style: normal;"></i>
+                                                <span style="font-style: normal;">Редактирай</span>
+                                            </button>
                                             <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
                                                 <button type="button" class="btn btn-sm btn-danger confirm-action"
                                                         data-message="Наистина ли искате да изтриете @item.Name?">
@@ -66,6 +71,12 @@
         </div>
     </div>
 </div>
+@foreach (var item in Model)
+{
+    @await Html.PartialAsync("EditPlace", item)
+    @await Html.PartialAsync("ManageSchedule", item)
+}
+@await Html.PartialAsync("CreatePlace", new ActPro.DAL.Entities.Place())
 @section Styles
 {
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />

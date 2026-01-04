@@ -1,6 +1,7 @@
-using ActPro.Helpers;
 using ActPro.DAL;
 using ActPro.DAL.Data;
+using ActPro.Helpers;
+using ActPro.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
@@ -36,6 +37,10 @@ namespace ActPro
             })
             .AddDataAnnotationsLocalization()
             .AddViewLocalization();
+
+            builder.Services.AddScoped<IAuditService, AuditService>();
+
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 

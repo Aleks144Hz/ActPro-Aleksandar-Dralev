@@ -1,0 +1,74 @@
+﻿@model ActPro.DAL.Entities.Place
+
+<div class="modal fade shadow-lg" id="createPlaceModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0" style="border-radius: 15px; overflow: hidden;">
+            <div class="modal-header bg-primary text-white p-3 border-0">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-plus-circle me-2"></i> ДОБАВЯНЕ НА НОВ ОБЕКТ
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Име на обекта</label>
+                            <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4"
+                                   placeholder="Въведете име..." required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
+                            <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4"
+                                    asp-items="ViewBag.Cities" required>
+                                <option value="">-- Избери град --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
+                            <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4"
+                                    asp-items="ViewBag.ActivityTypes" required>
+                                <option value="">-- Избери дейност --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Цена (€/ч)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-pill text-primary fw-bold">€</span>
+                                <input asp-for="Price" type="number" step="0.01"
+                                       class="form-control border-start-0 rounded-end-pill shadow-sm px-3" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Капацитет (лица)</label>
+                            <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4" required />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Описание</label>
+                            <textarea asp-for="Description" class="form-control shadow-sm px-4"
+                                      rows="3" style="border-radius: 20px;" placeholder="Кратко описание на обекта..."></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="p-4 bg-light rounded-4 border-dashed border-2 text-center" style="border: 2px dashed #dee2e6;">
+                                <label class="form-label fw-bold d-block mb-2">
+                                    <i class="bi bi-cloud-arrow-up fs-3 text-primary"></i><br>
+                                    КАЧИ СНИМКИ НА ОБЕКТА
+                                </label>
+                                <input type="file" name="imageFiles" class="form-control shadow-sm rounded-pill"
+                                       accept="image/*" multiple />
+                                <small class="text-muted d-block mt-2 italic">Можете да изберете няколко файла едновременно</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Отказ</button>
+                    <button type="submit" class="btn btn-primary text-white rounded-pill px-5 fw-bold shadow-sm">
+                        <i class="bi bi-check-circle me-1"></i> СЪЗДАЙ ОБЕКТА
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\images\places\" />
     <Folder Include="wwwroot\images\profiles\" />
   </ItemGroup>

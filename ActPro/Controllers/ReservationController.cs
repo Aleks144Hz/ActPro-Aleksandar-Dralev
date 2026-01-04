@@ -2,6 +2,7 @@
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
 using ActPro.Models;
+using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace ActPro.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAuditService _auditService;
 
-        public ReservationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ReservationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IAuditService auditService)
         {
             _context = context;
             _userManager = userManager;
+            _auditService = auditService;
         }
         //--- RESERVATION PAGE ---
         public async Task<IActionResult> Index(int id)
@@ -47,8 +50,18 @@ namespace ActPro.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot)
+        public async Task<IActionResult> Book(ReservationViewModel model, int placeId, DateTime date, string timeSlot)
         {
+            var isClosed = await _context.PlaceClosures.AnyAsync(c =>
+             c.PlaceId == placeId &&
+             c.ClosureDate.Date == date.Date);
+
+            if (isClosed)
+            {
+                TempData["Error"] = $"Обектът е затворен за резервации на тази дата.";
+                return RedirectToAction("Index", new { id = placeId });
+            }
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
             DateOnly parsedDate = DateOnly.FromDateTime(date);
@@ -86,7 +99,8 @@ namespace ActPro.Controllers
             await _context.SaveChangesAsync();
             user.Credits += 3;
             await _userManager.UpdateAsync(user);
-
+            TempData["Success"] = "Резервацията е успешно направена.";
+            await _auditService.LogAsync("Create Reservation", "User", user.Id, $"Потребителят направи резервация.");
             return RedirectToAction("Confirmation", new { id = placeId });
         }
         public IActionResult Confirmation(int id)
@@ -135,7 +149,7 @@ namespace ActPro.Controllers
             await _userManager.UpdateAsync(user);
             await _context.SaveChangesAsync();
             TempData["Success"] = "Коментарът е добавен успешно.";
-
+            await _auditService.LogAsync("Add Review", "User", user.Id, $"Потребителят добави коментар.");
             return RedirectToAction("Index", new { id = placeId });
         }
 
@@ -167,6 +181,7 @@ namespace ActPro.Controllers
                         place.Rating = 0;
                     }
                     TempData["Success"] = "Коментарът е изтрит успешно.";
+                    await _auditService.LogAsync("Delete Review", "User", userId, $"Потребителят изтри коментар.");
                 }
             }
             var user = await _userManager.GetUserAsync(User);

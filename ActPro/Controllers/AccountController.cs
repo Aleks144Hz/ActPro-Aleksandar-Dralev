@@ -3,11 +3,13 @@ using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
 using ActPro.Helpers;
 using ActPro.Models.User;
+using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
@@ -19,14 +21,16 @@ namespace ActPro.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly IAuditService _auditService;
         public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration)
+            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IAuditService auditService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
             _configuration = configuration;
+            _auditService = auditService;
         }
 
         // --- ACCOUNT / PROFILE (Index) ---
@@ -62,6 +66,13 @@ namespace ActPro.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            var isBanned = await _context.BannedUsers.AnyAsync(b => b.Email == model.Email);
+
+            if (isBanned)
+            {
+                ModelState.AddModelError(string.Empty, "Акаунтът ви е блокиран.");
+                return View(model);
+            }
             if (!ModelState.IsValid) return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -71,6 +82,7 @@ namespace ActPro.Controllers
                 if (result.Succeeded)
                 {
                     TempData["Success"] = "Добре дошли!";
+                    await _auditService.LogAsync("User Login", "User", user.Id, $"Потребителят влезе в системата.");
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("Password", NotValidPassword);
@@ -95,6 +107,14 @@ namespace ActPro.Controllers
         {
             string captchaResponse = Request.Form["g-recaptcha-response"];
             string secretKey = _configuration["GoogleReCaptcha:SecretKey"];
+            bool isBanned = await _context.BannedUsers.AnyAsync(b =>
+            b.Email == model.Email || b.Phone == model.PhoneNumber);
+
+            if (isBanned)
+            {
+                ModelState.AddModelError("", "Този имейл е блокиран.");
+                return View(model);
+            }
 
             if (string.IsNullOrEmpty(captchaResponse) || !(await IsReCaptchaValid(captchaResponse, secretKey)))
             {
@@ -125,6 +145,7 @@ namespace ActPro.Controllers
                     await _userManager.AddToRoleAsync(user, "User");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     TempData["Success"] = "Регистрацията е успешна! Добре дошли.";
+                    await _auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -196,12 +217,15 @@ namespace ActPro.Controllers
                 ViewData["ShowDeleteModal"] = true;
                 return View("Index", user);
             }
+            var userReservations = _context.Reservations.Where(r => r.AspNetUserId == userId);
+            _context.Reservations.RemoveRange(userReservations);
 
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
                 await _signInManager.SignOutAsync();
                 TempData["Success"] = SuccessfulDeletedAccount;
+                await _auditService.LogAsync("Delete User", "User", user.Id, "Потребителят сам изтри профила си");
                 return RedirectToAction("Index", "Home");
             }
 
@@ -257,6 +281,7 @@ namespace ActPro.Controllers
                     }
                 }
                 TempData["Success"] = SuccessfulUserEdit;
+                await _auditService.LogAsync("Update Settings", "User", user.Id, $"Потребителят обнови профилните си данни.");
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");

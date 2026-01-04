@@ -24,6 +24,11 @@ namespace ActPro.DAL.Data
 
         public virtual DbSet<Reservation> Reservations { get; set; }
 
+        public virtual DbSet<BannedUser> BannedUsers { get; set; }
+
+        public virtual DbSet<PlaceClosure> PlaceClosures { get; set; }
+
+        public virtual DbSet<AuditLog> AuditLogs { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlServer("Server=ALEKSPC\\SQLEXPRESS;Database=ActProDB;Integrated Security=SSPI;TrustServerCertificate=True;MultipleActiveResultSets=true");
 
