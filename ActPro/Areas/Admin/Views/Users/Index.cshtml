@@ -41,17 +41,29 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    <form asp-action="ToggleAdmin" method="post">
-                                        <input type="hidden" name="userId" value="@user.Id" />
-                                        @if (isAdmin)
-                                        {
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Премахни Админ</button>
-                                        }
-                                        else
-                                        {
-                                            <button type="submit" class="btn btn-sm btn-outline-success">Направи Админ</button>
-                                        }
-                                    </form>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <form asp-action="ToggleAdmin" method="post" class="d-inline">
+                                            <input type="hidden" name="userId" value="@user.Id" />
+                                            @if (isAdmin)
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-person-dash"></i> Премахни Админ
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-person-check"></i> Направи Админ
+                                                </button>
+                                            }
+                                        </form>
+                                        <form asp-action="BanUser" asp-route-userId="@user.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-danger confirm-action"
+                                                    data-message="ВНИМАНИЕ: Това ще добави имейла и телефона в черен списък и ще изтрие профила!">
+                                                <i class="bi bi-shield-slash"></i> БАН
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         }

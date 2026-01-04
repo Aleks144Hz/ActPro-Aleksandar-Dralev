@@ -4,6 +4,7 @@ using ActPro.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ActPro.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260104174150_AddBannedUsersSupport")]
+    partial class AddBannedUsersSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -119,46 +122,6 @@ namespace ActPro.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Activities");
-                });
-
-            modelBuilder.Entity("ActPro.DAL.Entities.AuditLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntityId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("ActPro.DAL.Entities.BannedUser", b =>
@@ -303,31 +266,6 @@ namespace ActPro.DAL.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Places");
-                });
-
-            modelBuilder.Entity("ActPro.DAL.Entities.PlaceClosure", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ClosureDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PlaceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlaceId");
-
-                    b.ToTable("PlaceClosures");
                 });
 
             modelBuilder.Entity("ActPro.DAL.Entities.PlaceImage", b =>
@@ -585,17 +523,6 @@ namespace ActPro.DAL.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("ActPro.DAL.Entities.PlaceClosure", b =>
-                {
-                    b.HasOne("ActPro.DAL.Entities.Place", "Place")
-                        .WithMany("PlaceClosures")
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Place");
-                });
-
             modelBuilder.Entity("ActPro.DAL.Entities.PlaceImage", b =>
                 {
                     b.HasOne("ActPro.DAL.Entities.Place", "Place")
@@ -693,8 +620,6 @@ namespace ActPro.DAL.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Favorites");
-
-                    b.Navigation("PlaceClosures");
 
                     b.Navigation("PlaceImages");
 

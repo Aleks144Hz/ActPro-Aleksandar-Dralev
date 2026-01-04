@@ -49,12 +49,20 @@
                                         <div class="fw-bold">@res.CreatedAt</div>
                                     </td>
                                     <td class="text-center">
-                                        <form asp-action="Delete" asp-route-id="@res.Id" method="post">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger confirm-action"
-                                                    data-message="Сигурни ли сте, че искате да изтриете тази резервация?">
-                                                <i class="bi bi-trash"></i> Анулирай
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#editTimeModal-@res.Id">
+                                                <i class="bi bi-clock"></i> Промяна
                                             </button>
-                                        </form>
+
+                                            <form asp-action="Delete" asp-route-id="@res.Id" method="post">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger confirm-action"
+                                                        data-message="Сигурни ли сте, че искате да анулирате тази резервация?">
+                                                    <i class="bi bi-trash"></i> Анулирай
+                                                </button>
+                                            </form>
+                                        </div>
+                                        @await Html.PartialAsync("EditTime", res)
                                     </td>
                                 </tr>
                             }

@@ -1,6 +1,7 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,28 +14,27 @@ namespace ActPro.Areas.Admin.Controllers
     public class PlacesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public PlacesController(ApplicationDbContext context)
+        private readonly IAuditService _auditService;
+        public PlacesController(ApplicationDbContext context, IAuditService auditService)
         {
             _context = context;
+            _auditService = auditService;
         }
         public async Task<IActionResult> Index()
         {
             var places = await _context.Places
                 .Include(p => p.City)
                 .Include(p => p.Activity)
+                .Include(p => p.PlaceImages)
+                .Include(p => p.PlaceClosures)
                 .ToListAsync();
+            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
+            ViewBag.ActivityTypes = new SelectList(_context.Activities, "Id", "Name");
+
             return View(places);
         }
         
         //--- CREATE PLACE ---
-        public IActionResult Create()
-        {
-            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
-            ViewBag.ActivityTypes = new SelectList(_context.Activities, "Id", "Name");
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Place place, IEnumerable<IFormFile>? imageFiles)
@@ -73,6 +73,7 @@ namespace ActPro.Areas.Admin.Controllers
                         }
                     }
                     TempData["Success"] = "Обектът беше създаден успешно.";
+                    await _auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -82,7 +83,7 @@ namespace ActPro.Areas.Admin.Controllers
             }
             ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name", place.CityId);
             ViewBag.ActivityTypes = new SelectList(_context.Activities, "Id", "Name", place.ActivityId);
-            return View(place);
+            return RedirectToAction(nameof(Index));
         }
 
         //--- DELETE PLACE ---
@@ -108,6 +109,7 @@ namespace ActPro.Areas.Admin.Controllers
             _context.Places.Remove(place);
             await _context.SaveChangesAsync();
             TempData["Success"] = $"Обектът '{place.Name}' и всички свързани данни бяха изтрити успешно.";
+            await _auditService.LogAsync("Delete Place", "Place", id.ToString(), $"Изтрит обект: {place.Name}");
             return RedirectToAction(nameof(Index));
         }
 
@@ -160,6 +162,7 @@ namespace ActPro.Areas.Admin.Controllers
                         }
                     }
                     TempData["Success"] = "Успешно редактирахте данните на обекта.";
+                    await _auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"Променени данни за: {place.Name}");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -192,6 +195,57 @@ namespace ActPro.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Edit), new { id = placeId });
+        }
+
+        //--- MANAGE PLACE SCHEDULE ---
+        [HttpGet]
+        public async Task<IActionResult> ManageSchedule(int placeId)
+        {
+            var place = await _context.Places.Include(p => p.PlaceClosures).Include(p => p.Reservations).FirstOrDefaultAsync(p => p.Id == placeId);
+            if (place == null) return NotFound();
+            return View(place);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CloseDate(int placeId, DateTime dateToClose, string reason)
+        {
+            var exists = await _context.PlaceClosures.AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == dateToClose.Date);
+
+            if (!exists)
+            {
+                _context.PlaceClosures.Add(new PlaceClosure
+                {
+                    PlaceId = placeId,
+                    ClosureDate = dateToClose,
+                    Reason = reason
+                });
+                await _context.SaveChangesAsync();
+                TempData["Success"] = "Датата беше заключена успешно.";
+                await _auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключена дата {dateToClose:dd.MM.yyyy} за обект ID: {placeId}. Причина: {reason}");
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OpenDate(int id)
+        {
+            var closure = await _context.PlaceClosures.FindAsync(id);
+            if (closure != null)
+            {
+                int placeId = closure.PlaceId;
+                DateTime closedDate = closure.ClosureDate;
+
+                _context.PlaceClosures.Remove(closure);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Датата беше отключена успешно.";
+
+                await _auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"Отключена дата {closedDate:dd.MM.yyyy} за обект ID: {placeId}");
+
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
         }
     }
 }

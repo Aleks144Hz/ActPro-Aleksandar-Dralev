@@ -1,0 +1,39 @@
+﻿@model ActPro.DAL.Entities.Reservation
+
+<div class="modal fade" id="editTimeModal-@Model.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title fw-bold"><i class="bi bi-clock-fill me-2"></i>Промяна на час</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="EditTime" method="post">
+                <div class="modal-body p-4">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <p class="mb-1 text-muted small">Обект:</p>
+                        <p class="fw-bold text-dark">@Model.Place?.Name</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <p class="mb-1 text-muted small">Клиент:</p>
+                        <p class="fw-bold text-dark">@Model.FirstName @Model.LastName</p>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="mb-3 text-start">
+                        <label asp-for="ReservationTime" class="form-label fw-bold">Нов час (Текущ: @Model.ReservationTime)</label>
+                        <input type="time" asp-for="ReservationTime" class="form-control form-control-lg" required />
+                        <span asp-validation-for="ReservationTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 bg-light">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Отказ</button>
+                    <button type="submit" class="btn btn-success px-4 shadow-sm">Запази промените</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

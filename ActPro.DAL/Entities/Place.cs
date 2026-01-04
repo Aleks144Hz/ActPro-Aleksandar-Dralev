@@ -32,4 +32,6 @@ public partial class Place
     public virtual ICollection<PlaceImage> PlaceImages { get; set; } = new List<PlaceImage>();
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
+    public virtual ICollection<PlaceClosure> PlaceClosures { get; set; } = new List<PlaceClosure>();
 }

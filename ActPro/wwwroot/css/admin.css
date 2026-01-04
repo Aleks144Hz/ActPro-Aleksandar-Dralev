@@ -244,3 +244,24 @@ table.dataTable thead th.sorting_desc::before
     color: #198754 !important;
     opacity: 1 !important;
 }
+
+.modal.fade .modal-dialog 
+{
+    transition: transform 0.3s ease-out;
+    transform: scale(0.9); 
+}
+
+.modal.show .modal-dialog 
+{
+    transform: scale(1); 
+}
+
+.modal-backdrop.fade 
+{
+    opacity: 0;
+}
+
+.modal-backdrop.show 
+{
+    opacity: 0.5;
+}
