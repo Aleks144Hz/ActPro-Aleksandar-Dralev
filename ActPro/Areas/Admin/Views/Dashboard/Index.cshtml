@@ -1,0 +1,96 @@
+﻿@model IEnumerable<ActPro.DAL.Entities.Reservation>
+@{
+    ViewData["Title"] = "Админ Панел";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+                   class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+                    <i class="bi bi-speedometer2"></i> Табло
+                </a>
+                <a asp-area="Admin" asp-controller="Reservations" asp-action="Index"
+                   class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reservations" ? "active" : "")">
+                    <i class="bi bi-calendar-check"></i> Резервации
+                </a>
+                <a asp-area="Admin" asp-controller="Places" asp-action="Index"
+                   class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Places" ? "active" : "")">
+                    <i class="bi bi-geo-alt"></i> Обекти
+                </a>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+                   class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
+                    <i class="bi bi-people"></i> Потребители
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">Логове</a>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <h1 class="text-primary"><i class="bi bi-speedometer2"></i> Админ Табло</h1>
+            <p class="lead">Добре дошъл, Шефе!</p>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">Резервации</div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.TotalReservations</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-header">Нови потребители</div>
+                        <div class="card-body text-center">
+                            <i class="bi bi-people" style="font-size: 2rem;"></i>
+                            <h5 class="card-title mt-2">Потребители</h5>
+                            <p class="card-text">Управление на роли и права.</p>
+                            <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-light btn-sm">Преглед</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5">
+                <h4>Последни резервации</h4>
+                <table class="table table-hover shadow-sm admin-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Клиент</th>
+                            <th>Обект</th>
+                            <th>Направена на</th>
+                            <th th class="no-sort">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var res in Model)
+                        {
+                            <tr>
+                                <td><div class="fw-bold">@res.FirstName @res.LastName</div></td>
+                                <td>
+                                    <div class="fw-bold">
+                                        <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
+                                           class="text-decoration-none text-dark hover-success">
+                                            @res.Place?.Name
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@res.CreatedAt</div>
+                                </td>
+                                <td>
+                                    <a asp-area="Admin" asp-controller="Reservations" asp-action="Index" class="btn btn-sm btn-outline-primary">Детайли</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+}

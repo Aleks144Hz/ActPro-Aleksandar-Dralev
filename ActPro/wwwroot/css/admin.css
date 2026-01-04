@@ -1,0 +1,246 @@
+﻿body 
+{
+    background-color: #f8f9fa;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+.list-group 
+{
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+}
+
+.list-group-item-action
+{
+    padding: 12px 20px;
+    border: none !important;
+    font-weight: 500;
+    color: #475569 !important;
+    transition: all 0.2s ease;
+}
+
+.list-group-item-action i 
+{
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.list-group-item-action.active 
+{
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+}
+
+.list-group-item-action:hover:not(.active) 
+{
+    background-color: #f1f5f9;
+    padding-left: 25px;
+}
+
+.admin-table
+{
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-table thead.table-dark 
+{
+    background-color: #1e293b !important;
+    border: none;
+}
+
+.admin-table thead th 
+{
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 15px !important;
+    border: none;
+}
+
+.admin-table tbody tr 
+{
+    background-color: #ffffff;
+    transition: background-color 0.2s;
+}
+
+.admin-table tbody td 
+{
+    padding: 14px 15px !important;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.admin-table tbody tr:hover 
+{
+    background-color: #f8fafc !important;
+}
+
+.hover-success:hover 
+{
+    color: #198754 !important;
+    text-decoration: underline !important;
+}
+
+.card.shadow-sm 
+{
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
+}
+
+.card-header.bg-info, .card-header.bg-primary
+{
+    padding: 1.25rem;
+    border: none;
+}
+
+.form-label 
+{
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select 
+{
+    padding: 0.6rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.form-control:focus 
+{
+    border-color: #1e293b;
+    box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+}
+
+.position-relative.border.p-1.rounded 
+{
+    border-color: #e2e8f0 !important;
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+
+.position-relative.border.p-1.rounded:hover 
+{
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+.btn-danger.rounded-circle 
+{
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-sm 
+{
+    border-radius: 6px;
+    padding: 5px 12px;
+}
+
+.bg-primary
+{
+    background-color: #2563eb !important;
+}
+
+.bg-success 
+{
+    background-color: #10b981 !important;
+}
+
+.dataTables_wrapper
+{
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    border: 1px solid #e9ecef;
+}
+
+.admin-table thead th
+{
+    background-color: #1e293b !important;
+    color: #fff !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    border: none !important;
+}
+
+.admin-table .btn 
+{
+    margin: 2px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    border-radius: 6px;
+}
+
+.admin-table tbody tr:nth-child(even)
+{
+    background-color: #fcfcfc;
+}
+
+table.dataTable thead th.sorting:before,
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:before,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:before,
+table.dataTable thead th.sorting_desc:after 
+{
+    content: "" !important;
+    display: none !important;
+}
+
+
+table.dataTable thead th.sorting,
+table.dataTable thead th.sorting_asc,
+table.dataTable thead th.sorting_desc 
+{
+    padding-left: 35px !important;
+    position: relative !important;
+}
+
+table.dataTable thead th.sorting::before,
+table.dataTable thead th.sorting_asc::before,
+table.dataTable thead th.sorting_desc::before 
+{
+    display: inline-block !important;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    position: absolute !important;
+    left: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 0.9rem !important;
+    top: 45% !important;
+    transform: translateY(-50%) !important;
+}
+
+table.dataTable thead th.sorting::before
+{
+    content: "\f0dc" !important;
+    opacity: 0.2 !important;
+}
+
+table.dataTable thead th.sorting_asc::before 
+{
+    content: "\f0d8" !important;
+    color: #198754 !important;
+    opacity: 1 !important;
+}
+
+table.dataTable thead th.sorting_desc::before 
+{
+    content: "\f0d7" !important;
+    color: #198754 !important;
+    opacity: 1 !important;
+}

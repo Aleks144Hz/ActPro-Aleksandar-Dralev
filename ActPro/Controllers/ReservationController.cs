@@ -166,7 +166,6 @@ namespace ActPro.Controllers
                     {
                         place.Rating = 0;
                     }
-                    await _context.SaveChangesAsync();
                     TempData["Success"] = "Коментарът е изтрит успешно.";
                 }
             }
@@ -180,6 +179,7 @@ namespace ActPro.Controllers
                 user.Credits = 0;
             }
             await _userManager.UpdateAsync(user);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index", new { id = placeId });
         }
         //--- GET OCCUPIED SLOTS FOR A DATE ---

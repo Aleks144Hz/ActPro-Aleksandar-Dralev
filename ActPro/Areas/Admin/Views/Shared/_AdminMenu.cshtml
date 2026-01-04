@@ -1,0 +1,19 @@
+﻿<div class="list-group shadow-sm">
+    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+       class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+        <i class="bi bi-speedometer2"></i> Табло
+    </a>
+    <a asp-area="Admin" asp-controller="Reservations" asp-action="Index"
+       class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reservations" ? "active" : "")">
+        <i class="bi bi-calendar-check"></i> Резервации
+    </a>
+    <a asp-area="Admin" asp-controller="Places" asp-action="Index"
+       class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Places" ? "active" : "")">
+        <i class="bi bi-geo-alt"></i> Обекти
+    </a>
+    <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+       class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
+        <i class="bi bi-people"></i> Потребители
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">Логове</a>
+</div>
