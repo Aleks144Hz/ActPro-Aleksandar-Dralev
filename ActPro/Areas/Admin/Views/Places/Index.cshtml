@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ActPro.DAL.Entities.Place>
+@{
+    ViewData["Title"] = "Управление на обекти";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            @await Html.PartialAsync("_AdminMenu")
+        </div>
+        <div class="col-md-9">
+            <div class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-geo-alt"></i> Управление на обекти</h2>
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Добави нов обект
+                    </a>
+                </div>
+                <div class="card shadow-sm">
+                    <table class="table table-hover align-middle mb-0 admin-table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Обект</th>
+                                <th>Град</th>
+                                <th>Тип дейност</th>
+                                <th>Цена</th>
+                                <th class="text-center no-sort">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@item.Id"
+                                               class="text-decoration-none text-dark hover-success">
+                                                @item.Name
+                                            </a>
+                                        </strong>
+                                    </td>
+                                    <td>@item.City?.Name</td>
+                                    <td>@item.Activity?.Name</td>
+                                    <td data-sort="@item.Price">
+                                        @item.Price €/ч
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">
+                                                <i class="bi bi-pencil-square"></i> Редактирай
+                                            </a>
+                                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                                <button type="button" class="btn btn-sm btn-danger confirm-action"
+                                                        data-message="Наистина ли искате да изтриете @item.Name?">
+                                                    Изтрий
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+}

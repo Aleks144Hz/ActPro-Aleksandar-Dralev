@@ -181,7 +181,7 @@
                         <div class="card border-success shadow-sm mb-3 search-result-card">
                             <div class="row g-0">
                                 <div class="col-md-4">
-                                    <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/400x220")"
+                                    <img src="@(place.PlaceImages?.OrderBy(i => i.Id).FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/400x220")"
                                          class="img-fluid search-card-img" alt="@place.Name">
                                 </div>
                                 <div class="col-md-8">

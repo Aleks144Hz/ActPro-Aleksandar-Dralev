@@ -119,6 +119,7 @@ input[name="timeSlot"]:checked + .time-slot-label
 {
     transform: scale(1);
 }
+
 .comment-text 
 {
     word-wrap: break-word; 
