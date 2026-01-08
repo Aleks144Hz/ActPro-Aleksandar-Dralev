@@ -46,7 +46,7 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#manageScheduleModal-@item.Id">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#manageScheduleModal-@item.Id">
                                                 <i class="bi bi-calendar-x"></i> График
                                             </button>
                                             <button type="button" class="btn btn-sm btn-info text-white"
@@ -71,13 +71,13 @@
         </div>
     </div>
 </div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+}
 @foreach (var item in Model)
 {
     @await Html.PartialAsync("EditPlace", item)
     @await Html.PartialAsync("ManageSchedule", item)
 }
 @await Html.PartialAsync("CreatePlace", new ActPro.DAL.Entities.Place())
-@section Styles
-{
-    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
-}

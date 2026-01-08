@@ -86,6 +86,72 @@
     text-decoration: underline !important;
 }
 
+.admin-card 
+{
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+}
+
+.admin-card:hover 
+{
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+    filter: brightness(1.1);
+}
+
+.icon-shape 
+{
+    width: 54px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.chart-card 
+{
+    border-radius: 15px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.chart-title 
+{
+    color: #4e73df;
+    letter-spacing: 0.5px;
+}
+
+.chart-filter-group .btn 
+{
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.chart-filter-group .btn-primary 
+{
+    background-color: #4e73df;
+    border-color: #4e73df;
+    box-shadow: 0 4px 6px rgba(78, 115, 223, 0.2);
+}
+
+.chart-filter-group .btn-light:hover
+{
+    background-color: #f8f9fc;
+    border-color: #dddfeb;
+}
+
+.chart-container 
+{
+    animation: fadeIn 0.8s ease-in-out;
+}
+
 .card.shadow-sm 
 {
     border: none;
@@ -264,4 +330,22 @@ table.dataTable thead th.sorting_desc::before
 .modal-backdrop.show 
 {
     opacity: 0.5;
+}
+
+.btn-outline-success 
+{
+    border-width: 2px;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.btn-outline-primary 
+{
+    border-width: 2px;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.btn-outline-danger 
+{
+    border-width: 2px;
+    background-color: rgba(220, 53, 69, 0.05);
 }

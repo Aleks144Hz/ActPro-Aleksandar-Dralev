@@ -30,15 +30,16 @@
                 </div>
                 <hr class="my-4">
                 <div class="d-grid gap-2 mt-auto pt-4">
+                    <a asp-controller="Reservation" asp-action="MyReservations" class="btn btn-outline-success shadow-sm mb-2">
+                        <i class="bi bi-calendar-check-fill me-2"></i>Моите резервации (@ViewBag.ResCount)
+                    </a>
                     <button type="button" class="btn btn-outline-primary shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                         <i class="bi bi-pencil-fill me-2"></i>Редактирай профила
                     </button>
                     <button type="button" class="btn btn-outline-danger shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
                         <i class="bi bi-trash me-2"></i>Изтриване на профил
                     </button>
-                    <a asp-controller="Reservation" asp-action="MyReservations" class="btn btn-outline-success shadow-sm mb-2">
-                        <i class="bi bi-calendar-check-fill me-2"></i>Моите резервации (@ViewBag.ResCount)
-                    </a>
+
                 </div>
             </div>
         </div>
@@ -157,11 +158,11 @@
                     </div>
                     <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
                         <span><i class="bi bi-award text-silver me-2"></i>Сребро (100-499 кр.)</span>
-                        <span class="badge bg-primary rounded-pill">5% отстъпка</span>
+                        <span class="badge bg-primary rounded-pill">2% отстъпка</span>
                     </div>
                     <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
                         <span><i class="bi bi-award text-warning me-2"></i>Злато (500+ кр.)</span>
-                        <span class="badge bg-warning text-dark rounded-pill">10% отстъпка</span>
+                        <span class="badge bg-warning text-dark rounded-pill">5% отстъпка</span>
                     </div>
                 </div>
             </div>
