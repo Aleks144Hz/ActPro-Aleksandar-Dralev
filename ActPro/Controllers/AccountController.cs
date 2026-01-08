@@ -135,7 +135,8 @@ namespace ActPro.Controllers
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     FirstName = model.FirstName,
-                    LastName = model.LastName
+                    LastName = model.LastName,
+                    CreatedOn = DateTime.Now
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);

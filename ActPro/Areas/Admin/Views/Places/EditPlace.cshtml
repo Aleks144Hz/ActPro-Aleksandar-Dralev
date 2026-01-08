@@ -1,7 +1,7 @@
 ﻿@model ActPro.DAL.Entities.Place
 
-<div class="modal fade" id="editPlaceModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+<div class="modal fade" id="editPlaceModal-@Model.Id" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <div class="modal-header bg-info text-white p-3" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                 <h5 class="modal-title fw-bold">
@@ -37,57 +37,54 @@
                         }
                     </div>
                 </div>
-
                 <hr class="my-4 opacity-25" />
-
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="Rating" />
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Име на обекта</label>
-                        <input asp-for="Name" class="form-control border-info-subtle shadow-sm" style="border-radius: 10px;" />
-                    </div>
-
                     <div class="row g-3">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Град</label>
-                            <select asp-for="CityId" class="form-select border-info-subtle shadow-sm" style="border-radius: 10px;" asp-items="ViewBag.Cities"></select>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Име на обекта</label>
+                            <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" required />
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Тип дейност</label>
-                            <select asp-for="ActivityId" class="form-select border-info-subtle shadow-sm" style="border-radius: 10px;" asp-items="ViewBag.ActivityTypes"></select>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
+                            <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4 border-info-subtle"
+                                    asp-items="ViewBag.Cities" required></select>
                         </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Цена (€/час)</label>
-                            <div class="input-group rounded-pill border border-info-subtle shadow-sm overflow-hidden">
-                                <span class="input-group-text bg-info bg-opacity-10 border-0 px-3 text-info fw-bold">€</span>
-                                <input asp-for="Price" type="number" step="0.01" class="form-control border-0 px-3" />
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
+                            <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4 border-info-subtle"
+                                    asp-items="ViewBag.ActivityTypes" required></select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Цена (€/ч)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-pill text-info fw-bold">€</span>
+                                <input asp-for="Price" type="number" step="0.01"
+                                       class="form-control border-start-0 rounded-end-pill shadow-sm px-3 border-info-subtle" required />
                             </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Капацитет</label>
-                            <input asp-for="Capacity" type="number" class="form-control border-info-subtle shadow-sm" style="border-radius: 10px;" />
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Капацитет (лица)</label>
+                            <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" required />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Описание</label>
+                            <textarea asp-for="Description" class="form-control shadow-sm px-4 border-info-subtle"
+                                      rows="3" style="border-radius: 20px;"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="p-3 bg-light rounded-4 border-dashed border-2 text-center mt-2" style="border: 2px dashed #dee2e6;">
+                                <label class="form-label small fw-bold text-info d-block mb-2">
+                                    <i class="bi bi-upload me-1"></i> ДОБАВИ НОВИ СНИМКИ
+                                </label>
+                                <input type="file" name="imageFiles" class="form-control shadow-sm rounded-pill" accept="image/*" multiple />
+                            </div>
                         </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Описание</label>
-                        <textarea asp-for="Description" class="form-control border-info-subtle shadow-sm" style="border-radius: 10px;" rows="3"></textarea>
-                    </div>
-
-                    <div class="mb-4 p-3 bg-light rounded border border-info-subtle">
-                        <label class="form-label fw-bold text-info"><i class="bi bi-upload"></i> Качи нови снимки:</label>
-                        <input type="file" name="imageFiles" class="form-control border-0 bg-white" accept="image/*" multiple />
-                    </div>
-
-                    <div class="modal-footer border-0 px-0 pb-0">
-                        <button type="button" class="btn btn-outline-secondary px-4 rounded-pill" data-bs-dismiss="modal">Отказ</button>
-                        <button type="submit" class="btn btn-info text-white px-5 rounded-pill shadow-sm fw-bold">
-                            <i class="bi bi-save me-1"></i> Запази
+                    <div class="modal-footer border-0 px-0 pb-0 mt-4">
+                        <button type="submit" class="btn btn-info text-white rounded-pill px-5 fw-bold shadow-sm">
+                            <i class="bi bi-save me-1"></i> ЗАПАЗИ ПРОМЕНИТЕ
                         </button>
                     </div>
                 </form>
@@ -96,28 +93,23 @@
     </div>
 </div>
 <style>
-    .modal 
-    {
+    .modal {
         z-index: 1055;
     }
 
-    .modal-backdrop 
-    {
+    .modal-backdrop {
         z-index: 1050;
     }
 
-    .modal-dialog 
-    {
+    .modal-dialog {
         margin-top: 100px;
     }
 
-    .rounded-pill-custom 
-    {
+    .rounded-pill-custom {
         border-radius: 50px !important;
     }
 
-    .modal-title, .form-label 
-    {
+    .modal-title, .form-label {
         font-style: normal !important;
         font-weight: 600;
     }
