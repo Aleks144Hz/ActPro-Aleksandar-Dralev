@@ -1,6 +1,6 @@
 ﻿@model ActPro.DAL.Entities.Place
 
-<div class="modal fade" id="editPlaceModal-@Model.Id" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editPlaceModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <div class="modal-header bg-info text-white p-3" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
@@ -21,8 +21,10 @@
                                     <img src="@img.ImageUrl" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" />
                                     <form asp-action="DeleteImage" asp-route-imageId="@img.Id" method="post"
                                           class="position-absolute" style="top: -10px; right: -10px; z-index: 10;">
-                                        <button type="submit" class="btn btn-danger btn-sm rounded-circle p-0 shadow"
-                                                style="width: 24px; height: 24px; border: 2px solid white;">
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm rounded-circle p-0 shadow"
+                                                style="width: 24px; height: 24px; border: 2px solid white;"
+                                                onclick="deleteImageAjax(this, @img.Id)">
                                             <i class="bi bi-x"></i>
                                         </button>
                                     </form>
@@ -93,23 +95,28 @@
     </div>
 </div>
 <style>
-    .modal {
+    .modal
+    {
         z-index: 1055;
     }
 
-    .modal-backdrop {
+    .modal-backdrop 
+    {
         z-index: 1050;
     }
 
-    .modal-dialog {
+    .modal-dialog 
+    {
         margin-top: 100px;
     }
 
-    .rounded-pill-custom {
+    .rounded-pill-custom 
+    {
         border-radius: 50px !important;
     }
 
-    .modal-title, .form-label {
+    .modal-title, .form-label 
+    {
         font-style: normal !important;
         font-weight: 600;
     }

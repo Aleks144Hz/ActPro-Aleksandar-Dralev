@@ -194,7 +194,7 @@ namespace ActPro.Areas.Admin.Controllers
             _context.PlaceImages.Remove(image);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Edit), new { id = placeId });
+            return Ok();
         }
 
         //--- MANAGE PLACE SCHEDULE ---

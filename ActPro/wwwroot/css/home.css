@@ -74,7 +74,9 @@
     color: #333;
     transition: background 0.2s;
 }
-.dropdown-header-custom {
+
+.dropdown-header-custom 
+{
     padding: 8px 15px;
     font-size: 0.8rem;
     color: #198754;
@@ -139,4 +141,33 @@
 {
     background: #ccc;
     border-radius: 100px;
+}
+
+.section-partner-dark 
+{
+    background-color: #1f2937;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.step-circle 
+{
+    width: 50px;
+    height: 50px;
+    background: #22c55e;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 0 auto;
+}
+
+.partner-cta-btn:hover 
+{
+    transform: scale(1.05);
+    background-color: #22c55e !important;
+    color: white !important;
+    border-color: #22c55e !important;
 }
