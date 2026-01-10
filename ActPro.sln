@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActPro", "ActPro\ActPro.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActPro.DAL", "ActPro.DAL\ActPro.DAL.csproj", "{3BC79E08-8BEA-4530-9A04-6DAADB0A00B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActPro.Domain", "ActPro.Domain\ActPro.Domain.csproj", "{395B7CF7-8232-4BA9-B11D-3DAB77CBB7B2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{3BC79E08-8BEA-4530-9A04-6DAADB0A00B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BC79E08-8BEA-4530-9A04-6DAADB0A00B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BC79E08-8BEA-4530-9A04-6DAADB0A00B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{395B7CF7-8232-4BA9-B11D-3DAB77CBB7B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{395B7CF7-8232-4BA9-B11D-3DAB77CBB7B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{395B7CF7-8232-4BA9-B11D-3DAB77CBB7B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{395B7CF7-8232-4BA9-B11D-3DAB77CBB7B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,9 +5,13 @@
 }
 
 <div class="container-fluid p-0">
-    <section class="search-bar py-5 bg-primary text-white shadow-sm">
-        <div class="container">
-            <div class="search-container-styled">
+    <section class="py-5 bg-white position-relative">
+        <div class="container position-relative z-index-2">
+            <div class="text-center mb-4 fade-in-down">
+                <h1 class="fw-bold text-dark">Намери своето място за спорт</h1>
+                <p class="text-muted">Лесно, бързо и удобно резервиране по всяко време.</p>
+            </div>
+            <div class="search-container-styled fade-in-up">
                 <form asp-controller="Search" asp-action="Index" method="get" id="mainSearchForm">
                     <div class="row align-items-center">
                         <div class="col-md-5 position-relative divider-end">
@@ -74,6 +78,37 @@
         </div>
     </main>
 </div>
+<section class="py-5 bg-dark text-white mt-5 position-relative overflow-hidden">
+    <div class="container position-relative z-index-2">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <h2 class="display-6 fw-bold mb-3">Имаш спортен обект?</h2>
+                <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в 3 лесни стъпки и увеличи клиентите си.</p>
+                <a href="#" class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn">Регистрирай го</a>
+            </div>
+            <div class="col-lg-7">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="step-circle mb-3">1</div>
+                        <h6 class="fw-bold">Създаване</h6>
+                        <p class="small text-white-50">Регистрирай своя бизнес.</p>
+                    </div>
+                    <div class="col-4">
+                        <div class="step-circle mb-3">2</div>
+                        <h6 class="fw-bold">Потвърждаване</h6>
+                        <p class="small text-white-50">Предоставяне на документи за собственост.</p>
+                    </div>
+                    <div class="col-4">
+                        <div class="step-circle mb-3">3</div>
+                        <h6 class="fw-bold">Печели</h6>
+                        <p class="small text-white-50">Приемай резервации онлайн.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="decorative-ring"></div>
+</section>
 @section Styles
 {
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />

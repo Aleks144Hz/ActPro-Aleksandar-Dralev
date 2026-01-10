@@ -1,6 +1,6 @@
 ﻿using ActPro.DAL.Data;
+using ActPro.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Controllers

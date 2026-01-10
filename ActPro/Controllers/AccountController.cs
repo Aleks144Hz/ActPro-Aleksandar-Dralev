@@ -1,15 +1,12 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
-using ActPro.Helpers;
 using ActPro.Models.User;
 using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
@@ -40,10 +37,10 @@ namespace ActPro.Controllers
             var user = await _context.Users
             .Include(u => u.Favorites)
             .ThenInclude(f => f.Place)
-            .ThenInclude(p => p.PlaceImages) 
+            .ThenInclude(p => p.PlaceImages)
             .Include(u => u.Favorites)
             .ThenInclude(f => f.Place)
-            .ThenInclude(p => p.City)     
+            .ThenInclude(p => p.City)
             .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null) return NotFound();
@@ -307,7 +304,7 @@ namespace ActPro.Controllers
             }
 
             var favorite = new Favorite { AspNetUserId = userId, PlaceId = placeId };
-            _context.Favorites.Add(favorite); 
+            _context.Favorites.Add(favorite);
             await _context.SaveChangesAsync();
             return Json(new { success = true, isFavorite = true, message = "Добавено в любими!" });
         }
