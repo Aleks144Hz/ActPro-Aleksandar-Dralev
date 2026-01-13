@@ -18,7 +18,16 @@ namespace ActPro
             System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-            var builder = WebApplication.CreateBuilder(args);
+             var builder = WebApplication.CreateBuilder(args);
+             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+             if (Environment.GetEnvironmentVariable("RENDER") == "true")
+             {
+                 var cloudString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+                 if (!string.IsNullOrEmpty(cloudString))
+                 {
+                     connectionString = cloudString;
+                 }
+            }
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"),
             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
@@ -61,7 +70,7 @@ namespace ActPro
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "Грешка при създаването на Админа.");
+                    logger.LogError(ex, "ГѓГ°ГҐГёГЄГ  ГЇГ°ГЁ Г±ГєГ§Г¤Г ГўГ Г­ГҐГІГ® Г­Г  ГЂГ¤Г¬ГЁГ­Г .");
                 }
             }
 
