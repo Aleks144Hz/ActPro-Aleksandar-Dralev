@@ -28,9 +28,9 @@ namespace ActPro
                      connectionString = cloudString;
                  }
             }
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString("DefaultConnection"),
-            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+             connectionString,
+             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             // Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(IdentityHelper.GetIdentityOptions)
