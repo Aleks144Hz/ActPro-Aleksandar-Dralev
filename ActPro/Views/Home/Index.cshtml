@@ -39,7 +39,7 @@
                                        id="activityInput"
                                        name="activity"
                                        placeholder="Избери или въведи активност"
-                                       autocomplete="off">
+                                       autocomplete="off" />
                             </div>
                             <div id="activityList" class="custom-dropdown-list"></div>
                         </div>
@@ -114,7 +114,7 @@
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 }
 <script>
-       const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
+    const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
     const activitiesData = @Html.Raw(Json.Serialize(Model.ActivityNames));
 
     function setupAutocomplete(inputId, listId, dataArray, iconClass)
@@ -239,4 +239,44 @@
         setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
         setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
     });
+
+    const searchForm = document.getElementById('mainSearchForm');
+    if (searchForm) 
+    {
+        searchForm.addEventListener('submit', function (e) 
+        {
+            const cityInput = document.getElementById('cityInput');
+            const activityInput = document.getElementById('activityInput');
+            const cityValue = cityInput.value.trim().toLowerCase();
+            const activityValue = activityInput.value.trim().toLowerCase();
+            const isCityValid = citiesData.some(c => c.toLowerCase() === cityValue);
+
+            if (!isCityValid) 
+            {
+                e.preventDefault();
+                toastr.info("Моля, изберете град от предложенията!");
+
+                cityInput.classList.add('input-error');
+                cityInput.value = '';
+                cityInput.focus();
+
+                setTimeout(() => cityInput.classList.remove('input-error'), 2000);
+                return false;
+            }
+            const isActivityValid = activitiesData.some(a => a.toLowerCase() === activityValue);
+
+            if (activityValue !== "" && !isActivityValid) 
+            {
+                e.preventDefault();
+                toastr.info("Моля, изберете валидна активност!");
+
+                activityInput.classList.add('input-error');
+                activityInput.value = '';
+                activityInput.focus();
+
+                setTimeout(() => activityInput.classList.remove('input-error'), 2000);
+                return false;
+            }
+        });
+    }
 </script>
