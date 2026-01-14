@@ -19,15 +19,6 @@ namespace ActPro
             System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            if (Environment.GetEnvironmentVariable("RENDER") == "true")
-            {
-                var cloudString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
-                if (!string.IsNullOrEmpty(cloudString))
-                {
-                    connectionString = cloudString;
-                }
-            }
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection"),
             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
