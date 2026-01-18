@@ -9,7 +9,7 @@
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
     var area = ViewContext.RouteData.Values["area"]?.ToString();
-    bool hideFooter = area == "Admin" || controller == "Account";
+    bool hideFooter = area == "Admin" || controller == "Account" || action == "Confirmation";
     var displayName = user != null ? user.FirstName : User.Identity.Name;
 }
 <!DOCTYPE html>
@@ -41,17 +41,33 @@
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/Logo.jpg" alt="ActPro Logo" style="height: 40px; width: 150px;" />
                 </a>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5 gap-3">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom nav-link-lg" asp-area=""  asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door-fill text-success"></i> Начало
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom nav-link-lg" asp-area="" asp-controller="" asp-action="">
+                                <i class="bi bi-megaphone-fill text-success"></i> Новини
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom nav-link-lg" asp-area="" asp-controller="" asp-action="">
+                                <i class="bi bi-plus-circle me-1 text-success"></i> Добави своя обект
+                            </a>
+                        </li>
+                    </ul>
                     <ul class="navbar-nav ms-auto align-items-center">
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-danger fw-bold" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                                    <i class="bi bi-shield-lock"></i> АДМИН ПАНЕЛ
+                                <a class="nav-link text-danger fw-bold nav-link-custom" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="bi bi-shield-lock-fill"></i> АДМИН ПАНЕЛ
                                 </a>
                             </li>
                         }
@@ -95,7 +111,7 @@
                         else
                         {
                             <li class="nav-item me-3">
-                                <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Account" asp-action="Login">Вход</a>
+                                <a class="nav-link nav-link-custom nav-link-lg" asp-area="" asp-controller="Account" asp-action="Login">Вход</a>
                             </li>
                             <li class="nav-item ms-2">
                                 <a class="btn btn-success px-4 fw-bold shadow-sm" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>

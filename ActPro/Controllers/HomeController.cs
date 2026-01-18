@@ -30,11 +30,16 @@ namespace ActPro.Controllers
                 .Select(a => a.Name)
                 .Distinct()
                 .ToListAsync();
+            var sportCounts = await _context.Places
+                .GroupBy(p => p.Activity.Name)
+                .Select(g => new { Name = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.Name, x => x.Count);
             var viewModel = new HomeViewModel
             {
                 TopPlaces = topPlaces,
                 CityNames = cities,
-                ActivityNames = activities
+                ActivityNames = activities,
+                SportCounts = sportCounts
             };
             return View(viewModel);
         }

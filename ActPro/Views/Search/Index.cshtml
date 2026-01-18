@@ -18,7 +18,7 @@
                         style="border:0"
                         src="https://maps.google.com/maps?q=@(Uri.EscapeDataString(city + ", Bulgaria"))&t=&z=13&ie=UTF8&iwloc=&output=embed">
                 </iframe>
-                <button type="button" class="btn btn-success btn-sm position-absolute bottom-0 start-50 translate-middle-x mb-2 shadow"
+                <button type="button" class="btn btn-success btn-sm position-absolute bottom-0 start-50 translate-middle-x mb-2 shadow btn-map-static"
                         data-bs-toggle="modal" data-bs-target="#largeMapModal">
                     <i class="bi bi-arrows-fullscreen me-1"></i> Уголеми картата
                 </button>
@@ -37,8 +37,16 @@
                             <input type="range" name="maxPrice" class="form-range custom-range" min="0" max="200" id="maxPriceRange" value="@currentMax">
                         </div>
                         <div class="d-flex justify-content-between text-muted small mt-2">
-                            <span id="minPriceDisplay">@currentMin €</span>
-                            <span id="maxPriceDisplay">@currentMax €</span>
+                            <div class="d-flex align-items-center">
+                                <span>€</span>
+                                <input type="number" id="minPriceInput" class="price-input-hidden" value="@currentMin" min="0" max="200">
+                                
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span>€</span>
+                                <input type="number" id="maxPriceInput" class="price-input-hidden" value="@currentMax" min="0" max="200">
+                                
+                            </div>
                         </div>
                         <hr />
                         <div class="mb-4 position-relative">
@@ -246,11 +254,11 @@
     }
     const minR = document.getElementById('minPriceRange');
     const maxR = document.getElementById('maxPriceRange');
-    const minD = document.getElementById('minPriceDisplay');
-    const maxD = document.getElementById('maxPriceDisplay');
+    const minInput = document.getElementById('minPriceInput');
+    const maxInput = document.getElementById('maxPriceInput');
     const track = document.getElementById('sliderTrack');
 
-    function updatePrice()
+    function updatePrice() 
     {
         let v1 = parseInt(minR.value);
         let v2 = parseInt(maxR.value);
@@ -258,24 +266,55 @@
 
         if (v1 > v2 - 5)
         {
-            if (this.id === 'minPriceRange') minR.value = v2 - 5;
-            else maxR.value = v1 + 5;
+            if (this.id === 'minPriceRange' || this.id === 'minPriceInput') 
+            {
+                v1 = v2 - 5;
+                minR.value = v1;
+            } 
+            else 
+            {
+                v2 = v1 + 5;
+                maxR.value = v2;
+            }
         }
+        minInput.value = v1;
+        maxInput.value = v2;
 
-        minD.innerText = minR.value + " €";
-        maxD.innerText = maxR.value + " €";
-
-        if (track)
+        if (track) 
         {
-            let p1 = (minR.value / max) * 100;
-            let p2 = (maxR.value / max) * 100;
+            let p1 = (v1 / max) * 100;
+            let p2 = (v2 / max) * 100;
             track.style.left = p1 + "%";
             track.style.width = (p2 - p1) + "%";
         }
     }
 
+    function handleManualInput() 
+    {
+        let val = parseInt(this.value);
+        const maxLimit = parseInt(minR.max);
+
+        if (isNaN(val)) val = 0;
+        if (val < 0) val = 0;
+        if (val > maxLimit) val = maxLimit;
+
+        if (this.id === 'minPriceInput') 
+        {
+            minR.value = val;
+        } 
+        else 
+        {
+            maxR.value = val;
+        }
+        updatePrice.call(this);
+    }
+
     minR.addEventListener('input', updatePrice);
     maxR.addEventListener('input', updatePrice);
+    minInput.addEventListener('click', function() { this.select(); });
+    maxInput.addEventListener('click', function() { this.select(); });
+    minInput.addEventListener('change', handleManualInput);
+    maxInput.addEventListener('change', handleManualInput);
 
     document.addEventListener("DOMContentLoaded", function()
     {

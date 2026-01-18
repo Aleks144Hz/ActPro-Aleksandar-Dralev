@@ -20,8 +20,8 @@
         <div class="text-end">
             <span class="fs-4 fw-bold text-warning">
                 <button type="button"
-                        class="btn @(Model.IsFavorite ? "btn-warning" : "btn-outline-warning") btn-sm ms-2 favorite-btn-large"
-                        data-id="@Model.Place.Id">
+                                    class="btn @(Model.IsFavorite ? "btn-warning" : "btn-outline-warning") btn-sm ms-2 favorite-btn-large"
+                                    data-id="@Model.Place.Id">
                     <i class="bi @(Model.IsFavorite ? "bi-star-fill" : "bi-star")"></i>
                 </button> @Model.Place.Rating/5
             </span>
@@ -35,11 +35,11 @@
                 </div>
                 <div class="col-6">
                     <img src="@(subImages?.Count > 0 ? subImages[0].ImageUrl : "https://via.placeholder.com/400x200")"
-                         class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 1">
+                                      class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 1">
                 </div>
                 <div class="col-6">
                     <img src="@(subImages?.Count > 1 ? subImages[1].ImageUrl : "https://via.placeholder.com/400x200")"
-                         class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 2">
+                                      class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 2">
                 </div>
             </div>
         </div>
@@ -101,18 +101,18 @@
                                         @if (!string.IsNullOrEmpty(fullPath))
                                         {
                                             <img src="@fullPath"
-                                                 class="rounded-circle shadow-sm"
-                                                 style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #dee2e6;"
-                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                                          class="rounded-circle shadow-sm"
+                                                                          style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #dee2e6;"
+                                                                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                             <div class="bg-success text-white rounded-circle shadow-sm fw-bold align-items-center justify-content-center"
-                                                 style="width: 50px; height: 50px; display: none; font-size: 1.2rem;">
+                                                                          style="width: 50px; height: 50px; display: none; font-size: 1.2rem;">
                                                 @initial
                                             </div>
                                         }
                                         else
                                         {
                                             <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm"
-                                                 style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                                                          style="width: 50px; height: 50px; font-size: 1.2rem;">
                                                 @initial
                                             </div>
                                         }
@@ -127,8 +127,8 @@
                                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                                         <input type="hidden" name="placeId" value="@Model.Place.Id" />
                                                         <button type="submit"
-                                                                class="btn btn-link text-danger p-0 ms-2"
-                                                                title="Изтрий коментара">
+                                                                                                class="btn btn-link text-danger p-0 ms-2"
+                                                                                                title="Изтрий коментара">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
@@ -157,8 +157,10 @@
                             if (userCommentsCount < 3)
                             {
                                 <h6 class="fw-bold mb-3">Остави отзив</h6>
-                                <form asp-action="AddReview" method="post">
+                                <form asp-action="AddReview" method="post" class="position-relative">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="placeId" value="@Model.Place.Id" />
+
                                     <div class="star-rating mb-2">
                                         <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
                                         <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
@@ -166,14 +168,17 @@
                                         <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
                                         <input type="radio" id="star1" name="rating" value="1" required /><label for="star1"></label>
                                     </div>
-                                    <textarea name="commentText" id="commentArea"
-                                      class="form-control mb-2" rows="3"
-                                      placeholder="Сподели мнение..."
-                                      maxlength="250"></textarea>
-                                    <div id="charCounter" class="text-muted small position-absolute"
-                                         style="bottom: 15px; right: 10px;">
-                                        0 / 250
+                                    <div class="position-relative mb-3">
+                                        <textarea name="commentText" id="commentArea"
+                                          class="form-control" rows="3"
+                                          placeholder="Сподели мнение..."
+                                          maxlength="250"></textarea>
+                                        <div id="charCounter" class="text-muted small position-absolute"
+                                             style="bottom: 5px; right: 10px; pointer-events: none;">
+                                            0 / 250
+                                        </div>
                                     </div>
+
                                     <button type="submit" class="btn btn-success">Публикувай</button>
                                 </form>
                             }
@@ -197,9 +202,14 @@
 <div class="modal fade" id="bookingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-success">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Резервация за @Model.Place.Name</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header bg-light d-flex flex-column align-items-center position-relative">
+                <div class="d-flex align-items-center" id="calendarTrigger" style="cursor: pointer;">
+                    <h5 class="modal-title fw-bold mb-0" id="displayDate">Изберете дата</h5>
+                    <i class="bi bi-chevron-down ms-2 text-success" id="calendarIcon"></i>
+                </div>
+                <div id="calendarAnchor" style="position: absolute; top: 100%;"></div>
+                <input type="text" id="flatpickrDate" style="display:none;">
+                <button type="button" class="btn-close position-absolute" style="right: 1rem; top: 1rem;" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 @Html.AntiForgeryToken()
@@ -208,24 +218,14 @@
                         <i class="bi bi-chevron-left"></i>
                     </button>
                     <div id="dateScrollContainer" class="d-flex overflow-hidden" style="max-width: 545px; scroll-behavior: smooth;">
-                        @for (int i = 0; i < 31; i++)
-                        {
-                            var date = DateTime.Now.AddDays(i);
-                            <div class="text-center border rounded p-2 mx-1 date-item @(i == 0 ? "bg-success text-white" : "bg-white")"
-                                 style="min-width: 70px; cursor: pointer;"
-                                 data-date="@date.ToString("yyyy-MM-dd")">
-                                <small class="d-block">@(i == 0 ? "Днес" : date.ToString("ddd").ToUpper())</small>
-                                <strong>@date.Day</strong>
-                                <small class="d-block" style="font-size: 0.7rem;">@date.ToString("MMM")</small>
-                            </div>
-                        }
                     </div>
                     <button class="btn btn-outline-success rounded-circle ms-2" id="nextDay" type="button">
                         <i class="bi bi-chevron-right"></i>
                     </button>
                 </div>
                 <input type="hidden" id="selectedDate" name="reservationDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                <div class="row row-cols-4 g-2 mb-4 text-center">
+
+                <div id="slotsWrapper" class="row row-cols-4 g-2 mb-4 text-center slots-container">
                     @foreach (var hour in new[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00" })
                     {
                         <div class="col mb-2">
@@ -264,61 +264,111 @@
 @section Styles
 {
     <link rel="stylesheet" href="~/css/reservation.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/bg.js"></script>
 <script>
-    const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-    document.addEventListener("DOMContentLoaded", function ()
+    document.addEventListener("DOMContentLoaded", function () 
     {
         const container = document.getElementById('dateScrollContainer');
         const selectedDateInput = document.getElementById('selectedDate');
-
-        document.querySelectorAll('.date-item').forEach(item => {
-            item.addEventListener('click', function()
-            {
-                document.querySelectorAll('.date-item').forEach(el => {
-                    el.classList.remove('bg-success', 'text-white', 'border-success', 'shadow-sm');
-                    el.classList.add('bg-white', 'text-dark');
-                });
-                this.classList.add('bg-success', 'text-white', 'border-success', 'shadow-sm');
-                this.classList.remove('bg-white', 'text-dark');
-                const pickedDate = this.getAttribute('data-date');
-                selectedDateInput.value = pickedDate;
-                updateTimeSlots();
-            });
-        });
-        window.scrollDays = function(direction)
+        const displayDate = document.getElementById('displayDate');
+        const slotsWrapper = document.getElementById('slotsWrapper');
+        const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
+        const fp = flatpickr("#flatpickrDate", 
         {
-            const currentActive = container.querySelector('.date-item.bg-success');
-            let target = (direction === 'next') ? currentActive.nextElementSibling : currentActive.previousElementSibling;
-
-            if (target && target.classList.contains('date-item'))
+            locale: "bg",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            defaultDate: "today",
+            positionElement: document.getElementById('calendarAnchor'),
+            disableMobile: true,
+            onChange: function(selectedDates, dateStr)
             {
-                target.click();
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'center'
+                updateAll(dateStr);
+            }
+        });
+        function updateAll(dateStr) 
+        {
+            if(slotsWrapper) slotsWrapper.style.opacity = "0";
+
+            setTimeout(() => {
+                const date = new Date(dateStr);
+                if(displayDate) 
+                {
+                    displayDate.innerText = date.toLocaleDateString('bg-BG', {
+                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                    });
+                }
+                selectedDateInput.value = dateStr;
+                renderDateStrip(date);
+                updateTimeSlots();
+
+                if(slotsWrapper) slotsWrapper.style.opacity = "1";
+            }, 150);
+        }
+      function renderDateStrip(centerDate)
+      {
+        container.innerHTML = '';
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const formatDate = (date) => {
+            const d = new Date(date);
+            return d.getFullYear() + '-' +
+                   String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                   String(d.getDate()).padStart(2, '0');
+        };
+
+        const selectedStr = formatDate(centerDate);
+        for (let i = -3; i <= 14; i++) 
+        {
+            let d = new Date(centerDate);
+            d.setDate(centerDate.getDate() + i);
+            if (d < today) continue;
+
+            const iso = formatDate(d);
+            const isSelected = (iso === selectedStr);
+            let dayName = d.toLocaleDateString('bg-BG', { weekday: 'short' })
+                           .replace('.', '').substring(0, 3).toUpperCase();
+
+            if (d.toDateString() === today.toDateString()) dayName = "ДНЕС";
+
+            const div = document.createElement('div');
+    div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;           
+    div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
+            div.onclick = () => {
+                if (iso !== selectedDateInput.value) 
+                {
+                    fp.setDate(iso);
+                    updateAll(iso);
+                }
+            };
+            container.appendChild(div);
+
+            if (isSelected) 
+            {
+                requestAnimationFrame(() => {
+                    div.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 });
             }
-        };
-        document.getElementById('nextDay').addEventListener('click', () => scrollDays('next'));
-        document.getElementById('prevDay').addEventListener('click', () => scrollDays('prev'));
-
-        const bookingModalEl = document.getElementById('bookingModal');
-        if (bookingModalEl)
-        {
-            bookingModalEl.addEventListener('show.bs.modal', function ()
-            {
-                updateTimeSlots();
-            });
         }
-        updateTimeSlots();
-    });
+    }
+        window.scrollDays = function(direction) 
+        {
+            let d = new Date(selectedDateInput.value);
+            d.setDate(d.getDate() + (direction === 'next' ? 1 : -1));
 
-    $(document).ready(function()
-    {
-        $(document).on('click', '.favorite-btn-large', function (e)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (d < today) return;
+            const iso = d.toISOString().split('T')[0];
+            fp.setDate(iso);
+            updateAll(iso);
+        };
+        $(document).on('click', '.favorite-btn-large', function (e) 
         {
             e.preventDefault();
             var btn = $(this);
@@ -327,40 +377,58 @@
                 url: '/Account/ToggleFavorite',
                 type: 'POST',
                 data: { placeId: pId },
-                success: function (response)
-                {
-                    if (response.success)
-                    {
+                success: function (response) {
+                    if (response.success) {
                         var icon = btn.find('i');
-                        if (response.isFavorite)
-                        {
+                        if (response.isFavorite) {
                             btn.removeClass('btn-outline-warning').addClass('btn-warning');
                             icon.removeClass('bi-star').addClass('bi-star-fill');
-                        }
-                        else
-                        {
+                            toastr.success("Добавено в любими!");
+                        } else {
                             btn.removeClass('btn-warning').addClass('btn-outline-warning');
                             icon.removeClass('bi-star-fill').addClass('bi-star');
+                            toastr.info("Премахнато от любими.");
                         }
                     }
                 },
                 error: function (xhr) 
                 {
-                    toastr.error(xhr.status === 401 ? "Трябва да сте влезли в профила си!" : "Грешка при комуникация.");
+                    toastr.error(xhr.status === 401 ? "Трябва да сте влезли!" : "Грешка.");
                 }
             });
         });
+        const textArea = document.getElementById('commentArea');
+        const charCounter = document.getElementById('charCounter');
+        if (textArea && charCounter)
+        {
+            textArea.addEventListener('input', function () 
+            {
+                const length = textArea.value.length;
+                charCounter.textContent = `${length} / 250`;
+                if (length >= 250) 
+                {
+                    charCounter.classList.replace('text-muted', 'text-danger');
+                }
+                else 
+                {
+                    charCounter.classList.replace('text-danger', 'text-muted');
+                }
+            });
+        }
+        document.getElementById('nextDay').onclick = () => scrollDays('next');
+        document.getElementById('prevDay').onclick = () => scrollDays('prev');
+        document.getElementById('calendarTrigger').onclick = () => fp.open();
+        updateAll(selectedDateInput.value);
     });
-
-    function updateTimeSlots()
+    function updateTimeSlots() 
     {
         const selectedDateStr = document.getElementById('selectedDate').value;
         const placeId = "@Model.Place.Id";
         const url = '@Url.Action("GetOccupiedSlots", "Reservation")';
         const now = new Date();
-        const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+        const todayStr = now.toISOString().split('T')[0];
 
-        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots)
+        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots) 
         {
             document.querySelectorAll('input[name="timeSlot"]').forEach(input => {
                 const label = document.querySelector(`label[for="${input.id}"]`);
@@ -368,58 +436,55 @@
                 const isOccupied = occupiedSlots.includes(hourValue);
                 let isPast = false;
 
-                if (selectedDateStr === todayStr)
+                if (selectedDateStr === todayStr) 
                 {
                     const [hour, minute] = hourValue.split(':');
                     const slotTime = new Date();
                     slotTime.setHours(parseInt(hour), parseInt(minute), 0, 0);
                     if (slotTime < now) isPast = true;
                 }
-                if (isOccupied || isPast)
+
+                if (isOccupied || isPast) 
                 {
                     input.disabled = true;
                     input.checked = false;
                     label.classList.add('slot-occupied');
                     label.style.opacity = "0.5";
-                    label.title = isPast ? "Този час вече е минал" : "Този час вече е зает";
-                }
-                else
+                } 
+                else 
                 {
                     input.disabled = false;
                     label.classList.remove('slot-occupied');
                     label.style.opacity = "1";
-                    label.removeAttribute('title');
                 }
             });
         });
     }
-
     function handleBookingClick() 
     {
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         if (!selectedTimeInput) 
         {
-            toastr.info("Моля, изберете час за вашата резервация!");
+            toastr.info("Моля, изберете час!");
             return;
         }
-        if (isUserLoggedIn)
+        const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
+        if (isUserLoggedIn) 
         {
             executeBooking();
-        }
+        } 
         else
         {
             const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
-            bookingModal.hide();
-            const authModal = new bootstrap.Modal(document.getElementById('authPromptModal'));
-            authModal.show();
+            if(bookingModal) bookingModal.hide();
+            new bootstrap.Modal(document.getElementById('authPromptModal')).show();
         }
     }
 
-    function executeBooking()
+    function executeBooking() 
     {
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         const date = document.getElementById('selectedDate').value;
-        const time = selectedTimeInput.value;
         const placeId = "@Model.Place.Id";
         const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
 
@@ -427,15 +492,8 @@
         form.method = 'POST';
         form.action = '@Url.Action("Book", "Reservation")';
 
-        const data =
-        {
-            'placeId': placeId,
-            'date': date,
-            'timeSlot': time,
-            '__RequestVerificationToken': token
-        };
-
-        for (const key in data)
+        const data = { 'placeId': placeId, 'date': date, 'timeSlot': selectedTimeInput.value, '__RequestVerificationToken': token };
+        for (const key in data) 
         {
             const input = document.createElement('input');
             input.type = 'hidden';
@@ -445,26 +503,5 @@
         }
         document.body.appendChild(form);
         form.submit();
-    }
- 
-    const textArea = document.getElementById('commentArea');
-    const charCounter = document.getElementById('charCounter');
-
-    if (textArea && charCounter) 
-    {
-        textArea.addEventListener('input', function () 
-        {
-            const length = textArea.value.length;
-            charCounter.textContent = `${length} / 250`;
-
-            if (length >= 250)
-            {
-                charCounter.classList.replace('text-muted', 'text-danger');
-            } 
-            else 
-            {
-                charCounter.classList.replace('text-danger', 'text-muted');
-            }
-        });
     }
 </script>

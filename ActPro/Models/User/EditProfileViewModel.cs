@@ -10,7 +10,11 @@ namespace ActPro.Models.User
 
         [Required(ErrorMessage = LastNameIsRequired)]
         public string LastName { get; set; }
+
+        [Required(ErrorMessage = PhoneNumberRequired)]
+        [RegularExpression(@"^0[0-9]{9}$", ErrorMessage = InvalidPhoneNumber)]
         public string PhoneNumber { get; set; }
         public IFormFile? ProfilePicture { get; set; }
+        public string? ExistingPicturePath { get; set; }
     }
 }
