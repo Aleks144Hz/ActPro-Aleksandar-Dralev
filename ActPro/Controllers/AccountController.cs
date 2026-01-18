@@ -256,6 +256,7 @@ namespace ActPro.Controllers
                 {
                     await model.ProfilePicture.CopyToAsync(stream);
                 }
+                if (!string.IsNullOrEmpty(oldFileName)) DeleteFileFromDisk(oldFileName);
                 user.ProfilePicturePath = newFileName;
                 isNewPictureUploaded = true;
             }
@@ -278,11 +279,24 @@ namespace ActPro.Controllers
                         }
                     }
                 }
+                await _signInManager.RefreshSignInAsync(user);
                 TempData["Success"] = SuccessfulUserEdit;
                 await _auditService.LogAsync("Update Settings", "User", user.Id, $"Потребителят обнови профилните си данни.");
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+        private void DeleteFileFromDisk(string fileName)
+        {
+            var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles", fileName);
+            if (System.IO.File.Exists(path))
+            {
+                try { System.IO.File.Delete(path); }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Неуспешно триене: " + ex.Message);
+                }
+            }
         }
 
         //--- FAVORITES ---

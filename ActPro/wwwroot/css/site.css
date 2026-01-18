@@ -127,6 +127,67 @@ main
     margin-right: 20px;
 }
 
+.navbar
+{
+    min-height: 70px;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+    padding: 0.5rem 0;
+}
+
+.nav-link-lg 
+{
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px !important;
+    color: #444 !important;
+    transition: all 0.2s ease;
+}
+
+.nav-link-lg i 
+{
+    font-size: 1.1rem;
+    color: #198754;
+}
+
+.navbar .nav-link.text-dark.fw-bold 
+{
+    font-size: 1rem !important;
+    text-transform: none !important;
+    color: #444 !important;
+    margin-right: 10px;
+    font-weight: 600 !important;
+}
+
+.nav-link-custom 
+{
+    position: relative;
+}
+
+.nav-link-custom::after 
+{
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px !important;
+    bottom: 2px !important;
+    left: 50%;
+    background: #198754 !important;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link-custom:hover::after,
+.nav-link-custom.active::after 
+{
+    width: 100%;
+}
+
+
 .profile-dropdown a:hover i 
 {
     filter: brightness(0.8);

@@ -2,37 +2,85 @@
 
 <div class="modal fade" id="editProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-fill me-2"></i>Редактиране на профил</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Редактиране на профил</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form asp-controller="Account" asp-action="EditProfile" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label asp-for="FirstName" class="form-label">Име</label>
-                        <input asp-for="FirstName" class="form-control" required />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
+            <form asp-controller="Account" asp-action="EditProfile" method="post" enctype="multipart/form-data" id="editProfileForm">
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="profile-upload-container position-relative d-inline-block">
+                            <div class="profile-avatar-wrapper shadow" onclick="document.getElementById('profileInput').click();">
+                                @if (!string.IsNullOrEmpty(Model.ExistingPicturePath))
+                                {
+                                    <img src="/images/profiles/@Model.ExistingPicturePath" id="previewImg" class="profile-avatar" />
+                                }
+                                else
+                                {
+                                    <div id="placeholderContainer" class="profile-placeholder">
+                                        <i class="bi bi-camera-fill"></i>
+                                        <span>Качи снимка</span>
+                                    </div>
+                                    <img id="previewImg" class="profile-avatar d-none" />
+                                }
+                            </div>
+                            <input asp-for="ProfilePicture" type="file" id="profileInput" class="d-none" accept=".jpg,.jpeg,.png" />
+                        </div>
+                        <div class="mt-2">
+                            <span asp-validation-for="ProfilePicture" class="text-danger small"></span>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="LastName" class="form-label">Фамилия</label>
-                        <input asp-for="LastName" class="form-control" required />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="PhoneNumber" class="form-label">Телефон</label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="ProfilePicture" class="form-label">Профилна снимка</label>
-                        <input asp-for="ProfilePicture" type="file" class="form-control" accept="image/*" />
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="FirstName" class="form-label fw-semibold small">Име</label>
+                            <input asp-for="FirstName" class="form-control shadow-sm" placeholder="Въведете име..." />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LastName" class="form-label fw-semibold small">Фамилия</label>
+                            <input asp-for="LastName" class="form-control shadow-sm" placeholder="Въведете фамилия..." />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="PhoneNumber" class="form-label fw-semibold small">Телефонен номер</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-phone"></i></span>
+                                <input asp-for="PhoneNumber" class="form-control shadow-sm" placeholder="08XXXXXXXX" />
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
-                    <button type="submit" class="btn btn-primary">Запази промените</button>
+                <div class="modal-footer bg-light border-top-0">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Отказ</button>
+                    <button type="submit" class="btn btn-info text-white px-4 fw-bold shadow-sm">
+                        <i class="bi bi-check2-circle me-1"></i> Запази
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+}
+<script>
+    document.getElementById('profileInput').onchange = function (evt)
+    {
+        const [file] = this.files;
+        if (file) 
+        {
+            const previewImg = document.getElementById('previewImg');
+            const placeholder = document.getElementById('placeholderContainer');
+            previewImg.src = URL.createObjectURL(file);
+            previewImg.classList.remove('d-none');
+            if (placeholder) 
+            {
+                placeholder.style.display = 'none';
+            }
+        }
+    }
+</script>

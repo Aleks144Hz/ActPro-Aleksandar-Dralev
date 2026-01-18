@@ -7,5 +7,6 @@ namespace ActPro.Models
         public IEnumerable<Place> TopPlaces { get; set; }
         public List<string> CityNames { get; set; }
         public List<string> ActivityNames { get; set; }
+        public Dictionary<string, int> SportCounts { get; set; } = new Dictionary<string, int>();
     }
 }

@@ -3,8 +3,59 @@
 @{
     ViewData["Title"] = "Начало";
 }
-
 <div class="container-fluid p-0">
+    <div class="sports-side-menu">
+        @{
+            int GetCount(string key) => Model.SportCounts != null && Model.SportCounts.ContainsKey(key) ? Model.SportCounts[key] : 0;
+        }
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Футбол" class="sport-item football">
+            <i class="fas fa-futbol"></i>
+            <span class="sport-name">Футбол <small>(@GetCount("Футбол"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Баскетбол" class="sport-item basketball">
+            <i class="fas fa-basketball-ball"></i>
+            <span class="sport-name">Баскетбол <small>(@GetCount("Баскетбол"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Волейбол" class="sport-item volleyball">
+            <i class="fas fa-volleyball-ball"></i>
+            <span class="sport-name">Волейбол <small>(@GetCount("Волейбол"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Тенис" class="sport-item tennis">
+            <i class="fas fa-table-tennis"></i>
+            <span class="sport-name">Тенис <small>(@GetCount("Тенис"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Фитнес" class="sport-item fitness">
+            <i class="fas fa-dumbbell"></i>
+            <span class="sport-name">Фитнес <small>(@GetCount("Фитнес"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Плуване" class="sport-item swimming">
+            <i class="fas fa-swimmer"></i>
+            <span class="sport-name">Плуване <small>(@GetCount("Плуване"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Бокс" class="sport-item boxing">
+            <i class="fas fa-fist-raised"></i>
+            <span class="sport-name">Бокс <small>(@GetCount("Бокс"))</small></span>
+        </a>
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Хандбал" class="sport-item handball">
+            <i class="fas fa-volleyball-ball"></i>
+            <span class="sport-name">Хандбал <small>(@GetCount("Хандбал"))</small></span>
+        </a>
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Йога" class="sport-item yoga">
+            <i class="fas fa-spa"></i>
+            <span class="sport-name">Йога <small>(@GetCount("Йога"))</small></span>
+        </a>
+
+        <a asp-controller="Search" asp-action="Index" asp-route-activity="Танци" class="sport-item dancing">
+            <i class="fas fa-music"></i>
+            <span class="sport-name">Танци <small>(@GetCount("Танци"))</small></span>
+        </a>
+    </div>
     <section class="py-5 bg-white position-relative">
         <div class="container position-relative z-index-2">
             <div class="text-center mb-4 fade-in-down">

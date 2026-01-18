@@ -83,13 +83,81 @@ input[name="timeSlot"]:checked + .time-slot-label
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    -ms-overflow-style: none; 
+    gap: 12px;
+    padding: 10px 5px;
+    align-items: center;
+    -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
 #dateScrollContainer::-webkit-scrollbar 
 {
     display: none;
+}
+
+.date-item
+{
+    width: 66px;
+    height: 70px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px !important;
+    border: 1px solid #edf2f7 !important;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.date-item:hover 
+{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    border-color: #28a745 !important;
+}
+
+.date-item strong 
+{
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #2d3748;
+}
+
+.date-item small
+{
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    color: #718096;
+}
+
+.date-item.bg-success 
+{
+    background: linear-gradient(145deg, #28a745, #1e7e34) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.date-item.bg-success strong,
+.date-item.bg-success small
+{
+    color: white !important;
+}
+
+.slots-container, #dateScrollContainer {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.slots-fade 
+{
+    opacity: 0;
 }
 
 .hover-shadow:hover 

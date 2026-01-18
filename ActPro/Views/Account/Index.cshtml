@@ -11,8 +11,8 @@
                 <div class="mb-3 position-relative d-inline-block">
                     <img id="profileImageDisplay"
                          src="@(string.IsNullOrEmpty(Model.ProfilePicturePath)
-                         ? "https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
-                         : "/images/profiles/" + Model.ProfilePicturePath)"
+                                                                           ? "https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
+                                                                           : "/images/profiles/" + Model.ProfilePicturePath)"
                          class="rounded-circle img-thumbnail shadow-sm"
                          style="width: 150px; height: 150px; object-fit: cover;"
                          alt="Профилна снимка">
@@ -26,7 +26,7 @@
                                 data-bs-toggle="modal" data-bs-target="#creditsInfoModal">
                             <i class="bi bi-gem me-2"></i><strong>@Model.Credits</strong> ActPro Кредити
                         </button>
-                    </div>                   
+                    </div>
                 </div>
                 <hr class="my-4">
                 <div class="d-grid gap-2 mt-auto pt-4">
@@ -177,15 +177,15 @@
 {
     FirstName = Model.FirstName,
     LastName = Model.LastName,
-    PhoneNumber = Model.PhoneNumber
+    PhoneNumber = Model.PhoneNumber,
+    ExistingPicturePath = Model.ProfilePicturePath
 })
 @section Styles
 {
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
 }
 @section Scripts
-{
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{  
     <partial name="_ValidationScriptsPartial" />
     <script>
          $(document).ready(function ()
@@ -227,7 +227,7 @@
              paginateTable();
 
              $(document).on('click', '.remove-favorite', function ()
-             {           
+             {
                  var btn = $(this);
                  var id = btn.data('id');
                  var row = btn.closest('tr');
