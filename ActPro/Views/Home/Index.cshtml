@@ -4,165 +4,260 @@
     ViewData["Title"] = "Начало";
 }
 <div class="container-fluid p-0">
-    <div class="sports-side-menu">
-        @{
-            int GetCount(string key) => Model.SportCounts != null && Model.SportCounts.ContainsKey(key) ? Model.SportCounts[key] : 0;
-        }
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Футбол" class="sport-item football">
-            <i class="fas fa-futbol"></i>
-            <span class="sport-name">Футбол <small>(@GetCount("Футбол"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Баскетбол" class="sport-item basketball">
-            <i class="fas fa-basketball-ball"></i>
-            <span class="sport-name">Баскетбол <small>(@GetCount("Баскетбол"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Волейбол" class="sport-item volleyball">
-            <i class="fas fa-volleyball-ball"></i>
-            <span class="sport-name">Волейбол <small>(@GetCount("Волейбол"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Тенис" class="sport-item tennis">
-            <i class="fas fa-table-tennis"></i>
-            <span class="sport-name">Тенис <small>(@GetCount("Тенис"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Фитнес" class="sport-item fitness">
-            <i class="fas fa-dumbbell"></i>
-            <span class="sport-name">Фитнес <small>(@GetCount("Фитнес"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Плуване" class="sport-item swimming">
-            <i class="fas fa-swimmer"></i>
-            <span class="sport-name">Плуване <small>(@GetCount("Плуване"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Бокс" class="sport-item boxing">
-            <i class="fas fa-fist-raised"></i>
-            <span class="sport-name">Бокс <small>(@GetCount("Бокс"))</small></span>
-        </a>
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Хандбал" class="sport-item handball">
-            <i class="fas fa-volleyball-ball"></i>
-            <span class="sport-name">Хандбал <small>(@GetCount("Хандбал"))</small></span>
-        </a>
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Йога" class="sport-item yoga">
-            <i class="fas fa-spa"></i>
-            <span class="sport-name">Йога <small>(@GetCount("Йога"))</small></span>
-        </a>
-
-        <a asp-controller="Search" asp-action="Index" asp-route-activity="Танци" class="sport-item dancing">
-            <i class="fas fa-music"></i>
-            <span class="sport-name">Танци <small>(@GetCount("Танци"))</small></span>
-        </a>
-    </div>
-    <section class="py-5 bg-white position-relative">
-        <div class="container position-relative z-index-2">
-            <div class="text-center mb-4 fade-in-down">
-                <h1 class="fw-bold text-dark">Намери своето място за спорт</h1>
-                <p class="text-muted">Лесно, бързо и удобно резервиране по всяко време.</p>
+    <main>
+        <section class="py-5 bg-white position-relative">
+            <div class="container position-relative z-index-2">
+                <div class="text-center mb-4 fade-in-down">
+                    <h1 class="fw-bold text-dark">Намери своето място за спорт</h1>
+                    <p class="text-muted">Лесно, бързо и удобно резервиране по всяко време.</p>
+                </div>
+                <div class="search-container-styled fade-in-up">
+                    <form asp-controller="Search" asp-action="Index" method="get" id="mainSearchForm">
+                        <div class="row align-items-center">
+                            <div class="col-md-5 position-relative divider-end">
+                                <label class="search-label-small">Населено място</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-map-marker-alt input-icon"></i>
+                                    <input type="text"
+                                           class="form-control form-control-custom"
+                                           id="cityInput"
+                                           name="city"
+                                           placeholder="Избери или въведи град"
+                                           autocomplete="off"
+                                           required
+                                           oninvalid="this.setCustomValidity('Моля, изберете населено място!')"
+                                           oninput="this.setCustomValidity('')">
+                                </div>
+                                <div id="cityList" class="custom-dropdown-list"></div>
+                            </div>
+                            <div class="col-md-5 position-relative">
+                                <label class="search-label-small">Какво ще спортувате?</label>
+                                <div class="input-wrapper">
+                                    <i class="fas fa-running input-icon"></i>
+                                    <input type="text"
+                                           class="form-control form-control-custom"
+                                           id="activityInput"
+                                           name="activity"
+                                           placeholder="Избери или въведи активност"
+                                           autocomplete="off" />
+                                </div>
+                                <div id="activityList" class="custom-dropdown-list"></div>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm" style="border-radius: 25px; height: 50px;">
+                                    ТЪРСИ
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="search-container-styled fade-in-up">
-                <form asp-controller="Search" asp-action="Index" method="get" id="mainSearchForm">
-                    <div class="row align-items-center">
-                        <div class="col-md-5 position-relative divider-end">
-                            <label class="search-label-small">Населено място</label>
-                            <div class="input-wrapper">
-                                <i class="fas fa-map-marker-alt input-icon"></i>
-                                <input type="text"
-                                       class="form-control form-control-custom"
-                                       id="cityInput"
-                                       name="city"
-                                       placeholder="Избери или въведи град"
-                                       autocomplete="off"
-                                       required
-                                       oninvalid="this.setCustomValidity('Моля, изберете населено място!')"
-                                       oninput="this.setCustomValidity('')">
+        </section>
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 pr-lg-5">
+                        <span class="text-success fw-bold text-uppercase small">Какво е ActPro?</span>
+                        <h2 class="fw-bold mb-4">Твоят дигитален асистент за активен живот</h2>
+                        <p class="text-muted lead">ActPro е иновативна платформа, която свързва ентусиастите със спортните бази. Нашата мисия е да премахнем бариерите пред спорта, като ви дадем достъп до стотици обекти само с няколко клика.</p>
+                        <ul class="list-unstyled mt-4">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Резервации в реално време</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Голямо разнообразие от спортове</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="~/images/Screenshot_10.png" class="img-fluid rounded-4 shadow" alt="Как помага сайта">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-4 bg-body">
+            <div class="container">
+                <h3 class="text-center mb-4 fw-bold">Популярни категории</h3>
+                <div class="sports-category-grid">
+                    @{
+                        int GetCount(string key) => Model.SportCounts != null && Model.SportCounts.ContainsKey(key) ? Model.SportCounts[key] : 0;
+
+                        var sportsList = new[] {
+                                        new { Name = "Футбол", Icon = "fa-futbol", Class = "football" },
+                                        new { Name = "Баскетбол", Icon = "fa-basketball-ball", Class = "basketball" },
+                                        new { Name = "Волейбол", Icon = "fa-volleyball-ball", Class = "volleyball" },
+                                        new { Name = "Тенис", Icon = "fa-table-tennis", Class = "tennis" },
+                                        new { Name = "Фитнес", Icon = "fa-dumbbell", Class = "fitness" },
+                                        new { Name = "Плуване", Icon = "fa-swimmer", Class = "swimming" }
+                                        };
+                    }
+
+                    @foreach (var sport in sportsList)
+                    {
+                        <a asp-controller="Search" asp-action="Index" asp-route-activity="@sport.Name" class="sport-card @sport.Class">
+                            <div class="sport-card-icon">
+                                <i class="fas @sport.Icon"></i>
                             </div>
-                            <div id="cityList" class="custom-dropdown-list"></div>
-                        </div>
-                        <div class="col-md-5 position-relative">
-                            <label class="search-label-small">Какво ще спортувате?</label>
-                            <div class="input-wrapper">
-                                <i class="fas fa-running input-icon"></i>
-                                <input type="text"
-                                       class="form-control form-control-custom"
-                                       id="activityInput"
-                                       name="activity"
-                                       placeholder="Избери или въведи активност"
-                                       autocomplete="off" />
+                            <div class="sport-card-info">
+                                <span class="name">@sport.Name</span>
+                                <span class="count">@GetCount(sport.Name) обекта</span>
                             </div>
-                            <div id="activityList" class="custom-dropdown-list"></div>
-                        </div>
-                        <div class="col-md-2 text-center">
-                            <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm" style="border-radius: 25px; height: 50px;">
-                                ТЪРСИ
-                            </button>
+                        </a>
+                    }
+                </div>
+            </div>
+        </section>
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-lg-6 pl-lg-5">
+                        <span class="text-success fw-bold text-uppercase small">Ползи</span>
+                        <h2 class="fw-bold mb-4">С какво ви помагаме?</h2>
+                        <p class="text-muted">Забравете за десетките телефонни обаждания, за да разберете дали тенис кортът е свободен. С нас пестите време и нерви:</p>
+                        <div class="d-flex gap-3 mt-4">
+                            <div class="icon-box-small">
+                                <i class="fas fa-clock fa-2x text-success"></i>
+                                <h6 class="mt-2 fw-bold">Бързина</h6>
+                            </div>
+                            <div class="icon-box-small">
+                                <i class="fas fa-wallet fa-2x text-success"></i>
+                                <h6 class="mt-2 fw-bold">Сигурност</h6>
+                            </div>
+                            <div class="icon-box-small">
+                                <i class="fas fa-mobile-alt fa-2x text-success"></i>
+                                <h6 class="mt-2 fw-bold">Достъпност</h6>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div class="col-lg-6">
+                        <img src="~/images/Screenshot_11.png" class="img-fluid rounded-4 shadow" alt="Как помага сайта">
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
-    <main class="container my-5">
-        <h2 class="mb-4 text-center">Топ обекти с най-висок рейтинг</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach (var place in Model.TopPlaces)
-            {
-                <div class="col">
-                    <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
-                        <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/300x200")"
-                             class="card-img-top" alt="@place.Name" style="height: 200px; object-fit: cover;">
+        </section>
+        <section class="py-5">
+            <div class="container">
+                <h2 class="mb-5 text-center fw-bold display-6">Топ обекти с най-висок рейтинг</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    @foreach (var place in Model.TopPlaces)
+                    {
+                        <div class="col">
+                            <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                                <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/300x200")"
+                                     class="card-img-top" alt="@place.Name" style="height: 200px; object-fit: cover;">
 
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">@place.Name</h5>
-                            <p class="text-muted small mb-2">
-                                <i class="bi bi-geo-alt"></i> @place.City?.Name
-                            </p>
-                            <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
-                            <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id"
-                               class="btn btn-primary w-100 rounded-pill">Виж детайли</a>
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">@place.Name</h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="bi bi-geo-alt"></i> @place.City?.Name
+                                    </p>
+                                    <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
+                                    <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id"
+                                       class="btn btn-success w-100 fw-bold py-2 shadow-sm">Виж детайли</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <section class="py-5 bg-dark-subtle">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <span class="text-success fw-bold text-uppercase small">Решения</span>
+                        <h2 class="fw-bold mb-4">Проблемите, които решаваме</h2>
+                        <div class="problem-card p-3 mb-3 bg-white rounded shadow-sm border-start border-success border-4">
+                            <h6 class="fw-bold mb-1">Липса на информация</h6>
+                            <p class="small text-muted mb-0">Вече няма нужда да търсите контакти по форуми – всичко е на едно място.</p>
+                        </div>
+                        <div class="problem-card p-3 mb-3 bg-white rounded shadow-sm border-start border-success border-4">
+                            <h6 class="fw-bold mb-1">Неактуални графици</h6>
+                            <p class="small text-muted mb-0">Виждате само свободните часове, актуализирани в реално време.</p>
+                        </div>
+                        <div class="problem-card p-3 mb-3 bg-white rounded shadow-sm border-start border-success border-4">
+                            <h6 class="fw-bold mb-1">Възможността за отзив</h6>
+                            <p class="small text-muted mb-0">Вече можете да изразите вашето мнение относно дадения обект, който сте посетили.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <img src="~/images/Screenshot_13.png" class="img-fluid rounded-circle p-4" alt="Проблеми и решения">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-5 bg-dark text-white">
+            <div class="container position-relative z-index-2">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 mb-4 mb-lg-0">
+                        <h2 class="display-6 fw-bold mb-3">Имаш спортен обект?</h2>
+                        <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в 3 лесни стъпки и увеличи клиентите си.</p>
+                        <a href="#" class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn">Регистрирай го</a>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="step-circle mb-3">1</div>
+                                <h6 class="fw-bold">Създаване</h6>
+                                <p class="small text-white-50">Регистрирай своя бизнес.</p>
+                            </div>
+                            <div class="col-4">
+                                <div class="step-circle mb-3">2</div>
+                                <h6 class="fw-bold">Потвърждаване</h6>
+                                <p class="small text-white-50">Предоставяне на документи за собственост.</p>
+                            </div>
+                            <div class="col-4">
+                                <div class="step-circle mb-3">3</div>
+                                <h6 class="fw-bold">Печели</h6>
+                                <p class="small text-white-50">Приемай резервации онлайн.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+            <div class="decorative-ring"></div>
+        </section>
+        <section class="py-6 bg-white border-top">
+            <div class="container py-5">
+                <div class="row justify-content-center text-center mb-5">
+                    <div class="col-lg-8">
+                        <h2 class="display-5 fw-bold mb-3">Нашата История и Цел</h2>
+                        <p class="lead text-muted">Ние не просто правим софтуер. Ние градим общност, където здравето и спортът са приоритет за всеки.</p>
+                        <div class="mx-auto" style="width: 100px; height: 4px; background-color: #198754; border-radius: 2px;"></div>
+                    </div>
+                </div>
+                <div class="row g-4 pt-4">
+                    <div class="col-md-4">
+                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up">
+                            <div class="about-icon-circle bg-success-soft mb-4">
+                                <i class="fas fa-bullseye fa-3x text-success"></i>
+                            </div>
+                            <h3 class="fw-bold mb-3">Мисия</h3>
+                            <p class="text-muted fs-5">Да направим спорта достъпен за всеки българин чрез модерни технологии.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up">
+                            <div class="about-icon-circle bg-white-soft mb-4">
+                                <i class="fas fa-eye fa-3x text-success"></i>
+                            </div>
+                            <h3 class="fw-bold mb-3">Визия</h3>
+                            <p class="text-light-50 fs-5">Най-голямата екосистема за активен отдих и управление на спортни бази в страната.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up">
+                            <div class="about-icon-circle bg-success-soft mb-4">
+                                <i class="fas fa-handshake fa-3x text-success"></i>
+                            </div>
+                            <h3 class="fw-bold mb-3">Ценности</h3>
+                            <p class="text-muted fs-5">Прозрачност, иновация и непоколебима подкрепа за местния бизнес и спортни клубове.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </div>
-<section class="py-5 bg-dark text-white mt-5 position-relative overflow-hidden">
-    <div class="container position-relative z-index-2">
-        <div class="row align-items-center">
-            <div class="col-lg-5 mb-4 mb-lg-0">
-                <h2 class="display-6 fw-bold mb-3">Имаш спортен обект?</h2>
-                <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в 3 лесни стъпки и увеличи клиентите си.</p>
-                <a href="#" class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn">Регистрирай го</a>
-            </div>
-            <div class="col-lg-7">
-                <div class="row text-center">
-                    <div class="col-4">
-                        <div class="step-circle mb-3">1</div>
-                        <h6 class="fw-bold">Създаване</h6>
-                        <p class="small text-white-50">Регистрирай своя бизнес.</p>
-                    </div>
-                    <div class="col-4">
-                        <div class="step-circle mb-3">2</div>
-                        <h6 class="fw-bold">Потвърждаване</h6>
-                        <p class="small text-white-50">Предоставяне на документи за собственост.</p>
-                    </div>
-                    <div class="col-4">
-                        <div class="step-circle mb-3">3</div>
-                        <h6 class="fw-bold">Печели</h6>
-                        <p class="small text-white-50">Приемай резервации онлайн.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="decorative-ring"></div>
-</section>
 @section Styles
 {
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 }
 <script>
     const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
@@ -255,7 +350,7 @@
                     'Фитнес': 'fas fa-dumbbell',
                     'Футбол': 'fas fa-futbol',
                     'Хандбал': 'fas fa-volleyball-ball'
-             };
+                };
             const currentIcon = activityIcons[item] || iconClass;
             div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
             div.addEventListener('click', function()
@@ -292,9 +387,9 @@
     });
 
     const searchForm = document.getElementById('mainSearchForm');
-    if (searchForm) 
+    if (searchForm)
     {
-        searchForm.addEventListener('submit', function (e) 
+        searchForm.addEventListener('submit', function (e)
         {
             const cityInput = document.getElementById('cityInput');
             const activityInput = document.getElementById('activityInput');
@@ -302,7 +397,7 @@
             const activityValue = activityInput.value.trim().toLowerCase();
             const isCityValid = citiesData.some(c => c.toLowerCase() === cityValue);
 
-            if (!isCityValid) 
+            if (!isCityValid)
             {
                 e.preventDefault();
                 toastr.info("Моля, изберете град от предложенията!");
@@ -316,7 +411,7 @@
             }
             const isActivityValid = activitiesData.some(a => a.toLowerCase() === activityValue);
 
-            if (activityValue !== "" && !isActivityValid) 
+            if (activityValue !== "" && !isActivityValid)
             {
                 e.preventDefault();
                 toastr.info("Моля, изберете валидна активност!");
