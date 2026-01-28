@@ -18,10 +18,19 @@ namespace ActPro
             System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-            var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-            builder.Configuration.GetConnectionString("DefaultConnection"),
-            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+             var builder = WebApplication.CreateBuilder(args);
+             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+             if (Environment.GetEnvironmentVariable("RENDER") == "true")
+             {
+                 var cloudString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+                 if (!string.IsNullOrEmpty(cloudString))
+                 {
+                     connectionString = cloudString;
+                 }
+            }
+             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+             connectionString,
+             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             // Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(IdentityHelper.GetIdentityOptions)
@@ -61,7 +70,7 @@ namespace ActPro
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "√Â¯Í‡ ÔË Ò˙Á‰‡‚‡ÌÂÚÓ Ì‡ ¿‰ÏËÌ‡.");
+                    logger.LogError(ex, "√É√∞√•√∏√™√† √Ø√∞√® √±√∫√ß√§√†√¢√†√≠√•√≤√Æ √≠√† √Ä√§√¨√®√≠√†.");
                 }
             }
 
