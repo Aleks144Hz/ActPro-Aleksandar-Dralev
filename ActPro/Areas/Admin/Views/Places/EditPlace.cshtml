@@ -48,6 +48,17 @@
                             <label class="form-label small fw-bold text-muted text-uppercase">Име на обекта</label>
                             <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" required />
                         </div>
+                        <div class="col-md-8">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Точен адрес</label>
+                            <input asp-for="Address" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Тип база</label>
+                            <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4 border-info-subtle" required>
+                                <option value="true">Открито</option>
+                                <option value="false">Закрито</option>
+                            </select>
+                        </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
                             <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4 border-info-subtle"

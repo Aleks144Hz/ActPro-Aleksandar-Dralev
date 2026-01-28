@@ -15,7 +15,7 @@ namespace ActPro.Controllers
         }
 
         //--- SEARCH PAGE ---
-        public async Task<IActionResult> Index(string city, string activity, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
+        public async Task<IActionResult> Index(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
             var query = _context.Places.Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).AsQueryable();
             ViewBag.CitiesList = await _context.Cities.Select(c => c.Name).ToListAsync();
@@ -25,22 +25,32 @@ namespace ActPro.Controllers
             {
                 query = query.Where(p => p.City.Name == city);
             }
+
             if (!string.IsNullOrEmpty(activity))
             {
                 query = query.Where(p => p.Activity.Name == activity);
             }
+
             if (minPrice.HasValue)
             {
                 query = query.Where(p => p.Price >= minPrice.Value);
             }
+
             if (maxPrice.HasValue)
             {
                 query = query.Where(p => p.Price <= maxPrice.Value);
             }
 
+            if (isOutdoor.HasValue)
+            {                
+                query = query.Where(p => p.IsOutdoor == isOutdoor.Value);
+            }
+
             ViewBag.SmallCount = await query.CountAsync(p => p.Capacity >= 1 && p.Capacity <= 4);
             ViewBag.MediumCount = await query.CountAsync(p => p.Capacity >= 5 && p.Capacity <= 14);
             ViewBag.LargeCount = await query.CountAsync(p => p.Capacity >= 15);
+            ViewBag.OutdoorCount = await query.CountAsync(p => p.IsOutdoor == true);
+            ViewBag.IndoorCount = await query.CountAsync(p => p.IsOutdoor == false);
             ViewBag.Cities = await _context.Cities.ToListAsync();
             ViewBag.Activities = await _context.Activities.ToListAsync();
 

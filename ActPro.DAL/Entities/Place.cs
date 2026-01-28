@@ -21,6 +21,10 @@ public partial class Place
 
     public int? Rating { get; set; }
 
+    public bool IsOutdoor { get; set; }    
+    
+    public string Address { get; set; } = string.Empty;
+
     public virtual Activity? Activity { get; set; }
 
     public virtual City? City { get; set; }
