@@ -17,6 +17,18 @@
                             <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4"
                                    placeholder="Въведете име..." required />
                         </div>
+                        <div class="col-md-8">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Точен адрес</label>
+                            <input asp-for="Address" class="form-control rounded-pill shadow-sm px-4"
+                                   placeholder="ул. Свобода №12, ж.к. Еленово..." required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted text-uppercase">Тип база</label>
+                            <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4" required>
+                                <option value="true">Открито</option>
+                                <option value="false">Закрито</option>
+                            </select>
+                        </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
                             <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4"
