@@ -9,7 +9,7 @@
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     var action = ViewContext.RouteData.Values["action"]?.ToString();
     var area = ViewContext.RouteData.Values["area"]?.ToString();
-    bool hideFooter = area == "Admin" || controller == "Account" || action == "Confirmation";
+    bool hideFooter = area == "Admin" || area == "Owner" || controller == "Account" || action == "Confirmation";
     var displayName = user != null ? user.FirstName : User.Identity.Name;
 }
 <!DOCTYPE html>
@@ -57,7 +57,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom nav-link-lg" asp-area="" asp-controller="" asp-action="">
+                            <a class="nav-link nav-link-custom nav-link-lg" asp-area="" asp-controller="Owner" asp-action="Index">
                                 <i class="bi bi-plus-circle me-1 text-success"></i> Добави своя обект
                             </a>
                         </li>
@@ -68,6 +68,14 @@
                             <li class="nav-item">
                                 <a class="nav-link text-danger fw-bold nav-link-custom" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                                     <i class="bi bi-shield-lock-fill"></i> АДМИН ПАНЕЛ
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Owner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold nav-link-custom" asp-area="Owner" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="bi bi-currency-euro"></i> БИЗНЕС ПАНЕЛ
                                 </a>
                             </li>
                         }
@@ -95,7 +103,7 @@
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index"><i class="bi bi-person me-2"></i>Профил</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Reservation" asp-action="MyReservations"><i class="bi bi-calendar-check me-2"></i>Мои резервации</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index"><i class="bi bi-star me-2"></i>Фаворити</a></li>
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Search" asp-action="Index"><i class="bi bi-bicycle me-2"></i>Занимания</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><i class="bi bi-gear me-2"></i>Настройки</a></li>
                                         <li><hr class="dropdown-divider"></li>
                                         <li>
                                             <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">

@@ -188,7 +188,7 @@
                     <div class="col-lg-5 mb-4 mb-lg-0">
                         <h2 class="display-6 fw-bold mb-3">Имаш спортен обект?</h2>
                         <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в 3 лесни стъпки и увеличи клиентите си.</p>
-                        <a href="#" class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn">Регистрирай го</a>
+                        <a class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn" asp-area="" asp-controller="Owner" asp-action="Index">Регистрирай го</a>
                     </div>
                     <div class="col-lg-7">
                         <div class="row text-center">
@@ -257,7 +257,7 @@
 </div>
 @section Styles
 {
-        <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 }
 <script>
     const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));

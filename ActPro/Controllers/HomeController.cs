@@ -16,6 +16,12 @@ namespace ActPro.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var approvedPlaces = await _context.Places  
+                .Include(p => p.PlaceImages)
+                .Include(p => p.City)
+                .Include(p => p.Activity)
+                .Where(p => p.IsApproved == true)
+                .ToListAsync();
             var topPlaces = await _context.Places
                 .Include(p => p.City)
                 .Include(p => p.PlaceImages)

@@ -29,7 +29,7 @@
                             @foreach (var res in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td data-label="ОБЕКТ">
                                         <div class="fw-bold">
                                             <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
                                                class="text-decoration-none text-dark hover-success">
@@ -37,15 +37,15 @@
                                             </a>
                                         </div>
                                     </td>
-                                    <td>@res.FirstName @res.LastName</td>
-                                    <td>@res.Phone</td>
-                                    <td>
+                                    <td data-label="КЛИЕНТ">@res.FirstName @res.LastName</td>
+                                    <td data-label="ТЕЛЕФОН">@res.Phone</td>
+                                    <td data-label="ДАТА И ЧАС">
                                         @res.ReservationDate @res.ReservationTime
                                     </td>
-                                    <td>
+                                    <td data-label ="НАПРАВЕНА НА">
                                         <div class="fw-bold">@res.CreatedAt</div>
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center" data-label="ДЕЙСТВИЯ">
                                         <div class="d-flex justify-content-center gap-2">
                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                     data-bs-toggle="modal" data-bs-target="#editTimeModal-@res.Id">

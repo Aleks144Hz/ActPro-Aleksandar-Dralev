@@ -17,7 +17,7 @@ namespace ActPro.Controllers
         //--- SEARCH PAGE ---
         public async Task<IActionResult> Index(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
-            var query = _context.Places.Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).AsQueryable();
+            var query = _context.Places.Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).Where(p => p.IsApproved).AsQueryable();
             ViewBag.CitiesList = await _context.Cities.Select(c => c.Name).ToListAsync();
             ViewBag.ActivitiesList = await _context.Activities.Select(a => a.Name).ToListAsync();
 

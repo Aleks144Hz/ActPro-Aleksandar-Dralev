@@ -58,6 +58,30 @@ namespace ActPro.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //---Toggle Owner Role---//
+        [HttpPost]
+        public async Task<IActionResult> ToggleOwner(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var isOwner = await _userManager.IsInRoleAsync(user, "Owner");
+
+            if (isOwner)
+            {
+                await _userManager.RemoveFromRoleAsync(user, "Owner");
+                TempData["Success"] = $"Ролята 'Собственик' на {user.FirstName} беше премахната.";
+                await _auditService.LogAsync("Edit User", "User", userId, $"Премахнати собственик права на: {user.FirstName} {user.LastName} ({user.Email})");
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(user, "Owner");
+                TempData["Success"] = $"{user.FirstName} вече има роля 'Собственик'.";
+                await _auditService.LogAsync("Edit User", "User", userId, $"Дадени собственик права на: {user.FirstName} {user.LastName} ({user.Email})");
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         //---Ban User---//
         [HttpPost]
         [ValidateAntiForgeryToken]

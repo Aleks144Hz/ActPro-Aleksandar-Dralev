@@ -1,0 +1,93 @@
+﻿@model ActPro.DAL.Entities.Place
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow-lg border-0" style="border-radius: 15px; overflow: hidden;">
+                <div class="card-header bg-success text-white p-4 border-0">
+                    <h3 class="card-title fw-bold mb-0">
+                        <i class="bi bi-briefcase me-2"></i> СТАНЕТЕ ПАРТНЬОР НА ACTPRO
+                    </h3>
+                    <p class="mb-0 mt-2 opacity-75">Попълнете данните за вашия обект и започнете да приемате резервации.</p>
+                </div>
+
+                <form asp-action="Index" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger"></div>                 
+                    <div class="card-body p-4 p-md-5">
+                        <div class="row g-4">
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Име на обекта</label>
+                                <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4"
+                                       placeholder="напр. Спортен комплекс 'Арена'..." required />
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Точен адрес</label>
+                                <input asp-for="Address" class="form-control rounded-pill shadow-sm px-4"
+                                       placeholder="ул. Свобода №12..." required />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Тип база</label>
+                                <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4" required>
+                                    <option value="false">-- Избери тип --</option>
+                                    <option value="true">Открито</option>
+                                    <option value="true">Закрито</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
+                                <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4"
+                                        asp-items="ViewBag.Cities" required>
+                                    <option value="">-- Избери град --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
+                                <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4"
+                                        asp-items="ViewBag.ActivityTypes" required>
+                                    <option value="">-- Избери дейност --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Цена (€/ч)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0 rounded-start-pill text-success fw-bold">€</span>
+                                    <input asp-for="Price" type="number" step="0.01"
+                                           class="form-control border-start-0 rounded-end-pill shadow-sm px-3" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Капацитет (лица)</label>
+                                <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4" required />
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-bold text-muted text-uppercase">Описание</label>
+                                <textarea asp-for="Description" class="form-control shadow-sm px-4"
+                                          rows="4" style="border-radius: 20px;"
+                                          placeholder="Разкажете повече за условията, които предлагате..."></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="p-4 bg-light rounded-4 text-center" style="border: 2px dashed #dee2e6;">
+                                    <label class="form-label fw-bold d-block mb-2">
+                                        <i class="bi bi-cloud-arrow-up fs-3 text-primary"></i><br>
+                                        КАЧЕТЕ СНИМКИ НА ВАШИЯ ОБЕКТ
+                                    </label>
+                                    <input type="file" name="imageFiles" class="form-control shadow-sm rounded-pill"
+                                           accept="image/*" multiple />
+                                    <small class="text-muted d-block mt-2 italic">Можете да изберете няколко файла едновременно (JPG, PNG)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-0 p-4 bg-light text-center">
+                        <button type="submit" class="btn btn-success text-white rounded-pill px-5 py-3 fw-bold shadow-sm mb-2 mb-md-0">
+                            <i class="bi bi-send me-2"></i> ИЗПРАТИ ЗАЯВКА ЗА ОДОБРЕНИЕ
+                        </button>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-link text-muted px-4">
+                            Отказ
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

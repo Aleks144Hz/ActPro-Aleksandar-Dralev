@@ -342,26 +342,21 @@ input[type=number]:focus
     animation: pulse-animation 2s infinite;
 }
 
-.btn-success 
+.btn-success,
+.btn-outline-success
 {
-    background-color: #198754;
-    border: none;
-    transition: all 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, box-shadow 0.2s ease !important;
+    will-change: transform;
+    transform: translateY(0);
 }
 
-.btn-outline-success 
+.btn-success:hover,
+.btn-outline-success:hover
 {
-    border-width: 2px;
-    background-color: rgba(25, 135, 84, 0.05);
-}
-
-.btn-success:hover 
-{
-    background-color: #157347;
     transform: translateY(-2px);
+    background-color: #157347 !important;
     box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3) !important;
 }
-
 .btn-map-static.position-absolute:hover 
 {
     transform: translateX(-50%) translateY(0) !important;

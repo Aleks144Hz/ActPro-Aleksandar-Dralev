@@ -30,19 +30,19 @@
                             @foreach (var log in Model.OrderByDescending(l => l.CreatedAt))
                             {
                                 <tr>
-                                    <td class="small">@log.CreatedAt</td>
-                                    <td>
+                                    <td class="small" data-label="НАПРАВЕНО НА">@log.CreatedAt</td>
+                                    <td data-label ="ПОТРЕБИТЕЛ">
                                         <span class="fw-bold text-primary">@log.UserEmail</span>
                                     </td>
-                                    <td>
+                                    <td data-label="ДЕЙСТВИЕ">
                                         <span class="badge @GetBadgeClass(log.Action) shadow-sm" style="min-width: 100px;">
                                             @log.Action
                                         </span>
                                     </td>
-                                    <td style="max-width: 300px;" class="text-truncate" title="@log.Details">
+                                    <td style="max-width: 300px;" class="text-truncate" title="@log.Details" data-label="ДЕТАЙЛИ">
                                         @log.Details
                                     </td>
-                                    <td><small class="text-muted">@log.IpAddress</small></td>
+                                    <td data-label="IP АДРЕС"><small class="text-muted">@log.IpAddress</small></td>
                                 </tr>
                             }
                         </tbody>

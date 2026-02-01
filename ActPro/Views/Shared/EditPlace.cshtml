@@ -19,15 +19,13 @@
                             {
                                 <div class="position-relative border rounded p-1 shadow-sm bg-white overflow-visible">
                                     <img src="@img.ImageUrl" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" />
-                                    <form asp-action="DeleteImage" asp-route-imageId="@img.Id" method="post"
-                                          class="position-absolute" style="top: -10px; right: -10px; z-index: 10;">
-                                        <button type="button"
-                                                class="btn btn-danger btn-sm rounded-circle p-0 shadow"
-                                                style="width: 24px; height: 24px; border: 2px solid white;"
-                                                onclick="deleteImageAjax(this, @img.Id)">
-                                            <i class="bi bi-x"></i>
-                                        </button>
-                                    </form>
+
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm rounded-circle p-0 shadow position-absolute"
+                                            style="width: 24px; height: 24px; border: 2px solid white; top: -10px; right: -10px; z-index: 10;"
+                                            onclick="deleteImageAjax(this, @img.Id)">
+                                        <i class="bi bi-x"></i>
+                                    </button>
                                 </div>
                             }
                         }
@@ -42,6 +40,7 @@
                 <hr class="my-4 opacity-25" />
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="OwnerId" />
                     <input type="hidden" asp-for="Rating" />
                     <div class="row g-3">
                         <div class="col-md-12">
