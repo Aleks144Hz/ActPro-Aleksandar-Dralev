@@ -348,3 +348,77 @@ table.dataTable thead th.sorting_desc::before
     border-width: 2px;
     background-color: rgba(220, 53, 69, 0.05);
 }
+
+@media (max-width: 991.98px) 
+{
+    .admin-table thead 
+    {
+        display: none;
+    }
+
+    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td 
+    {
+        display: block;
+        width: 100%;
+    }
+
+    .admin-table tr 
+    {
+        margin-bottom: 1.25rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background-color: #fff !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .admin-table td 
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 0.6rem 1rem !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        position: relative;
+    }
+
+    .admin-table td::before 
+    {
+        content: attr(data-label);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        color: #94a3b8;
+        margin-bottom: 2px;
+        display: block;
+    }
+
+    .admin-table td > span,
+    .admin-table td > div,
+    .admin-table td > strong,
+    .admin-table td:not(:before) 
+    {
+        text-align: left !important;
+        font-size: 0.95rem;
+        color: #1e293b;
+        font-weight: 500;
+        width: 100%;
+    }
+
+    .admin-table td:last-child 
+    {
+        border-bottom: none !important;
+        background-color: #f8fafc;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 12px 1rem !important;
+    }
+
+    .admin-table td:last-child::before 
+    {
+        margin-bottom: 0;
+        margin-right: 15px;
+        line-height: 2;
+    }
+}

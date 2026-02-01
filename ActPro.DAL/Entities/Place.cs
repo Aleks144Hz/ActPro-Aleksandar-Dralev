@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ActPro.DAL.Entities;
 
@@ -28,6 +29,13 @@ public partial class Place
     public virtual Activity? Activity { get; set; }
 
     public virtual City? City { get; set; }
+
+    public string? OwnerId { get; set; }
+
+    [ForeignKey("OwnerId")]
+    public virtual ApplicationUser? Owner { get; set; }
+
+    public bool IsApproved { get; set; } = false;
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

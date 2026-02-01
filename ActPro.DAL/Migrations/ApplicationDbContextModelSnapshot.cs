@@ -290,12 +290,18 @@ namespace ActPro.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsOutdoor")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18, 2)");
@@ -308,6 +314,8 @@ namespace ActPro.DAL.Migrations
                     b.HasIndex("ActivityId");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Places");
                 });
@@ -587,9 +595,15 @@ namespace ActPro.DAL.Migrations
                         .HasForeignKey("CityId")
                         .HasConstraintName("FK_Places_Cities");
 
+                    b.HasOne("ActPro.DAL.ApplicationUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
                     b.Navigation("Activity");
 
                     b.Navigation("City");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("ActPro.DAL.Entities.PlaceClosure", b =>

@@ -3,6 +3,7 @@ using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
 using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ namespace ActPro.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IAuditService _auditService;
-        public PlacesController(ApplicationDbContext context, IAuditService auditService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public PlacesController(ApplicationDbContext context, IAuditService auditService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _auditService = auditService;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -33,17 +36,21 @@ namespace ActPro.Areas.Admin.Controllers
 
             return View(places);
         }
-        
+
         //--- CREATE PLACE ---
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Place place, IEnumerable<IFormFile>? imageFiles)
         {
+            var userId = _userManager.GetUserId(User);
             ModelState.Remove("PlaceImages");
             ModelState.Remove("City");
             ModelState.Remove("Activity");
+            ModelState.Remove("Owner");
 
+            place.OwnerId = userId;        
             place.Rating = 0;
+            place.IsApproved = true;
 
             if (ModelState.IsValid)
             {
@@ -70,6 +77,14 @@ namespace ActPro.Areas.Admin.Controllers
                                 string dbPath = "/images/places/" + fileName;
                                 await _context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO PlaceImages (PlaceId, ImageUrl) VALUES ({place.Id}, {dbPath})");
                             }
+                        }
+                    }
+                    if (place.OwnerId != null)
+                    {
+                        var user = await _userManager.FindByIdAsync(place.OwnerId);
+                        if (user != null && !await _userManager.IsInRoleAsync(user, "Owner"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "Owner");
                         }
                     }
                     TempData["Success"] = "Обектът беше създаден успешно.";
@@ -133,6 +148,7 @@ namespace ActPro.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int id, Place place, IEnumerable<IFormFile> imageFiles)
         {
             if (id != place.Id) return NotFound();
+            place.IsApproved = true;
 
             if (ModelState.IsValid)
             {
@@ -246,6 +262,34 @@ namespace ActPro.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return NotFound();
+        }
+
+        //--- APPROVE PLACE ---
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var place = await _context.Places
+                .Include(p => p.Owner)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (place != null)
+            {
+                place.IsApproved = true;
+
+                if (place.OwnerId != null)
+                {
+                    var user = await _userManager.FindByIdAsync(place.OwnerId);
+                    if (user != null && !await _userManager.IsInRoleAsync(user, "Owner"))
+                    {
+                        await _userManager.AddToRoleAsync(user, "Owner");
+                    }
+                }
+                TempData["Success"] = "Обектат беше одобрен успешно.";
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
