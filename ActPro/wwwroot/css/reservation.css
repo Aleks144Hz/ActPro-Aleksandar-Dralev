@@ -195,3 +195,47 @@ input[name="timeSlot"]:checked + .time-slot-label
     white-space: pre-wrap;
     word-break: break-word;
 }
+
+.search-card-img
+{
+    height: 120px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.badge
+{
+    font-weight: 500;
+    padding: 0.5em 1em;
+}
+
+.btn-outline-success
+{
+    border-width: 2px;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.btn-outline-primary 
+{
+    border-width: 2px;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.btn-outline-dark
+{
+    border-width: 2px;
+    background-color: rgba(25, 25, 25, 0.05);
+}
+
+.btn-outline-danger
+{
+    border-width: 2px;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.btn-outline-info
+{
+    border-width: 2px;
+    background-color: rgba(13, 202, 240, 0.05);
+}

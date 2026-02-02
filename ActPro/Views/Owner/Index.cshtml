@@ -6,7 +6,7 @@
             <div class="card shadow-lg border-0" style="border-radius: 15px; overflow: hidden;">
                 <div class="card-header bg-success text-white p-4 border-0">
                     <h3 class="card-title fw-bold mb-0">
-                        <i class="bi bi-briefcase me-2"></i> СТАНЕТЕ ПАРТНЬОР НА ACTPRO
+                        <i class="bi bi-briefcase me-2"></i> СТАНЕТЕ ЧАСТ ОТ ACTPRO
                     </h3>
                     <p class="mb-0 mt-2 opacity-75">Попълнете данните за вашия обект и започнете да приемате резервации.</p>
                 </div>
@@ -28,9 +28,9 @@
                             <div class="col-md-4">
                                 <label class="form-label small fw-bold text-muted text-uppercase">Тип база</label>
                                 <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4" required>
-                                    <option value="false">-- Избери тип --</option>
+                                    <option value="">-- Избери тип --</option>
                                     <option value="true">Открито</option>
-                                    <option value="true">Закрито</option>
+                                    <option value="false">Закрито</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -66,16 +66,20 @@
                                           placeholder="Разкажете повече за условията, които предлагате..."></textarea>
                             </div>
                             <div class="col-md-12">
-                                <div class="p-4 bg-light rounded-4 text-center" style="border: 2px dashed #dee2e6;">
-                                    <label class="form-label fw-bold d-block mb-2">
-                                        <i class="bi bi-cloud-arrow-up fs-3 text-primary"></i><br>
-                                        КАЧЕТЕ СНИМКИ НА ВАШИЯ ОБЕКТ
-                                    </label>
-                                    <input type="file" name="imageFiles" class="form-control shadow-sm rounded-pill"
-                                           accept="image/*" multiple />
-                                    <small class="text-muted d-block mt-2 italic">Можете да изберете няколко файла едновременно (JPG, PNG)</small>
+                                <div id="drop-zone" class="p-3 bg-light rounded-4 text-center position-relative transition-all"
+                                     style="border: 2px dashed #dee2e6; cursor: pointer;">
+
+                                    <i class="bi bi-cloud-arrow-up-fill fs-1 text-primary mb-3"></i>
+                                    <h5 class="fw-bold">Плъзнете снимки тук или кликнете за избор</h5>
+                                    <p class="text-muted small">Поддържани формати: JPG, PNG (Максимум 5MB на файл)</p>
+
+                                    <input type="file" name="imageFiles" id="file-input"
+                                           class="position-absolute opacity-0 w-100 h-100 top-0 start-0"
+                                           style="cursor: pointer;" accept="image/*" multiple />
+
+                                    <div id="preview-container" class="d-flex flex-wrap gap-3 justify-content-center mt-3"></div>
                                 </div>
-                            </div>
+                            </div>                    
                         </div>
                     </div>
                     <div class="card-footer border-0 p-4 bg-light text-center">
@@ -91,3 +95,56 @@
         </div>
     </div>
 </div>
+<style>
+    #drop-zone
+    {
+        transition: all 0.3s ease;
+    }
+
+    #drop-zone.dragover
+    {
+        background-color: #e9ecef !important;
+        border-color: #0d6efd !important;
+        transform: scale(1.01);
+    }
+
+    .preview-img 
+    {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+</style>
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+
+    fileInput.addEventListener('dragenter', () => dropZone.classList.add('dragover'));
+    fileInput.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    fileInput.addEventListener('drop', () => dropZone.classList.remove('dragover'));
+
+    fileInput.addEventListener('change', function() 
+    {
+        previewContainer.innerHTML = '';
+        const files = this.files;
+
+        if (files) 
+        {
+            Array.from(files).forEach(file => 
+                {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-img');
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    });
+</script>

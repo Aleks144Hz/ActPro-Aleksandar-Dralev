@@ -86,11 +86,19 @@
                                       rows="3" style="border-radius: 20px;"></textarea>
                         </div>
                         <div class="col-md-12">
-                            <div class="p-3 bg-light rounded-4 border-dashed border-2 text-center mt-2" style="border: 2px dashed #dee2e6;">
+                            <div id="drop-zone" class="p-3 bg-light rounded-4 text-center position-relative transition-all"
+                                 style="border: 2px dashed #dee2e6; cursor: pointer;">
                                 <label class="form-label small fw-bold text-info d-block mb-2">
                                     <i class="bi bi-upload me-1"></i> ДОБАВИ НОВИ СНИМКИ
                                 </label>
-                                <input type="file" name="imageFiles" class="form-control shadow-sm rounded-pill" accept="image/*" multiple />
+                                <h5 class="fw-bold">Плъзнете снимки тук или кликнете за избор</h5>
+                                <p class="text-muted small">Поддържани формати: JPG, PNG (Максимум 5MB на файл)</p>
+
+                                <input type="file" name="imageFiles" id="file-input"
+                                       class="position-absolute opacity-0 w-100 h-100 top-0 start-0"
+                                       style="cursor: pointer;" accept="image/*" multiple />
+
+                                <div id="preview-container" class="d-flex flex-wrap gap-3 justify-content-center mt-3"></div>
                             </div>
                         </div>
                     </div>
@@ -130,4 +138,57 @@
         font-style: normal !important;
         font-weight: 600;
     }
+
+    #drop-zone 
+    {
+        transition: all 0.3s ease;
+    }
+
+    #drop-zone.dragover 
+    {
+        background-color: #e9ecef !important;
+        border-color: #0d6efd !important;
+        transform: scale(1.01);
+    }
+
+    .preview-img 
+    {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
 </style>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const previewContainer = document.getElementById('preview-container');
+
+    fileInput.addEventListener('dragenter', () => dropZone.classList.add('dragover'));
+    fileInput.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    fileInput.addEventListener('drop', () => dropZone.classList.remove('dragover'));
+
+    fileInput.addEventListener('change', function()
+    {
+        previewContainer.innerHTML = '';
+        const files = this.files;
+
+        if (files)
+        {
+            Array.from(files).forEach(file =>
+                {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-img');
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+    });
+</script>

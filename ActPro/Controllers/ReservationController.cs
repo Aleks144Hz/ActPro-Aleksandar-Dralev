@@ -153,6 +153,32 @@ namespace ActPro.Controllers
             return RedirectToAction("Index", new { id = placeId });
         }
 
+        //--- EDIT REVIEW ---
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditReview(int id, string commentText, int rating)
+        {
+            var userId = _userManager.GetUserId(User);
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.Id == id && c.AspNetUserId == userId);
+
+            if (comment == null) return NotFound();
+
+            comment.CommentText = commentText;
+            comment.Rating = rating;
+            await _context.SaveChangesAsync();
+
+            var place = await _context.Places.Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == comment.PlaceId);
+            if (place != null)
+            {
+                place.Rating = (int)Math.Round(place.Comments.Average(c => (double)c.Rating));
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["Success"] = "Отзивът е актуализиран.";
+            return RedirectToAction("MyReviews");
+        }
+
         //--- DELETE REVIEW ---
         [HttpPost]
         [Authorize]
@@ -195,8 +221,13 @@ namespace ActPro.Controllers
             }
             await _userManager.UpdateAsync(user);
             await _context.SaveChangesAsync();
+            if (Request.Headers["Referer"].ToString().Contains("MyReviews"))
+            {
+                return RedirectToAction("MyReviews");
+            }
             return RedirectToAction("Index", new { id = placeId });
         }
+
         //--- GET OCCUPIED SLOTS FOR A DATE ---
         [HttpGet]
         public async Task<JsonResult> GetOccupiedSlots(int placeId, DateTime date)
@@ -215,18 +246,34 @@ namespace ActPro.Controllers
 
         //--- MY RESERVATIONS PAGE ---
         [Authorize]
-        public async Task<IActionResult> MyReservations(int page = 1)
+        public async Task<IActionResult> MyReservations(int page = 1, string filter = "all")
         {
             var userId = _userManager.GetUserId(User);
             int pageSize = 10;
-            var totalReservations = await _context.Reservations
+            var query = _context.Reservations
                 .Where(r => r.AspNetUserId == userId)
-                .CountAsync();
+                .AsQueryable();
 
-            var reservations = await _context.Reservations
+            var today = DateOnly.FromDateTime(DateTime.Now);
+            var now = TimeOnly.FromDateTime(DateTime.Now);
+
+            if (filter == "upcoming")
+            {
+                query = query.Where(r => r.ReservationDate > today ||
+                                        (r.ReservationDate == today && r.ReservationTime > now));
+            }
+            else if (filter == "past")
+            {
+                query = query.Where(r => r.ReservationDate < today ||
+                                        (r.ReservationDate == today && r.ReservationTime <= now));
+            }
+            var totalReservations = await query.CountAsync();
+
+            var reservations = await query
+                .Include(r => r.Place)
+                .ThenInclude(p => p.PlaceImages)
                 .Include(r => r.Place)
                 .ThenInclude(p => p.City)
-                .Where(r => r.AspNetUserId == userId)
                 .OrderByDescending(r => r.ReservationDate)
                 .ThenByDescending(r => r.ReservationTime)
                 .Skip((page - 1) * pageSize)
@@ -236,8 +283,55 @@ namespace ActPro.Controllers
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalReservations / pageSize);
             ViewBag.TotalCount = totalReservations;
+            ViewBag.Filter = filter;
 
             return View(reservations);
+        }
+
+        //--- CANCEL RESERVATION ---
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var reservation = await _context.Reservations
+                .FirstOrDefaultAsync(r => r.Id == id && r.AspNetUserId == userId);
+
+            if (reservation == null)
+            {
+                return Json(new { success = false, message = "Резервацията не е намерена." });
+            }
+
+            var reservationDateTime = (reservation.ReservationDate ?? DateOnly.FromDateTime(DateTime.Now))
+                                       .ToDateTime(reservation.ReservationTime ?? new TimeOnly(0, 0));
+
+            if (reservationDateTime < DateTime.Now)
+            {
+                return Json(new { success = false, message = "Не можете да откажете изминала резервация." });
+            }
+
+            _context.Reservations.Remove(reservation);
+            await _context.SaveChangesAsync();
+            await _auditService.LogAsync("Cancel Reservation", "User", userId, $"Потребителят отказа резервация.");
+
+            return Json(new { success = true, message = "Резервацията беше отказана успешно." });
+        }
+
+        //--- MY REVIEWS PAGE ---
+        [Authorize]
+        public async Task<IActionResult> MyReviews()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var reviews = await _context.Comments
+                .Include(c => c.Place)
+                .Where(c => c.AspNetUserId == userId)
+                .OrderByDescending(c => c.CreatedAt)
+                .ToListAsync();
+
+            return View(reviews);
         }
     }
 }

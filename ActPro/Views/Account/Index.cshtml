@@ -33,12 +33,12 @@
                     <a asp-controller="Reservation" asp-action="MyReservations" class="btn btn-outline-success shadow-sm mb-2">
                         <i class="bi bi-calendar-check-fill me-2"></i>Моите резервации (@ViewBag.ResCount)
                     </a>
-                    <button type="button" class="btn btn-outline-primary shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                        <i class="bi bi-pencil-fill me-2"></i>Редактирай профила
-                    </button>
-                    <button type="button" class="btn btn-outline-danger shadow-sm mb-2" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
-                        <i class="bi bi-trash me-2"></i>Изтриване на профил
-                    </button>
+                    <a asp-controller="Reservation" asp-action="MyReviews" class="btn btn-outline-primary shadow-sm mb-2">
+                        <i class="bi bi-chat-left-text me-2"></i>Моите отзиви (@ViewBag.RevCount)
+                    </a>
+                    <a asp-controller="Account" asp-action="Settings" class="btn btn-outline-dark shadow-sm mb-2">
+                        <i class="bi bi-gear me-2"></i>Настройки
+                    </a>
 
                 </div>
             </div>
@@ -172,14 +172,6 @@
         </div>
     </div>
 </div>
-@await Html.PartialAsync("DeleteProfile", new ActPro.Models.User.DeleteProfileViewModel())
-@await Html.PartialAsync("EditProfile", new ActPro.Models.User.EditProfileViewModel
-{
-    FirstName = Model.FirstName,
-    LastName = Model.LastName,
-    PhoneNumber = Model.PhoneNumber,
-    ExistingPicturePath = Model.ProfilePicturePath
-})
 @section Styles
 {
     <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
@@ -192,13 +184,6 @@
          {
              const rowsPerPage = 5;
              let currentPage = 1;
-             @if (ViewData["ShowDeleteModal"] != null && (bool)ViewData["ShowDeleteModal"])
-             {
-                <text>
-                    var deleteModal = new bootstrap.Modal(document.getElementById('deleteProfileModal'));
-                    deleteModal.show();
-                </text>
-             }
              function paginateTable()
              {
                  const rows = $('.table tbody tr:not(.no-favorites-row)');
