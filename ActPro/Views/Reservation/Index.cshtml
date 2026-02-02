@@ -20,8 +20,8 @@
         <div class="text-end">
             <span class="fs-4 fw-bold text-warning">
                 <button type="button"
-                                    class="btn @(Model.IsFavorite ? "btn-warning" : "btn-outline-warning") btn-sm ms-2 favorite-btn-large"
-                                    data-id="@Model.Place.Id">
+                        class="btn @(Model.IsFavorite ? "btn-warning" : "btn-outline-warning") btn-sm ms-2 favorite-btn-large"
+                        data-id="@Model.Place.Id">
                     <i class="bi @(Model.IsFavorite ? "bi-star-fill" : "bi-star")"></i>
                 </button> @Model.Place.Rating/5
             </span>
@@ -35,11 +35,11 @@
                 </div>
                 <div class="col-6">
                     <img src="@(subImages?.Count > 0 ? subImages[0].ImageUrl : "https://via.placeholder.com/400x200")"
-                                      class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 1">
+                         class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 1">
                 </div>
                 <div class="col-6">
                     <img src="@(subImages?.Count > 1 ? subImages[1].ImageUrl : "https://via.placeholder.com/400x200")"
-                                      class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 2">
+                         class="img-fluid rounded w-100 shadow-sm" style="height: 200px; object-fit: cover;" alt="Sub 2">
                 </div>
             </div>
         </div>
@@ -101,18 +101,18 @@
                                         @if (!string.IsNullOrEmpty(fullPath))
                                         {
                                             <img src="@fullPath"
-                                                                          class="rounded-circle shadow-sm"
-                                                                          style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #dee2e6;"
-                                                                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                 class="rounded-circle shadow-sm"
+                                                 style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #dee2e6;"
+                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                             <div class="bg-success text-white rounded-circle shadow-sm fw-bold align-items-center justify-content-center"
-                                                                          style="width: 50px; height: 50px; display: none; font-size: 1.2rem;">
+                                                 style="width: 50px; height: 50px; display: none; font-size: 1.2rem;">
                                                 @initial
                                             </div>
                                         }
                                         else
                                         {
                                             <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm"
-                                                                          style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                                 style="width: 50px; height: 50px; font-size: 1.2rem;">
                                                 @initial
                                             </div>
                                         }
@@ -127,8 +127,8 @@
                                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                                         <input type="hidden" name="placeId" value="@Model.Place.Id" />
                                                         <button type="submit"
-                                                                                                class="btn btn-link text-danger p-0 ms-2"
-                                                                                                title="Изтрий коментара">
+                                                                class="btn btn-link text-danger p-0 ms-2"
+                                                                title="Изтрий коментара">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
@@ -271,14 +271,14 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/bg.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () 
+    document.addEventListener("DOMContentLoaded", function ()
     {
         const container = document.getElementById('dateScrollContainer');
         const selectedDateInput = document.getElementById('selectedDate');
         const displayDate = document.getElementById('displayDate');
         const slotsWrapper = document.getElementById('slotsWrapper');
         const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-        const fp = flatpickr("#flatpickrDate", 
+        const fp = flatpickr("#flatpickrDate",
         {
             locale: "bg",
             minDate: "today",
@@ -291,13 +291,13 @@
                 updateAll(dateStr);
             }
         });
-        function updateAll(dateStr) 
+        function updateAll(dateStr)
         {
             if(slotsWrapper) slotsWrapper.style.opacity = "0";
 
             setTimeout(() => {
                 const date = new Date(dateStr);
-                if(displayDate) 
+                if(displayDate)
                 {
                     displayDate.innerText = date.toLocaleDateString('bg-BG', {
                         weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
@@ -323,7 +323,7 @@
         };
 
         const selectedStr = formatDate(centerDate);
-        for (let i = -3; i <= 14; i++) 
+        for (let i = -3; i <= 14; i++)
         {
             let d = new Date(centerDate);
             d.setDate(centerDate.getDate() + i);
@@ -337,10 +337,10 @@
             if (d.toDateString() === today.toDateString()) dayName = "ДНЕС";
 
             const div = document.createElement('div');
-    div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;           
+    div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
     div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
             div.onclick = () => {
-                if (iso !== selectedDateInput.value) 
+                if (iso !== selectedDateInput.value)
                 {
                     fp.setDate(iso);
                     updateAll(iso);
@@ -348,7 +348,7 @@
             };
             container.appendChild(div);
 
-            if (isSelected) 
+            if (isSelected)
             {
                 requestAnimationFrame(() => {
                     div.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
@@ -356,7 +356,7 @@
             }
         }
     }
-        window.scrollDays = function(direction) 
+        window.scrollDays = function(direction)
         {
             let d = new Date(selectedDateInput.value);
             d.setDate(d.getDate() + (direction === 'next' ? 1 : -1));
@@ -368,7 +368,7 @@
             fp.setDate(iso);
             updateAll(iso);
         };
-        $(document).on('click', '.favorite-btn-large', function (e) 
+        $(document).on('click', '.favorite-btn-large', function (e)
         {
             e.preventDefault();
             var btn = $(this);
@@ -391,7 +391,7 @@
                         }
                     }
                 },
-                error: function (xhr) 
+                error: function (xhr)
                 {
                     toastr.error(xhr.status === 401 ? "Трябва да сте влезли!" : "Грешка.");
                 }
@@ -401,15 +401,15 @@
         const charCounter = document.getElementById('charCounter');
         if (textArea && charCounter)
         {
-            textArea.addEventListener('input', function () 
+            textArea.addEventListener('input', function ()
             {
                 const length = textArea.value.length;
                 charCounter.textContent = `${length} / 250`;
-                if (length >= 250) 
+                if (length >= 250)
                 {
                     charCounter.classList.replace('text-muted', 'text-danger');
                 }
-                else 
+                else
                 {
                     charCounter.classList.replace('text-danger', 'text-muted');
                 }
@@ -420,7 +420,7 @@
         document.getElementById('calendarTrigger').onclick = () => fp.open();
         updateAll(selectedDateInput.value);
     });
-    function updateTimeSlots() 
+    function updateTimeSlots()
     {
         const selectedDateStr = document.getElementById('selectedDate').value;
         const placeId = "@Model.Place.Id";
@@ -428,7 +428,7 @@
         const now = new Date();
         const todayStr = now.toISOString().split('T')[0];
 
-        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots) 
+        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots)
         {
             document.querySelectorAll('input[name="timeSlot"]').forEach(input => {
                 const label = document.querySelector(`label[for="${input.id}"]`);
@@ -436,7 +436,7 @@
                 const isOccupied = occupiedSlots.includes(hourValue);
                 let isPast = false;
 
-                if (selectedDateStr === todayStr) 
+                if (selectedDateStr === todayStr)
                 {
                     const [hour, minute] = hourValue.split(':');
                     const slotTime = new Date();
@@ -444,14 +444,14 @@
                     if (slotTime < now) isPast = true;
                 }
 
-                if (isOccupied || isPast) 
+                if (isOccupied || isPast)
                 {
                     input.disabled = true;
                     input.checked = false;
                     label.classList.add('slot-occupied');
                     label.style.opacity = "0.5";
-                } 
-                else 
+                }
+                else
                 {
                     input.disabled = false;
                     label.classList.remove('slot-occupied');
@@ -460,19 +460,19 @@
             });
         });
     }
-    function handleBookingClick() 
+    function handleBookingClick()
     {
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
-        if (!selectedTimeInput) 
+        if (!selectedTimeInput)
         {
             toastr.info("Моля, изберете час!");
             return;
         }
         const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-        if (isUserLoggedIn) 
+        if (isUserLoggedIn)
         {
             executeBooking();
-        } 
+        }
         else
         {
             const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
@@ -481,7 +481,7 @@
         }
     }
 
-    function executeBooking() 
+    function executeBooking()
     {
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         const date = document.getElementById('selectedDate').value;
@@ -493,7 +493,7 @@
         form.action = '@Url.Action("Book", "Reservation")';
 
         const data = { 'placeId': placeId, 'date': date, 'timeSlot': selectedTimeInput.value, '__RequestVerificationToken': token };
-        for (const key in data) 
+        for (const key in data)
         {
             const input = document.createElement('input');
             input.type = 'hidden';

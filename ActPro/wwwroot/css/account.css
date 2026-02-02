@@ -65,10 +65,10 @@
     background-color: rgba(13, 110, 253, 0.05);
 }
 
-.btn-outline-danger 
+.btn-outline-dark 
 {
     border-width: 2px;
-    background-color: rgba(220, 53, 69, 0.05);
+    background-color: rgba(25, 25, 25, 0.05);
 }
 
 .text-bronze
@@ -137,72 +137,6 @@
 .modal.show .modal-dialog 
 {
     transform: scale(1);
-}
-
-.profile-avatar-wrapper 
-{
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    margin: 0 auto;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-    background-color: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.profile-avatar-wrapper:hover 
-{
-    border-color: #0dcaf0;
-    filter: brightness(90%);
-}
-
-.profile-avatar 
-{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-placeholder 
-{
-    color: #adb5bd;
-    display: flex;
-    flex-direction: column;
-    font-size: 0.8rem;
-}
-
-.profile-placeholder i 
-{
-    font-size: 2rem;
-}
-
-.edit-badge 
-{
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: #0dcaf0;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #fff;
-    font-size: 0.8rem;
-}
-
-.profile-avatar-wrapper:hover .edit-badge
-{
-    transform: scale(1.1);
-    background-color: #0baccc;
 }
 
 .form-control:focus

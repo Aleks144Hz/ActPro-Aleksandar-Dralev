@@ -48,6 +48,9 @@ namespace ActPro.Controllers
             ViewBag.ResCount = await _context.Reservations
             .CountAsync(r => r.AspNetUserId == user.Id);
 
+            ViewBag.RevCount = await _context.Comments
+            .CountAsync(rev => rev.AspNetUserId == user.Id);
+
             return View(user);
         }
 
@@ -204,7 +207,7 @@ namespace ActPro.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["ShowDeleteModal"] = true;
-                return View("Index", user);
+                return View("Settings", user);
             }
 
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, model.Password);
@@ -213,7 +216,7 @@ namespace ActPro.Controllers
             {
                 ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
                 ViewData["ShowDeleteModal"] = true;
-                return View("Index", user);
+                return View("Settings", user);
             }
             var userReservations = _context.Reservations.Where(r => r.AspNetUserId == userId);
             _context.Reservations.RemoveRange(userReservations);
@@ -282,9 +285,9 @@ namespace ActPro.Controllers
                 await _signInManager.RefreshSignInAsync(user);
                 TempData["Success"] = SuccessfulUserEdit;
                 await _auditService.LogAsync("Update Settings", "User", user.Id, $"Потребителят обнови профилните си данни.");
-                return RedirectToAction("Index");
+                return RedirectToAction("Settings");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Settings");
         }
         private void DeleteFileFromDisk(string fileName)
         {
@@ -297,6 +300,51 @@ namespace ActPro.Controllers
                     System.Diagnostics.Debug.WriteLine("Неуспешно триене: " + ex.Message);
                 }
             }
+        }
+
+        // --- CHANGE PASSWORD ---
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["ShowChangePasswordModal"] = true;
+                return View("Settings", user);
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                await _auditService.LogAsync("Update Settings", "User", user.Id, "Потребителят смени паролата си успешно.");
+                TempData["Success"] = "Паролата е променена успешно!";
+                return RedirectToAction("Settings");
+            }
+
+            if (!result.Succeeded)
+            {
+                bool hasPasswordError = false;
+
+                foreach (var error in result.Errors)
+                {
+                    if (error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError("OldPassword", "Въвели сте грешна парола.");
+                    }
+                    else if (error.Code.Contains("Password") && !hasPasswordError)
+                    {
+                        ModelState.AddModelError("NewPassword", error.Description);
+                        hasPasswordError = true;
+                    }
+                }
+            }
+            ViewData["ShowChangePasswordModal"] = true;
+            return View("Settings", user);
         }
 
         //--- FAVORITES ---
@@ -321,6 +369,19 @@ namespace ActPro.Controllers
             _context.Favorites.Add(favorite);
             await _context.SaveChangesAsync();
             return Json(new { success = true, isFavorite = true, message = "Добавено в любими!" });
+        }
+
+        // --- SETTINGS ---
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Settings()
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null) return NotFound();
+
+            return View(user);
         }
     }
 }

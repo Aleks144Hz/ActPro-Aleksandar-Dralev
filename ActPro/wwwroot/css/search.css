@@ -350,6 +350,12 @@ input[type=number]:focus
     transform: translateY(0);
 }
 
+.btn-outline-success 
+{
+    border-width: 2px;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
 .btn-success:hover,
 .btn-outline-success:hover
 {
