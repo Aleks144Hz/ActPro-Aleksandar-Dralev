@@ -41,6 +41,7 @@ namespace ActPro.Areas.Owner.Controllers
                 .Include(p => p.City)
                 .Include(p => p.Activity)
                 .Include(p => p.PlaceImages)
+                .Include(p => p.PlaceClosures)
                 .Where(p => p.OwnerId == userId)
                 .ToListAsync();
 

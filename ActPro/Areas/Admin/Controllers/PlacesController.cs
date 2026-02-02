@@ -223,22 +223,41 @@ namespace ActPro.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CloseDate(int placeId, DateTime dateToClose, string reason)
+        public async Task<IActionResult> CloseDateRange(int placeId, DateTime startDate, DateTime endDate, string reason)
         {
-            var exists = await _context.PlaceClosures.AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == dateToClose.Date);
-
-            if (!exists)
+            if (endDate < startDate)
             {
-                _context.PlaceClosures.Add(new PlaceClosure
-                {
-                    PlaceId = placeId,
-                    ClosureDate = dateToClose,
-                    Reason = reason
-                });
-                await _context.SaveChangesAsync();
-                TempData["Success"] = "Датата беше заключена успешно.";
-                await _auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключена дата {dateToClose:dd.MM.yyyy} за обект ID: {placeId}. Причина: {reason}");
+                TempData["Error"] = "Крайната дата не може да бъде преди началната.";
+                return RedirectToAction("Index", "Dashboard");
             }
+
+            var closuresToAdd = new List<PlaceClosure>();
+
+            for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
+            {
+                bool exists = await _context.PlaceClosures
+                    .AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == date);
+
+                if (!exists)
+                {
+                    closuresToAdd.Add(new PlaceClosure
+                    {
+                        PlaceId = placeId,
+                        ClosureDate = date,
+                        Reason = reason
+                    });
+                }
+            }
+
+            if (closuresToAdd.Any())
+            {
+                _context.PlaceClosures.AddRange(closuresToAdd);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = $"Успешно затворихте {closuresToAdd.Count} дни.";
+                await _auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключен период от {startDate:dd.MM.yyyy} до {endDate:dd.MM.yyyy}. Причина: {reason}");
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -5,6 +5,7 @@ using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Areas.Owner.Controllers
@@ -23,24 +24,21 @@ namespace ActPro.Areas.Owner.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Place place)
-        {
-            var userId = _userManager.GetUserId(User);
-            place.OwnerId = userId;
-            place.IsApproved = false;
-
-            if (ModelState.IsValid)
-            {
-                _context.Add(place);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Dashboard");
-            }
-            return RedirectToAction("Index", "Dashboard");
-        }
-
         // Edit Place
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var place = await _context.Places
+            .Include(p => p.PlaceImages)
+            .FirstOrDefaultAsync(m => m.Id == id);
+            if (place == null) return NotFound();
+
+            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(_context.Activities, "Id", "Name", place.ActivityId);
+
+            return View(place);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Place place, IEnumerable<IFormFile> imageFiles)
@@ -117,6 +115,77 @@ namespace ActPro.Areas.Owner.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        //---Manage Place Schedule---//
+        [HttpGet]
+        public async Task<IActionResult> ManageSchedule(int placeId)
+        {
+            var place = await _context.Places.Include(p => p.PlaceClosures).Include(p => p.Reservations).FirstOrDefaultAsync(p => p.Id == placeId);
+            if (place == null) return NotFound();
+            return View(place);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CloseDateRange(int placeId, DateTime startDate, DateTime endDate, string reason)
+        {
+            if (endDate < startDate)
+            {
+                TempData["Error"] = "Крайната дата не може да бъде преди началната.";
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            var closuresToAdd = new List<PlaceClosure>();
+
+            for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
+            {
+                bool exists = await _context.PlaceClosures
+                    .AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == date);
+
+                if (!exists)
+                {
+                    closuresToAdd.Add(new PlaceClosure
+                    {
+                        PlaceId = placeId,
+                        ClosureDate = date,
+                        Reason = reason
+                    });
+                }
+            }
+
+            if (closuresToAdd.Any())
+            {
+                _context.PlaceClosures.AddRange(closuresToAdd);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = $"Успешно затворихте {closuresToAdd.Count} дни.";
+                await _auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключен период от {startDate:dd.MM.yyyy} до {endDate:dd.MM.yyyy}. Причина: {reason}");
+            }
+
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OpenDate(int id)
+        {
+            var closure = await _context.PlaceClosures.FindAsync(id);
+            if (closure != null)
+            {
+                int placeId = closure.PlaceId;
+                DateTime closedDate = closure.ClosureDate;
+
+                _context.PlaceClosures.Remove(closure);
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Датата беше отключена успешно.";
+
+                await _auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"Отключена дата {closedDate:dd.MM.yyyy} за обект ID: {placeId}");
+
+                return RedirectToAction("Index", "Dashboard");
+            }
+            return NotFound();
         }
     }
 }
