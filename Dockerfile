@@ -18,6 +18,6 @@ COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
-ENV ConnectionStrings__DefaultConnection="Data Source=sql8020.site4now.net;Initial Catalog=db_ac3bcb_actpro;User Id=db_ac3bcb_actpro_admin;Password=SmartPro#12;TrustServerCertificate=True;"
+ENV ConnectionStrings__DefaultConnection="Data Source=SQL8020.site4now.net;Initial Catalog=db_ac3bcb_actpro;User Id=db_ac3bcb_actpro_admin;Password=SmartPro#12;TrustServerCertificate=True;"
 
 ENTRYPOINT ["dotnet", "ActPro.dll"]
