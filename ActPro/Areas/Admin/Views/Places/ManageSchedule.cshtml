@@ -1,0 +1,85 @@
+﻿@model ActPro.DAL.Entities.Place
+
+<div class="modal fade" id="manageScheduleModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+            <div class="modal-header bg-dark text-white p-3" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-calendar-x me-2"></i> График на: @Model.Name
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row">
+                    <div class="col-md-5 border-end">
+                        <h6 class="fw-bold text-danger mb-3 text-uppercase small">Затвори дата</h6>
+                        <form asp-action="CloseDateRange" method="post">
+                            <input type="hidden" name="placeId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted">ОТ ДАТА</label>
+                                <input type="date" name="startDate" class="form-control rounded-pill border-danger-subtle shadow-sm px-3"
+                                       required min="@DateTime.Now.ToString("yyyy-MM-dd")" id="startDate-@Model.Id"
+                                       onchange="document.getElementById('endDate-@Model.Id').min = this.value" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted">ДО ДАТА</label>
+                                <input type="date" name="endDate" class="form-control rounded-pill border-danger-subtle shadow-sm px-3"
+                                       required min="@DateTime.Now.ToString("yyyy-MM-dd")" id="endDate-@Model.Id" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-muted">ПРИЧИНА</label>
+                                <input type="text" name="reason" class="form-control rounded-pill border-danger-subtle shadow-sm px-3"
+                                       required placeholder="Ремонт, ваканция..." />
+                            </div>
+                            <button type="submit" class="btn btn-danger w-100 rounded-pill py-2 fw-bold shadow-sm">
+                                <i class="bi bi-lock-fill"></i> ЗАКЛЮЧИ ПЕРИОДА
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-7">
+                        <h6 class="fw-bold text-secondary mb-3 text-uppercase small ps-2">Списък със затворени дати</h6>
+                        <div style="max-height: 350px; overflow-y: auto;">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light sticky-top">
+                                    <tr>
+                                        <th class="ps-2">Дата</th>
+                                        <th>Причина</th>
+                                        <th class="text-center">Действие</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.PlaceClosures != null && Model.PlaceClosures.Any())
+                                    {
+                                        @foreach (var closure in Model.PlaceClosures.Where(c => c.ClosureDate.Date >= DateTime.Today).OrderByDescending(c => c.ClosureDate))
+                                        {
+                                            <tr>
+                                                <td class="ps-2 fw-bold">@closure.ClosureDate.ToString("dd.MM.yyyy")</td>
+                                                <td><span class="badge bg-light text-dark border">@closure.Reason</span></td>
+                                                <td class="text-center">
+                                                    <form asp-action="OpenDate" asp-route-id="@closure.Id" method="post">
+                                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3" title="Отвори (Отключи)">
+                                                            <i class="bi bi-unlock-fill"></i> Отвори
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="3" class="text-center py-4 text-muted">
+                                                <i class="bi bi-info-circle d-block fs-4 mb-2"></i>
+                                                Няма затворени дати за този обект
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
