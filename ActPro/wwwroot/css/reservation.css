@@ -151,7 +151,8 @@ input[name="timeSlot"]:checked + .time-slot-label
     color: white !important;
 }
 
-.slots-container, #dateScrollContainer {
+.slots-container, #dateScrollContainer 
+{
     transition: opacity 0.2s ease-in-out;
 }
 
