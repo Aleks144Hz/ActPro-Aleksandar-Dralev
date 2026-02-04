@@ -224,9 +224,8 @@
                     </button>
                 </div>
                 <input type="hidden" id="selectedDate" name="reservationDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-
-                <div id="slotsWrapper" class="row row-cols-4 g-2 mb-4 text-center slots-container">
-                    @foreach (var hour in new[] { "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00" })
+                <div id="slotsWrapper" class="row row-cols-5 g-2 mb-1 text-center slots-container">
+                    @foreach (var hour in new[] { "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00" })
                     {
                         <div class="col mb-2">
                             <input type="radio" name="timeSlot" id="slot-@hour" value="@hour" class="btn-check">
@@ -310,8 +309,8 @@
                 if(slotsWrapper) slotsWrapper.style.opacity = "1";
             }, 150);
         }
-      function renderDateStrip(centerDate)
-      {
+        function renderDateStrip(centerDate)
+        {
         container.innerHTML = '';
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -337,8 +336,8 @@
             if (d.toDateString() === today.toDateString()) dayName = "ДНЕС";
 
             const div = document.createElement('div');
-    div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
-    div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
+            div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
+            div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
             div.onclick = () => {
                 if (iso !== selectedDateInput.value)
                 {
@@ -351,7 +350,7 @@
             if (isSelected)
             {
                 requestAnimationFrame(() => {
-                    div.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    div.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
                 });
             }
         }
@@ -377,14 +376,18 @@
                 url: '/Account/ToggleFavorite',
                 type: 'POST',
                 data: { placeId: pId },
-                success: function (response) {
+                success: function (response)
+                {
                     if (response.success) {
                         var icon = btn.find('i');
-                        if (response.isFavorite) {
+                        if (response.isFavorite) 
+                        {
                             btn.removeClass('btn-outline-warning').addClass('btn-warning');
                             icon.removeClass('bi-star').addClass('bi-star-fill');
                             toastr.success("Добавено в любими!");
-                        } else {
+                        } 
+                        else 
+                        {
                             btn.removeClass('btn-warning').addClass('btn-outline-warning');
                             icon.removeClass('bi-star-fill').addClass('bi-star');
                             toastr.info("Премахнато от любими.");
@@ -393,7 +396,7 @@
                 },
                 error: function (xhr)
                 {
-                    toastr.error(xhr.status === 401 ? "Трябва да сте влезли!" : "Грешка.");
+                    toastr.error(xhr.status === 401 ? "Трябва да сте влезли в профил!" : "Грешка.");
                 }
             });
         });
@@ -427,6 +430,17 @@
         const url = '@Url.Action("GetOccupiedSlots", "Reservation")';
         const now = new Date();
         const todayStr = now.toISOString().split('T')[0];
+        const labels = document.querySelectorAll('.time-slot-label');
+        labels.forEach((label, index) => {
+            label.style.opacity = "0";
+            label.style.transform = "translateY(10px)";
+
+            setTimeout(() => {
+                label.style.transition = "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                label.style.opacity = label.classList.contains('slot-occupied') ? "0.5" : "1";
+                label.style.transform = "translateY(0)";
+            }, index * 30);
+        });
 
         $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots)
         {
