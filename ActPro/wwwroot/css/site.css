@@ -16,6 +16,7 @@ body
     flex-direction: column;
     min-height: 100%;
     padding-right: 0 !important;
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }
 
 main 
@@ -110,6 +111,7 @@ main
 {
     position: relative;
     z-index: 2000 !important;
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
 }
 
 .navbar .dropdown-menu 
