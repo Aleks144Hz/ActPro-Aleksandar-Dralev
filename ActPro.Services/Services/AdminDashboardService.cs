@@ -14,11 +14,7 @@ namespace ActPro.Services.Services
         private readonly IRepository<Comment> _commRepo;
         private readonly IRepository<Place> _placeRepo;
 
-        public AdminDashboardService(
-            IRepository<Reservation> resRepo,
-            IRepository<ApplicationUser> userRepo,
-            IRepository<Comment> commRepo,
-            IRepository<Place> placeRepo)
+        public AdminDashboardService(IRepository<Reservation> resRepo, IRepository<ApplicationUser> userRepo, IRepository<Comment> commRepo, IRepository<Place> placeRepo)
         {
             _resRepo = resRepo;
             _userRepo = userRepo;
