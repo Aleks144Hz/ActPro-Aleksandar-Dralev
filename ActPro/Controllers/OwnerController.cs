@@ -1,86 +1,51 @@
 ﻿using ActPro.DAL;
-using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
-using ActPro.Services;
+using ActPro.Domain.Models.Owner;
+using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Controllers
 {
     [Authorize]
     public class OwnerController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPlaceService _placeService;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAuditService _auditService;
+        private readonly IWebHostEnvironment _env;
 
-        public OwnerController(ApplicationDbContext context, IAuditService auditService, UserManager<ApplicationUser> userManager)
+        public OwnerController(IPlaceService placeService, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
         {
-            _context = context;
-            _auditService = auditService;
+            _placeService = placeService;
             _userManager = userManager;
+            _env = env;
         }
 
-        //ADD NEW PLACE
+        //---Create Place Request---//
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name");
-            ViewBag.ActivityTypes = new SelectList(_context.Activities, "Id", "Name");
-            return View(new Place());
+            ViewBag.Cities = new SelectList(await _placeService.GetCitiesAsync(), "Id", "Name");
+            ViewBag.ActivityTypes = new SelectList(await _placeService.GetActivitiesAsync(), "Id", "Name");
+            return View(new PlaceEntryViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Place place, IEnumerable<IFormFile>? imageFiles)
         {
-            ModelState.Remove("PlaceImages");
-            ModelState.Remove("City");
-            ModelState.Remove("Activity");
-            ModelState.Remove("Owner");
-            ModelState.Remove("OwnerId");
+            new[] { "PlaceImages", "City", "Activity", "Owner", "OwnerId" }.ToList().ForEach(k => ModelState.Remove(k));
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    place.OwnerId = _userManager.GetUserId(User);
-                    place.IsApproved = false;
-                    place.Rating = 0;
-                    place.City = null;
-                    place.Activity = null;
-                    _context.Places.Add(place);
-                    await _context.SaveChangesAsync();
-                    var currentUser = await _userManager.GetUserAsync(User);
-
-                    if (imageFiles != null && imageFiles.Any())
-                    {
-                        var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/places");
-                        if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
-
-                        foreach (var file in imageFiles)
-                        {
-                            if (file.Length > 0)
-                            {
-                                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                                var filePath = Path.Combine(uploadPath, fileName);
-
-                                using (var stream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    await file.CopyToAsync(stream);
-                                }
-                                string dbPath = "/images/places/" + fileName;
-                                await _context.Database.ExecuteSqlInterpolatedAsync(
-                                    $"INSERT INTO PlaceImages (PlaceId, ImageUrl) VALUES ({place.Id}, {dbPath})");
-                            }
-                        }
-                    }
+                    var userId = _userManager.GetUserId(User);
+                    await _placeService.CreatePlaceRequestAsync(place, imageFiles, userId, _env.WebRootPath);
 
                     TempData["Success"] = "Вашата заявка е изпратена успешно!";
-                    await _auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
                     return RedirectToAction("Index", "Home");
                 }
                 catch (Exception ex)
@@ -89,8 +54,9 @@ namespace ActPro.Controllers
                     ModelState.AddModelError("", "Грешка при запис: " + msg);
                 }
             }
-            ViewBag.Cities = new SelectList(_context.Cities, "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(_context.Activities, "Id", "Name", place.ActivityId);
+
+            ViewBag.Cities = new SelectList(await _placeService.GetCitiesAsync(), "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(await _placeService.GetActivitiesAsync(), "Id", "Name", place.ActivityId);
             return View(place);
         }
     }

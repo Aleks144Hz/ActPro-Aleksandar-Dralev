@@ -1,8 +1,7 @@
 ﻿using ActPro.DAL;
-using ActPro.DAL.Data;
-using ActPro.DAL.Entities;
 using ActPro.Models.User;
 using ActPro.Services;
+using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,47 +10,50 @@ using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IConfiguration _configuration;
+        private readonly IAccountService _accountService;
         private readonly IAuditService _auditService;
-        public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IConfiguration configuration, IAuditService auditService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public AccountController(
+            IAccountService accountService,
+            IAuditService auditService,
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment webHostEnvironment)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _context = context;
-            _webHostEnvironment = webHostEnvironment;
-            _configuration = configuration;
+            _accountService = accountService;
             _auditService = auditService;
+            _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // --- ACCOUNT / PROFILE (Index) ---
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
-            var user = await _context.Users
-            .Include(u => u.Favorites)
-            .ThenInclude(f => f.Place)
-            .ThenInclude(p => p.PlaceImages)
-            .Include(u => u.Favorites)
-            .ThenInclude(f => f.Place)
-            .ThenInclude(p => p.City)
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _accountService.GetUserFullProfileAsync(userId);
 
             if (user == null) return NotFound();
 
-            ViewBag.ResCount = await _context.Reservations
-            .CountAsync(r => r.AspNetUserId == user.Id);
+            var stats = await _accountService.GetUserActivityStatsAsync(userId);
+            var viewModel = new UserProfileViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicturePath = user.ProfilePicturePath,
+                Credits = user.Credits,
+                Favorites = user.Favorites,
+            };
+            ViewBag.ResCount = stats.resCount;
+            ViewBag.RevCount = stats.revCount;
 
-            ViewBag.RevCount = await _context.Comments
-            .CountAsync(rev => rev.AspNetUserId == user.Id);
-
-            return View(user);
+            return View(viewModel);
         }
 
         // --- LOGIN ---
@@ -59,92 +61,76 @@ namespace ActPro.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            if (User.Identity.IsAuthenticated) return RedirectToAction("/Index");
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var isBanned = await _context.BannedUsers.AnyAsync(b => b.Email == model.Email);
-
-            if (isBanned)
+            if (await _accountService.IsUserBannedAsync(model.Email))
             {
                 ModelState.AddModelError(string.Empty, "Акаунтът ви е блокиран.");
                 return View(model);
             }
+
             if (!ModelState.IsValid) return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
+            var result = await _accountService.LoginAsync(model.Email, model.Password, model.RememberMe);
+
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    TempData["Success"] = "Добре дошли!";
-                    await _auditService.LogAsync("User Login", "User", user.Id, $"Потребителят влезе в системата.");
-                    return RedirectToAction("Index", "Home");
-                }
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                await _auditService.LogAsync("User Login", "User", user.Id, "Потребителят влезе в системата.");
+                TempData["Success"] = "Добре дошли!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userExists = await _userManager.FindByEmailAsync(model.Email);
+            if (userExists != null)
+            {
                 ModelState.AddModelError("Password", NotValidPassword);
             }
             else
             {
                 ModelState.AddModelError("Email", UserIsNotRegistered);
             }
+
             return View(model);
         }
 
         // --- REGISTER ---
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        public IActionResult Register() => View();
 
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            string captchaResponse = Request.Form["g-recaptcha-response"];
-            string secretKey = _configuration["GoogleReCaptcha:SecretKey"];
-            bool isBanned = await _context.BannedUsers.AnyAsync(b =>
-            b.Email == model.Email || b.Phone == model.PhoneNumber);
-
-            if (isBanned)
+            if (await _accountService.IsUserBannedAsync(model.Email, model.PhoneNumber))
             {
                 ModelState.AddModelError("", "Този имейл е блокиран.");
                 return View(model);
             }
 
-            if (string.IsNullOrEmpty(captchaResponse) || !(await IsReCaptchaValid(captchaResponse, secretKey)))
+            string captchaResponse = Request.Form["g-recaptcha-response"];
+            if (!await _accountService.VerifyReCaptchaAsync(captchaResponse))
             {
                 ModelState.AddModelError("CaptchaResponse", "Моля потвърдете, че не сте робот.");
                 return View(model);
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
-                {
-                    UserName = model.Email,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    CreatedOn = DateTime.Now
-                };
-
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _accountService.RegisterAsync(model);
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(user, "User");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var user = await _userManager.FindByEmailAsync(model.Email);
                     TempData["Success"] = "Регистрацията е успешна! Добре дошли.";
                     await _auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
                     return RedirectToAction("Index", "Home");
@@ -153,56 +139,77 @@ namespace ActPro.Controllers
                 foreach (var error in result.Errors)
                 {
                     if (error.Code.Contains("Password"))
-                    {
                         ModelState.AddModelError("Password", error.Description);
-                    }
-                    else if (error.Code.Contains("Email") || error.Code.Contains("UserName"))
-                    {
-                        ModelState.AddModelError("Email", error.Description);
-                    }
                     else
-                    {
                         ModelState.AddModelError("Email", error.Description);
-                    }
                 }
             }
             return View(model);
         }
-        private async Task<bool> IsReCaptchaValid(string response, string secret)
+
+        // --- EDIT PROFILE ---
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
         {
-            using var client = new HttpClient();
-            var verifyUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={response}";
-            var result = await client.PostAsync(verifyUrl, null);
-            var jsonString = await result.Content.ReadAsStringAsync();
-            return jsonString.Contains("\"success\": true");
+            var userId = _userManager.GetUserId(User);
+            var result = await _accountService.UpdateProfileAsync(userId, model, _webHostEnvironment.WebRootPath);
+
+            if (result.Succeeded)
+            {
+                TempData["Success"] = SuccessfulUserEdit;
+                await _auditService.LogAsync("Update Settings", "User", userId, "Потребителят обнови профилните си данни.");
+            }
+
+            return RedirectToAction("Settings");
         }
 
-        // --- LOGOUT ---
+        // --- CHANGE PASSWORD ---
         [HttpPost]
-        public async Task<IActionResult> Logout()
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            await _signInManager.SignOutAsync();
-            TempData["Success"] = "Довиждане!";
-            return RedirectToAction("Index", "Home");
+            var userId = _userManager.GetUserId(User);
+            var user = await _accountService.GetUserByIdAsync(userId);
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["ShowChangePasswordModal"] = true;
+                return View("Settings", user);
+            }
+
+            var result = await _accountService.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                await _auditService.LogAsync("Update Settings", "User", userId, "Потребителят смени паролата си успешно.");
+                TempData["Success"] = "Паролата е променена успешно!";
+                return RedirectToAction("Settings");
+            }
+
+            bool hasPasswordError = false;
+            foreach (var error in result.Errors)
+            {
+                if (error.Code == "PasswordMismatch")
+                    ModelState.AddModelError("OldPassword", "Въвели сте грешна парола.");
+                else if (error.Code.Contains("Password") && !hasPasswordError)
+                {
+                    ModelState.AddModelError("NewPassword", error.Description);
+                    hasPasswordError = true;
+                }
+            }
+
+            ViewData["ShowChangePasswordModal"] = true;
+            return View("Settings", user);
         }
 
         // --- DELETE PROFILE ---
-        [HttpGet]
-        [Authorize]
-        public IActionResult ConfirmDelete()
-        {
-            return View();
-        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProfile(DeleteProfileViewModel model)
         {
             var userId = _userManager.GetUserId(User);
-            var user = await _context.Users
-                .Include(u => u.Favorites).ThenInclude(f => f.Place)
-                .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.PlaceImages)
-                .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.City)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _accountService.GetUserFullProfileAsync(userId);
 
             if (!ModelState.IsValid)
             {
@@ -211,22 +218,19 @@ namespace ActPro.Controllers
             }
 
             var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, model.Password);
-
             if (!isPasswordCorrect)
             {
                 ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
                 ViewData["ShowDeleteModal"] = true;
                 return View("Settings", user);
             }
-            var userReservations = _context.Reservations.Where(r => r.AspNetUserId == userId);
-            _context.Reservations.RemoveRange(userReservations);
 
-            var result = await _userManager.DeleteAsync(user);
+            var result = await _accountService.DeleteAccountAsync(userId);
             if (result.Succeeded)
             {
-                await _signInManager.SignOutAsync();
+                await _accountService.LogoutAsync();
                 TempData["Success"] = SuccessfulDeletedAccount;
-                await _auditService.LogAsync("Delete User", "User", user.Id, "Потребителят сам изтри профила си");
+                await _auditService.LogAsync("Delete User", "User", userId, "Потребителят сам изтри профила си");
                 return RedirectToAction("Index", "Home");
             }
 
@@ -235,153 +239,46 @@ namespace ActPro.Controllers
             return View("Index", user);
         }
 
-        // --- EDIT PROFILE ---
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return NotFound();
-            string oldFileName = user.ProfilePicturePath;
-            bool isNewPictureUploaded = false;
-            user.FirstName = !string.IsNullOrWhiteSpace(model.FirstName) ? model.FirstName : user.FirstName;
-            user.LastName = !string.IsNullOrWhiteSpace(model.LastName) ? model.LastName : user.LastName;
-            user.PhoneNumber = model.PhoneNumber;
-
-            if (model.ProfilePicture != null && model.ProfilePicture.Length > 0)
-            {
-                var folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles");
-                if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
-                var newFileName = Guid.NewGuid().ToString() + Path.GetExtension(model.ProfilePicture.FileName);
-                var filePath = Path.Combine(folderPath, newFileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.ProfilePicture.CopyToAsync(stream);
-                }
-                if (!string.IsNullOrEmpty(oldFileName)) DeleteFileFromDisk(oldFileName);
-                user.ProfilePicturePath = newFileName;
-                isNewPictureUploaded = true;
-            }
-            var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
-            {
-                if (isNewPictureUploaded && !string.IsNullOrEmpty(oldFileName))
-                {
-                    var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles", oldFileName);
-
-                    if (System.IO.File.Exists(oldFilePath))
-                    {
-                        try
-                        {
-                            System.IO.File.Delete(oldFilePath);
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine("Неуспешно триене: " + ex.Message);
-                        }
-                    }
-                }
-                await _signInManager.RefreshSignInAsync(user);
-                TempData["Success"] = SuccessfulUserEdit;
-                await _auditService.LogAsync("Update Settings", "User", user.Id, $"Потребителят обнови профилните си данни.");
-                return RedirectToAction("Settings");
-            }
-            return RedirectToAction("Settings");
-        }
-        private void DeleteFileFromDisk(string fileName)
-        {
-            var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", "profiles", fileName);
-            if (System.IO.File.Exists(path))
-            {
-                try { System.IO.File.Delete(path); }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("Неуспешно триене: " + ex.Message);
-                }
-            }
-        }
-
-        // --- CHANGE PASSWORD ---
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null) return NotFound();
-
-            if (!ModelState.IsValid)
-            {
-                ViewData["ShowChangePasswordModal"] = true;
-                return View("Settings", user);
-            }
-
-            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-
-            if (result.Succeeded)
-            {
-                await _signInManager.RefreshSignInAsync(user);
-                await _auditService.LogAsync("Update Settings", "User", user.Id, "Потребителят смени паролата си успешно.");
-                TempData["Success"] = "Паролата е променена успешно!";
-                return RedirectToAction("Settings");
-            }
-
-            if (!result.Succeeded)
-            {
-                bool hasPasswordError = false;
-
-                foreach (var error in result.Errors)
-                {
-                    if (error.Code == "PasswordMismatch")
-                    {
-                        ModelState.AddModelError("OldPassword", "Въвели сте грешна парола.");
-                    }
-                    else if (error.Code.Contains("Password") && !hasPasswordError)
-                    {
-                        ModelState.AddModelError("NewPassword", error.Description);
-                        hasPasswordError = true;
-                    }
-                }
-            }
-            ViewData["ShowChangePasswordModal"] = true;
-            return View("Settings", user);
-        }
-
-        //--- FAVORITES ---
+        // --- FAVORITES ---
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        [Authorize]
         public async Task<IActionResult> ToggleFavorite(int placeId)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            var existingFavorite = await _context.Favorites
-                .FirstOrDefaultAsync(f => f.PlaceId == placeId && f.AspNetUserId == userId);
 
-            if (existingFavorite != null)
-            {
-                _context.Favorites.Remove(existingFavorite);
-                await _context.SaveChangesAsync();
-                return Json(new { success = true, isFavorite = false, message = "Премахнато от любими" });
-            }
+            var result = await _accountService.ToggleFavoriteAsync(userId, placeId);
+            return Json(new { success = true, isFavorite = result.isFavorite, message = result.message });
+        }
 
-            var favorite = new Favorite { AspNetUserId = userId, PlaceId = placeId };
-            _context.Favorites.Add(favorite);
-            await _context.SaveChangesAsync();
-            return Json(new { success = true, isFavorite = true, message = "Добавено в любими!" });
+        // --- LOGOUT ---
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _accountService.LogoutAsync();
+            TempData["Success"] = "Довиждане!";
+            return RedirectToAction("Index", "Home");
         }
 
         // --- SETTINGS ---
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> Settings()
         {
             var userId = _userManager.GetUserId(User);
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _accountService.GetUserByIdAsync(userId);
 
             if (user == null) return NotFound();
-
-            return View(user);
+            var viewModel = new ProfileSettingsViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicturePath = user.ProfilePicturePath,
+                CreatedOn = user.CreatedOn
+            };
+            return View(viewModel);
         }
     }
 }

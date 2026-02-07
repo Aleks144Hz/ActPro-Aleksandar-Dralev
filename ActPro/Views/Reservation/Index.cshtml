@@ -1,8 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using ActPro.DAL.Entities
-@inject UserManager<ActPro.DAL.ApplicationUser> UserManager
-@inject SignInManager<ActPro.DAL.ApplicationUser> SignInManager
-@model ActPro.Models.ReservationViewModel
+﻿@using ActPro.Domain.Models
+@using ActPro.Domain.Models.Areas
+@model ReservationViewModel
 @{
     ViewData["Title"] = Model.Place.Name;
     bool IsLoggedIn = User.Identity?.IsAuthenticated ?? false;

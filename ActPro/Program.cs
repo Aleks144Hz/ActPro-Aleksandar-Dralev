@@ -1,7 +1,10 @@
 using ActPro.DAL;
 using ActPro.DAL.Data;
+using ActPro.Domain.Repository;
 using ActPro.Helpers;
 using ActPro.Services;
+using ActPro.Services.Interfaces;
+using ActPro.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,9 +48,35 @@ namespace ActPro
             .AddDataAnnotationsLocalization()
             .AddViewLocalization();
 
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+            builder.Services.AddScoped<IHomeService, HomeService>();
+
+            builder.Services.AddScoped<IAccountService, AccountService>();
+
+            builder.Services.AddScoped<ISearchService, SearchService>();
+
+            builder.Services.AddScoped<IReservationService, ReservationService>();  
+            
+            builder.Services.AddScoped<IPlaceService, PlaceService>();
+
+            builder.Services.AddScoped<IOwnerDashboardService, OwnerDashboardService>();
+
+            builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+
+            builder.Services.AddScoped<IReservationDashboardService, IReservationDashboardService>();
+
+            builder.Services.AddScoped<IPlaceDashboardService, PlaceDashboardService>();
+
+            builder.Services.AddScoped<IUserService, UserService>();
+
             builder.Services.AddScoped<IAuditService, AuditService>();
 
-            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IAuditDashboardService, AuditDashboardService>();
+
+
 
             var app = builder.Build();
 
