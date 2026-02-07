@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ActPro.DAL.Entities;
+﻿namespace ActPro.DAL.Entities;
 
 public partial class Favorite
 {

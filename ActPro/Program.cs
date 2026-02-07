@@ -4,9 +4,7 @@ using ActPro.Helpers;
 using ActPro.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace ActPro
 {
@@ -18,23 +16,23 @@ namespace ActPro
             System.Globalization.CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-             var builder = WebApplication.CreateBuilder(args);
-             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-             if (Environment.GetEnvironmentVariable("RENDER") == "true")
-             {
-                 var cloudString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
-                 if (!string.IsNullOrEmpty(cloudString))
-                 {
-                     connectionString = cloudString;
-                 }
+            var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            if (Environment.GetEnvironmentVariable("RENDER") == "true")
+            {
+                var cloudString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+                if (!string.IsNullOrEmpty(cloudString))
+                {
+                    connectionString = cloudString;
+                }
             }
-             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-             connectionString,
-             o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+            connectionString,
+            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
             // Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(IdentityHelper.GetIdentityOptions)
-                            .AddErrorDescriber<BulgarianIdentityErrorDescriber>() 
+                            .AddErrorDescriber<BulgarianIdentityErrorDescriber>()
                             .AddEntityFrameworkStores<ApplicationDbContext>()
                             .AddDefaultTokenProviders();
             // Add services to the container.
@@ -79,7 +77,7 @@ namespace ActPro
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
 
             app.UseAuthorization();

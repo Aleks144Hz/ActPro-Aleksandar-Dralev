@@ -1,0 +1,218 @@
+﻿@model IEnumerable<ActPro.DAL.Entities.News>
+@{
+    ViewData["Title"] = "Новини";
+}
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <span class="text-success fw-bold text-uppercase small">Актуално</span>
+                <h1 class="fw-bold">Новини и събития</h1>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <button class="btn btn-success rounded-pill px-4 shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#createNewsForm">
+                    <i class="bi bi-plus-lg me-2"></i>Добави новина
+                </button>
+            }
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="collapse mb-5" id="createNewsForm">
+                <div class="card shadow-sm border-0 p-4">
+                    <form asp-action="CreateNews" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Заглавие</label>
+                                <input name="Title" class="form-control" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Снимка</label>
+                                <input type="file" name="imageFile" class="form-control" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label fw-bold">Съдържание</label>
+                                <textarea name="Content" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Публикувай</button>
+                    </form>
+                </div>
+                <hr class="my-5" />
+            </div>
+        }
+
+        <div class="row g-4">
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <article class="card h-100 border-0 shadow-sm position-relative news-card">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="position-absolute top-0 end-0 m-2" style="z-index: 5;">
+                                    <button type="button" class="btn btn-danger btn-sm rounded-circle shadow delete-btn"
+                                            data-id="@item.Id" data-title="@item.Title">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            }
+
+                            <div class="img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/images/news/@(item.ImageURL ?? "default-news.jpg")" class="card-img-top w-100 h-100" style="object-fit: cover;">
+                            </div>
+
+                            <div class="card-body p-4">
+                                <small class="text-success fw-bold">@item.CreatedAt.ToString("dd.MM.yyyy")</small>
+                                <h5 class="fw-bold mt-2">@item.Title</h5>
+                                <p class="text-muted small text-truncate-3">@item.Content</p>
+
+                                <button class="btn btn-outline-success btn-sm w-100 mt-2 rounded-pill"
+                                        onclick="showNewsDetails('@item.Title', '@item.Content', '/images/news/@(item.ImageURL ?? "default-news.jpg")')">
+                                    Прочети повече
+                                </button>
+                            </div>
+                        </article>
+                    </div>
+                }
+            }
+        </div>
+
+        @if (ViewBag.TotalPages > 1)
+        {
+            <nav class="mt-5">
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link @(i == ViewBag.CurrentPage ? "bg-success border-success text-white" : "text-success")"
+                               asp-action="News" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
+</section>
+<div class="modal fade" id="newsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg overflow-hidden rounded-4">
+            <div class="modal-header border-0 bg-white position-sticky top-0 z-3 px-4 py-3">
+                <span class="badge bg-success-soft text-success px-3 py-2 rounded-pill fw-bold">Новини</span>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-0 bg-white">
+                <article class="container-fluid p-0">
+                    <div class="article-hero w-100" style="height: 450px; overflow: hidden;">
+                        <img id="modalImg" src="" class="w-100 h-100" style="object-fit: cover; object-position: center;">
+                    </div>
+
+                    <div class="container py-5">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 col-md-10">
+
+                                <h1 id="modalTitle" class="display-5 fw-bold mb-4 text-dark lh-sm"></h1>
+
+                                <div class="d-flex align-items-center mb-5 text-muted border-bottom pb-4">
+                                    <div class="d-flex align-items-center me-4">
+                                        <i class="bi bi-calendar3 me-2 text-success"></i>
+                                        <span id="modalDate" class="small fw-semibold"></span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-circle me-2 text-success"></i>
+                                        <span class="small fw-semibold">Администратор</span>
+                                    </div>
+                                </div>
+
+                                <div id="modalContent" class="article-body-text text-secondary lh-lg fs-5">
+                                </div>
+
+                                <div class="mt-5 pt-5 border-top text-center">
+                                    <p class="text-muted small mb-4 italic">Благодарим ви, че четете нашите новини!</p>
+                                    <button type="button" class="btn btn-dark rounded-pill px-5 py-2 shadow-sm" data-bs-dismiss="modal">
+                                        Затвори статията
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .text-truncate-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-card {
+            transition: transform 0.3s;
+        }
+
+            .news-card:hover {
+                transform: translateY(-8px);
+            }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // 1. Функция за големия екран (Modal)
+              function showNewsDetails(title, content, imgSrc, date) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalContent').innerText = content;
+
+            // Задаваме снимката директно на img тага
+            document.getElementById('modalImg').src = imgSrc;
+
+            // Задаваме датата
+            if(date) {
+                document.getElementById('modalDate').innerText = "Публикувано на: " + date;
+            }
+
+            // Показваме модала
+            var myModal = new bootstrap.Modal(document.getElementById('newsModal'));
+            myModal.show();
+        }
+
+        // 2. Готиното изтриване (SweetAlert2)
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const newsId = this.getAttribute('data-id');
+                const title = this.getAttribute('data-title');
+
+                Swal.fire({
+                    title: 'Сигурни ли сте?',
+                    text: `Ще изтриете новината: "${title}"`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#198754', // Bootstrap Success
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Да, изтрий я!',
+                    cancelButtonText: 'Отказ'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Създаваме скрита форма за изпращане
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/Home/DeleteNews/' + newsId;
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+}

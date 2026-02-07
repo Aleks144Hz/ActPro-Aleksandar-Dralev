@@ -3,14 +3,6 @@
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Настройки на профила";
-    var editModel = new ActPro.Models.User.EditProfileViewModel
-    {
-        FirstName = Model.FirstName,
-        LastName = Model.LastName,
-        PhoneNumber = Model.PhoneNumber,
-        ExistingPicturePath = Model.ProfilePicturePath
-    };
-    var deleteModel = new ActPro.Models.User.DeleteProfileViewModel();
 }
 <div class="container py-5">
     <div class="row justify-content-center">

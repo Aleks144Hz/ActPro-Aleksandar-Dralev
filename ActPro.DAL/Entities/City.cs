@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ActPro.DAL.Entities;
+﻿namespace ActPro.DAL.Entities;
 
 public partial class City
 {

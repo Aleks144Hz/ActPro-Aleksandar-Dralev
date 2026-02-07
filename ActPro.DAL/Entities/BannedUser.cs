@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ActPro.DAL.Entities
+﻿namespace ActPro.DAL.Entities
 {
     public class BannedUser
     {
