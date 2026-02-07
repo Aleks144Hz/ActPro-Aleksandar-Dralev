@@ -1,38 +1,33 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Models\Administration\**" />
-    <Content Remove="Models\Administration\**" />
-    <EmbeddedResource Remove="Models\Administration\**" />
-    <None Remove="Models\Administration\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Controllers\SearchController.cs~RF229c0cd.TMP" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Controllers\SearchController.cs~RF229c0cd.TMP" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ActPro.DAL\ActPro.DAL.csproj" />
+		<ProjectReference Include="..\ActPro.Services\ActPro.Services.csproj" />
+		<ProjectReference Include="..\ActPro.Domain\ActPro.Domain.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ActPro.DAL\ActPro.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\news\" />
-    <Folder Include="wwwroot\images\places\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\images\news\" />
+		<Folder Include="wwwroot\images\places\" />
+	</ItemGroup>
 
 </Project>

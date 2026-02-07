@@ -1,7 +1,6 @@
-﻿using ActPro.DAL.Data;
+﻿using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Areas.Admin.Controllers
 {
@@ -9,14 +8,16 @@ namespace ActPro.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class AuditLogsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public AuditLogsController(ApplicationDbContext context)
+        private readonly IAuditDashboardService _auditService;
+
+        public AuditLogsController(IAuditDashboardService auditService)
         {
-            _context = context;
+            _auditService = auditService;
         }
+
         public async Task<IActionResult> Index()
         {
-            var logs = await _context.AuditLogs.ToListAsync();
+            var logs = await _auditService.GetAllLogsAsync();
             return View(logs);
         }
     }

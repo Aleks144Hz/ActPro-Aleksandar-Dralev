@@ -1,83 +1,38 @@
-﻿using ActPro.DAL.Data;
+﻿using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISearchService _searchService;
 
-        public SearchController(ApplicationDbContext context)
+        public SearchController(ISearchService searchService)
         {
-            _context = context;
+            _searchService = searchService;
         }
 
         //--- SEARCH PAGE ---
         public async Task<IActionResult> Index(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
-            var query = _context.Places.Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).Where(p => p.IsApproved).AsQueryable();
-            ViewBag.CitiesList = await _context.Cities.Select(c => c.Name).ToListAsync();
-            ViewBag.ActivitiesList = await _context.Activities.Select(a => a.Name).ToListAsync();
+            ViewBag.CitiesList = await _searchService.GetCityNamesAsync();
+            ViewBag.ActivitiesList = await _searchService.GetActivityNamesAsync();
+            ViewBag.Cities = await _searchService.GetAllCitiesAsync();
+            ViewBag.Activities = await _searchService.GetAllActivitiesAsync();
 
-            if (!string.IsNullOrEmpty(city))
-            {
-                query = query.Where(p => p.City.Name == city);
-            }
-
-            if (!string.IsNullOrEmpty(activity))
-            {
-                query = query.Where(p => p.Activity.Name == activity);
-            }
-
-            if (minPrice.HasValue)
-            {
-                query = query.Where(p => p.Price >= minPrice.Value);
-            }
-
-            if (maxPrice.HasValue)
-            {
-                query = query.Where(p => p.Price <= maxPrice.Value);
-            }
-
-            if (isOutdoor.HasValue)
-            {
-                query = query.Where(p => p.IsOutdoor == isOutdoor.Value);
-            }
-
-            ViewBag.SmallCount = await query.CountAsync(p => p.Capacity >= 1 && p.Capacity <= 4);
-            ViewBag.MediumCount = await query.CountAsync(p => p.Capacity >= 5 && p.Capacity <= 14);
-            ViewBag.LargeCount = await query.CountAsync(p => p.Capacity >= 15);
-            ViewBag.OutdoorCount = await query.CountAsync(p => p.IsOutdoor == true);
-            ViewBag.IndoorCount = await query.CountAsync(p => p.IsOutdoor == false);
-            ViewBag.Cities = await _context.Cities.ToListAsync();
-            ViewBag.Activities = await _context.Activities.ToListAsync();
-
-            if (!string.IsNullOrEmpty(capacityGroup))
-            {
-                query = capacityGroup switch
-                {
-                    "small" => query.Where(p => p.Capacity >= 1 && p.Capacity <= 4),
-                    "medium" => query.Where(p => p.Capacity >= 5 && p.Capacity <= 14),
-                    "large" => query.Where(p => p.Capacity >= 15),
-                    _ => query
-                };
-            }
-
-            query = sortOrder switch
-            {
-                "price_asc" => query.OrderBy(p => p.Price),
-                "price_desc" => query.OrderByDescending(p => p.Price),
-                "rating_des" => query.OrderByDescending(p => p.Rating),
-                "rating_asc" => query.OrderBy(p => p.Rating),
-                _ => query.OrderBy(p => p.Name)
-            };
+            var stats = await _searchService.GetSearchStatsAsync(city, activity, isOutdoor, minPrice, maxPrice);
+            ViewBag.SmallCount = stats["SmallCount"];
+            ViewBag.MediumCount = stats["MediumCount"];
+            ViewBag.LargeCount = stats["LargeCount"];
+            ViewBag.OutdoorCount = stats["OutdoorCount"];
+            ViewBag.IndoorCount = stats["IndoorCount"];
             ViewBag.CurrentCity = city;
             ViewBag.CurrentActivity = activity;
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CurrentCapacity = capacityGroup;
 
-            var results = await query.ToListAsync();
+            var results = await _searchService.SearchPlacesAsync(city, activity, isOutdoor, minPrice, maxPrice, sortOrder, capacityGroup);
+
             return View("Index", results);
         }
     }
