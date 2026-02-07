@@ -20,15 +20,7 @@ namespace ActPro.Services.Services
         private readonly IRepository<BannedUser> _banRepo;
         private readonly IConfiguration _configuration;
 
-        public AccountService(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IRepository<ApplicationUser> userRepo,
-            IRepository<Favorite> favRepo,
-            IRepository<Reservation> resRepo,
-            IRepository<Comment> commentRepo,
-            IRepository<BannedUser> banRepo,
-            IConfiguration configuration)
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IRepository<ApplicationUser> userRepo, IRepository<Favorite> favRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<BannedUser> banRepo, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;

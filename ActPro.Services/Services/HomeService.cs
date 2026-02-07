@@ -14,11 +14,7 @@ namespace ActPro.Services
         private readonly IRepository<Activity> _activityRepo;
         private readonly IRepository<News> _newsRepo;
 
-        public HomeService(
-            IRepository<Place> placeRepo,
-            IRepository<City> cityRepo,
-            IRepository<Activity> activityRepo,
-            IRepository<News> newsRepo)
+        public HomeService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo, IRepository<News> newsRepo)
         {
             _placeRepo = placeRepo;
             _cityRepo = cityRepo;

@@ -11,10 +11,7 @@ namespace ActPro.Services
         private readonly IRepository<City> _cityRepo;
         private readonly IRepository<Activity> _activityRepo;
 
-        public SearchService(
-            IRepository<Place> placeRepo,
-            IRepository<City> cityRepo,
-            IRepository<Activity> activityRepo)
+        public SearchService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo)
         {
             _placeRepo = placeRepo;
             _cityRepo = cityRepo;

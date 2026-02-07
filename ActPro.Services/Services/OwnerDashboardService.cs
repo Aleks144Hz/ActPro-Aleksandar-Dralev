@@ -1,5 +1,5 @@
 ﻿using ActPro.DAL.Entities;
-using ActPro.Domain.Models.Reservation;
+using ActPro.Domain.Models.Areas;
 using ActPro.Domain.Repository;
 using ActPro.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

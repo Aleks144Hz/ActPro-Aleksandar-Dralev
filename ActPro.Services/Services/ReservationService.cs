@@ -17,13 +17,7 @@ namespace ActPro.Services
         private readonly IRepository<Favorite> _favRepo;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ReservationService(
-            IRepository<Place> placeRepo,
-            IRepository<Reservation> resRepo,
-            IRepository<Comment> commentRepo,
-            IRepository<PlaceClosure> closureRepo,
-            IRepository<Favorite> favRepo,
-            UserManager<ApplicationUser> userManager)
+        public ReservationService(IRepository<Place> placeRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<PlaceClosure> closureRepo, IRepository<Favorite> favRepo, UserManager<ApplicationUser> userManager)
         {
             _placeRepo = placeRepo;
             _resRepo = resRepo;
