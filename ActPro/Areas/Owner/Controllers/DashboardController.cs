@@ -5,9 +5,8 @@ using ActPro.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Areas.Owner.Controllers
 {
@@ -34,7 +33,7 @@ namespace ActPro.Areas.Owner.Controllers
 
             ViewBag.Cities = new SelectList(cities, "Id", "Name");
             ViewBag.ActivityTypes = new SelectList(activities, "Id", "Name");
-            
+
             var model = new OwnerDashboardViewModel();
 
             model.MyPlaces = await _context.Places

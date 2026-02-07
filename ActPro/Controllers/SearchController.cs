@@ -1,5 +1,4 @@
 ﻿using ActPro.DAL.Data;
-using ActPro.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,7 +41,7 @@ namespace ActPro.Controllers
             }
 
             if (isOutdoor.HasValue)
-            {                
+            {
                 query = query.Where(p => p.IsOutdoor == isOutdoor.Value);
             }
 

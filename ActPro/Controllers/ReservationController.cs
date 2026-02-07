@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace ActPro.Controllers
 {
@@ -97,7 +96,7 @@ namespace ActPro.Controllers
             };
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
-            user.Credits += 3;
+            user.Credits += 1;
             await _userManager.UpdateAsync(user);
             TempData["Success"] = "Резервацията е успешно направена.";
             await _auditService.LogAsync("Create Reservation", "User", user.Id, $"Потребителят направи резервация.");
@@ -145,7 +144,7 @@ namespace ActPro.Controllers
                 place.Rating = (int)Math.Round(allRatings.Average());
             }
             var user = await _userManager.GetUserAsync(User);
-            user.Credits += 0.5;
+            user.Credits += 0.1;
             await _userManager.UpdateAsync(user);
             await _context.SaveChangesAsync();
             TempData["Success"] = "Коментарът е добавен успешно.";

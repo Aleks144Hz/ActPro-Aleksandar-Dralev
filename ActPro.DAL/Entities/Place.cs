@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ActPro.DAL.Entities;
 
@@ -22,8 +20,8 @@ public partial class Place
 
     public int? Rating { get; set; }
 
-    public bool? IsOutdoor { get; set; }    
-    
+    public bool? IsOutdoor { get; set; }
+
     public string Address { get; set; } = string.Empty;
 
     public virtual Activity? Activity { get; set; }
