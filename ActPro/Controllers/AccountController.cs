@@ -5,7 +5,6 @@ using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
@@ -18,11 +17,7 @@ namespace ActPro.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AccountController(
-            IAccountService accountService,
-            IAuditService auditService,
-            UserManager<ApplicationUser> userManager,
-            IWebHostEnvironment webHostEnvironment)
+        public AccountController(IAccountService accountService, IAuditService auditService, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _accountService = accountService;
             _auditService = auditService;

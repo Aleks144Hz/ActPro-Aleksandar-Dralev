@@ -1,5 +1,5 @@
-﻿@model IEnumerable<ActPro.DAL.Entities.Comment>
-
+﻿@using ActPro.Domain.Models.Reservation
+@model IEnumerable<UserReviewItemViewModel>
 @{
     ViewData["Title"] = "Моите отзиви";
 }
@@ -35,9 +35,9 @@
                                     </div>
                                     <div>
                                         <h5 class="fw-bold mb-0 text-truncate" style="max-width: 500px;">
-                                        <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@review.Place.Id"
+                                        <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@review.PlaceId"
                                            class="text-decoration-none text-dark hover-success">
-                                            @review.Place?.Name
+                                                @review.PlaceName
                                             </a>
                                         </h5>
                                         <small class="text-muted">@review.CreatedAt</small>

@@ -24,30 +24,30 @@ namespace ActPro.Services.Services
         public async Task<IEnumerable<Place>> GetAllPlacesAsync()
         {
             return await _context.Places
-                .Include(p => p.City)
-                .Include(p => p.Activity)
-                .Include(p => p.PlaceImages)
-                .Include(p => p.PlaceClosures)
-                .ToListAsync();
+            .Include(p => p.City)
+            .Include(p => p.Activity)
+            .Include(p => p.PlaceImages)
+            .Include(p => p.PlaceClosures)
+            .ToListAsync();
         }
 
         public async Task<IEnumerable<Place>> GetOwnerPlacesAsync(string ownerId)
         {
             return await _context.Places
-                .Include(p => p.City)
-                .Include(p => p.Activity)
-                .Include(p => p.PlaceImages)
-                .Where(p => p.OwnerId == ownerId)
-                .ToListAsync();
+            .Include(p => p.City)
+            .Include(p => p.Activity)
+            .Include(p => p.PlaceImages)
+            .Where(p => p.OwnerId == ownerId)
+            .ToListAsync();
         }
 
         public async Task<Place?> GetByIdAsync(int id)
         {
             return await _context.Places
-                .Include(p => p.PlaceImages)
-                .Include(p => p.PlaceClosures)
-                .Include(p => p.Reservations)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            .Include(p => p.PlaceImages)
+            .Include(p => p.PlaceClosures)
+            .Include(p => p.Reservations)
+            .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         //--- CREATE ---
@@ -106,17 +106,31 @@ namespace ActPro.Services.Services
         //--- DELETE ---
         public async Task<bool> DeletePlaceAsync(int id)
         {
-            var place = await _context.Places.FindAsync(id);
+            var place = await _context.Places.Include(p => p.PlaceImages).FirstOrDefaultAsync(p => p.Id == id);
             if (place == null) return false;
 
-            var images = _context.PlaceImages.Where(img => img.PlaceId == id).ToList();
-            foreach (var img in images)
+            if (place.PlaceImages != null && place.PlaceImages.Any())
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", img.ImageUrl.TrimStart('/'));
-                if (File.Exists(path)) File.Delete(path);
+                foreach (var img in place.PlaceImages)
+                {
+                    // Използваме Path.Combine за сигурност
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", img.ImageUrl.TrimStart('/'));
+
+                    try
+                    {
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                    catch (IOException)
+                    {
+                        // Логнете грешката ако е необходимо, но продължаваме нататък
+                    }
+                }
             }
 
-            _context.PlaceImages.RemoveRange(images);
+            _context.PlaceImages.RemoveRange(place.PlaceImages);
             _context.Comments.RemoveRange(_context.Comments.Where(c => c.PlaceId == id));
             _context.Reservations.RemoveRange(_context.Reservations.Where(r => r.PlaceId == id));
 

@@ -18,25 +18,25 @@ namespace ActPro.Services.Services
         public async Task<IEnumerable<Reservation>> GetAllReservationsAsync()
         {
             return await _context.Reservations
-                .Include(r => r.Place)
-                .OrderByDescending(r => r.CreatedAt)
-                .ToListAsync();
+            .Include(r => r.Place)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
         }
 
         public async Task<IEnumerable<Reservation>> GetOwnerReservationsAsync(string ownerId)
         {
             return await _context.Reservations
-                .Include(r => r.Place)
-                .Where(r => r.Place.OwnerId == ownerId)
-                .OrderByDescending(r => r.CreatedAt)
-                .ToListAsync();
+            .Include(r => r.Place)
+            .Where(r => r.Place.OwnerId == ownerId)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
         }
 
         public async Task<Reservation?> GetByIdAsync(int id)
         {
             return await _context.Reservations
-                .Include(r => r.Place)
-                .FirstOrDefaultAsync(r => r.Id == id);
+            .Include(r => r.Place)
+            .FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<bool> DeleteReservationAsync(int id, string? ownerId = null)

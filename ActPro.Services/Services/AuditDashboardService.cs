@@ -14,9 +14,7 @@ namespace ActPro.Services.Services
         }
         public async Task<IEnumerable<AuditLog>> GetAllLogsAsync()
         {
-            return await _context.AuditLogs
-            .OrderByDescending(l => l.Id)
-            .ToListAsync();
+            return await _context.AuditLogs.OrderByDescending(l => l.Id).ToListAsync();
         }
 
         public async Task LogAsync(string action, string entity, string entityId, string details)

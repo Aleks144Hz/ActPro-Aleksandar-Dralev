@@ -25,22 +25,25 @@ namespace ActPro.Services.Services
         {
             var model = new OwnerDashboardViewModel();
             model.MyPlaces = await _placeRepo.AllAsNoTracking()
-                .Include(p => p.City).Include(p => p.Activity).Include(p => p.PlaceImages).Include(p => p.PlaceClosures)
-                .Where(p => p.OwnerId == userId).ToListAsync();
+            .Include(p => p.City)
+            .Include(p => p.Activity)
+            .Include(p => p.PlaceImages)
+            .Include(p => p.PlaceClosures)
+            .Where(p => p.OwnerId == userId).ToListAsync();
 
             var placeIds = model.MyPlaces.Select(p => p.Id).ToList();
 
             if (placeIds.Any())
             {
                 model.RecentReservations = await _resRepo.AllAsNoTracking()
-                    .Include(r => r.Place)
-                    .Where(r => placeIds.Contains((int)r.PlaceId))
-                    .OrderByDescending(r => r.CreatedAt).Take(10).ToListAsync();
+                .Include(r => r.Place)
+                .Where(r => placeIds.Contains((int)r.PlaceId))
+                .OrderByDescending(r => r.CreatedAt).Take(10).ToListAsync();
 
                 model.TotalIncome = (decimal)await _resRepo.AllAsNoTracking()
-                    .Where(r => placeIds.Contains((int)r.PlaceId))
-                    .Join(_placeRepo.AllAsNoTracking(), r => r.PlaceId, p => p.Id, (r, p) => p.Price)
-                    .SumAsync();
+                .Where(r => placeIds.Contains((int)r.PlaceId))
+                .Join(_placeRepo.AllAsNoTracking(), r => r.PlaceId, p => p.Id, (r, p) => p.Price)
+                .SumAsync();
 
                 model.TotalReservationsCount = await _resRepo.AllAsNoTracking().CountAsync(r => placeIds.Contains((int)r.PlaceId));
             }

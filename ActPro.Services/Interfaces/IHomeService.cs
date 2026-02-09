@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Http;
 namespace ActPro.Services.Interfaces
 {
     public interface IHomeService
-    {
+    {             
+        Task<bool> DeleteNewsAsync(int id, string webRootPath);
         Task<HomeViewModel> GetHomeViewModelAsync();
-        Task<(IEnumerable<News> news, int totalPages)> GetNewsPagedAsync(int page, int pageSize);
         Task CreateNewsAsync(News news, IFormFile? imageFile, string webRootPath);
-        Task<bool> DeleteNewsAsync(int id);
+        Task<(IEnumerable<News> news, int totalPages)> GetNewsPagedAsync(int page, int pageSize, string? userId);
+        Task<(int likes, bool isLiked)> LikeNewsAsync(int newsId, string userId);
     }
 }

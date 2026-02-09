@@ -32,14 +32,12 @@ namespace ActPro.Services.Services
             _configuration = configuration;
         }
 
-        public async Task<ApplicationUser> GetUserFullProfileAsync(string userId) =>
-            await _userRepo.AllAsNoTracking()
-            .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.PlaceImages)
-            .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.City)
-            .FirstOrDefaultAsync(u => u.Id == userId);
+        public async Task<ApplicationUser> GetUserFullProfileAsync(string userId) => await _userRepo.AllAsNoTracking()
+        .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.PlaceImages)
+        .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.City)
+        .FirstOrDefaultAsync(u => u.Id == userId);
 
-        public async Task<ApplicationUser> GetUserByIdAsync(string userId) =>
-            await _userManager.FindByIdAsync(userId);
+        public async Task<ApplicationUser> GetUserByIdAsync(string userId) => await _userManager.FindByIdAsync(userId);
 
         public async Task<(int resCount, int revCount)> GetUserActivityStatsAsync(string userId)
         {
@@ -48,8 +46,7 @@ namespace ActPro.Services.Services
             return (resCount, revCount);
         }
 
-        public async Task<bool> IsUserBannedAsync(string email, string phone = null) =>
-            await _banRepo.AllAsNoTracking().AnyAsync(b => b.Email == email || phone != null && b.Phone == phone);
+        public async Task<bool> IsUserBannedAsync(string email, string phone = null) => await _banRepo.AllAsNoTracking().AnyAsync(b => b.Email == email || phone != null && b.Phone == phone);
 
         public async Task<bool> VerifyReCaptchaAsync(string response)
         {
