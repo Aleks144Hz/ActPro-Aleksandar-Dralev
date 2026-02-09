@@ -31,11 +31,11 @@ namespace ActPro.Services.Services
                 PendingComments = await _commRepo.AllAsNoTracking().CountAsync(),
                 TotalPlaces = await _placeRepo.AllAsNoTracking().CountAsync(),
                 LatestReservations = await _resRepo.AllAsNoTracking()
-                    .Include(r => r.Place)
-                    .Include(r => r.AspNetUser)
-                    .OrderByDescending(r => r.CreatedAt)
-                    .Take(5)
-                    .ToListAsync()
+                .Include(r => r.Place)
+                .Include(r => r.AspNetUser)
+                .OrderByDescending(r => r.CreatedAt)
+                .Take(5)
+                .ToListAsync()
             };
         }
 
@@ -50,17 +50,13 @@ namespace ActPro.Services.Services
                 _ => DateTime.Today.AddYears(-1)
             };
 
-            var resData = await _resRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate)
-                .GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
+            var resData = await _resRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate).GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
 
-            var userData = await _userRepo.AllAsNoTracking().Where(x => x.CreatedOn >= startDate)
-                .GroupBy(x => x.CreatedOn.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
+            var userData = await _userRepo.AllAsNoTracking().Where(x => x.CreatedOn >= startDate).GroupBy(x => x.CreatedOn.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
 
-            var commData = await _commRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate)
-                .GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
+            var commData = await _commRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate).GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
 
-            var allDates = Enumerable.Range(0, (DateTime.Today - startDate).Days + 1)
-                .Select(offset => startDate.AddDays(offset).Date).ToList();
+            var allDates = Enumerable.Range(0, (DateTime.Today - startDate).Days + 1).Select(offset => startDate.AddDays(offset).Date).ToList();
 
             var result = allDates.Select(d => new
             {

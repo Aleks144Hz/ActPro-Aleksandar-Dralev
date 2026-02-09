@@ -1,6 +1,8 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Entities;
 using ActPro.Domain.Models;
+using ActPro.Domain.Models.Reservation;
+using ActPro.Domain.Models.User;
 using ActPro.Domain.Repository;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -30,11 +32,11 @@ namespace ActPro.Services
         public async Task<ReservationViewModel> GetReservationIndexModelAsync(int placeId, string userId)
         {
             var place = await _placeRepo.AllAsNoTracking()
-                .Include(p => p.Comments).ThenInclude(c => c.User)
-                .Include(p => p.PlaceImages)
-                .Include(p => p.City)
-                .Include(p => p.Activity)
-                .FirstOrDefaultAsync(m => m.Id == placeId);
+            .Include(p => p.Comments).ThenInclude(c => c.User)
+            .Include(p => p.PlaceImages)
+            .Include(p => p.City)
+            .Include(p => p.Activity)
+            .FirstOrDefaultAsync(m => m.Id == placeId);
 
             if (place == null) return null;
 
@@ -146,7 +148,7 @@ namespace ActPro.Services
             .ToListAsync();
         }
 
-        public async Task<(IEnumerable<Reservation> reservations, int totalCount)> GetUserReservationsAsync(string userId, int page, int pageSize, string filter)
+        public async Task<UserReservationsViewModel> GetUserReservationsAsync(string userId, int page, int pageSize, string filter)
         {
             var query = _resRepo.AllAsNoTracking().Where(r => r.AspNetUserId == userId);
             var today = DateOnly.FromDateTime(DateTime.Now);
@@ -157,13 +159,34 @@ namespace ActPro.Services
             else if (filter == "past")
                 query = query.Where(r => r.ReservationDate < today || (r.ReservationDate == today && r.ReservationTime <= now));
 
-            int total = await query.CountAsync();
-            var list = await query.Include(r => r.Place).ThenInclude(p => p.PlaceImages)
-            .Include(r => r.Place).ThenInclude(p => p.City)
-            .OrderByDescending(r => r.ReservationDate).ThenByDescending(r => r.ReservationTime)
-            .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            int totalCount = await query.CountAsync();
 
-            return (list, total);
+            var reservationsData = await query
+                .Include(r => r.Place).ThenInclude(p => p.PlaceImages)
+                .Include(r => r.Place).ThenInclude(p => p.City)
+                .OrderByDescending(r => r.ReservationDate).ThenByDescending(r => r.ReservationTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(r => new ReservationItemViewModel
+                {
+                    Id = r.Id,
+                    PlaceId = (int)r.PlaceId,
+                    PlaceName = r.Place.Name,
+                    CityName = r.Place.City.Name,
+                    ReservationDate = r.ReservationDate,
+                    ReservationTime = r.ReservationTime,
+                    ImageUrl = r.Place.PlaceImages.OrderBy(i => i.Id).FirstOrDefault().ImageUrl
+                })
+                .ToListAsync();
+
+            return new UserReservationsViewModel
+            {
+                Reservations = reservationsData,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)totalCount / pageSize),
+                TotalCount = totalCount,
+                SelectedFilter = filter
+            };
         }
 
         public async Task<(bool success, string message)> CancelReservationAsync(int reservationId, string userId)
@@ -182,11 +205,23 @@ namespace ActPro.Services
             return (true, "Успешно отказана.");
         }
 
-        public async Task<List<Comment>> GetUserReviewsAsync(string userId) => await _commentRepo.AllAsNoTracking()
-        .Include(c => c.Place)
-        .Where(c => c.AspNetUserId == userId)
-        .OrderByDescending(c => c.CreatedAt)
-        .ToListAsync();
+        public async Task<List<UserReviewItemViewModel>> GetUserReviewsAsync(string userId)
+        {
+            return await _commentRepo.AllAsNoTracking()
+                .Include(c => c.Place)
+                .Where(c => c.AspNetUserId == userId)
+                .OrderByDescending(c => c.CreatedAt)
+                .Select(c => new UserReviewItemViewModel
+                {
+                    Id = c.Id,
+                    PlaceId = c.PlaceId,
+                    PlaceName = c.Place.Name,
+                    CommentText = c.CommentText,
+                    Rating = c.Rating,
+                    CreatedAt = (DateTime)c.CreatedAt
+                })
+                .ToListAsync();
+        }
 
         public async Task<(bool success, string message)> EditReviewAsync(int commentId, string userId, string commentText, int rating)
         {

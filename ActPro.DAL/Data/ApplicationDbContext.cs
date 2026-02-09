@@ -31,6 +31,8 @@ namespace ActPro.DAL.Data
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
 
         public virtual DbSet<News> News { get; set; }
+
+        public virtual DbSet<NewsLikes> NewsLikes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

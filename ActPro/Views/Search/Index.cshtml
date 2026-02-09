@@ -1,12 +1,7 @@
-﻿@model IEnumerable<ActPro.DAL.Entities.Place>
+﻿@model ActPro.Models.SearchViewModel
 @{
     ViewData["Title"] = "Търсене";
-    var city = Context.Request.Query["city"];
-    var activity = Context.Request.Query["activity"];
-    var currentMin = Context.Request.Query["minPrice"].ToString() ?? "€ 0";
-    var currentMax = Context.Request.Query["maxPrice"].ToString() ?? "€ 200+";
 }
-
 <div class="container-fluid mt-4">
     <div class="row">
         <aside class="col-md-3 mb-4">
@@ -16,7 +11,7 @@
                         height="150"
                         frameborder="0"
                         style="border:0"
-                        src="https://maps.google.com/maps?q=@(Uri.EscapeDataString(city + ", Bulgaria"))&t=&z=13&ie=UTF8&iwloc=&output=embed">
+                        src="https://maps.google.com/maps?q=@(Uri.EscapeDataString(Model.City ?? "Bulgaria"))&t=&z=13&ie=UTF8&iwloc=&output=embed">
                 </iframe>
                 <button type="button" class="btn btn-success btn-sm position-absolute bottom-0 start-50 translate-middle-x mb-2 shadow btn-map-static"
                         data-bs-toggle="modal" data-bs-target="#largeMapModal">
@@ -33,18 +28,18 @@
                         <label class="form-label fw-bold">Цена (евро/ч)</label>
                         <div class="price-slider-wrapper">
                             <div class="slider-track" id="sliderTrack"></div>
-                            <input type="range" name="minPrice" class="form-range custom-range" min="0" max="200" id="minPriceRange" value="@currentMin">
-                            <input type="range" name="maxPrice" class="form-range custom-range" min="0" max="200" id="maxPriceRange" value="@currentMax">
+                            <input type="range" name="minPrice" class="form-range custom-range" min="0" max="200" id="minPriceRange" value="@Model.MinPrice">
+                            <input type="range" name="maxPrice" class="form-range custom-range" min="0" max="200" id="maxPriceRange" value="@Model.MaxPrice">
                         </div>
                         <div class="d-flex justify-content-between text-muted small mt-2">
                             <div class="d-flex align-items-center">
                                 <span>€</span>
-                                <input type="number" id="minPriceInput" class="price-input-hidden" value="@currentMin" min="0" max="200">
+                                <input type="number" id="minPriceInput" class="price-input-hidden" value="@Model.MinPrice" min="0" max="200">
 
                             </div>
                             <div class="d-flex align-items-center">
                                 <span>€</span>
-                                <input type="number" id="maxPriceInput" class="price-input-hidden" value="@currentMax" min="0" max="200">
+                                <input type="number" id="maxPriceInput" class="price-input-hidden" value="@Model.MaxPrice" min="0" max="200">
 
                             </div>
                         </div>
@@ -57,7 +52,7 @@
                                        class="form-control form-control-custom"
                                        id="cityInput"
                                        name="city"
-                                       value="@city"
+                                       value="@Model.City"
                                        placeholder="Избери град"
                                        style="padding-left: 40px; border: 1px solid #ced4da; border-radius: 25px; background: #f9f9f9;"
                                        autocomplete="off"
@@ -76,7 +71,7 @@
                                        class="form-control form-control-custom"
                                        id="activityInput"
                                        name="activity"
-                                       value="@activity"
+                                       value="@Model.Activity"
                                        placeholder="Избери спорт"
                                        style="padding-left: 40px; border: 1px solid #ced4da; border-radius: 25px; background: #f9f9f9;"
                                        autocomplete="off">
@@ -93,25 +88,24 @@
                                             <input class="form-check-input m-0 me-2" type="radio" name="capacityGroup" value="small" id="smallCheck" @(Context.Request.Query["capacityGroup"] == "small" ? "checked" : "")>
                                             <label class="form-check-label small" for="smallCheck">1-4</label>
                                         </div>
-                                        <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@ViewBag.SmallCount</span>
+                                        <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@Model.SmallCount</span>
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center p-0">
                                         <div class="d-flex align-items-center">
                                             <input class="form-check-input m-0 me-2" type="radio" name="capacityGroup" value="medium" id="mediumCheck" @(Context.Request.Query["capacityGroup"] == "medium" ? "checked" : "")>
                                             <label class="form-check-label small" for="mediumCheck">5-14</label>
                                         </div>
-                                        <span class="badge rounded-pill bg-light text-dark border-0 ms-1" style="font-size: 0.7rem;">@ViewBag.MediumCount</span>
+                                        <span class="badge rounded-pill bg-light text-dark border-0 ms-1" style="font-size: 0.7rem;">@Model.MediumCount</span>
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center p-0">
                                         <div class="d-flex align-items-center">
                                             <input class="form-check-input m-0 me-2" type="radio" name="capacityGroup" value="large" id="largeCheck" @(Context.Request.Query["capacityGroup"] == "large" ? "checked" : "")>
                                             <label class="form-check-label small" for="largeCheck">15+</label>
                                         </div>
-                                        <span class="badge rounded-pill bg-light text-dark border-0 ms-1" style="font-size: 0.7rem;">@ViewBag.LargeCount</span>
+                                        <span class="badge rounded-pill bg-light text-dark border-0 ms-1" style="font-size: 0.7rem;">@Model.LargeCount</span>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-6 ps-2">
                                 <label class="form-label fw-bold mb-3 small">Тип база</label>
                                 <div class="d-flex flex-column gap-2">
@@ -120,20 +114,20 @@
                                             <input class="form-check-input m-0 me-2" type="radio" name="isOutdoor" value="true" id="outdoorCheck" @(Context.Request.Query["isOutdoor"] == "true" ? "checked" : "")>
                                             <label class="form-check-label small" for="outdoorCheck">Открито</label>
                                         </div>
-                                        <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@ViewBag.OutdoorCount</span>
+                                        <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@Model.OutdoorCount</span>
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center p-0">
                                         <div class="d-flex align-items-center">
                                             <input class="form-check-input m-0 me-2" type="radio" name="isOutdoor" value="false" id="indoorCheck" @(Context.Request.Query["isOutdoor"] == "false" ? "checked" : "")>
                                             <label class="form-check-label small" for="indoorCheck">Закрито</label>
                                         </div>
-                                        <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@ViewBag.IndoorCount</span>
+                                        <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@Model.IndoorCount</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr />
-                        <a href="javascript:void(0);" onclick="resetSecondaryFilters('@city')" class="text-success text-decoration-none small fw-bold">
+                        <a href="javascript:void(0);" onclick="resetSecondaryFilters('@Model.City')" class="text-success text-decoration-none small fw-bold">
                             <i class="bi bi-x-circle me-1"></i>Изчисти
                         </a>
                         <button type="submit" class="btn btn-success w-100 mt-3 shadow-sm">Приложи</button>
@@ -143,28 +137,14 @@
         </aside>
         <main class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                @if (string.IsNullOrEmpty(activity))
-                {
-                    if (Model.Count() == 1)
-                    {
-                        <h4 class="mb-0"> @city: <small class="text-muted"> открито @Model.Count() място за спорт</small></h4>
-                    }
-                    else
-                    {
-                        <h4 class="mb-0"> @city: <small class="text-muted"> открити @Model.Count() места за спорт</small></h4>
-                    }
+               @{
+                    var resultsCount = Model.Results.Count();
+                    var resultText = resultsCount == 1 ? "място за спорт" : "места за спорт";
                 }
-                else
-                {
-                    if (Model.Count() == 1)
-                    {
-                        <h4 class="mb-0">@city: @activity <small class="text-muted"> - открито @Model.Count() място</small></h4>
-                    }
-                    else
-                    {
-                        <h4 class="mb-0">@city: @activity <small class="text-muted"> - открити @Model.Count() места</small></h4>
-                    }
-                }
+                <h4 class="mb-0"> 
+                    @Model.City@(!string.IsNullOrEmpty(Model.Activity) ? $": {Model.Activity}" : ""): 
+                    <small class="text-muted"> @(resultsCount == 1 ? "открито" : "открити") @resultsCount @resultText</small>
+                </h4>
             <div class="d-flex align-items-center gap-3 mb-4">
                 <button type="button" class="btn btn-outline-success shadow-sm" id="viewToggleBtn" onclick="toggleView()">
                     <i id="viewIcon" class="bi bi-grid-3x3-gap-fill"></i>
@@ -191,7 +171,7 @@
                 </div>
             </div>
             <div id="resultsContainer" class="d-flex flex-column gap-3">
-                @if (!Model.Any())
+                @if (!Model.Results.Any())
                 {
                     <div class="no-results-container text-center py-5 shadow-sm border rounded-4 bg-white">
                         <div class="no-results-icon-wrapper mb-4">
@@ -200,7 +180,7 @@
                         </div>
                         <h3 class="fw-bold text-dark">Опа! Нищо не открихме.</h3>
                         <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">
-                            В момента няма места, които да отговарят на избраните критерии за град <strong>@city</strong>.
+                            В момента няма места, които да отговарят на избраните критерии за град <strong>@Model.City</strong>.
                             Опитайте да промените цената или да потърсите друга активност.
                         </p>
                         <div class="d-flex justify-content-center gap-2">
@@ -210,7 +190,7 @@
                         </div>
                     </div>
                 }
-                @foreach (var place in Model)
+                @foreach (var place in Model.Results)
                 {
                 <div class="result-wrapper">
                     <div class="card border-success shadow-sm mb-3 search-result-card">
@@ -270,7 +250,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="largeMapModalLabel"><i class="bi bi-geo-alt me-2"></i>Карта: @city</h5>
+                <h5 class="modal-title" id="largeMapModalLabel"><i class="bi bi-geo-alt me-2"></i>Карта: @Model.City</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0" style="height: 80vh; min-height: 500px;">
@@ -279,7 +259,7 @@
                         height="100%"
                         frameborder="0"
                         style="border:0; display:block;"
-                        src="https://maps.google.com/maps?q=@(Uri.EscapeDataString(city + ", Bulgaria"))&t=&z=14&ie=UTF8&iwloc=&output=embed">
+                        src="https://maps.google.com/maps?q=@(Uri.EscapeDataString(Model.City ?? "Bulgaria"))&t=&z=14&ie=UTF8&iwloc=&output=embed">
                 </iframe>
             </div>
         </div>
@@ -393,8 +373,8 @@
             }
         });
     });
-    const citiesData = @Html.Raw(Json.Serialize(ViewBag.CitiesList));
-    const activitiesData = @Html.Raw(Json.Serialize(ViewBag.ActivitiesList));
+    const citiesData = @Html.Raw(Json.Serialize(Model.CitiesList)) || [];
+    const activitiesData = @Html.Raw(Json.Serialize(Model.ActivitiesList)) || [];
 
     function setupAutocomplete(inputId, listId, dataArray, iconClass)
     {
@@ -605,4 +585,41 @@
         }
     }
     document.addEventListener('DOMContentLoaded', initView);
+    document.addEventListener("DOMContentLoaded", function() {
+    setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
+    setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
+    const searchForm = document.getElementById('filterForm') || document.getElementById('mainSearchForm');
+    if (searchForm)
+    {
+        searchForm.addEventListener('submit', function (e) 
+        {
+            const cityInput = document.getElementById('cityInput');
+            const activityInput = document.getElementById('activityInput');           
+            const cityValue = cityInput.value.trim().toLowerCase();
+            const activityValue = activityInput.value.trim().toLowerCase();
+            const isCityValid = citiesData.some(c => c.toLowerCase() === cityValue);
+            if (!isCityValid) 
+            {
+                e.preventDefault();
+                toastr.info("Моля, изберете град от предложенията!");
+                cityInput.classList.add('input-error');
+                cityInput.value = '';
+                cityInput.focus();
+                setTimeout(() => cityInput.classList.remove('input-error'), 2000);
+                return false;
+            }
+            const isActivityValid = activitiesData.some(a => a.toLowerCase() === activityValue);
+            if (activityValue !== "" && !isActivityValid)
+            {
+                e.preventDefault();
+                toastr.info("Моля, изберете валидна активност!");
+                activityInput.classList.add('input-error');
+                activityInput.value = '';
+                activityInput.focus();
+                setTimeout(() => activityInput.classList.remove('input-error'), 2000);
+                return false;
+            }
+        });
+    }
+});
 </script>

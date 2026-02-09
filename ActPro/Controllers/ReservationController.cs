@@ -109,14 +109,10 @@ namespace ActPro.Controllers
         public async Task<IActionResult> MyReservations(int page = 1, string filter = "all")
         {
             var userId = _userManager.GetUserId(User);
-            var (reservations, totalCount) = await _reservationService.GetUserReservationsAsync(userId, page, 10, filter);
 
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / 10);
-            ViewBag.TotalCount = totalCount;
-            ViewBag.Filter = filter;
+            var viewModel = await _reservationService.GetUserReservationsAsync(userId, page, 10, filter);
 
-            return View(reservations);
+            return View(viewModel);
         }
 
         //--- CANCEL RESERVATION ---
