@@ -8,23 +8,14 @@ namespace ActPro.Areas.Owner.Controllers
 {
     [Area("Owner")]
     [Authorize(Roles = "Owner")]
-    public class ReservationsController : Controller
+    public class ReservationsController(IReservationDashboardService resService, UserManager<ApplicationUser> userManager) : Controller
     {
-        private readonly IReservationDashboardService _resService;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public ReservationsController(IReservationDashboardService resService, UserManager<ApplicationUser> userManager)
-        {
-            _resService = resService;
-            _userManager = userManager;
-        }
-
-        //--- DELETE ---
+        //--- DELETE RESERVATION---
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = _userManager.GetUserId(User);
-            if (await _resService.DeleteReservationAsync(id, userId))
+            var userId = userManager.GetUserId(User);
+            if (await resService.DeleteReservationAsync(id, userId))
                 TempData["Success"] = "Резервацията беше анулирана.";
 
             return RedirectToAction("Index", "Dashboard");
@@ -35,8 +26,8 @@ namespace ActPro.Areas.Owner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTime(int id, TimeOnly reservationTime)
         {
-            var userId = _userManager.GetUserId(User);
-            if (await _resService.UpdateReservationTimeAsync(id, reservationTime, userId))
+            var userId = userManager.GetUserId(User);
+            if (await resService.UpdateReservationTimeAsync(id, reservationTime, userId))
                 TempData["Success"] = "Часът беше променен!";
 
             return RedirectToAction("Index", "Dashboard");

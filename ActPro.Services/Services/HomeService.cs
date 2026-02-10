@@ -8,43 +8,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services
 {
-    public class HomeService : IHomeService
+    public class HomeService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo, IRepository<News> newsRepo, ApplicationDbContext context) : IHomeService
     {
-        private readonly IRepository<Place> _placeRepo;
-        private readonly IRepository<City> _cityRepo;
-        private readonly IRepository<Activity> _activityRepo;
-        private readonly IRepository<News> _newsRepo;
-        private readonly ApplicationDbContext _context;
-
-        public HomeService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo, IRepository<News> newsRepo, ApplicationDbContext context)
-        {
-            _placeRepo = placeRepo;
-            _cityRepo = cityRepo;
-            _activityRepo = activityRepo;
-            _newsRepo = newsRepo;
-            _context = context;
-        }
-
         public async Task<HomeViewModel> GetHomeViewModelAsync()
         {
-            var topPlaces = await _placeRepo.AllAsNoTracking()
+            var topPlaces = await placeRepo.AllAsNoTracking()
             .Include(p => p.City)
             .Include(p => p.PlaceImages)
             .OrderByDescending(p => p.Rating)
             .Take(3)
             .ToListAsync();
 
-            var cities = await _cityRepo.AllAsNoTracking()
+            var cities = await cityRepo.AllAsNoTracking()
             .Select(c => c.Name)
             .Distinct()
             .ToListAsync();
 
-            var activities = await _activityRepo.AllAsNoTracking()
+            var activities = await activityRepo.AllAsNoTracking()
             .Select(a => a.Name)
             .Distinct()
             .ToListAsync();
 
-            var sportCounts = await _placeRepo.AllAsNoTracking()
+            var sportCounts = await placeRepo.AllAsNoTracking()
             .GroupBy(p => p.Activity.Name)
             .Select(g => new { Name = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.Name, x => x.Count);
@@ -60,7 +45,7 @@ namespace ActPro.Services
 
         public async Task<(IEnumerable<News> news, int totalPages)> GetNewsPagedAsync(int page, int pageSize, string? userId)
         {
-            var query = _newsRepo.AllAsNoTracking();
+            var query = newsRepo.AllAsNoTracking();
             var totalNews = await query.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalNews / pageSize);
 
@@ -72,7 +57,7 @@ namespace ActPro.Services
 
             if (!string.IsNullOrEmpty(userId))
             {
-                var userLikedIds = await _context.NewsLikes
+                var userLikedIds = await context.NewsLikes
                 .Where(l => l.UserId == userId)
                 .Select(l => l.NewsId)
                 .ToListAsync();
@@ -86,7 +71,7 @@ namespace ActPro.Services
             return (newsList, totalPages);
         }
 
-        public async Task CreateNewsAsync(News news, IFormFile? imageFile, string webRootPath)
+        public async Task CreateNewsAsync(string title, string content, IFormFile? imageFile, string webRootPath)
         {
             if (imageFile != null)
             {
@@ -101,17 +86,21 @@ namespace ActPro.Services
                 {
                     await imageFile.CopyToAsync(stream);
                 }
-                news.ImageURL = fileName;
+                var news = new News
+                {
+                    Title = title,
+                    Content = content,
+                    CreatedAt = DateTime.Now,
+                    ImageURL = fileName
+                };
+                await newsRepo.AddAsync(news);
+                await newsRepo.SaveChangesAsync();
             }
-
-            news.CreatedAt = DateTime.Now;
-            await _newsRepo.AddAsync(news);
-            await _newsRepo.SaveChangesAsync();
         }
 
         public async Task<bool> DeleteNewsAsync(int id, string webRootPath)
         {
-            var news = await _newsRepo.All().FirstOrDefaultAsync(n => n.Id == id);
+            var news = await newsRepo.All().FirstOrDefaultAsync(n => n.Id == id);
             if (news == null) return false;
             if (!string.IsNullOrEmpty(news.ImageURL) && news.ImageURL != "default.jpg")
             {
@@ -121,41 +110,41 @@ namespace ActPro.Services
                 {
                     if (File.Exists(filePath))
                     {
-                         File.Delete(filePath);
+                        File.Delete(filePath);
                     }
                 }
                 catch (IOException ex)
                 {
                 }
             }
-            await _newsRepo.DeleteAsync(news);
-            await _newsRepo.SaveChangesAsync();
+            await newsRepo.DeleteAsync(news);
+            await newsRepo.SaveChangesAsync();
             return true;
         }
 
         public async Task<(int likes, bool isLiked)> LikeNewsAsync(int newsId, string userId)
         {
-            var news = await _newsRepo.All().FirstOrDefaultAsync(n => n.Id == newsId);
+            var news = await newsRepo.All().FirstOrDefaultAsync(n => n.Id == newsId);
             if (news == null) return (0, false);
 
-            var existingLike = await _context.NewsLikes
+            var existingLike = await context.NewsLikes
             .FirstOrDefaultAsync(l => l.NewsId == newsId && l.UserId == userId);
 
             bool nowLiked;
             if (existingLike != null)
             {
-                _context.NewsLikes.Remove(existingLike);
+                context.NewsLikes.Remove(existingLike);
                 news.Likes = Math.Max(0, news.Likes - 1);
                 nowLiked = false;
             }
             else
             {
-                await _context.NewsLikes.AddAsync(new NewsLikes { NewsId = newsId, UserId = userId });
+                await context.NewsLikes.AddAsync(new NewsLikes { NewsId = newsId, UserId = userId });
                 news.Likes++;
                 nowLiked = true;
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             return (news.Likes, nowLiked);
         }

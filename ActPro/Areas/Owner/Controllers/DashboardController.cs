@@ -9,30 +9,22 @@ namespace ActPro.Areas.Owner.Controllers
 {
     [Area("Owner")]
     [Authorize(Roles = "Owner")]
-    public class DashboardController : Controller
+    public class DashboardController(IOwnerDashboardService ownerService, UserManager<ApplicationUser> userManager) : Controller
     {
-        private readonly IOwnerDashboardService _ownerService;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public DashboardController(IOwnerDashboardService ownerService, UserManager<ApplicationUser> userManager)
-        {
-            _ownerService = ownerService;
-            _userManager = userManager;
-        }
-
         //--- OWNER DASHBOARD ---
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId)) return Challenge();
 
-            var cities = await _ownerService.GetCitiesAsync();
-            var activities = await _ownerService.GetActivitiesAsync();
+            var cities = await ownerService.GetCitiesAsync();
+            var activities = await ownerService.GetActivitiesAsync();
 
             ViewBag.Cities = new SelectList(cities, "Id", "Name");
             ViewBag.ActivityTypes = new SelectList(activities, "Id", "Name");
 
-            var model = await _ownerService.GetOwnerStatsAsync(userId);
+            var model = await ownerService.GetOwnerStatsAsync(userId);
             return View(model);
         }
     }

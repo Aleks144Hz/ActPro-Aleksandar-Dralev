@@ -20,7 +20,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ActPro.DAL\ActPro.DAL.csproj" />
 		<ProjectReference Include="..\ActPro.Services\ActPro.Services.csproj" />
 		<ProjectReference Include="..\ActPro.Domain\ActPro.Domain.csproj" />
 	</ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using ActPro.DAL;
-using ActPro.DAL.Entities;
 using ActPro.Domain.Models;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
@@ -10,35 +9,22 @@ using System.Security.Claims;
 
 namespace ActPro.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(IHomeService homeService, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, IAuditService auditService) : Controller
     {
-        private readonly IHomeService _homeService;
-        private readonly IAuditService _auditService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-
-        public HomeController(IHomeService homeService, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, IAuditService auditService)
-        {
-            _homeService = homeService;
-            _webHostEnvironment = webHostEnvironment;
-            _userManager = userManager;
-            _auditService = auditService;
-        }
-
         //---HOME PAGE---
         public async Task<IActionResult> Index()
         {
-            var viewModel = await _homeService.GetHomeViewModelAsync();
+            var viewModel = await homeService.GetHomeViewModelAsync();
             return View(viewModel);
         }
 
         //---NEWS PAGE---
+        [HttpGet]
         public async Task<IActionResult> News(int page = 1)
         {
             int pageSize = 6;
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var (newsItems, totalPages) = await _homeService.GetNewsPagedAsync(page, pageSize, userId);
+            var (newsItems, totalPages) = await homeService.GetNewsPagedAsync(page, pageSize, userId);
 
             var viewModel = new NewsViewModel
             {
@@ -58,20 +44,13 @@ namespace ActPro.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateNews(string Title, string Content, IFormFile? imageFile)
+        public async Task<IActionResult> CreateNews(string title, string content, IFormFile? imageFile)
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (!string.IsNullOrEmpty(Title) && !string.IsNullOrEmpty(Content))
+            var user = await userManager.GetUserAsync(User);
+            if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(content))
             {
-                var news = new News
-                {
-                    Title = Title,
-                    Content = Content,
-                    CreatedAt = DateTime.Now
-                };
-
-                await _homeService.CreateNewsAsync(news, imageFile, _webHostEnvironment.WebRootPath);
-                await _auditService.LogAsync("Create News", "User", user.Id, $"Публикувана е нова новина: \"{Title}\"");
+                await homeService.CreateNewsAsync(title, content, imageFile, webHostEnvironment.WebRootPath);
+                await auditService.LogAsync("Create News", "User", user.Id, $"Публикувана е нова новина: \"{title}\"");
                 TempData["SuccessMessage"] = "Новината е публикувана успешно!";
                 return RedirectToAction(nameof(News));
             }
@@ -83,9 +62,9 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteNews(int id)
         {
-            var user = await _userManager.GetUserAsync(User);
-            await _homeService.DeleteNewsAsync(id, _webHostEnvironment.WebRootPath);
-            await _auditService.LogAsync("Delete News", "User", user.Id, $"Изтрита новина с ID: {id}");
+            var user = await userManager.GetUserAsync(User);
+            await homeService.DeleteNewsAsync(id, webHostEnvironment.WebRootPath);
+            await auditService.LogAsync("Delete News", "User", user.Id, $"Изтрита новина с ID: {id}");
             TempData["SuccessMessage"] = "Новината е успешно изтрита";
             return RedirectToAction(nameof(News));
         }
@@ -98,7 +77,7 @@ namespace ActPro.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId)) return Json(new { success = false });
 
-            var result = await _homeService.LikeNewsAsync(id, userId);
+            var result = await homeService.LikeNewsAsync(id, userId);
 
             return Json(new
             {

@@ -10,31 +10,18 @@ using static ActPro.Helpers.MessageConstants;
 namespace ActPro.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController(IAccountService accountService, IAuditService auditService, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : Controller
     {
-        private readonly IAccountService _accountService;
-        private readonly IAuditService _auditService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public AccountController(IAccountService accountService, IAuditService auditService, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
-        {
-            _accountService = accountService;
-            _auditService = auditService;
-            _userManager = userManager;
-            _webHostEnvironment = webHostEnvironment;
-        }
-
         // --- ACCOUNT / PROFILE (Index) ---
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User);
-            var user = await _accountService.GetUserFullProfileAsync(userId);
+            var userId = userManager.GetUserId(User);
+            var user = await accountService.GetUserFullProfileAsync(userId);
 
             if (user == null) return NotFound();
 
-            var stats = await _accountService.GetUserActivityStatsAsync(userId);
+            var stats = await accountService.GetUserActivityStatsAsync(userId);
             var viewModel = new UserProfileViewModel
             {
                 FirstName = user.FirstName,
@@ -65,7 +52,7 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (await _accountService.IsUserBannedAsync(model.Email))
+            if (await accountService.IsUserBannedAsync(model.Email))
             {
                 ModelState.AddModelError(string.Empty, "Акаунтът ви е блокиран.");
                 return View(model);
@@ -73,17 +60,17 @@ namespace ActPro.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
-            var result = await _accountService.LoginAsync(model.Email, model.Password, model.RememberMe);
+            var result = await accountService.LoginAsync(model.Email, model.Password, model.RememberMe);
 
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                await _auditService.LogAsync("User Login", "User", user.Id, "Потребителят влезе в системата.");
+                var user = await userManager.FindByEmailAsync(model.Email);
+                await auditService.LogAsync("User Login", "User", user.Id, "Потребителят влезе в системата.");
                 TempData["Success"] = "Добре дошли!";
                 return RedirectToAction("Index", "Home");
             }
 
-            var userExists = await _userManager.FindByEmailAsync(model.Email);
+            var userExists = await userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
             {
                 ModelState.AddModelError("Password", NotValidPassword);
@@ -106,14 +93,14 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (await _accountService.IsUserBannedAsync(model.Email, model.PhoneNumber))
+            if (await accountService.IsUserBannedAsync(model.Email, model.PhoneNumber))
             {
                 ModelState.AddModelError("", "Този имейл е блокиран.");
                 return View(model);
             }
 
             string captchaResponse = Request.Form["g-recaptcha-response"];
-            if (!await _accountService.VerifyReCaptchaAsync(captchaResponse))
+            if (!await accountService.VerifyReCaptchaAsync(captchaResponse))
             {
                 ModelState.AddModelError("CaptchaResponse", "Моля потвърдете, че не сте робот.");
                 return View(model);
@@ -121,13 +108,13 @@ namespace ActPro.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _accountService.RegisterAsync(model);
+                var result = await accountService.RegisterAsync(model);
 
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var user = await userManager.FindByEmailAsync(model.Email);
                     TempData["Success"] = "Регистрацията е успешна! Добре дошли.";
-                    await _auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
+                    await auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -147,13 +134,13 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditProfile(EditProfileViewModel model)
         {
-            var userId = _userManager.GetUserId(User);
-            var result = await _accountService.UpdateProfileAsync(userId, model, _webHostEnvironment.WebRootPath);
+            var userId = userManager.GetUserId(User);
+            var result = await accountService.UpdateProfileAsync(userId, model, webHostEnvironment.WebRootPath);
 
             if (result.Succeeded)
             {
                 TempData["Success"] = SuccessfulUserEdit;
-                await _auditService.LogAsync("Update Settings", "User", userId, "Потребителят обнови профилните си данни.");
+                await auditService.LogAsync("Update Settings", "User", userId, "Потребителят обнови профилните си данни.");
             }
 
             return RedirectToAction("Settings");
@@ -164,8 +151,8 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            var userId = _userManager.GetUserId(User);
-            var user = await _accountService.GetUserByIdAsync(userId);
+            var userId = userManager.GetUserId(User);
+            var user = await accountService.GetUserByIdAsync(userId);
 
             if (!ModelState.IsValid)
             {
@@ -173,11 +160,11 @@ namespace ActPro.Controllers
                 return View("Settings", user);
             }
 
-            var result = await _accountService.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
+            var result = await accountService.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
 
             if (result.Succeeded)
             {
-                await _auditService.LogAsync("Update Settings", "User", userId, "Потребителят смени паролата си успешно.");
+                await auditService.LogAsync("Update Settings", "User", userId, "Потребителят смени паролата си успешно.");
                 TempData["Success"] = "Паролата е променена успешно!";
                 return RedirectToAction("Settings");
             }
@@ -203,8 +190,8 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProfile(DeleteProfileViewModel model)
         {
-            var userId = _userManager.GetUserId(User);
-            var user = await _accountService.GetUserFullProfileAsync(userId);
+            var userId = userManager.GetUserId(User);
+            var user = await accountService.GetUserFullProfileAsync(userId);
 
             if (!ModelState.IsValid)
             {
@@ -212,7 +199,7 @@ namespace ActPro.Controllers
                 return View("Settings", user);
             }
 
-            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, model.Password);
+            var isPasswordCorrect = await userManager.CheckPasswordAsync(user, model.Password);
             if (!isPasswordCorrect)
             {
                 ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
@@ -220,12 +207,12 @@ namespace ActPro.Controllers
                 return View("Settings", user);
             }
 
-            var result = await _accountService.DeleteAccountAsync(userId);
+            var result = await accountService.DeleteAccountAsync(userId);
             if (result.Succeeded)
             {
-                await _accountService.LogoutAsync();
+                await accountService.LogoutAsync();
                 TempData["Success"] = SuccessfulDeletedAccount;
-                await _auditService.LogAsync("Delete User", "User", userId, "Потребителят сам изтри профила си");
+                await auditService.LogAsync("Delete User", "User", userId, "Потребителят сам изтри профила си");
                 return RedirectToAction("Index", "Home");
             }
 
@@ -239,10 +226,10 @@ namespace ActPro.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> ToggleFavorite(int placeId)
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var result = await _accountService.ToggleFavoriteAsync(userId, placeId);
+            var result = await accountService.ToggleFavoriteAsync(userId, placeId);
             return Json(new { success = true, isFavorite = result.isFavorite, message = result.message });
         }
 
@@ -251,7 +238,7 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _accountService.LogoutAsync();
+            await accountService.LogoutAsync();
             TempData["Success"] = "Довиждане!";
             return RedirectToAction("Index", "Home");
         }
@@ -260,8 +247,8 @@ namespace ActPro.Controllers
         [HttpGet]
         public async Task<IActionResult> Settings()
         {
-            var userId = _userManager.GetUserId(User);
-            var user = await _accountService.GetUserByIdAsync(userId);
+            var userId = userManager.GetUserId(User);
+            var user = await accountService.GetUserByIdAsync(userId);
 
             if (user == null) return NotFound();
             var viewModel = new ProfileSettingsViewModel

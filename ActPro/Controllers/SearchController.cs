@@ -4,21 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ActPro.Controllers
 {
-    public class SearchController : Controller
+    public class SearchController(ISearchService searchService) : Controller
     {
-        private readonly ISearchService _searchService;
-
-        public SearchController(ISearchService searchService)
-        {
-            _searchService = searchService;
-        }
-
         //--- SEARCH PAGE ---
         public async Task<IActionResult> Index(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
-            var results = await _searchService.SearchPlacesAsync(city, activity, isOutdoor, minPrice, maxPrice, sortOrder, capacityGroup);
+            var results = await searchService.SearchPlacesAsync(city, activity, isOutdoor, minPrice, maxPrice, sortOrder, capacityGroup);
 
-            var stats = await _searchService.GetSearchStatsAsync(city, activity, isOutdoor, minPrice, maxPrice);
+            var stats = await searchService.GetSearchStatsAsync(city, activity, isOutdoor, minPrice, maxPrice);
 
             var viewModel = new SearchViewModel
             {
@@ -30,8 +23,8 @@ namespace ActPro.Controllers
                 MaxPrice = maxPrice ?? 200,
                 SortOrder = sortOrder,
                 CapacityGroup = capacityGroup,
-                CitiesList = await _searchService.GetCityNamesAsync(),
-                ActivitiesList = await _searchService.GetActivityNamesAsync(),
+                CitiesList = await searchService.GetCityNamesAsync(),
+                ActivitiesList = await searchService.GetActivityNamesAsync(),
                 SmallCount = stats.GetValueOrDefault("SmallCount", 0),
                 MediumCount = stats.GetValueOrDefault("MediumCount", 0),
                 LargeCount = stats.GetValueOrDefault("LargeCount", 0),

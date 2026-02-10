@@ -11,32 +11,21 @@ namespace ActPro.Areas.Owner.Controllers
 {
     [Area("Owner")]
     [Authorize(Roles = "Owner")]
-    public class PlacesController : Controller
+    public class PlacesController(IPlaceDashboardService placeService, UserManager<ApplicationUser> userManager, ApplicationDbContext context) : Controller
     {
-        private readonly IPlaceDashboardService _placeService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _db;
-
-        public PlacesController(IPlaceDashboardService placeService, UserManager<ApplicationUser> userManager, ApplicationDbContext db)
-        {
-            _placeService = placeService;
-            _userManager = userManager;
-            _db = db;
-        }
-
-        //--- EDIT ---
+        //--- EDIT PLACE---
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var userId = _userManager.GetUserId(User);
-            var place = await _placeService.GetByIdAsync(id.Value);
+            var userId = userManager.GetUserId(User);
+            var place = await placeService.GetByIdAsync(id.Value);
 
             if (place == null || place.OwnerId != userId) return Forbid();
 
-            ViewBag.Cities = new SelectList(_db.Cities, "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(_db.Activities, "Id", "Name", place.ActivityId);
+            ViewBag.Cities = new SelectList(context.Cities, "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(context.Activities, "Id", "Name", place.ActivityId);
 
             return View(place);
         }
@@ -45,7 +34,7 @@ namespace ActPro.Areas.Owner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Place place, IEnumerable<IFormFile>? imageFiles)
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = userManager.GetUserId(User);
 
             ModelState.Remove("PlaceImages");
             ModelState.Remove("City");
@@ -54,7 +43,7 @@ namespace ActPro.Areas.Owner.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await _placeService.UpdatePlaceAsync(place, imageFiles, userId))
+                if (await placeService.UpdatePlaceAsync(place, imageFiles, userId))
                 {
                     TempData["Success"] = "Успешно редактирахте данните на обекта.";
                     return RedirectToAction("Index", "Dashboard");
@@ -62,8 +51,8 @@ namespace ActPro.Areas.Owner.Controllers
                 return Forbid();
             }
 
-            ViewBag.Cities = new SelectList(_db.Cities, "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(_db.Activities, "Id", "Name", place.ActivityId);
+            ViewBag.Cities = new SelectList(context.Cities, "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(context.Activities, "Id", "Name", place.ActivityId);
             return View(place);
         }
 
@@ -71,7 +60,7 @@ namespace ActPro.Areas.Owner.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
-            if (await _placeService.DeleteImageAsync(imageId))
+            if (await placeService.DeleteImageAsync(imageId))
             {
                 return Ok();
             }
@@ -82,8 +71,8 @@ namespace ActPro.Areas.Owner.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageSchedule(int placeId)
         {
-            var userId = _userManager.GetUserId(User);
-            var place = await _placeService.GetByIdAsync(placeId);
+            var userId = userManager.GetUserId(User);
+            var place = await placeService.GetByIdAsync(placeId);
 
             if (place == null || place.OwnerId != userId) return Forbid();
 
@@ -94,12 +83,12 @@ namespace ActPro.Areas.Owner.Controllers
         [HttpPost]
         public async Task<IActionResult> CloseDateRange(int placeId, DateTime startDate, DateTime endDate, string reason)
         {
-            var userId = _userManager.GetUserId(User);
-            var place = await _placeService.GetByIdAsync(placeId);
+            var userId = userManager.GetUserId(User);
+            var place = await placeService.GetByIdAsync(placeId);
 
             if (place == null || place.OwnerId != userId) return Forbid();
 
-            if (await _placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
+            if (await placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
             {
                 TempData["Success"] = $"Успешно затворихте избрания период.";
             }
@@ -116,7 +105,7 @@ namespace ActPro.Areas.Owner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OpenDate(int id)
         {
-            if (await _placeService.RemoveClosureAsync(id))
+            if (await placeService.RemoveClosureAsync(id))
             {
                 TempData["Success"] = "Датата беше отключена успешно.";
             }

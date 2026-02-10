@@ -5,19 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services
 {
-    public class SearchService : ISearchService
+    public class SearchService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo) : ISearchService
     {
-        private readonly IRepository<Place> _placeRepo;
-        private readonly IRepository<City> _cityRepo;
-        private readonly IRepository<Activity> _activityRepo;
-
-        public SearchService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo)
-        {
-            _placeRepo = placeRepo;
-            _cityRepo = cityRepo;
-            _activityRepo = activityRepo;
-        }
-
         public async Task<IEnumerable<Place>> SearchPlacesAsync(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
             var query = BuildBaseQuery(city, activity, isOutdoor, minPrice, maxPrice);
@@ -61,7 +50,7 @@ namespace ActPro.Services
 
         private IQueryable<Place> BuildBaseQuery(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice)
         {
-            var query = _placeRepo.AllAsNoTracking()
+            var query = placeRepo.AllAsNoTracking()
                 .Include(p => p.City)
                 .Include(p => p.Activity)
                 .Include(p => p.PlaceImages)
@@ -76,9 +65,9 @@ namespace ActPro.Services
             return query;
         }
 
-        public async Task<List<string>> GetCityNamesAsync() => await _cityRepo.AllAsNoTracking().Select(c => c.Name).ToListAsync();
-        public async Task<List<string>> GetActivityNamesAsync() => await _activityRepo.AllAsNoTracking().Select(a => a.Name).ToListAsync();
-        public async Task<List<City>> GetAllCitiesAsync() => await _cityRepo.AllAsNoTracking().ToListAsync();
-        public async Task<List<Activity>> GetAllActivitiesAsync() => await _activityRepo.AllAsNoTracking().ToListAsync();
+        public async Task<List<string>> GetCityNamesAsync() => await cityRepo.AllAsNoTracking().Select(c => c.Name).ToListAsync();
+        public async Task<List<string>> GetActivityNamesAsync() => await activityRepo.AllAsNoTracking().Select(a => a.Name).ToListAsync();
+        public async Task<List<City>> GetAllCitiesAsync() => await cityRepo.AllAsNoTracking().ToListAsync();
+        public async Task<List<Activity>> GetAllActivitiesAsync() => await activityRepo.AllAsNoTracking().ToListAsync();
     }
 }
