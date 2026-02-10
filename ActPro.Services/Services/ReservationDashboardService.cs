@@ -4,20 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services.Services
 {
-    public class IReservationDashboardService : Interfaces.IReservationDashboardService
+    public class IReservationDashboardService(ApplicationDbContext context, IAuditService auditService) : Interfaces.IReservationDashboardService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IAuditService _auditService;
-
-        public IReservationDashboardService(ApplicationDbContext context, IAuditService auditService)
-        {
-            _context = context;
-            _auditService = auditService;
-        }
-
         public async Task<IEnumerable<Reservation>> GetAllReservationsAsync()
         {
-            return await _context.Reservations
+            return await context.Reservations
             .Include(r => r.Place)
             .OrderByDescending(r => r.CreatedAt)
             .ToListAsync();
@@ -25,7 +16,7 @@ namespace ActPro.Services.Services
 
         public async Task<IEnumerable<Reservation>> GetOwnerReservationsAsync(string ownerId)
         {
-            return await _context.Reservations
+            return await context.Reservations
             .Include(r => r.Place)
             .Where(r => r.Place.OwnerId == ownerId)
             .OrderByDescending(r => r.CreatedAt)
@@ -34,7 +25,7 @@ namespace ActPro.Services.Services
 
         public async Task<Reservation?> GetByIdAsync(int id)
         {
-            return await _context.Reservations
+            return await context.Reservations
             .Include(r => r.Place)
             .FirstOrDefaultAsync(r => r.Id == id);
         }
@@ -46,10 +37,10 @@ namespace ActPro.Services.Services
 
             if (ownerId != null && res.Place.OwnerId != ownerId) return false;
 
-            _context.Reservations.Remove(res);
-            await _context.SaveChangesAsync();
+            context.Reservations.Remove(res);
+            await context.SaveChangesAsync();
 
-            await _auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"Изтрита резервация на {res.FirstName} {res.LastName} за {res.ReservationDate:dd.MM.yyyy}");
+            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"Изтрита резервация на {res.FirstName} {res.LastName} за {res.ReservationDate:dd.MM.yyyy}");
 
             return true;
         }
@@ -62,9 +53,9 @@ namespace ActPro.Services.Services
 
             var oldTime = res.ReservationTime;
             res.ReservationTime = newTime;
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            await _auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName}: {oldTime} -> {newTime}");
+            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName}: {oldTime} -> {newTime}");
 
             return true;
         }

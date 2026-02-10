@@ -10,23 +10,15 @@ namespace ActPro.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class PlacesController : Controller
+    public class PlacesController(IPlaceDashboardService placeService, ApplicationDbContext context) : Controller
     {
-        private readonly IPlaceDashboardService _placeService;
-        private readonly ApplicationDbContext _db;
-
-        public PlacesController(IPlaceDashboardService placeService, ApplicationDbContext db)
-        {
-            _placeService = placeService;
-            _db = db;
-        }
-
         //--- INDEX ---
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewBag.Cities = new SelectList(_db.Cities, "Id", "Name");
-            ViewBag.ActivityTypes = new SelectList(_db.Activities, "Id", "Name");
-            return View(await _placeService.GetAllPlacesAsync());
+            ViewBag.Cities = new SelectList(context.Cities, "Id", "Name");
+            ViewBag.ActivityTypes = new SelectList(context.Activities, "Id", "Name");
+            return View(await placeService.GetAllPlacesAsync());
         }
 
         //--- CREATE ---
@@ -43,7 +35,7 @@ namespace ActPro.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                await _placeService.CreatePlaceAsync(place, imageFiles, userId, true);
+                await placeService.CreatePlaceAsync(place, imageFiles, userId, true);
                 TempData["Success"] = "Обектът беше създаден успешно.";
                 return RedirectToAction(nameof(Index));
             }
@@ -57,11 +49,11 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (id == null) return NotFound();
 
-            var place = await _placeService.GetByIdAsync(id.Value);
+            var place = await placeService.GetByIdAsync(id.Value);
             if (place == null) return NotFound();
 
-            ViewBag.Cities = new SelectList(_db.Cities, "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(_db.Activities, "Id", "Name", place.ActivityId);
+            ViewBag.Cities = new SelectList(context.Cities, "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(context.Activities, "Id", "Name", place.ActivityId);
 
             return View(place);
         }
@@ -79,15 +71,15 @@ namespace ActPro.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await _placeService.UpdatePlaceAsync(place, imageFiles))
+                if (await placeService.UpdatePlaceAsync(place, imageFiles))
                 {
                     TempData["Success"] = "Успешно редактирахте данните на обекта.";
                     return RedirectToAction(nameof(Index));
                 }
             }
 
-            ViewBag.Cities = new SelectList(_db.Cities, "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(_db.Activities, "Id", "Name", place.ActivityId);
+            ViewBag.Cities = new SelectList(context.Cities, "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(context.Activities, "Id", "Name", place.ActivityId);
             return View(place);
         }
 
@@ -95,7 +87,7 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            await _placeService.DeletePlaceAsync(id);
+            await placeService.DeletePlaceAsync(id);
             TempData["Success"] = "Обектът и всички свързани данни бяха изтрити.";
             return RedirectToAction(nameof(Index));
         }
@@ -104,7 +96,7 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Approve(int id)
         {
-            if (await _placeService.ApprovePlaceAsync(id))
+            if (await placeService.ApprovePlaceAsync(id))
             {
                 TempData["Success"] = "Обектът беше одобрен успешно.";
             }
@@ -115,7 +107,7 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteImage(int imageId)
         {
-            if (await _placeService.DeleteImageAsync(imageId))
+            if (await placeService.DeleteImageAsync(imageId))
             {
                 return Ok();
             }
@@ -126,7 +118,7 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ManageSchedule(int placeId)
         {
-            var place = await _placeService.GetByIdAsync(placeId);
+            var place = await placeService.GetByIdAsync(placeId);
             if (place == null) return NotFound();
             return View(place);
         }
@@ -135,7 +127,7 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CloseDateRange(int placeId, DateTime startDate, DateTime endDate, string reason)
         {
-            if (await _placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
+            if (await placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
             {
                 TempData["Success"] = "Датите бяха затворени успешно.";
             }
@@ -151,7 +143,7 @@ namespace ActPro.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OpenDate(int id)
         {
-            if (await _placeService.RemoveClosureAsync(id))
+            if (await placeService.RemoveClosureAsync(id))
             {
                 TempData["Success"] = "Датата беше отключена успешно.";
             }

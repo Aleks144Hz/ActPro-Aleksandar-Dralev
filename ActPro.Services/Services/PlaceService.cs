@@ -6,20 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services.Services
 {
-    public class PlaceService : IPlaceService
+    public class PlaceService(ApplicationDbContext context, IAuditService auditService) : IPlaceService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IAuditService _auditService;
+        public async Task<IEnumerable<City>> GetCitiesAsync() => await context.Cities.OrderBy(c => c.Name).ToListAsync();
 
-        public PlaceService(ApplicationDbContext context, IAuditService auditService)
-        {
-            _context = context;
-            _auditService = auditService;
-        }
-
-        public async Task<IEnumerable<City>> GetCitiesAsync() => await _context.Cities.OrderBy(c => c.Name).ToListAsync();
-
-        public async Task<IEnumerable<Activity>> GetActivitiesAsync() => await _context.Activities.OrderBy(a => a.Name).ToListAsync();
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync() => await context.Activities.OrderBy(a => a.Name).ToListAsync();
 
         public async Task<bool> CreatePlaceRequestAsync(Place place, IEnumerable<IFormFile>? imageFiles, string userId, string webRootPath)
         {
@@ -29,8 +20,8 @@ namespace ActPro.Services.Services
             place.City = null;
             place.Activity = null;
 
-            _context.Places.Add(place);
-            await _context.SaveChangesAsync();
+            context.Places.Add(place);
+            await context.SaveChangesAsync();
 
             if (imageFiles != null && imageFiles.Any())
             {
@@ -51,12 +42,12 @@ namespace ActPro.Services.Services
 
                         string dbPath = "/images/places/" + fileName;
 
-                        await _context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO PlaceImages (PlaceId, ImageUrl) VALUES ({place.Id}, {dbPath})");
+                        await context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO PlaceImages (PlaceId, ImageUrl) VALUES ({place.Id}, {dbPath})");
                     }
                 }
             }
 
-            await _auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
             return true;
         }
     }

@@ -9,49 +9,33 @@ using Microsoft.Extensions.Configuration;
 
 namespace ActPro.Services.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IRepository<ApplicationUser> userRepo, 
+        IRepository<Favorite> favRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<BannedUser> banRepo, IConfiguration configuration) : IAccountService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IRepository<ApplicationUser> _userRepo;
-        private readonly IRepository<Favorite> _favRepo;
-        private readonly IRepository<Reservation> _resRepo;
-        private readonly IRepository<Comment> _commentRepo;
-        private readonly IRepository<BannedUser> _banRepo;
-        private readonly IConfiguration _configuration;
-
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IRepository<ApplicationUser> userRepo, IRepository<Favorite> favRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<BannedUser> banRepo, IConfiguration configuration)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _userRepo = userRepo;
-            _favRepo = favRepo;
-            _resRepo = resRepo;
-            _commentRepo = commentRepo;
-            _banRepo = banRepo;
-            _configuration = configuration;
-        }
-
-        public async Task<ApplicationUser> GetUserFullProfileAsync(string userId) => await _userRepo.AllAsNoTracking()
-        .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.PlaceImages)
-        .Include(u => u.Favorites).ThenInclude(f => f.Place).ThenInclude(p => p.City)
+        public async Task<ApplicationUser> GetUserFullProfileAsync(string userId) => await userRepo.AllAsNoTracking()
+        .Include(u => u.Favorites)
+        .ThenInclude(f => f.Place)
+        .ThenInclude(p => p.PlaceImages)
+        .Include(u => u.Favorites)
+        .ThenInclude(f => f.Place)
+        .ThenInclude(p => p.City)
         .FirstOrDefaultAsync(u => u.Id == userId);
 
-        public async Task<ApplicationUser> GetUserByIdAsync(string userId) => await _userManager.FindByIdAsync(userId);
+        public async Task<ApplicationUser> GetUserByIdAsync(string userId) => await userManager.FindByIdAsync(userId);
 
         public async Task<(int resCount, int revCount)> GetUserActivityStatsAsync(string userId)
         {
-            var resCount = await _resRepo.AllAsNoTracking().CountAsync(r => r.AspNetUserId == userId);
-            var revCount = await _commentRepo.AllAsNoTracking().CountAsync(c => c.AspNetUserId == userId);
+            var resCount = await resRepo.AllAsNoTracking().CountAsync(r => r.AspNetUserId == userId);
+            var revCount = await commentRepo.AllAsNoTracking().CountAsync(c => c.AspNetUserId == userId);
             return (resCount, revCount);
         }
 
-        public async Task<bool> IsUserBannedAsync(string email, string phone = null) => await _banRepo.AllAsNoTracking().AnyAsync(b => b.Email == email || phone != null && b.Phone == phone);
+        public async Task<bool> IsUserBannedAsync(string email, string phone = null) => await banRepo.AllAsNoTracking().AnyAsync(b => b.Email == email || phone != null && b.Phone == phone);
 
         public async Task<bool> VerifyReCaptchaAsync(string response)
         {
             if (string.IsNullOrEmpty(response)) return false;
-            string secret = _configuration["GoogleReCaptcha:SecretKey"];
+            string secret = configuration["GoogleReCaptcha:SecretKey"];
             using var client = new HttpClient();
             var verifyUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={response}";
             var result = await client.PostAsync(verifyUrl, null);
@@ -61,9 +45,9 @@ namespace ActPro.Services.Services
 
         public async Task<SignInResult> LoginAsync(string email, string password, bool rememberMe)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await userManager.FindByEmailAsync(email);
             if (user == null) return SignInResult.Failed;
-            return await _signInManager.PasswordSignInAsync(user, password, rememberMe, false);
+            return await signInManager.PasswordSignInAsync(user, password, rememberMe, false);
         }
 
         public async Task<IdentityResult> RegisterAsync(RegisterViewModel model)
@@ -78,18 +62,18 @@ namespace ActPro.Services.Services
                 CreatedOn = DateTime.Now
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "User");
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await userManager.AddToRoleAsync(user, "User");
+                await signInManager.SignInAsync(user, isPersistent: false);
             }
             return result;
         }
 
         public async Task<IdentityResult> UpdateProfileAsync(string userId, EditProfileViewModel model, string webRootPath)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByIdAsync(userId);
             if (user == null) return IdentityResult.Failed();
 
             user.FirstName = !string.IsNullOrWhiteSpace(model.FirstName) ? model.FirstName : user.FirstName;
@@ -118,58 +102,58 @@ namespace ActPro.Services.Services
                 user.ProfilePicturePath = newFileName;
             }
 
-            var result = await _userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                await _signInManager.RefreshSignInAsync(user);
+                await signInManager.RefreshSignInAsync(user);
             }
             return result;
         }
 
         public async Task<IdentityResult> DeleteAccountAsync(string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByIdAsync(userId);
             if (user == null) return IdentityResult.Failed();
 
-            var userReservations = _resRepo.All().Where(r => r.AspNetUserId == userId);
+            var userReservations = resRepo.All().Where(r => r.AspNetUserId == userId);
             foreach (var res in userReservations)
             {
-                _resRepo.Delete(res);
+                resRepo.Delete(res);
             }
-            await _resRepo.SaveChangesAsync();
+            await resRepo.SaveChangesAsync();
 
-            return await _userManager.DeleteAsync(user);
+            return await userManager.DeleteAsync(user);
         }
 
         public async Task<(bool isFavorite, string message)> ToggleFavoriteAsync(string userId, int placeId)
         {
-            var existingFavorite = await _favRepo.All()
+            var existingFavorite = await favRepo.All()
                 .FirstOrDefaultAsync(f => f.PlaceId == placeId && f.AspNetUserId == userId);
 
             if (existingFavorite != null)
             {
-                _favRepo.Delete(existingFavorite);
-                await _favRepo.SaveChangesAsync();
+                favRepo.Delete(existingFavorite);
+                await favRepo.SaveChangesAsync();
                 return (false, "Премахнато от любими");
             }
 
             var favorite = new Favorite { AspNetUserId = userId, PlaceId = placeId };
-            await _favRepo.AddAsync(favorite);
-            await _favRepo.SaveChangesAsync();
+            await favRepo.AddAsync(favorite);
+            await favRepo.SaveChangesAsync();
             return (true, "Добавено в любими!");
         }
 
         public async Task<IdentityResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            var user = await userManager.FindByIdAsync(userId);
+            var result = await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             if (result.Succeeded)
             {
-                await _signInManager.RefreshSignInAsync(user);
+                await signInManager.RefreshSignInAsync(user);
             }
             return result;
         }
 
-        public async Task LogoutAsync() => await _signInManager.SignOutAsync();
+        public async Task LogoutAsync() => await signInManager.SignOutAsync();
     }
 }

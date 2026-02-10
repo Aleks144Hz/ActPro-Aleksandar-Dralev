@@ -7,30 +7,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services.Services
 {
-    public class AdminDashboardService : IAdminDashboardService
+    public class AdminDashboardService(IRepository<Reservation> resRepo, IRepository<ApplicationUser> userRepo, IRepository<Comment> commRepo, IRepository<Place> placeRepo) : IAdminDashboardService
     {
-        private readonly IRepository<Reservation> _resRepo;
-        private readonly IRepository<ApplicationUser> _userRepo;
-        private readonly IRepository<Comment> _commRepo;
-        private readonly IRepository<Place> _placeRepo;
-
-        public AdminDashboardService(IRepository<Reservation> resRepo, IRepository<ApplicationUser> userRepo, IRepository<Comment> commRepo, IRepository<Place> placeRepo)
-        {
-            _resRepo = resRepo;
-            _userRepo = userRepo;
-            _commRepo = commRepo;
-            _placeRepo = placeRepo;
-        }
-
         public async Task<AdminDashboardViewModel> GetAdminStatsAsync()
         {
             return new AdminDashboardViewModel
             {
-                TotalReservations = await _resRepo.AllAsNoTracking().CountAsync(),
-                TotalUsers = await _userRepo.AllAsNoTracking().CountAsync(),
-                PendingComments = await _commRepo.AllAsNoTracking().CountAsync(),
-                TotalPlaces = await _placeRepo.AllAsNoTracking().CountAsync(),
-                LatestReservations = await _resRepo.AllAsNoTracking()
+                TotalReservations = await resRepo.AllAsNoTracking().CountAsync(),
+                TotalUsers = await userRepo.AllAsNoTracking().CountAsync(),
+                PendingComments = await commRepo.AllAsNoTracking().CountAsync(),
+                TotalPlaces = await placeRepo.AllAsNoTracking().CountAsync(),
+                LatestReservations = await resRepo.AllAsNoTracking()
                 .Include(r => r.Place)
                 .Include(r => r.AspNetUser)
                 .OrderByDescending(r => r.CreatedAt)
@@ -50,11 +37,11 @@ namespace ActPro.Services.Services
                 _ => DateTime.Today.AddYears(-1)
             };
 
-            var resData = await _resRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate).GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
+            var resData = await resRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate).GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
 
-            var userData = await _userRepo.AllAsNoTracking().Where(x => x.CreatedOn >= startDate).GroupBy(x => x.CreatedOn.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
+            var userData = await userRepo.AllAsNoTracking().Where(x => x.CreatedOn >= startDate).GroupBy(x => x.CreatedOn.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
 
-            var commData = await _commRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate).GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
+            var commData = await commRepo.AllAsNoTracking().Where(x => x.CreatedAt >= startDate).GroupBy(x => x.CreatedAt.Value.Date).Select(g => new { Date = g.Key, Count = g.Count() }).ToListAsync();
 
             var allDates = Enumerable.Range(0, (DateTime.Today - startDate).Days + 1).Select(offset => startDate.AddDays(offset).Date).ToList();
 

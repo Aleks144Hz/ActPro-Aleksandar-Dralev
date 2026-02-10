@@ -6,46 +6,44 @@ namespace ActPro.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class UsersController : Controller
+    public class UsersController(IUserService userService) : Controller
     {
-        private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
-        {
-            _userService = userService;
-        }
-
+        //--- Users Management Dashboard ---
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var users = await _userService.GetAllUsersAsync();
+            var users = await userService.GetAllUsersAsync();
             return View(users);
         }
 
+        //--- Toggle Admin Role ---
         [HttpPost]
         public async Task<IActionResult> ToggleAdmin(string userId)
         {
-            if (await _userService.ToggleRoleAsync(userId, "Admin"))
+            if (await userService.ToggleRoleAsync(userId, "Admin"))
             {
                 TempData["Success"] = "Администраторските права бяха променени.";
             }
             return RedirectToAction(nameof(Index));
         }
 
+        //--- Toggle Owner Role ---
         [HttpPost]
         public async Task<IActionResult> ToggleOwner(string userId)
         {
-            if (await _userService.ToggleRoleAsync(userId, "Owner"))
+            if (await userService.ToggleRoleAsync(userId, "Owner"))
             {
                 TempData["Success"] = "Собственик правата бяха променени.";
             }
             return RedirectToAction(nameof(Index));
         }
 
+        //--- Ban User ---
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> BanUser(string userId)
         {
-            if (await _userService.BanUserAsync(userId))
+            if (await userService.BanUserAsync(userId))
             {
                 TempData["Success"] = "Потребителят беше блокиран и изтрит успешно.";
             }

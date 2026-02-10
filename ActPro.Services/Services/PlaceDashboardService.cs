@@ -8,22 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services.Services
 {
-    public class PlaceDashboardService : IPlaceDashboardService
+    public class PlaceDashboardService(ApplicationDbContext context, IAuditService auditService, UserManager<ApplicationUser> userManager) : IPlaceDashboardService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IAuditService _auditService;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public PlaceDashboardService(ApplicationDbContext context, IAuditService auditService, UserManager<ApplicationUser> userManager)
-        {
-            _context = context;
-            _auditService = auditService;
-            _userManager = userManager;
-        }
-
         public async Task<IEnumerable<Place>> GetAllPlacesAsync()
         {
-            return await _context.Places
+            return await context.Places
             .Include(p => p.City)
             .Include(p => p.Activity)
             .Include(p => p.PlaceImages)
@@ -33,7 +22,7 @@ namespace ActPro.Services.Services
 
         public async Task<IEnumerable<Place>> GetOwnerPlacesAsync(string ownerId)
         {
-            return await _context.Places
+            return await context.Places
             .Include(p => p.City)
             .Include(p => p.Activity)
             .Include(p => p.PlaceImages)
@@ -43,7 +32,7 @@ namespace ActPro.Services.Services
 
         public async Task<Place?> GetByIdAsync(int id)
         {
-            return await _context.Places
+            return await context.Places
             .Include(p => p.PlaceImages)
             .Include(p => p.PlaceClosures)
             .Include(p => p.Reservations)
@@ -57,8 +46,8 @@ namespace ActPro.Services.Services
             place.Rating = 0;
             place.IsApproved = isApproved;
 
-            _context.Places.Add(place);
-            await _context.SaveChangesAsync();
+            context.Places.Add(place);
+            await context.SaveChangesAsync();
 
             if (images != null && images.Any())
             {
@@ -67,14 +56,14 @@ namespace ActPro.Services.Services
 
             if (place.OwnerId != null)
             {
-                var user = await _userManager.FindByIdAsync(place.OwnerId);
-                if (user != null && !await _userManager.IsInRoleAsync(user, "Owner"))
+                var user = await userManager.FindByIdAsync(place.OwnerId);
+                if (user != null && !await userManager.IsInRoleAsync(user, "Owner"))
                 {
-                    await _userManager.AddToRoleAsync(user, "Owner");
+                    await userManager.AddToRoleAsync(user, "Owner");
                 }
             }
 
-            await _auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
             return true;
         }
 
@@ -83,30 +72,30 @@ namespace ActPro.Services.Services
         {
             if (ownerId != null)
             {
-                var existing = await _context.Places.AsNoTracking().FirstOrDefaultAsync(p => p.Id == place.Id);
+                var existing = await context.Places.AsNoTracking().FirstOrDefaultAsync(p => p.Id == place.Id);
                 if (existing == null || existing.OwnerId != ownerId) return false;
             }
 
             place.IsApproved = true;
 
-            _context.ChangeTracker.Clear();
-            _context.Update(place);
-            _context.Entry(place).Collection(p => p.PlaceImages).IsModified = false;
-            await _context.SaveChangesAsync();
+            context.ChangeTracker.Clear();
+            context.Update(place);
+            context.Entry(place).Collection(p => p.PlaceImages).IsModified = false;
+            await context.SaveChangesAsync();
 
             if (images != null && images.Any())
             {
                 await ProcessImagesRawSql(place.Id, images);
             }
 
-            await _auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"Променени данни за: {place.Name}");
+            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"Променени данни за: {place.Name}");
             return true;
         }
 
         //--- DELETE ---
         public async Task<bool> DeletePlaceAsync(int id)
         {
-            var place = await _context.Places.Include(p => p.PlaceImages).FirstOrDefaultAsync(p => p.Id == id);
+            var place = await context.Places.Include(p => p.PlaceImages).FirstOrDefaultAsync(p => p.Id == id);
             if (place == null) return false;
 
             if (place.PlaceImages != null && place.PlaceImages.Any())
@@ -130,35 +119,35 @@ namespace ActPro.Services.Services
                 }
             }
 
-            _context.PlaceImages.RemoveRange(place.PlaceImages);
-            _context.Comments.RemoveRange(_context.Comments.Where(c => c.PlaceId == id));
-            _context.Reservations.RemoveRange(_context.Reservations.Where(r => r.PlaceId == id));
+            context.PlaceImages.RemoveRange(place.PlaceImages);
+            context.Comments.RemoveRange(context.Comments.Where(c => c.PlaceId == id));
+            context.Reservations.RemoveRange(context.Reservations.Where(r => r.PlaceId == id));
 
-            _context.Places.Remove(place);
-            await _context.SaveChangesAsync();
+            context.Places.Remove(place);
+            await context.SaveChangesAsync();
 
-            await _auditService.LogAsync("Delete Place", "Place", id.ToString(), $"Изтрит обект: {place.Name}");
+            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"Изтрит обект: {place.Name}");
             return true;
         }
 
         //--- APPROVE ---
         public async Task<bool> ApprovePlaceAsync(int id)
         {
-            var place = await _context.Places.Include(p => p.Owner).FirstOrDefaultAsync(p => p.Id == id);
+            var place = await context.Places.Include(p => p.Owner).FirstOrDefaultAsync(p => p.Id == id);
             if (place == null) return false;
 
             place.IsApproved = true;
             if (place.OwnerId != null)
             {
-                var user = await _userManager.FindByIdAsync(place.OwnerId);
-                if (user != null && !await _userManager.IsInRoleAsync(user, "Owner"))
+                var user = await userManager.FindByIdAsync(place.OwnerId);
+                if (user != null && !await userManager.IsInRoleAsync(user, "Owner"))
                 {
-                    await _userManager.AddToRoleAsync(user, "Owner");
+                    await userManager.AddToRoleAsync(user, "Owner");
                 }
             }
 
-            await _context.SaveChangesAsync();
-            await _auditService.LogAsync("Approve Place", "Place", id.ToString(), $"Одобрен обект: {place.Name}");
+            await context.SaveChangesAsync();
+            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"Одобрен обект: {place.Name}");
             return true;
         }
 
@@ -179,21 +168,21 @@ namespace ActPro.Services.Services
                 }
 
                 string dbPath = "/images/places/" + fileName;
-                await _context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO PlaceImages (PlaceId, ImageUrl) VALUES ({placeId}, {dbPath})");
+                await context.Database.ExecuteSqlInterpolatedAsync($"INSERT INTO PlaceImages (PlaceId, ImageUrl) VALUES ({placeId}, {dbPath})");
             }
         }
 
         //--- DELETE IMAGE ---
         public async Task<bool> DeleteImageAsync(int imageId)
         {
-            var image = await _context.PlaceImages.FindAsync(imageId);
+            var image = await context.PlaceImages.FindAsync(imageId);
             if (image == null) return false;
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.ImageUrl.TrimStart('/'));
             if (File.Exists(filePath)) File.Delete(filePath);
 
-            _context.PlaceImages.Remove(image);
-            await _context.SaveChangesAsync();
+            context.PlaceImages.Remove(image);
+            await context.SaveChangesAsync();
             return true;
         }
 
@@ -204,29 +193,29 @@ namespace ActPro.Services.Services
             var closuresToAdd = new List<PlaceClosure>();
             for (DateTime date = start.Date; date <= end.Date; date = date.AddDays(1))
             {
-                if (!await _context.PlaceClosures.AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == date))
+                if (!await context.PlaceClosures.AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == date))
                 {
                     closuresToAdd.Add(new PlaceClosure { PlaceId = placeId, ClosureDate = date, Reason = reason });
                 }
             }
             if (closuresToAdd.Any())
             {
-                _context.PlaceClosures.AddRange(closuresToAdd);
-                await _context.SaveChangesAsync();
-                await _auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключен период от {start:dd.MM.yyyy} до {end:dd.MM.yyyy}. Причина: {reason}");
+                context.PlaceClosures.AddRange(closuresToAdd);
+                await context.SaveChangesAsync();
+                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключен период от {start:dd.MM.yyyy} до {end:dd.MM.yyyy}. Причина: {reason}");
             }
             return true;
         }
 
         public async Task<bool> RemoveClosureAsync(int closureId)
         {
-            var closure = await _context.PlaceClosures.FindAsync(closureId);
+            var closure = await context.PlaceClosures.FindAsync(closureId);
             if (closure == null) return false;
             int placeId = closure.PlaceId;
             DateTime closedDate = closure.ClosureDate;
-            _context.PlaceClosures.Remove(closure);
-            await _context.SaveChangesAsync();
-            await _auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"Отключена дата {closedDate:dd.MM.yyyy} за обект ID: {closureId}");
+            context.PlaceClosures.Remove(closure);
+            await context.SaveChangesAsync();
+            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"Отключена дата {closedDate:dd.MM.yyyy} за обект ID: {closureId}");
             return true;
         }
     }

@@ -6,19 +6,13 @@ namespace ActPro.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class DashboardController : Controller
+    public class DashboardController(IAdminDashboardService adminService) : Controller
     {
-        private readonly IAdminDashboardService _adminService;
-
-        public DashboardController(IAdminDashboardService adminService)
-        {
-            _adminService = adminService;
-        }
-
         //--- ADMIN DASHBOARD
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var stats = await _adminService.GetAdminStatsAsync();
+            var stats = await adminService.GetAdminStatsAsync();
 
             ViewBag.TotalReservations = stats.TotalReservations;
             ViewBag.TotalUsers = stats.TotalUsers;
@@ -31,7 +25,7 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetChartData(string period = "week")
         {
-            var data = await _adminService.GetChartDataAsync(period);
+            var data = await adminService.GetChartDataAsync(period);
             return Json(data);
         }
     }

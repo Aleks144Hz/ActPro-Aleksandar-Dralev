@@ -4,23 +4,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace ActPro.Services
 {
-    public class AuditService : IAuditService
+    public class AuditService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : IAuditService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public AuditService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
-        {
-            _context = context;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         public async Task LogAsync(string action, string entity, string? entityId, string details)
         {
-            var user = _httpContextAccessor.HttpContext?.User;
+            var user = httpContextAccessor.HttpContext?.User;
             var userId = user?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             var userEmail = user?.Identity?.Name;
-            var ip = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
+            var ip = httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString();
 
             var log = new AuditLog
             {
@@ -34,8 +25,8 @@ namespace ActPro.Services
                 CreatedAt = DateTime.Now
             };
 
-            _context.AuditLogs.Add(log);
-            await _context.SaveChangesAsync();
+            context.AuditLogs.Add(log);
+            await context.SaveChangesAsync();
         }
     }
 }

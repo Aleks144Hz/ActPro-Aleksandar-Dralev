@@ -7,24 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ActPro.Controllers
 {
-    public class ReservationController : Controller
+    public class ReservationController(IReservationService reservationService, UserManager<ApplicationUser> userManager, IAuditService auditService) : Controller
     {
-        private readonly IReservationService _reservationService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAuditService _auditService;
-
-        public ReservationController(IReservationService reservationService, UserManager<ApplicationUser> userManager, IAuditService auditService)
-        {
-            _reservationService = reservationService;
-            _userManager = userManager;
-            _auditService = auditService;
-        }
-
         //--- RESERVATION PAGE ---
         public async Task<IActionResult> Index(int id)
         {
-            var userId = _userManager.GetUserId(User);
-            var viewModel = await _reservationService.GetReservationIndexModelAsync(id, userId);
+            var userId = userManager.GetUserId(User);
+            var viewModel = await reservationService.GetReservationIndexModelAsync(id, userId);
             if (viewModel == null) return NotFound();
             return View("Index", viewModel);
         }
@@ -34,14 +23,14 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
-            var result = await _reservationService.BookAsync(placeId, date, timeSlot, user);
+            var result = await reservationService.BookAsync(placeId, date, timeSlot, user);
 
             if (result.success)
             {
-                await _auditService.LogAsync("Create Reservation", "User", user.Id, "Потребителят направи резервация.");
+                await auditService.LogAsync("Create Reservation", "User", user.Id, "Потребителят направи резервация.");
                 return RedirectToAction("Confirmation", new { id = placeId });
             }
 
@@ -57,13 +46,13 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReview(int placeId, string commentText, int rating)
         {
-            var userId = _userManager.GetUserId(User);
-            var result = await _reservationService.AddReviewAsync(placeId, userId, commentText, rating);
+            var userId = userManager.GetUserId(User);
+            var result = await reservationService.AddReviewAsync(placeId, userId, commentText, rating);
 
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await _auditService.LogAsync("Add Review", "User", userId, "Потребителят добави коментар.");
+                await auditService.LogAsync("Add Review", "User", userId, "Потребителят добави коментар.");
             }
             else TempData["Error"] = result.message;
 
@@ -76,8 +65,8 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditReview(int id, string commentText, int rating)
         {
-            var userId = _userManager.GetUserId(User);
-            var result = await _reservationService.EditReviewAsync(id, userId, commentText, rating);
+            var userId = userManager.GetUserId(User);
+            var result = await reservationService.EditReviewAsync(id, userId, commentText, rating);
             if (result.success) TempData["Success"] = result.message;
             return RedirectToAction("MyReviews");
         }
@@ -87,13 +76,13 @@ namespace ActPro.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteReview(int reviewId, int placeId)
         {
-            var userId = _userManager.GetUserId(User);
-            var result = await _reservationService.DeleteReviewAsync(reviewId, userId);
+            var userId = userManager.GetUserId(User);
+            var result = await reservationService.DeleteReviewAsync(reviewId, userId);
 
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await _auditService.LogAsync("Delete Review", "User", userId, "Потребителят изтри коментар.");
+                await auditService.LogAsync("Delete Review", "User", userId, "Потребителят изтри коментар.");
             }
 
             if (Request.Headers["Referer"].ToString().Contains("MyReviews")) return RedirectToAction("MyReviews");
@@ -102,15 +91,15 @@ namespace ActPro.Controllers
 
         //--- GET OCCUPIED SLOTS FOR A DATE --- 
         [HttpGet]
-        public async Task<JsonResult> GetOccupiedSlots(int placeId, DateTime date) => Json(await _reservationService.GetOccupiedSlotsAsync(placeId, date));
+        public async Task<JsonResult> GetOccupiedSlots(int placeId, DateTime date) => Json(await reservationService.GetOccupiedSlotsAsync(placeId, date));
 
         //--- MY RESERVATIONS PAGE ---
         [Authorize]
         public async Task<IActionResult> MyReservations(int page = 1, string filter = "all")
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = userManager.GetUserId(User);
 
-            var viewModel = await _reservationService.GetUserReservationsAsync(userId, page, 10, filter);
+            var viewModel = await reservationService.GetUserReservationsAsync(userId, page, 10, filter);
 
             return View(viewModel);
         }
@@ -121,14 +110,14 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel(int id)
         {
-            var userId = _userManager.GetUserId(User);
-            var result = await _reservationService.CancelReservationAsync(id, userId);
-            if (result.success) await _auditService.LogAsync("Cancel Reservation", "User", userId, "Потребителят отказа резервация.");
+            var userId = userManager.GetUserId(User);
+            var result = await reservationService.CancelReservationAsync(id, userId);
+            if (result.success) await auditService.LogAsync("Cancel Reservation", "User", userId, "Потребителят отказа резервация.");
             return Json(new { success = result.success, message = result.message });
         }
 
         //--- MY REVIEWS PAGE ---
         [Authorize]
-        public async Task<IActionResult> MyReviews() => View(await _reservationService.GetUserReviewsAsync(_userManager.GetUserId(User)));
+        public async Task<IActionResult> MyReviews() => View(await reservationService.GetUserReviewsAsync(userManager.GetUserId(User)));
     }
 }

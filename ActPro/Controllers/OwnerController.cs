@@ -10,25 +10,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ActPro.Controllers
 {
     [Authorize]
-    public class OwnerController : Controller
+    public class OwnerController(IPlaceService placeService, UserManager<ApplicationUser> userManager, IWebHostEnvironment env) : Controller
     {
-        private readonly IPlaceService _placeService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWebHostEnvironment _env;
-
-        public OwnerController(IPlaceService placeService, UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
-        {
-            _placeService = placeService;
-            _userManager = userManager;
-            _env = env;
-        }
-
         //---Create Place Request---//
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewBag.Cities = new SelectList(await _placeService.GetCitiesAsync(), "Id", "Name");
-            ViewBag.ActivityTypes = new SelectList(await _placeService.GetActivitiesAsync(), "Id", "Name");
+            ViewBag.Cities = new SelectList(await placeService.GetCitiesAsync(), "Id", "Name");
+            ViewBag.ActivityTypes = new SelectList(await placeService.GetActivitiesAsync(), "Id", "Name");
             return View(new PlaceEntryViewModel());
         }
 
@@ -42,8 +31,8 @@ namespace ActPro.Controllers
             {
                 try
                 {
-                    var userId = _userManager.GetUserId(User);
-                    await _placeService.CreatePlaceRequestAsync(place, imageFiles, userId, _env.WebRootPath);
+                    var userId = userManager.GetUserId(User);
+                    await placeService.CreatePlaceRequestAsync(place, imageFiles, userId, env.WebRootPath);
 
                     TempData["Success"] = "Вашата заявка е изпратена успешно!";
                     return RedirectToAction("Index", "Home");
@@ -55,8 +44,8 @@ namespace ActPro.Controllers
                 }
             }
 
-            ViewBag.Cities = new SelectList(await _placeService.GetCitiesAsync(), "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(await _placeService.GetActivitiesAsync(), "Id", "Name", place.ActivityId);
+            ViewBag.Cities = new SelectList(await placeService.GetCitiesAsync(), "Id", "Name", place.CityId);
+            ViewBag.ActivityTypes = new SelectList(await placeService.GetActivitiesAsync(), "Id", "Name", place.ActivityId);
             return View(place);
         }
     }

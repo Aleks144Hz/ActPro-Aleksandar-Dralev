@@ -8,7 +8,7 @@ namespace ActPro.Services.Interfaces
     {             
         Task<bool> DeleteNewsAsync(int id, string webRootPath);
         Task<HomeViewModel> GetHomeViewModelAsync();
-        Task CreateNewsAsync(News news, IFormFile? imageFile, string webRootPath);
+        Task CreateNewsAsync(string title, string content, IFormFile? imageFile, string webRootPath);
         Task<(IEnumerable<News> news, int totalPages)> GetNewsPagedAsync(int page, int pageSize, string? userId);
         Task<(int likes, bool isLiked)> LikeNewsAsync(int newsId, string userId);
     }

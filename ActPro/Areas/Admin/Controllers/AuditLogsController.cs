@@ -6,18 +6,13 @@ namespace ActPro.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class AuditLogsController : Controller
+    public class AuditLogsController(IAuditDashboardService auditService) : Controller
     {
-        private readonly IAuditDashboardService _auditService;
-
-        public AuditLogsController(IAuditDashboardService auditService)
-        {
-            _auditService = auditService;
-        }
-
+        //--- Audit Logs Dashboard ---
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var logs = await _auditService.GetAllLogsAsync();
+            var logs = await auditService.GetAllLogsAsync();
             return View(logs);
         }
     }
