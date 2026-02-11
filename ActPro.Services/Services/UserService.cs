@@ -22,6 +22,7 @@ namespace ActPro.Services.Services
 
             foreach (var user in users)
             {
+                var roles = await userManager.GetRolesAsync(user);
                 result.Add(new UserItemViewModel
                 {
                     Id = user.Id,
@@ -29,8 +30,8 @@ namespace ActPro.Services.Services
                     LastName = user.LastName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                    IsAdmin = await userManager.IsInRoleAsync(user, "Admin"),
-                    IsOwner = await userManager.IsInRoleAsync(user, "Owner")
+                    IsAdmin = roles.Contains("Admin"),
+                    IsOwner = roles.Contains("Owner")
                 });
             }
             return result;
