@@ -1,4 +1,5 @@
-﻿using ActPro.Services.Interfaces;
+﻿using ActPro.Domain.Models.Areas;
+using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +9,11 @@ namespace ActPro.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class AuditLogsController(IAuditDashboardService auditService) : Controller
     {
-        //--- Audit Logs Dashboard ---
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var logs = await auditService.GetAllLogsAsync();
-            return View(logs);
+            var viewModel = await auditService.GetAuditLogsIndexModelAsync();
+            return View(viewModel);
         }
     }
 }

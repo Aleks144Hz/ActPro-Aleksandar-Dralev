@@ -1,6 +1,7 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain.Models.Areas;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,27 @@ namespace ActPro.Services.Services
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
             return await userManager.Users.ToListAsync();
+        }
+
+        public async Task<IEnumerable<UserItemViewModel>> GetAllUsersWithRolesAsync()
+        {
+            var users = await userManager.Users.ToListAsync();
+            var result = new List<UserItemViewModel>();
+
+            foreach (var user in users)
+            {
+                result.Add(new UserItemViewModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    IsAdmin = await userManager.IsInRoleAsync(user, "Admin"),
+                    IsOwner = await userManager.IsInRoleAsync(user, "Owner")
+                });
+            }
+            return result;
         }
 
         public async Task<bool> ToggleRoleAsync(string userId, string roleName)

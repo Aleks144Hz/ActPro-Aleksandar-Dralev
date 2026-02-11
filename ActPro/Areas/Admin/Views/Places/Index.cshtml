@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ActPro.DAL.Entities.Place>
+﻿@using ActPro.Domain.Models.Areas
+@model PlacesIndexViewModel
 @{
     ViewData["Title"] = "Управление на обекти";
 }
@@ -28,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Places)
                         {
                             <tr>
                                 <td data-label="ОБЕКТ">
@@ -39,8 +40,8 @@
                                         </a>
                                     </strong>
                                 </td>
-                                <td data-label="ГРАД">@item.City?.Name</td>
-                                <td data-label ="ТИП ДЕЙНОСТ">@item.Activity?.Name</td>
+                                <td data-label="ГРАД">@item.CityName</td>
+                                <td data-label ="ТИП ДЕЙНОСТ">@item.ActivityName</td>
                                 <td data-label="ЦЕНА" data-sort="@item.Price">
                                     @item.Price €/ч
                                 </td>
@@ -90,13 +91,24 @@
     </div>
 </div>
 
-@foreach (var item in Model)
+@foreach (var item in Model.Places)
 {
-    @await Html.PartialAsync("EditPlace", item)
-    @await Html.PartialAsync("ManageSchedule", item)
-}
-@await Html.PartialAsync("CreatePlace", new ActPro.DAL.Entities.Place())
+    @if (Model.EditPlaces.ContainsKey(item.Id))
+    {
+        @await Html.PartialAsync("EditPlace", Model.EditPlaces[item.Id])
+    }
 
+    @if (Model.PlaceSchedules.ContainsKey(item.Id))
+    {
+        @await Html.PartialAsync("ManageSchedule", Model.PlaceSchedules[item.Id])
+    }
+}
+
+@await Html.PartialAsync("CreatePlace", new PlaceFormViewModel
+{
+    CityOptions = Model.CityOptions,
+    ActivityOptions = Model.ActivityOptions
+})
 @section Styles
 { 
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />

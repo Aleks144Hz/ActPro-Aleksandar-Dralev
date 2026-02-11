@@ -21,10 +21,8 @@ namespace ActPro.Areas.Owner.Controllers
             var cities = await ownerService.GetCitiesAsync();
             var activities = await ownerService.GetActivitiesAsync();
 
-            ViewBag.Cities = new SelectList(cities, "Id", "Name");
-            ViewBag.ActivityTypes = new SelectList(activities, "Id", "Name");
-
             var model = await ownerService.GetOwnerStatsAsync(userId);
+
             return View(model);
         }
     }

@@ -1,4 +1,4 @@
-﻿@model ActPro.DAL.Entities.Reservation
+﻿@model ActPro.Domain.Models.Areas.EditTimeViewModel
 
 <div class="modal fade" id="editTimeModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Обект</div>
-                                <div class="text-dark fw-bold" style="font-size: 1rem; line-height: 1.2;">@Model.Place?.Name</div>
+                                <div class="text-dark fw-bold" style="font-size: 1rem; line-height: 1.2;">@Model.PlaceName</div>
                             </div>
                         </div>
 
@@ -32,7 +32,7 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Клиент</div>
-                                <div class="text-dark fw-bold" style="font-size: 1rem; line-height: 1.2;">@Model.FirstName @Model.LastName</div>
+                                <div class="text-dark fw-bold" style="font-size: 1rem; line-height: 1.2;">@Model.CustomerName</div>
                             </div>
                         </div>
                     </div>

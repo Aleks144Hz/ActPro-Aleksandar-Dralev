@@ -1,5 +1,5 @@
-﻿@model ActPro.DAL.Entities.Place
-
+﻿@using ActPro.Domain.Models.Areas
+@model PlaceFormViewModel
 <div class="modal fade" id="editPlaceModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
@@ -13,12 +13,12 @@
                 <div class="mb-4">
                     <label class="form-label fw-bold text-secondary small text-uppercase">Налични снимки:</label>
                     <div class="d-flex flex-wrap gap-3 mt-2">
-                        @if (Model.PlaceImages != null && Model.PlaceImages.Any())
+                        @if (Model.ExistingImages.Any())
                         {
-                            @foreach (var img in Model.PlaceImages)
+                            @foreach (var img in Model.ExistingImages)
                             {
                                 <div class="position-relative border rounded p-1 shadow-sm bg-white overflow-visible">
-                                    <img src="@img.ImageUrl" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" />
+                                    <img src="@img.Url" class="rounded" style="width: 100px; height: 100px; object-fit: cover;" />
 
                                     <button type="button"
                                             class="btn btn-danger btn-sm rounded-circle p-0 shadow position-absolute"
@@ -61,12 +61,12 @@
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
                             <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4 border-info-subtle"
-                                    asp-items="ViewBag.Cities" required></select>
+                                    asp-items="Model.CityOptions" required></select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
                             <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4 border-info-subtle"
-                                    asp-items="ViewBag.ActivityTypes" required></select>
+                                    asp-items="Model.ActivityOptions" required></select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Цена (€/ч)</label>
@@ -163,22 +163,25 @@
 </style>
 
 <script>
-    // Използваме уникални ID-та за създаването, за да няма конфликт с редактирането
-    (function() {
+    (function() 
+    {
         const createDropZone = document.querySelector('#createPlaceModal #drop-zone');
         const createFileInput = document.querySelector('#createPlaceModal #file-input');
         const createPreviewContainer = document.querySelector('#createPlaceModal #preview-container');
 
-        if (createFileInput) {
+        if (createFileInput) 
+        {
             createFileInput.addEventListener('dragenter', () => createDropZone.classList.add('dragover'));
             createFileInput.addEventListener('dragleave', () => createDropZone.classList.remove('dragover'));
             createFileInput.addEventListener('drop', () => createDropZone.classList.remove('dragover'));
 
-            createFileInput.addEventListener('change', function() {
+            createFileInput.addEventListener('change', function() 
+            {
                 createPreviewContainer.innerHTML = '';
                 const files = this.files;
 
-                if (files) {
+                if (files) 
+                {
                     Array.from(files).forEach(file => {
                         const reader = new FileReader();
                         reader.onload = function(e) {

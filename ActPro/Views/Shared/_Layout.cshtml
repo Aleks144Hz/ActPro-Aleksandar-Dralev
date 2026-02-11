@@ -15,6 +15,7 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
+    <link rel="icon" type="image/x-icon" href="~/Logo.png">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ActPro - @ViewData["Title"]</title>
@@ -74,7 +75,7 @@
                         @if (User.IsInRole("Owner"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-warning fw-bold nav-link-custom" asp-area="Owner" asp-controller="Dashboard" asp-action="Index">
+                                <a class="nav-link text-success fw-bold nav-link-custom" asp-area="Owner" asp-controller="Dashboard" asp-action="Index">
                                     <i class="bi bi-currency-euro"></i> БИЗНЕС ПАНЕЛ
                                 </a>
                             </li>

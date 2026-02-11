@@ -12,8 +12,8 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var reservations = await resService.GetAllReservationsAsync();
-            return View(reservations);
+            var viewModel = await resService.GetReservationsIndexModelAsync();
+            return View(viewModel);
         }
 
         //--- DELETE ---

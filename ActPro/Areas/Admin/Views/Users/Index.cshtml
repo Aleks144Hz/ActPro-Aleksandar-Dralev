@@ -1,7 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using ActPro.DAL
-@inject UserManager<ActPro.DAL.ApplicationUser> UserManager
-@model IEnumerable<ActPro.DAL.ApplicationUser>
+﻿@using ActPro.Domain.Models.Areas
+@model UsersIndexViewModel
 @{
     ViewData["Title"] = "Потребители";
 }
@@ -25,23 +23,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var user in Model)
+                        @foreach (var user in Model.Users)
                         {
-                            var isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
                             <tr>
-                                <td data-label="ИМЕ"> <div class="fw-bold">@user.FirstName @user.LastName</div></td>
+                                <td data-label="ИМЕ"> <div class="fw-bold">@user.FullName</div></td>
                                 <td data-label="ИМЕЙЛ"> <div class="fw-bold">@user.Email</div></td>
                                 <td data-label="ТЕЛЕФОН"> <div class="fw-bold">@user.PhoneNumber</div></td>
                                 <td data-label="ДЕЙСТВИЯ">
-                                    @if (isAdmin)
+                                    @if (user.IsAdmin)
                                     {
                                         <span class="badge bg-danger">Admin</span>
                                     }
-                                    @if (await UserManager.IsInRoleAsync(user, "Owner"))
+                                    @if (user.IsOwner)
                                     {
                                         <span class="badge bg-warning text-dark">Owner</span>
                                     }
-                                    @if (!isAdmin && !(await UserManager.IsInRoleAsync(user, "Owner")))
+                                    @if (!user.IsAdmin && !user.IsOwner)
                                     {
                                         <span class="badge bg-secondary">User</span>
                                     }
@@ -50,17 +47,14 @@
                                     <div class="d-flex justify-content-center gap-2">
                                         <form asp-action="ToggleAdmin" method="post" class="d-inline">
                                             <input type="hidden" name="userId" value="@user.Id" />
-                                            <button type="submit" class="btn btn-sm @(isAdmin ? "btn-outline-danger" : "btn-outline-success")">
-                                                <i class="bi @(isAdmin ? "bi-person-dash" : "bi-person-check")"></i> Admin
+                                            <button type="submit" class="btn btn-sm @(user.IsAdmin ? "btn-outline-danger" : "btn-outline-success")">
+                                                <i class="bi @(user.IsAdmin ? "bi-person-dash" : "bi-person-check")"></i> Admin
                                             </button>
                                         </form>
                                         <form asp-action="ToggleOwner" method="post" class="d-inline">
                                             <input type="hidden" name="userId" value="@user.Id" />
-                                            @{
-                                                var isOwner = await UserManager.IsInRoleAsync(user, "Owner");
-                                            }
-                                            <button type="submit" class="btn btn-sm @(isOwner ? "btn-outline-danger" : "btn-outline-primary")">
-                                                <i class="bi bi-shop"></i> @(isOwner ? "Махни Owner" : "Направи Owner")
+                                            <button type="submit" class="btn btn-sm @(user.IsOwner ? "btn-outline-danger" : "btn-outline-primary")">
+                                                <i class="bi bi-shop"></i> @(user.IsOwner ? "Махни Owner" : "Направи Owner")
                                             </button>
                                         </form>
                                         <form asp-action="BanUser" asp-route-userId="@user.Id" method="post" class="d-inline">

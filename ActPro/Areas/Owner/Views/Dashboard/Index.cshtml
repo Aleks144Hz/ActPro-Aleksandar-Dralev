@@ -124,7 +124,6 @@
                                                     </button>
                                                 </form>
                                             </div>
-                                            @await Html.PartialAsync("EditTime", res)
                                         </td>
                                     </tr>
                                 }
@@ -136,17 +135,29 @@
         </div>
     </div>
 </div>
-
 @foreach (var item in Model.MyPlaces)
 {
-    @await Html.PartialAsync("EditPlace", item)
-    @await Html.PartialAsync("ManageSchedule", item)
+    if (Model.EditPlaces.ContainsKey(item.Id))
+    {
+        @await Html.PartialAsync("EditPlace", Model.EditPlaces[item.Id])
+    }
+
+    if (Model.PlaceSchedules.ContainsKey(item.Id))
+    {
+        @await Html.PartialAsync("ManageSchedule", Model.PlaceSchedules[item.Id])
+    }
 }
 @if (Model.RecentReservations != null)
 {
     @foreach (var res in Model.RecentReservations)
     {
-        @await Html.PartialAsync("EditTime", res)
+        @await Html.PartialAsync("EditTime", new EditTimeViewModel
+        {
+            Id = res.Id,
+            PlaceName = res.Place?.Name,
+            CustomerName = $"{res.FirstName} {res.LastName}",
+            ReservationTime = res.ReservationTime?.ToString("HH:mm") ?? ""
+        })
     }
 }
 @section Styles
