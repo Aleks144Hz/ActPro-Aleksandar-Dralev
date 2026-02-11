@@ -1,26 +1,42 @@
 ﻿using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain.Models.Areas;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services.Services
 {
     public class IReservationDashboardService(ApplicationDbContext context, IAuditService auditService) : Interfaces.IReservationDashboardService
     {
-        public async Task<IEnumerable<Reservation>> GetAllReservationsAsync()
+        public async Task<ReservationsIndexViewModel> GetReservationsIndexModelAsync(string? ownerId = null)
         {
-            return await context.Reservations
+            var query = context.Reservations
             .Include(r => r.Place)
-            .OrderByDescending(r => r.CreatedAt)
-            .ToListAsync();
-        }
+            .AsQueryable();
 
-        public async Task<IEnumerable<Reservation>> GetOwnerReservationsAsync(string ownerId)
-        {
-            return await context.Reservations
-            .Include(r => r.Place)
-            .Where(r => r.Place.OwnerId == ownerId)
+            if (!string.IsNullOrEmpty(ownerId))
+            {
+                query = query.Where(r => r.Place.OwnerId == ownerId);
+            }
+
+            var reservations = await query
             .OrderByDescending(r => r.CreatedAt)
             .ToListAsync();
+
+            return new ReservationsIndexViewModel
+            {
+                Reservations = reservations.Select(r => new ReservationItemViewModel
+                {
+                    Id = r.Id,
+                    PlaceId = r.PlaceId ?? 0,
+                    PlaceName = r.Place?.Name ?? "Няма обект",
+                    FirstName = r.FirstName,
+                    LastName = r.LastName,
+                    Phone = r.Phone,
+                    ReservationDate = r.ReservationDate,
+                    ReservationTime = r.ReservationTime,
+                    CreatedAt = r.CreatedAt ?? DateTime.Now
+                }).ToList()
+            };
         }
 
         public async Task<Reservation?> GetByIdAsync(int id)
@@ -55,7 +71,7 @@ namespace ActPro.Services.Services
             res.ReservationTime = newTime;
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName}: {oldTime} -> {newTime}");
+            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
 
             return true;
         }

@@ -16,9 +16,8 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewBag.Cities = new SelectList(context.Cities, "Id", "Name");
-            ViewBag.ActivityTypes = new SelectList(context.Activities, "Id", "Name");
-            return View(await placeService.GetAllPlacesAsync());
+            var viewModel = await placeService.GetPlacesDashboardModelAsync();
+            return View(viewModel);
         }
 
         //--- CREATE ---

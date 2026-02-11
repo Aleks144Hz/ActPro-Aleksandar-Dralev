@@ -1,4 +1,5 @@
-﻿using ActPro.Services.Interfaces;
+﻿using ActPro.Domain.Models.Areas;
+using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,8 +13,11 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var users = await userService.GetAllUsersAsync();
-            return View(users);
+            var viewModel = new UsersIndexViewModel
+            {
+                Users = await userService.GetAllUsersWithRolesAsync()
+            };
+            return View(viewModel);
         }
 
         //--- Toggle Admin Role ---

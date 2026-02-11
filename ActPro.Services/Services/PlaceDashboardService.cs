@@ -1,33 +1,92 @@
 ﻿using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain.Models.Areas;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ActPro.Services.Services
 {
     public class PlaceDashboardService(ApplicationDbContext context, IAuditService auditService, UserManager<ApplicationUser> userManager) : IPlaceDashboardService
     {
-        public async Task<IEnumerable<Place>> GetAllPlacesAsync()
+        //--- INDEX ---
+        public async Task<PlacesIndexViewModel> GetPlacesDashboardModelAsync(string? ownerId = null)
         {
-            return await context.Places
+            var query = context.Places
             .Include(p => p.City)
             .Include(p => p.Activity)
             .Include(p => p.PlaceImages)
             .Include(p => p.PlaceClosures)
-            .ToListAsync();
-        }
+            .AsQueryable();
 
-        public async Task<IEnumerable<Place>> GetOwnerPlacesAsync(string ownerId)
-        {
-            return await context.Places
-            .Include(p => p.City)
-            .Include(p => p.Activity)
-            .Include(p => p.PlaceImages)
-            .Where(p => p.OwnerId == ownerId)
+            if (!string.IsNullOrEmpty(ownerId))
+            {
+                query = query.Where(p => p.OwnerId == ownerId);
+            }
+
+            var places = await query.ToListAsync();
+
+            var cities = await context.Cities
+            .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
             .ToListAsync();
+
+            var activities = await context.Activities
+            .Select(a => new SelectListItem { Value = a.Id.ToString(), Text = a.Name })
+            .ToListAsync();
+
+            return new PlacesIndexViewModel
+            {
+                Places = places.Select(p => new PlaceViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    CityName = p.City?.Name ?? "Няма град",
+                    ActivityName = p.Activity?.Name ?? "Няма дейност",
+                    Price = (decimal)p.Price,
+                    IsApproved = p.IsApproved
+                }).ToList(),
+
+                CityOptions = cities,
+                ActivityOptions = activities,
+
+                EditPlaces = places.ToDictionary(p => p.Id, p => new PlaceFormViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Address = p.Address,
+                    Description = p.Description,
+                    Price = (decimal)p.Price,
+                    Capacity = p.Capacity.GetValueOrDefault(),
+                    IsOutdoor = p.IsOutdoor ?? false,
+                    CityId = p.CityId.GetValueOrDefault(),
+                    ActivityId = p.ActivityId.GetValueOrDefault(),
+                    Rating = p.Rating,
+                    OwnerId = p.OwnerId,
+                    CityOptions = cities,
+                    ActivityOptions = activities,
+                    ExistingImages = p.PlaceImages?.Select(img => new PlaceImageViewModel
+                    {
+                        Id = img.Id,
+                        Url = img.ImageUrl
+                    }).ToList() ?? new()
+                }),
+
+                PlaceSchedules = places.ToDictionary(p => p.Id, p => new PlaceScheduleViewModel
+                {
+                    PlaceId = p.Id,
+                    PlaceName = p.Name,
+                    Closures = p.PlaceClosures?.Select(c => new ClosureViewModel
+                    {
+                        Id = c.Id,
+                        StartDate = c.ClosureDate,
+                        EndDate = c.ClosureDate,
+                        Reason = c.Reason
+                    }).ToList() ?? new()
+                })
+            };
         }
 
         public async Task<Place?> GetByIdAsync(int id)
@@ -102,7 +161,6 @@ namespace ActPro.Services.Services
             {
                 foreach (var img in place.PlaceImages)
                 {
-                    // Използваме Path.Combine за сигурност
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", img.ImageUrl.TrimStart('/'));
 
                     try
@@ -114,7 +172,6 @@ namespace ActPro.Services.Services
                     }
                     catch (IOException)
                     {
-                        // Логнете грешката ако е необходимо, но продължаваме нататък
                     }
                 }
             }

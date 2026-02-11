@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ActPro.DAL.Entities.Reservation>
+﻿@using ActPro.Domain.Models.Areas
+@model ActPro.Domain.Models.Areas.ReservationsIndexViewModel
 @{
     ViewData["Title"] = "Всички Резервации";
 }
@@ -26,14 +27,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var res in Model)
+                            @foreach (var res in Model.Reservations)
                             {
                                 <tr>
                                     <td data-label="ОБЕКТ">
                                         <div class="fw-bold">
                                             <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
                                                class="text-decoration-none text-dark hover-success">
-                                                @res.Place?.Name
+                                                @res.PlaceName
                                             </a>
                                         </div>
                                     </td>
@@ -59,11 +60,17 @@
                                                 </button>
                                             </form>
                                         </div>
-                                        @await Html.PartialAsync("EditTime", res)
+                                        @await Html.PartialAsync("EditTime", new EditTimeViewModel
+                                        {
+                                            Id = res.Id,
+                                            PlaceName = res.PlaceName,
+                                            CustomerName = res.FullName,
+                                            ReservationTime = res.ReservationTime?.ToString("HH:mm") ?? ""
+                                        })
                                     </td>
                                 </tr>
                             }
-                            @if (!Model.Any())
+                            @if (!Model.Reservations.Any())
                             {
                                 <tr>
                                     <td colspan="6" class="text-center text-muted py-4">Няма намерени резервации.</td>

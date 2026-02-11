@@ -1,5 +1,5 @@
-﻿@model ActPro.DAL.Entities.Place
-
+﻿@using ActPro.Domain.Models.Areas
+@model PlaceFormViewModel
 <div class="modal fade shadow-lg" id="createPlaceModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0" style="border-radius: 15px; overflow: hidden;">
@@ -33,14 +33,14 @@
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
                             <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4"
-                                    asp-items="ViewBag.Cities" required>
+                                    asp-items="Model.CityOptions" required>
                                 <option value="">-- Избери град --</option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
                             <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4"
-                                    asp-items="ViewBag.ActivityTypes" required>
+                                    asp-items="Model.ActivityOptions" required>
                                 <option value="">-- Избери дейност --</option>
                             </select>
                         </div>

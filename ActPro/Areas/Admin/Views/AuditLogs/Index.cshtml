@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ActPro.DAL.Entities.AuditLog>
+﻿@using ActPro.Domain.Models.Areas
+@model AuditLogsViewModel
 @{
     ViewData["Title"] = "Логове";
 }
@@ -27,10 +28,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var log in Model.OrderByDescending(l => l.CreatedAt))
+                            @foreach (var log in Model.Logs.OrderByDescending(l => l.CreatedAt))
                             {
                                 <tr>
-                                    <td class="small" data-label="НАПРАВЕНО НА">@log.CreatedAt</td>
+                                    <td class="small" data-label="НАПРАВЕНО НА"><strong>@log.CreatedAt</strong></td>
                                     <td data-label ="ПОТРЕБИТЕЛ">
                                         <span class="fw-bold text-primary">@log.UserEmail</span>
                                     </td>
@@ -39,8 +40,10 @@
                                             @log.Action
                                         </span>
                                     </td>
-                                    <td style="max-width: 300px;" class="text-truncate" title="@log.Details" data-label="ДЕТАЙЛИ">
-                                        @log.Details
+                                    <td style="min-width: 250px; max-width: 400px; white-space: normal; word-wrap: break-word;" data-label="ДЕТАЙЛИ">
+                                        <div style="font-size: 0.9rem; line-height: 1.2;">
+                                            @log.Details
+                                        </div>
                                     </td>
                                     <td data-label="IP АДРЕС"><small class="text-muted">@log.IpAddress</small></td>
                                 </tr>
