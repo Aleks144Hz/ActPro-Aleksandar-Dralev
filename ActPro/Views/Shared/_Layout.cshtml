@@ -36,16 +36,35 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
+    <header class ="fixed-top shadow-sm">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container-fluid px-4">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/Actpro Logo.png" alt="ActPro Logo" style="height: 55px; width:auto; object-fit: contain;" />
+                    <img src="~/images/Actpro Logo.png" class="img-fluid" alt="ActPro Logo" style="height: 55px; width:auto; object-fit: contain;" />
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarContent">
+                <div class="d-flex align-items-center">
+                    <div class="d-lg-none me-3">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a asp-controller="Account" asp-action="Index">
+                                <img src="/images/profiles/@user?.ProfilePicturePath" class="rounded-circle border" style="width: 35px; height: 35px; object-fit: cover;" />
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-items-center d-lg-none me-1">
+                                <a class="btn btn-success fw-bold shadow-sm px-3 py-1" style="font-size: 0.8rem; border-radius: 8px;"
+                                   asp-controller="Account" asp-action="Login">Вход</a>
+                            </div>
+                        }
+                    </div>
+                    <button class="menu-toggle-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-1 gap-3">
                         <li class="nav-item">
                             <a class="nav-link nav-link-custom nav-link-lg" asp-area=""  asp-controller="Home" asp-action="Index">
@@ -130,6 +149,56 @@
                 </div>
             </div>
         </nav>
+        <div class="offcanvas offcanvas-end custom-mobile-menu border-0" tabindex="-1" id="mobileMenu">       
+            <div class="offcanvas-body p-0">
+                <div class="list-group list-group-flush side-menu-list">
+
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="list-group-item side-item">
+                        <span class="icon-wrap"><i class="bi bi-house-door"></i></span> Начало
+                    </a>
+                    <a asp-area="" asp-controller="Home" asp-action="News" class="list-group-item side-item">
+                        <span class="icon-wrap"><i class="bi bi-newspaper"></i></span> Новини
+                    </a>
+                    <a asp-area="" asp-controller="Owner" asp-action="Index" class="list-group-item side-item">
+                        <span class="icon-wrap"><i class="bi bi-plus-circle"></i></span> Добави обект
+                    </a>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a asp-area="" asp-controller="Reservation" asp-action="MyReservations" class="list-group-item side-item">
+                            <span class="icon-wrap text-primary"><i class="bi bi-calendar-check"></i></span> Резервации
+                        </a>
+                        <a asp-area="" asp-controller="Reservation" asp-action="MyReviews" class="list-group-item side-item">
+                            <span class="icon-wrap text-primary"><i class="bi bi-chat-left-text"></i></span> Отзиви
+                        </a>
+                        <a asp-area="" asp-controller="Account" asp-action="Settings" class="list-group-item side-item">
+                            <span class="icon-wrap text-primary"><i class="bi bi-gear"></i></span> Настройки
+                        </a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="list-group-item side-item admin-item">
+                                <span class="icon-wrap text-danger"><i class="bi bi-shield-lock"></i></span> Админ панел
+                            </a>
+                        }
+                        @if (User.IsInRole("Owner"))
+                        {
+                            <a asp-area="Owner" asp-controller="Dashboard" asp-action="Index" class="list-group-item side-item owner-item">
+                                <span class="icon-wrap text-success"><i class="bi bi-currency-euro"></i></span> Бизнес панел
+                            </a>
+                        }
+
+                        <div class="px-4 mt-4 pb-4">
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit" class="btn btn-logout-custom w-100 shadow-sm bg-danger text-white">
+                                    <i class="bi bi-box-arrow-right me-2 text-white"></i> Изход
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </header>
     <main role="main">
         @RenderBody()
@@ -248,6 +317,31 @@
                     }
                 });
             });
+        });
+        document.addEventListener('DOMContentLoaded', function () 
+        {
+            const menu = document.getElementById('mobileMenu');
+
+            menu.addEventListener('show.bs.offcanvas', function () 
+            {
+                document.body.classList.add('offcanvas-open');
+            });
+
+            menu.addEventListener('hidden.bs.offcanvas', function ()
+            {
+                document.body.classList.remove('offcanvas-open');
+            });
+
+            document.addEventListener('touchmove', function (e) 
+            {
+                if (document.body.classList.contains('offcanvas-open')) 
+                {
+                    if (!e.target.closest('#mobileMenu')) 
+                    {
+                        e.preventDefault();
+                    }
+                }
+            }, { passive: false });
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -5,6 +5,7 @@ using ActPro.Helpers;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
 using ActPro.Services.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,8 @@ namespace ActPro
             }
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
             connectionString,
-            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+            o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery)
+            .UseCompatibilityLevel(110)));
 
             // Identity
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(IdentityHelper.GetIdentityOptions)
@@ -47,6 +49,10 @@ namespace ActPro
             })
             .AddDataAnnotationsLocalization()
             .AddViewLocalization();
+
+
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys")));
 
             builder.Services.AddHttpContextAccessor();
 
@@ -111,10 +117,7 @@ namespace ActPro
 
             app.UseAuthorization();
 
-            app.MapStaticAssets();
-
-            app.MapRazorPages()
-               .WithStaticAssets();
+            app.MapRazorPages();
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller}/{action}/{id?}");
 

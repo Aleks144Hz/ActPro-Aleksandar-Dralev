@@ -7,11 +7,11 @@
     <main>
         <section class="py-5 position-relative">
             <div class="container position-relative z-index-2">
-                <div class="text-center mb-4 fade-in-down">
+                <div class="text-center mb-4 reveal reveal-up">
                     <h1 class="fw-bold text-dark">Намери своето място за спорт</h1>
                     <p class="text-muted">Лесно, бързо и удобно резервиране по всяко време.</p>
                 </div>
-                <div class="search-container-styled fade-in-up">
+                <div class="search-container-styled reveal reveal-up">
                     <form asp-controller="Search" asp-action="Index" method="get" id="mainSearchForm">
                         <div class="row align-items-center">
                             <div class="col-md-5 position-relative divider-end">
@@ -57,15 +57,19 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 pr-lg-5">
-                        <span class="text-success fw-bold text-uppercase small">Какво е ActPro?</span>
-                        <h2 class="fw-bold mb-4">Твоят дигитален асистент за активен живот</h2>
-                        <p class="text-muted lead">ActPro е иновативна платформа, която свързва ентусиастите със спортните бази. Нашата мисия е да премахнем бариерите пред спорта, като ви дадем достъп до стотици обекти само с няколко клика.</p>
-                        <ul class="list-unstyled mt-4">
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Резервации в реално време</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Голямо разнообразие от спортове</li>
-                        </ul>
+                        <div class="reveal reveal-left delay-1">
+                            <span class="text-success fw-bold text-uppercase small">Какво е ActPro?</span>
+                            <h2 class="fw-bold mb-4">Твоят дигитален асистент за активен живот</h2>
+                            <p class="text-muted lead">ActPro е иновативна платформа, която свързва ентусиастите със спортните бази. Нашата мисия е да премахнем бариерите пред спорта, като ви дадем достъп до стотици обекти само с няколко клика.</p>
+                            <ul class="list-unstyled mt-4">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Резервации в реално време</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Голямо разнообразие от спортове</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Достъпно от всякакъв вид устройство</li>
+
+                            </ul>
+                        </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 reveal reveal-right delay-1">
                         <img src="~/images/Digital.png" class="img-fluid">
                     </div>
                 </div>
@@ -73,7 +77,7 @@
         </section>
         <section class="py-4">
             <div class="container">
-                <h3 class="text-center mb-4 fw-bold">Популярни категории</h3>
+                <h3 class="text-center mb-4 fw-bold reveal reveal-up delay-1">Популярни категории</h3>
                 <div class="sports-category-grid">
                     @{
                         int GetCount(string key) => Model.SportCounts != null && Model.SportCounts.ContainsKey(key) ? Model.SportCounts[key] : 0;
@@ -90,7 +94,7 @@
 
                     @foreach (var sport in sportsList)
                     {
-                        <a asp-controller="Search" asp-action="Index" asp-route-activity="@sport.Name" class="sport-card @sport.Class">
+                        <a asp-controller="Search" asp-action="Index" asp-route-activity="@sport.Name" class="sport-card @sport.Class reveal reveal-up delay-1">
                             <div class="sport-card-icon">
                                 <i class="fas @sport.Icon"></i>
                             </div>
@@ -106,7 +110,7 @@
         <section class="py-5">
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
-                    <div class="col-lg-6 ps-lg-5">
+                    <div class="col-lg-6 ps-lg-5 reveal reveal-right delay-1">
                         <span class="text-success fw-bold text-uppercase small">Ползи</span>
                         <h2 class="fw-bold mb-4">С какво ви помагаме?</h2>
                         <p class="text-muted mb-4">Забравете за десетките телефонни обаждания, за да разберете дали тенис кортът е свободен. С нас пестите време и нерви:</p>
@@ -126,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 reveal reveal-left delay-1">
                         <img src="~/images/Benefit.png" class="img-fluid">
                     </div>
                 </div>
@@ -134,23 +138,24 @@
         </section>
         <section class="py-5">
             <div class="container">
-                <h2 class="mb-5 text-center fw-bold display-6">Топ обекти с най-висок рейтинг</h2>
+                <h2 class="mb-5 text-center fw-bold display-6 reveal reveal-up delay-1">Топ обекти с най-висок рейтинг</h2>
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     @foreach (var place in Model.TopPlaces)
                     {
-                        <div class="col">
-                            <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden;">
+                        <div class="col reveal reveal-up">
+                            <div class="card h-100 shadow-sm border-0 top-place-card reveal reveal-up delay-1">
                                 <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/300x200")"
-                                     class="card-img-top" alt="@place.Name" style="height: 200px; object-fit: cover;">
-
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">@place.Name</h5>
-                                    <p class="text-muted small mb-2">
-                                        <i class="bi bi-geo-alt"></i> @place.City?.Name
-                                    </p>
-                                    <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
+                                     class="card-img-top" alt="@place.Name">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="flex-grow-1">
+                                        <h5 class="card-title fw-bold card-title-limited">@place.Name</h5>
+                                        <p class="text-muted small mb-2">
+                                            <i class="bi bi-geo-alt"></i> @place.City?.Name
+                                        </p>
+                                        <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
+                                    </div>
                                     <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id"
-                                       class="btn btn-success w-100 fw-bold py-2 shadow-sm">Виж детайли</a>
+                                       class="btn btn-success w-100 fw-bold py-2 shadow-sm mt-3">Виж детайли</a>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +165,7 @@
         </section>
         <section class="py-5">
             <div class="container">
-                <div class="row align-items-center">
+                <div class="row align-items-center reveal reveal-up delay-1">
                     <div class="col-lg-6">
                         <span class="text-success fw-bold text-uppercase small">Решения</span>
                         <h2 class="fw-bold mb-4">Проблемите, които решаваме</h2>
@@ -177,7 +182,7 @@
                             <p class="small text-muted mb-0">Вече можете да изразите вашето мнение относно дадения обект, който сте посетили.</p>
                         </div>
                     </div>
-                    <div class="col-lg-6 text-center">
+                    <div class="col-lg-6 text-center reveal reveal-right delay-1">
                         <img src="~/images/Solutions.png" class="img-fluid">
                     </div>
                 </div>
@@ -188,23 +193,23 @@
                 <div class="row align-items-center">
                     <div class="col-lg-5 mb-4 mb-lg-0">
                         <h2 class="display-6 fw-bold mb-3">Имаш спортен обект?</h2>
-                        <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в 3 лесни стъпки и увеличи клиентите си.</p>
+                        <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в три лесни стъпки и увеличи клиентите си.</p>
                         <a class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn" asp-area="" asp-controller="Owner" asp-action="Index">Регистрирай го</a>
                     </div>
                     <div class="col-lg-7">
                         <div class="row text-center">
                             <div class="col-4">
-                                <div class="step-circle mb-3">1</div>
+                                <div class="step-circle mb-3 reveal reveal-up delay-1">1</div>
                                 <h6 class="fw-bold">Създаване</h6>
                                 <p class="small text-white-50">Регистрирай своя бизнес.</p>
                             </div>
                             <div class="col-4">
-                                <div class="step-circle mb-3">2</div>
+                                <div class="step-circle mb-3 reveal reveal-up delay-2">2</div>
                                 <h6 class="fw-bold">Потвърждаване</h6>
                                 <p class="small text-white-50">Предоставяне на документи за собственост.</p>
                             </div>
                             <div class="col-4">
-                                <div class="step-circle mb-3">3</div>
+                                <div class="step-circle mb-3 reveal reveal-up delay-3">3</div>
                                 <h6 class="fw-bold">Печели</h6>
                                 <p class="small text-white-50">Приемай резервации онлайн.</p>
                             </div>
@@ -216,16 +221,16 @@
         </section>
         <section class="py-6">
             <div class="container py-5">
-                <div class="row justify-content-center text-center mb-5">
+                <div class="row justify-content-center text-center mb-5 reveal reveal-up delay-1">
                     <div class="col-lg-8">
-                        <h2 class="display-5 fw-bold mb-3">Нашата История и Цел</h2>
+                        <h2 class="display-5 fw-bold mb-3">Нашата история и цел</h2>
                         <p class="lead text-muted">Ние не просто правим софтуер. Ние градим общност, където здравето и спортът са приоритет за всеки.</p>
                         <div class="mx-auto" style="width: 100px; height: 4px; background-color: #198754; border-radius: 2px;"></div>
                     </div>
                 </div>
                 <div class="row g-4 pt-4">
                     <div class="col-md-4">
-                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up">
+                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up reveal reveal-left">
                             <div class="about-icon-circle bg-success-soft mb-4">
                                 <i class="fas fa-bullseye fa-3x text-success"></i>
                             </div>
@@ -234,7 +239,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up">
+                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up reveal reveal-up">
                             <div class="about-icon-circle bg-white-soft mb-4">
                                 <i class="fas fa-eye fa-3x text-success"></i>
                             </div>
@@ -243,7 +248,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up">
+                        <div class="about-item p-5 border-0 shadow-lg rounded-5 h-100 text-center transition-up reveal reveal-right">
                             <div class="about-icon-circle bg-success-soft mb-4">
                                 <i class="fas fa-handshake fa-3x text-success"></i>
                             </div>
@@ -426,4 +431,22 @@
             }
         });
     }
+        document.addEventListener("DOMContentLoaded", function() 
+        {
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) 
+                {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach(el => observer.observe(el));
+    });
 </script>
