@@ -163,25 +163,21 @@
 </style>
 
 <script>
-    (function() 
-    {
+    (function() {
         const createDropZone = document.querySelector('#createPlaceModal #drop-zone');
         const createFileInput = document.querySelector('#createPlaceModal #file-input');
         const createPreviewContainer = document.querySelector('#createPlaceModal #preview-container');
 
-        if (createFileInput) 
-        {
+        if (createFileInput) {
             createFileInput.addEventListener('dragenter', () => createDropZone.classList.add('dragover'));
             createFileInput.addEventListener('dragleave', () => createDropZone.classList.remove('dragover'));
             createFileInput.addEventListener('drop', () => createDropZone.classList.remove('dragover'));
 
-            createFileInput.addEventListener('change', function() 
-            {
+            createFileInput.addEventListener('change', function() {
                 createPreviewContainer.innerHTML = '';
                 const files = this.files;
 
-                if (files) 
-                {
+                if (files){
                     Array.from(files).forEach(file => {
                         const reader = new FileReader();
                         reader.onload = function(e) {

@@ -6,6 +6,7 @@ namespace ActPro.Services
 {
     public class AuditService(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor) : IAuditService
     {
+        //---Logs---
         public async Task LogAsync(string action, string entity, string? entityId, string details)
         {
             var user = httpContextAccessor.HttpContext?.User;

@@ -1,17 +1,14 @@
-﻿.star-rating 
-{
+﻿.star-rating {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
 }
 
-.star-rating input 
-{
+.star-rating input {
     display: none !important;
 }
 
-.star-rating label 
-{
+.star-rating label {
     font-size: 1.6rem;
     color: #ddd;
     cursor: pointer;
@@ -19,25 +16,21 @@
     margin-right: 2px;
 }
 
-.star-rating label::before 
-{
+.star-rating label::before {
     content: "\2605";
 }
 
 .star-rating input:checked ~ label,
 .star-rating label:hover,
-.star-rating label:hover ~ label 
-{
+.star-rating label:hover ~ label {
     color: #ffc107 !important;
 }
 
-input[name="timeSlot"] 
-{
+input[name="timeSlot"] {
     display: none !important;
 }
 
-.time-slot-label 
-{
+.time-slot-label {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -53,17 +46,15 @@ input[name="timeSlot"]
     transition: all 0.2s ease;
 }
 
-input[name="timeSlot"]:checked + .time-slot-label 
-{
+input[name="timeSlot"]:checked + .time-slot-label {
     background-color: #1e7e34 !important;
     box-shadow: 0 0 8px rgba(0,0,0,0.3);
     transform: scale(1.05);
     border-color: #fff;
 }
 
-.slot-occupied 
-{
-    background: repeating-linear-gradient( 45deg, #f8f9fa, #f8f9fa 10px, #e9ecef 10px, #e9ecef 20px ) !important; 
+.slot-occupied {
+    background: repeating-linear-gradient( 45deg, #f8f9fa, #f8f9fa 10px, #e9ecef 10px, #e9ecef 20px ) !important;
     color: #adb5bd !important;
     border: 1px solid #dee2e6 !important;
     text-decoration: none !important;
@@ -73,13 +64,11 @@ input[name="timeSlot"]:checked + .time-slot-label
     overflow: hidden;
 }
 
-.time-slot-label:active 
-{
+.time-slot-label:active {
     transform: translateY(2px);
 }
 
-#dateScrollContainer 
-{
+#dateScrollContainer {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -90,13 +79,11 @@ input[name="timeSlot"]:checked + .time-slot-label
     scrollbar-width: none;
 }
 
-#dateScrollContainer::-webkit-scrollbar 
-{
+#dateScrollContainer::-webkit-scrollbar {
     display: none;
 }
 
-.date-item
-{
+.date-item {
     width: 66px;
     height: 70px;
     flex-shrink: 0;
@@ -112,15 +99,13 @@ input[name="timeSlot"]:checked + .time-slot-label
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.date-item:hover 
-{
+.date-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0,0,0,0.05);
     border-color: #28a745 !important;
 }
 
-.date-item strong 
-{
+.date-item strong {
     display: block;
     font-size: 1.5rem;
     font-weight: 800;
@@ -128,8 +113,7 @@ input[name="timeSlot"]:checked + .time-slot-label
     color: #2d3748;
 }
 
-.date-item small
-{
+.date-item small {
     display: block;
     font-size: 0.85rem;
     text-transform: uppercase;
@@ -138,105 +122,88 @@ input[name="timeSlot"]:checked + .time-slot-label
     color: #718096;
 }
 
-.date-item.bg-success 
-{
+.date-item.bg-success {
     background: linear-gradient(145deg, #28a745, #1e7e34) !important;
     color: white !important;
     border: none !important;
 }
 
 .date-item.bg-success strong,
-.date-item.bg-success small
-{
+.date-item.bg-success small {
     color: white !important;
 }
 
-.slots-container, #dateScrollContainer 
-{
+.slots-container, #dateScrollContainer {
     transition: opacity 0.2s ease-in-out;
 }
 
-.slots-fade 
-{
+.slots-fade {
     opacity: 0;
 }
 
-.hover-shadow:hover 
-{
+.hover-shadow:hover {
     transform: translateY(-2px);
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1) !important;
 }
 
-.transition
-{
+.transition {
     transition: all 0.3s ease;
 }
 
-.hover-success:hover 
-{
+.hover-success:hover {
     color: #28a745 !important;
     text-decoration: underline !important;
 }
 
-.modal.fade .modal-dialog 
-{
+.modal.fade .modal-dialog {
     transform: scale(0.8);
     transition: transform 0.3s ease-out;
 }
 
-.modal.show .modal-dialog 
-{
+.modal.show .modal-dialog {
     transform: scale(1);
 }
 
-.comment-text 
-{
-    word-wrap: break-word; 
+.comment-text {
+    word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
     word-break: break-word;
 }
 
-.search-card-img
-{
+.search-card-img {
     height: 120px;
     width: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-.badge
-{
+.badge {
     font-weight: 500;
     padding: 0.5em 1em;
 }
 
-.btn-outline-success
-{
+.btn-outline-success {
     border-width: 2px;
     background-color: rgba(25, 135, 84, 0.05);
 }
 
-.btn-outline-primary 
-{
+.btn-outline-primary {
     border-width: 2px;
     background-color: rgba(13, 110, 253, 0.05);
 }
 
-.btn-outline-dark
-{
+.btn-outline-dark {
     border-width: 2px;
     background-color: rgba(25, 25, 25, 0.05);
 }
 
-.btn-outline-danger
-{
+.btn-outline-danger {
     border-width: 2px;
     background-color: rgba(220, 53, 69, 0.05);
 }
 
-.btn-outline-info
-{
+.btn-outline-info {
     border-width: 2px;
     background-color: rgba(13, 202, 240, 0.05);
 }

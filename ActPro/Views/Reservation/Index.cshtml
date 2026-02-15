@@ -268,15 +268,13 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/bg.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function ()
-    {
+    document.addEventListener("DOMContentLoaded", function (){
         const container = document.getElementById('dateScrollContainer');
         const selectedDateInput = document.getElementById('selectedDate');
         const displayDate = document.getElementById('displayDate');
         const slotsWrapper = document.getElementById('slotsWrapper');
         const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-        const fp = flatpickr("#flatpickrDate",
-        {
+        const fp = flatpickr("#flatpickrDate",{
             locale: "bg",
             minDate: "today",
             dateFormat: "Y-m-d",
@@ -288,8 +286,7 @@
                 updateAll(dateStr);
             }
         });
-        function updateAll(dateStr)
-        {
+        function updateAll(dateStr){
             if(slotsWrapper) slotsWrapper.style.opacity = "0";
 
             setTimeout(() => {
@@ -307,21 +304,19 @@
                 if(slotsWrapper) slotsWrapper.style.opacity = "1";
             }, 150);
         }
-        function renderDateStrip(centerDate)
-        {
+        function renderDateStrip(centerDate){
         container.innerHTML = '';
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const formatDate = (date) => {
             const d = new Date(date);
             return d.getFullYear() + '-' +
-                   String(d.getMonth() + 1).padStart(2, '0') + '-' +
-                   String(d.getDate()).padStart(2, '0');
+                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(d.getDate()).padStart(2, '0');
         };
 
         const selectedStr = formatDate(centerDate);
-        for (let i = -3; i <= 14; i++)
-        {
+        for (let i = -3; i <= 14; i++){
             let d = new Date(centerDate);
             d.setDate(centerDate.getDate() + i);
             if (d < today) continue;
@@ -337,24 +332,21 @@
             div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
             div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
             div.onclick = () => {
-                if (iso !== selectedDateInput.value)
-                {
+                if (iso !== selectedDateInput.value){
                     fp.setDate(iso);
                     updateAll(iso);
                 }
             };
             container.appendChild(div);
 
-            if (isSelected)
-            {
+            if (isSelected){
                 requestAnimationFrame(() => {
                     div.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
                 });
             }
         }
     }
-        window.scrollDays = function(direction)
-        {
+        window.scrollDays = function(direction){
             let d = new Date(selectedDateInput.value);
             d.setDate(d.getDate() + (direction === 'next' ? 1 : -1));
 
@@ -365,8 +357,7 @@
             fp.setDate(iso);
             updateAll(iso);
         };
-        $(document).on('click', '.favorite-btn-large', function (e)
-        {
+        $(document).on('click', '.favorite-btn-large', function (e){
             e.preventDefault();
             var btn = $(this);
             var pId = btn.attr('data-id');
@@ -378,40 +369,33 @@
                 {
                     if (response.success) {
                         var icon = btn.find('i');
-                        if (response.isFavorite) 
-                        {
+                        if (response.isFavorite) {
                             btn.removeClass('btn-outline-warning').addClass('btn-warning');
                             icon.removeClass('bi-star').addClass('bi-star-fill');
                             toastr.success("Добавено в любими!");
                         } 
-                        else 
-                        {
+                        else{
                             btn.removeClass('btn-warning').addClass('btn-outline-warning');
                             icon.removeClass('bi-star-fill').addClass('bi-star');
                             toastr.info("Премахнато от любими.");
                         }
                     }
                 },
-                error: function (xhr)
-                {
+                error: function (xhr){
                     toastr.error(xhr.status === 401 ? "Трябва да сте влезли в профил, за да добавите в любими!" : "Грешка.");
                 }
             });
         });
         const textArea = document.getElementById('commentArea');
         const charCounter = document.getElementById('charCounter');
-        if (textArea && charCounter)
-        {
-            textArea.addEventListener('input', function ()
-            {
+        if (textArea && charCounter){
+            textArea.addEventListener('input', function (){
                 const length = textArea.value.length;
                 charCounter.textContent = `${length} / 250`;
-                if (length >= 250)
-                {
+                if (length >= 250){
                     charCounter.classList.replace('text-muted', 'text-danger');
                 }
-                else
-                {
+                else{
                     charCounter.classList.replace('text-danger', 'text-muted');
                 }
             });
@@ -421,8 +405,7 @@
         document.getElementById('calendarTrigger').onclick = () => fp.open();
         updateAll(selectedDateInput.value);
     });
-    function updateTimeSlots()
-    {
+    function updateTimeSlots(){
         const selectedDateStr = document.getElementById('selectedDate').value;
         const placeId = "@Model.Place.Id";
         const url = '@Url.Action("GetOccupiedSlots", "Reservation")';
@@ -448,23 +431,19 @@
                 const isOccupied = occupiedSlots.includes(hourValue);
                 let isPast = false;
 
-                if (selectedDateStr === todayStr)
-                {
+                if (selectedDateStr === todayStr){
                     const [hour, minute] = hourValue.split(':');
                     const slotTime = new Date();
                     slotTime.setHours(parseInt(hour), parseInt(minute), 0, 0);
                     if (slotTime < now) isPast = true;
                 }
-
-                if (isOccupied || isPast)
-                {
+                if (isOccupied || isPast){
                     input.disabled = true;
                     input.checked = false;
                     label.classList.add('slot-occupied');
                     label.style.opacity = "0.5";
                 }
-                else
-                {
+                else{
                     input.disabled = false;
                     label.classList.remove('slot-occupied');
                     label.style.opacity = "1";
@@ -472,29 +451,24 @@
             });
         });
     }
-    function handleBookingClick()
-    {
+    function handleBookingClick(){
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
-        if (!selectedTimeInput)
-        {
+        if (!selectedTimeInput){
             toastr.info("Моля, изберете час!");
             return;
         }
         const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-        if (isUserLoggedIn)
-        {
+        if (isUserLoggedIn){
             executeBooking();
         }
-        else
-        {
+        else{
             const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
             if(bookingModal) bookingModal.hide();
             new bootstrap.Modal(document.getElementById('authPromptModal')).show();
         }
     }
 
-    function executeBooking()
-    {
+    function executeBooking(){
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         const date = document.getElementById('selectedDate').value;
         const placeId = "@Model.Place.Id";
@@ -506,7 +480,7 @@
 
         const data = { 'placeId': placeId, 'date': date, 'timeSlot': selectedTimeInput.value, '__RequestVerificationToken': token };
         for (const key in data)
-        {
+{
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = key;

@@ -270,18 +270,15 @@
     <link rel="stylesheet" href="~/css/search.css" asp-append-version="true" />
 }
 <script>
-    function submitWithSort(order)
-    {
+    function submitWithSort(order){
         const form = document.getElementById('filterForm');
         const sortInput = document.getElementById('currentSortOrder');
 
-        if (form && sortInput)
-        {
+        if (form && sortInput){
             sortInput.value = order;
             form.submit();
         }
-        else
-        {
+        else{
             console.error("Формата или полето за сортиране не са намерени!");
         }
     }
@@ -291,21 +288,17 @@
     const maxInput = document.getElementById('maxPriceInput');
     const track = document.getElementById('sliderTrack');
 
-    function updatePrice()
-    {
+    function updatePrice(){
         let v1 = parseInt(minR.value);
         let v2 = parseInt(maxR.value);
         let max = parseInt(minR.max);
 
-        if (v1 > v2 - 5)
-        {
-            if (this.id === 'minPriceRange' || this.id === 'minPriceInput')
-            {
+        if (v1 > v2 - 5){
+            if (this.id === 'minPriceRange' || this.id === 'minPriceInput'){
                 v1 = v2 - 5;
                 minR.value = v1;
             }
-            else
-            {
+            else{
                 v2 = v1 + 5;
                 maxR.value = v2;
             }
@@ -313,8 +306,7 @@
         minInput.value = v1;
         maxInput.value = v2;
 
-        if (track)
-        {
+        if (track){
             let p1 = (v1 / max) * 100;
             let p2 = (v2 / max) * 100;
             track.style.left = p1 + "%";
@@ -322,8 +314,7 @@
         }
     }
 
-    function handleManualInput()
-    {
+    function handleManualInput(){
         let val = parseInt(this.value);
         const maxLimit = parseInt(minR.max);
 
@@ -331,12 +322,10 @@
         if (val < 0) val = 0;
         if (val > maxLimit) val = maxLimit;
 
-        if (this.id === 'minPriceInput')
-        {
+        if (this.id === 'minPriceInput'){
             minR.value = val;
         }
-        else
-        {
+        else{
             maxR.value = val;
         }
         updatePrice.call(this);
@@ -349,8 +338,7 @@
     minInput.addEventListener('change', handleManualInput);
     maxInput.addEventListener('change', handleManualInput);
 
-    document.addEventListener("DOMContentLoaded", function()
-    {
+    document.addEventListener("DOMContentLoaded", function(){
         const params = new URLSearchParams(window.location.search);
         if (!params.has('minPrice')) minR.value = 0;
         if (!params.has('maxPrice')) maxR.value = 200;
@@ -359,15 +347,12 @@
     });
 
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
-        radio.addEventListener('click', function()
-        {
-            if (this.previousValue === 'true')
-            {
+        radio.addEventListener('click', function(){
+            if (this.previousValue === 'true'){
                 this.checked = false;
                 this.previousValue = 'false';
             }
-            else
-            {
+            else{
                 document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => r.previousValue = 'false');
                 this.previousValue = 'true';
             }
@@ -376,29 +361,24 @@
     const citiesData = @Html.Raw(Json.Serialize(Model.CitiesList)) || [];
     const activitiesData = @Html.Raw(Json.Serialize(Model.ActivitiesList)) || [];
 
-    function setupAutocomplete(inputId, listId, dataArray, iconClass)
-    {
+    function setupAutocomplete(inputId, listId, dataArray, iconClass){
         const input = document.getElementById(inputId);
         const list = document.getElementById(listId);
 
-        const popularItemsMap =
-        {
+        const popularItemsMap = {
             'cityInput': ["София", "Пловдив", "Варна", "Бургас", "Благоевград"],
             'activityInput': ["Футбол", "Волейбол", "Баскетбол", "Тенис", "Фитнес"]
         };
 
-        const labelsMap =
-        {
+        const labelsMap = {
             'cityInput': "Известни локации",
             'activityInput': "Популярни активности"
         };
 
-        function renderList(items)
-        {
+        function renderList(items){
             list.innerHTML = '';
             const inputValue = input.value.toLowerCase().trim();
-            if (inputValue === '')
-            {
+            if (inputValue === ''){
                 const label = document.createElement('div');
                 label.className = 'dropdown-header-custom';
                 label.innerHTML = `<strong>${labelsMap[inputId]}</strong>`;
@@ -414,8 +394,7 @@
                 list.appendChild(divider);
             }
 
-            if (items.length === 0 && inputValue !== '')
-            {
+            if (items.length === 0 && inputValue !== ''){
                 list.style.display = 'none';
                 return;
             }
@@ -424,8 +403,7 @@
             });
             list.style.display = 'block';
         }
-        function createItemDiv(item)
-        {
+        function createItemDiv(item){
             const div = document.createElement('div');
             div.className = 'dropdown-item-custom';
             div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
@@ -466,8 +444,7 @@
              };
             const currentIcon = activityIcons[item] || iconClass;
             div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
-            div.addEventListener('click', function()
-            {
+            div.addEventListener('click', function(){
                 input.value = item;
                 input.setCustomValidity('');
                 list.style.display = 'none';
@@ -475,8 +452,7 @@
             });
             return div;
         }
-        function handleFilter()
-        {
+        function handleFilter(){
             const text = input.value.toLowerCase().trim();
             const filtered = dataArray
                 .filter(item => item.toString().toLowerCase().trim().startsWith(text))
@@ -485,39 +461,32 @@
         }
         input.addEventListener('focus', handleFilter);
         input.addEventListener('input', handleFilter);
-        document.addEventListener('click', function(e)
-        {
-            if (e.target !== input && !list.contains(e.target))
-            {
+        document.addEventListener('click', function(e){
+            if (e.target !== input && !list.contains(e.target)){
                 list.style.display = 'none';
             }
         });
     }
-    document.addEventListener("DOMContentLoaded", function()
-    {
+    document.addEventListener("DOMContentLoaded", function(){
         setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
         setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
     });
-    function resetSecondaryFilters(lastValidCity)
-    {
+    function resetSecondaryFilters(lastValidCity){
         const cityInput = document.getElementById('cityInput');
         const activityInput = document.getElementById('activityInput');
         const minR = document.getElementById('minPriceRange');
         const maxR = document.getElementById('maxPriceRange');
         const form = document.getElementById('filterForm');
 
-        if (cityInput && (!cityInput.value.trim()))
-        {
+        if (cityInput && (!cityInput.value.trim())){
             cityInput.value = lastValidCity || "";
         }
 
-        if (activityInput)
-        {
+        if (activityInput){
             activityInput.value = "";
         }
 
-        if (minR && maxR)
-        {
+        if (minR && maxR){
             minR.value = 0;
             maxR.value = 200;
             updatePrice.call(minR);
@@ -534,14 +503,11 @@
         });
 
         cityInput.setCustomValidity('');
-
-        if (form)
-        {
+        if (form){
             form.submit();
         }
     }
-    function toggleView() 
-    {
+    function toggleView() {
         const container = document.getElementById('resultsContainer');
         const icon = document.getElementById('viewIcon');
         const wrappers = document.querySelectorAll('.result-wrapper');
@@ -550,56 +516,47 @@
         localStorage.setItem('preferredView', isGrid ? 'grid' : 'list');
         applyViewStyles(isGrid, container, icon, wrappers);
     }
-    function applyViewStyles(isGrid, container, icon, wrappers) 
-    {
-        if (isGrid)
-        {
+    function applyViewStyles(isGrid, container, icon, wrappers) {
+        if (isGrid){
             container.classList.remove('flex-column', 'gap-3');
             container.classList.add('row');
             if(icon) icon.className = 'bi bi-list-ul';
             wrappers.forEach(w => w.classList.replace('col-12', 'col-md-4'));
         } 
 
-        else
-        {
+        else{
             container.classList.add('flex-column', 'gap-3');
             container.classList.remove('row');
             if(icon) icon.className = 'bi bi-grid-3x3-gap-fill';
             wrappers.forEach(w => w.classList.replace('col-md-4', 'col-12'));
         }
     }
-    function initView() 
-    {
+    function initView(){
         const savedView = localStorage.getItem('preferredView');
-        if (savedView === 'grid') 
-        {
+        if (savedView === 'grid'){
             const container = document.getElementById('resultsContainer');
             const icon = document.getElementById('viewIcon');
             const wrappers = document.querySelectorAll('.result-wrapper');
         
-            if (container) 
-            {
+            if (container){
                 container.classList.add('grid-mode');
                 applyViewStyles(true, container, icon, wrappers);
             }
         }
     }
     document.addEventListener('DOMContentLoaded', initView);
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function(){
     setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
     setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
     const searchForm = document.getElementById('filterForm') || document.getElementById('mainSearchForm');
-    if (searchForm)
-    {
-        searchForm.addEventListener('submit', function (e) 
-        {
+    if (searchForm){
+        searchForm.addEventListener('submit', function (e){
             const cityInput = document.getElementById('cityInput');
             const activityInput = document.getElementById('activityInput');           
             const cityValue = cityInput.value.trim().toLowerCase();
             const activityValue = activityInput.value.trim().toLowerCase();
             const isCityValid = citiesData.some(c => c.toLowerCase() === cityValue);
-            if (!isCityValid) 
-            {
+            if (!isCityValid){
                 e.preventDefault();
                 toastr.info("Моля, изберете град от предложенията!");
                 cityInput.classList.add('input-error');
@@ -609,8 +566,7 @@
                 return false;
             }
             const isActivityValid = activitiesData.some(a => a.toLowerCase() === activityValue);
-            if (activityValue !== "" && !isActivityValid)
-            {
+            if (activityValue !== "" && !isActivityValid){
                 e.preventDefault();
                 toastr.info("Моля, изберете валидна активност!");
                 activityInput.classList.add('input-error');

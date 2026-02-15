@@ -8,6 +8,7 @@ namespace ActPro.Services.Services
 {
     public class PlaceService(ApplicationDbContext context, IAuditService auditService) : IPlaceService
     {
+        // --- Places ---
         public async Task<IEnumerable<City>> GetCitiesAsync() => await context.Cities.OrderBy(c => c.Name).ToListAsync();
 
         public async Task<IEnumerable<Activity>> GetActivitiesAsync() => await context.Activities.OrderBy(a => a.Name).ToListAsync();

@@ -1,4 +1,5 @@
 ﻿using ActPro.DAL;
+using ActPro.DAL.Entities;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ActPro.Controllers
 {
-    public class ReservationController(IReservationService reservationService, UserManager<ApplicationUser> userManager, IAuditService auditService) : Controller
+    public class ReservationController(IReservationService reservationService, UserManager<ApplicationUser> userManager, IAuditService auditService, IEmailSender emailSender) : Controller
     {
         //--- RESERVATION PAGE ---
         public async Task<IActionResult> Index(int id)
@@ -18,18 +19,44 @@ namespace ActPro.Controllers
             return View("Index", viewModel);
         }
 
+        //--- BOOKING ACTION ---
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot)
+        public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot, string placeName)
         {
             var user = await userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
-
+            if (!user.EmailConfirmed)
+            {
+                TempData["Error"] = "Трябва да потвърдите имейла си, преди да направите резервация!";
+                return RedirectToAction("Index", new { id = placeId });
+            }
             var result = await reservationService.BookAsync(placeId, date, timeSlot, user);
 
             if (result.success)
             {
+                try
+                {
+                    if (string.IsNullOrEmpty(placeName))
+                    {
+                        var placeModel = await reservationService.GetReservationIndexModelAsync(placeId, user.Id);
+                        placeName = placeModel?.Place?.Name ?? "Спортен обект";
+                    }
+                    string formattedDate = date.ToString("dd.MM.yyyy (dddd)");
+
+                    await emailSender.SendBookingConfirmationAsync(
+                        user.Email,
+                        user.FirstName,
+                        placeName,
+                        formattedDate,
+                        timeSlot
+                    );
+                }
+                catch (Exception ex)
+                {
+
+                }
                 await auditService.LogAsync("Create Reservation", "User", user.Id, "Потребителят направи резервация.");
                 return RedirectToAction("Confirmation", new { id = placeId });
             }
@@ -46,7 +73,13 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReview(int placeId, string commentText, int rating)
         {
+            var user = await userManager.GetUserAsync(User);
             var userId = userManager.GetUserId(User);
+            if (!user.EmailConfirmed)
+            {
+                TempData["Error"] = "Трябва да потвърдите имейла си, преди да добавите коментар!";
+                return RedirectToAction("Index", new { id = placeId });
+            }
             var result = await reservationService.AddReviewAsync(placeId, userId, commentText, rating);
 
             if (result.success)
@@ -111,8 +144,33 @@ namespace ActPro.Controllers
         public async Task<IActionResult> Cancel(int id)
         {
             var userId = userManager.GetUserId(User);
+            var user = await userManager.GetUserAsync(User);
+            var reservationsData = await reservationService.GetUserReservationsAsync(userId, 1, 100, "all");
+            var reservationToDelete = reservationsData.Reservations.FirstOrDefault(r => r.Id == id);
             var result = await reservationService.CancelReservationAsync(id, userId);
-            if (result.success) await auditService.LogAsync("Cancel Reservation", "User", userId, "Потребителят отказа резервация.");
+
+            if (result.success)
+            {
+                await auditService.LogAsync("Cancel Reservation", "User", userId, "Потребителят отказа резервация.");
+
+                if (reservationToDelete != null)
+                {
+                    try
+                    {
+                        string formattedDate = reservationToDelete.ReservationDate.ToString();
+
+                        await emailSender.SendBookingCancellationAsync(
+                            user.Email,
+                            user.FirstName,
+                            reservationToDelete.PlaceName,
+                            formattedDate,
+                            reservationToDelete.ReservationTime.ToString()
+                        );
+                    }
+                    catch { }
+                }
+            }
+
             return Json(new { success = result.success, message = result.message });
         }
 

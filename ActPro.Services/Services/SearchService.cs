@@ -7,6 +7,7 @@ namespace ActPro.Services
 {
     public class SearchService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo) : ISearchService
     {
+        //-- SEARCH & FILTERING
         public async Task<IEnumerable<Place>> SearchPlacesAsync(string city, string activity, bool? isOutdoor, decimal? minPrice, decimal? maxPrice, string sortOrder, string capacityGroup)
         {
             var query = BuildBaseQuery(city, activity, isOutdoor, minPrice, maxPrice);

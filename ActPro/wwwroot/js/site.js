@@ -21,8 +21,7 @@ $(document).on('click', '.confirm-action', function (e)
         confirmButtonText: 'Да!',
         cancelButtonText: 'Отказ'
     }).then((result) => {
-        if (result.isConfirmed)
-        {
+        if (result.isConfirmed){
             form.submit(); 
         }
     });

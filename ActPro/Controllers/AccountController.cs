@@ -1,4 +1,5 @@
 ﻿using ActPro.DAL;
+using ActPro.Domain.Models.Account;
 using ActPro.Models.User;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
@@ -10,7 +11,7 @@ using static ActPro.Helpers.MessageConstants;
 namespace ActPro.Controllers
 {
     [Authorize]
-    public class AccountController(IAccountService accountService, IAuditService auditService, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment) : Controller
+    public class AccountController(IAccountService accountService, IAuditService auditService, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender) : Controller
     {
         // --- ACCOUNT / PROFILE (Index) ---
         [HttpGet]
@@ -113,9 +114,14 @@ namespace ActPro.Controllers
                 if (result.Succeeded)
                 {
                     var user = await userManager.FindByEmailAsync(model.Email);
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token = token }, Request.Scheme);
+
+                    await emailSender.SendEmailAsync(user.Email, "Потвърждение на акаунт - ActPro", confirmationLink);
                     TempData["Success"] = "Регистрацията е успешна! Добре дошли.";
                     await auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("RegisterConfirmation", new { email = model.Email });
                 }
 
                 foreach (var error in result.Errors)
@@ -127,6 +133,149 @@ namespace ActPro.Controllers
                 }
             }
             return View(model);
+        }
+
+        // --- FORGOT / RESET PASSWORD ---
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword(string token = null, string email = null)
+        {
+            if (token != null && email != null)
+            {
+                return View(new ResetPasswordViewModel { Token = token, Email = email });
+            }
+            return View(new ForgotPasswordViewModel());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var callbackUrl = await accountService.GeneratePasswordResetLinkAsync(model.Email, Request.Scheme, Url);
+
+            if (callbackUrl != null)
+            {
+                await emailSender.SendPasswordResetAsync(model.Email, callbackUrl);
+            }
+
+            TempData["Success"] = "Ако имейлът съществува, сме изпратили линк за възстановяване.";
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View("ForgotPassword", model);
+
+            var result = await accountService.ResetPasswordAsync(model);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Паролата ви е сменена успешно! Вече можете да влезете.";
+                return RedirectToAction("Login");
+            }
+
+
+            bool hasPasswordError = false;
+            foreach (var error in result.Errors)
+            {
+                if (error.Code.Contains("Password") && !hasPasswordError)
+                {
+                    ModelState.AddModelError("resetModel.Password", error.Description);
+                    hasPasswordError = true;
+                }
+            }
+            return View("ForgotPassword", model);
+        }
+
+        // --- EMAIL CONFIRMATION ---
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterConfirmation(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null) return RedirectToAction("Index", "Home");
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Имейлът ви беше потвърден успешно! Вече можете да правите резервации.";
+                return RedirectToAction("Login");
+            }
+
+            return View("Error");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResendConfirmation(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user = await userManager.FindByEmailAsync(email);
+
+            if (user == null || user.EmailConfirmed)
+            {
+                TempData["Info"] = "Акаунтът вече е потвърден или не съществува.";
+                return RedirectToAction("Login");
+            }
+
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                new { userId = user.Id, token = token }, Request.Scheme);
+
+            await emailSender.SendEmailAsync(user.Email, "Потвърждение на акаунт - ActPro", confirmationLink);
+
+            return RedirectToAction("RegisterConfirmation", new { email = user.Email });
+        }
+
+        // --- FAVORITES ---
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> ToggleFavorite(int placeId)
+        {
+            var userId = userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var result = await accountService.ToggleFavoriteAsync(userId, placeId);
+            return Json(new { success = true, isFavorite = result.isFavorite, message = result.message });
+        }
+
+        // --- SETTINGS ---
+        [HttpGet]
+        public async Task<IActionResult> Settings()
+        {
+            var userId = userManager.GetUserId(User);
+            var user = await accountService.GetUserByIdAsync(userId);
+
+            if (user == null) return NotFound();
+            var viewModel = new ProfileSettingsViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicturePath = user.ProfilePicturePath,
+                CreatedOn = user.CreatedOn
+            };
+            return View(viewModel);
         }
 
         // --- EDIT PROFILE ---
@@ -157,7 +306,7 @@ namespace ActPro.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["ShowChangePasswordModal"] = true;
-                return View("Settings", user);
+                return View("Settings", MapToSettingsViewModel(user));
             }
 
             var result = await accountService.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
@@ -182,7 +331,7 @@ namespace ActPro.Controllers
             }
 
             ViewData["ShowChangePasswordModal"] = true;
-            return View("Settings", user);
+            return View("Settings", MapToSettingsViewModel(user));
         }
 
         // --- DELETE PROFILE ---
@@ -196,7 +345,7 @@ namespace ActPro.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["ShowDeleteModal"] = true;
-                return View("Settings", user);
+                return View("Settings", MapToSettingsViewModel(user));
             }
 
             var isPasswordCorrect = await userManager.CheckPasswordAsync(user, model.Password);
@@ -204,12 +353,13 @@ namespace ActPro.Controllers
             {
                 ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
                 ViewData["ShowDeleteModal"] = true;
-                return View("Settings", user);
+                return View("Settings", MapToSettingsViewModel(user));
             }
 
             var result = await accountService.DeleteAccountAsync(userId);
             if (result.Succeeded)
             {
+                await emailSender.SendProfileDeletedAsync(user.Email, user.FirstName);
                 await accountService.LogoutAsync();
                 TempData["Success"] = SuccessfulDeletedAccount;
                 await auditService.LogAsync("Delete User", "User", userId, "Потребителят сам изтри профила си");
@@ -218,19 +368,7 @@ namespace ActPro.Controllers
 
             ModelState.AddModelError(string.Empty, "Грешка при изтриване.");
             ViewData["ShowDeleteModal"] = true;
-            return View("Index", user);
-        }
-
-        // --- FAVORITES ---
-        [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> ToggleFavorite(int placeId)
-        {
-            var userId = userManager.GetUserId(User);
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
-            var result = await accountService.ToggleFavoriteAsync(userId, placeId);
-            return Json(new { success = true, isFavorite = result.isFavorite, message = result.message });
+            return View("Index", MapToSettingsViewModel(user));
         }
 
         // --- LOGOUT ---
@@ -243,15 +381,10 @@ namespace ActPro.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // --- SETTINGS ---
-        [HttpGet]
-        public async Task<IActionResult> Settings()
+        // --- PRIVATE HELPER METHODS ---
+        private ProfileSettingsViewModel MapToSettingsViewModel(ApplicationUser user)
         {
-            var userId = userManager.GetUserId(User);
-            var user = await accountService.GetUserByIdAsync(userId);
-
-            if (user == null) return NotFound();
-            var viewModel = new ProfileSettingsViewModel
+            return new ProfileSettingsViewModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -260,7 +393,6 @@ namespace ActPro.Controllers
                 ProfilePicturePath = user.ProfilePicturePath,
                 CreatedOn = user.CreatedOn
             };
-            return View(viewModel);
         }
     }
 }

@@ -33,7 +33,9 @@
                             <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="rememberMe">
                             <label class="form-check-label text-muted" for="rememberMe">Запомни ме</label>
                         </div>
-                        <a href="#" class="text-decoration-none small fw-bold text-success">Забравена парола?</a>
+                        <a asp-controller="Account" asp-action="ForgotPassword" class="text-decoration-none small fw-bold text-success">
+                            Забравена парола?
+                        </a>
                     </div>
                     <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-5 shadow-sm">
                         Влез<i class="bi bi-box-arrow-in-right ms-2"></i>
@@ -57,24 +59,19 @@
 {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        document.addEventListener("DOMContentLoaded", function()
-        {
+        document.addEventListener("DOMContentLoaded", function(){
             const toggleBtn = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('passwordInput');
-            if (toggleBtn && passwordInput)
-            {
-                toggleBtn.addEventListener('click', function ()
-                {
+            if (toggleBtn && passwordInput){
+                toggleBtn.addEventListener('click', function (){
                     const icon = this.querySelector('i');
-                    if (passwordInput.type === 'password')
-                    {
+                    if (passwordInput.type === 'password'){
                         passwordInput.type = 'text';
                         icon.classList.remove('bi-eye');
                         icon.classList.add('bi-eye-slash');
 
                     }
-                    else
-                    {
+                    else{
                         passwordInput.type = 'password';
                         icon.classList.remove('bi-eye-slash');
                         icon.classList.add('bi-eye');

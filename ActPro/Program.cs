@@ -64,8 +64,8 @@ namespace ActPro
 
             builder.Services.AddScoped<ISearchService, SearchService>();
 
-            builder.Services.AddScoped<IReservationService, ReservationService>();  
-            
+            builder.Services.AddScoped<IReservationService, ReservationService>();
+
             builder.Services.AddScoped<IPlaceService, PlaceService>();
 
             builder.Services.AddScoped<IOwnerDashboardService, OwnerDashboardService>();
@@ -82,15 +82,18 @@ namespace ActPro
 
             builder.Services.AddScoped<IAuditDashboardService, AuditDashboardService>();
 
+            builder.Services.AddTransient<ActPro.Services.Interfaces.IEmailSender, EmailSender>();
 
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+            builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
                 app.UseHsts();
             }
             using (var scope = app.Services.CreateScope())

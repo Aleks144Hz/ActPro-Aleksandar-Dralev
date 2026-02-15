@@ -115,8 +115,7 @@
 }
 
 <script>
-    function deleteImageAjax(btn, imageId)
-    {
+    function deleteImageAjax(btn, imageId){
         const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
 
         $.ajax({
@@ -126,15 +125,13 @@
             headers: {
                 "RequestVerificationToken": token
             },
-            success: function()
-            {
+            success: function(){
                 $(btn).closest('.position-relative').fadeOut(300, function()
                 {
                     $(this).remove();
                 });
             },
-            error: function(xhr)
-            {
+            error: function(xhr){
                 console.error(xhr.responseText);
                 alert("Грешка при изтриването. Сървърът върна: " + xhr.status);
             }

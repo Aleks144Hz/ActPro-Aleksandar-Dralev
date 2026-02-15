@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 reveal reveal-right delay-1">
-                        <img src="~/images/Digital.png" class="img-fluid">
+                        <img src="~/images/Digital.jpg" class="img-fluid custom-section-img">
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
 
                     @foreach (var sport in sportsList)
                     {
-                        <a asp-controller="Search" asp-action="Index" asp-route-activity="@sport.Name" class="sport-card @sport.Class reveal reveal-up delay-1">
+                        <a asp-controller="Search" asp-action="Index" asp-route-activity="@sport.Name" class="sport-card @sport.Class">
                             <div class="sport-card-icon">
                                 <i class="fas @sport.Icon"></i>
                             </div>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 reveal reveal-left delay-1">
-                        <img src="~/images/Benefit.png" class="img-fluid">
+                        <img src="~/images/Benefits.jpg" class="img-fluid custom-section-img">
                     </div>
                 </div>
             </div>
@@ -183,7 +183,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 text-center reveal reveal-right delay-1">
-                        <img src="~/images/Solutions.png" class="img-fluid">
+                        <img src="~/images/Solutions.jpg" class="img-fluid custom-section-img">
                     </div>
                 </div>
             </div>
@@ -269,29 +269,24 @@
     const citiesData = @Html.Raw(Json.Serialize(Model.CityNames));
     const activitiesData = @Html.Raw(Json.Serialize(Model.ActivityNames));
 
-    function setupAutocomplete(inputId, listId, dataArray, iconClass)
-    {
+    function setupAutocomplete(inputId, listId, dataArray, iconClass){
         const input = document.getElementById(inputId);
         const list = document.getElementById(listId);
 
-        const popularItemsMap =
-        {
+        const popularItemsMap = {
             'cityInput': ["София", "Пловдив", "Варна", "Бургас", "Благоевград"],
             'activityInput': ["Футбол", "Волейбол", "Баскетбол", "Тенис", "Фитнес"]
         };
 
-        const labelsMap =
-        {
+        const labelsMap = {
             'cityInput': "Известни локации",
             'activityInput': "Популярни активности"
         };
 
-        function renderList(items)
-        {
+        function renderList(items){
             list.innerHTML = '';
             const inputValue = input.value.toLowerCase().trim();
-            if (inputValue === '')
-            {
+            if (inputValue === ''){
                 const label = document.createElement('div');
                 label.className = 'dropdown-header-custom';
                 label.innerHTML = `<strong>${labelsMap[inputId]}</strong>`;
@@ -307,8 +302,7 @@
                 list.appendChild(divider);
             }
 
-            if (items.length === 0 && inputValue !== '')
-            {
+            if (items.length === 0 && inputValue !== ''){
                 list.style.display = 'none';
                 return;
             }
@@ -317,8 +311,7 @@
             });
             list.style.display = 'block';
         }
-        function createItemDiv(item)
-        {
+        function createItemDiv(item){
             const div = document.createElement('div');
             div.className = 'dropdown-item-custom';
             div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
@@ -359,8 +352,7 @@
                 };
             const currentIcon = activityIcons[item] || iconClass;
             div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
-            div.addEventListener('click', function()
-            {
+            div.addEventListener('click', function(){
                 input.value = item;
                 input.setCustomValidity('');
                 list.style.display = 'none';
@@ -368,8 +360,7 @@
             });
             return div;
         }
-        function handleFilter()
-        {
+        function handleFilter(){
             const text = input.value.toLowerCase().trim();
             const filtered = dataArray
                 .filter(item => item.toString().toLowerCase().trim().startsWith(text))
@@ -378,33 +369,27 @@
         }
         input.addEventListener('focus', handleFilter);
         input.addEventListener('input', handleFilter);
-        document.addEventListener('click', function(e)
-        {
-            if (e.target !== input && !list.contains(e.target))
-            {
+        document.addEventListener('click', function(e){
+            if (e.target !== input && !list.contains(e.target)){
                 list.style.display = 'none';
             }
         });
     }
-    document.addEventListener("DOMContentLoaded", function()
-    {
+    document.addEventListener("DOMContentLoaded", function(){
         setupAutocomplete('cityInput', 'cityList', citiesData, 'fas fa-map-marker-alt');
         setupAutocomplete('activityInput', 'activityList', activitiesData, 'fas fa-running');
     });
 
     const searchForm = document.getElementById('mainSearchForm');
-    if (searchForm)
-    {
-        searchForm.addEventListener('submit', function (e)
-        {
+    if (searchForm){
+        searchForm.addEventListener('submit', function (e){
             const cityInput = document.getElementById('cityInput');
             const activityInput = document.getElementById('activityInput');
             const cityValue = cityInput.value.trim().toLowerCase();
             const activityValue = activityInput.value.trim().toLowerCase();
             const isCityValid = citiesData.some(c => c.toLowerCase() === cityValue);
 
-            if (!isCityValid)
-            {
+            if (!isCityValid){
                 e.preventDefault();
                 toastr.info("Моля, изберете град от предложенията!");
 
@@ -417,8 +402,7 @@
             }
             const isActivityValid = activitiesData.some(a => a.toLowerCase() === activityValue);
 
-            if (activityValue !== "" && !isActivityValid)
-            {
+            if (activityValue !== "" && !isActivityValid){
                 e.preventDefault();
                 toastr.info("Моля, изберете валидна активност!");
 
@@ -431,16 +415,14 @@
             }
         });
     }
-        document.addEventListener("DOMContentLoaded", function() 
-        {
+        document.addEventListener("DOMContentLoaded", function(){
         const observerOptions = {
             threshold: 0.15
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) 
-                {
+                if (entry.isIntersecting){
                     entry.target.classList.add('active');
                 }
             });

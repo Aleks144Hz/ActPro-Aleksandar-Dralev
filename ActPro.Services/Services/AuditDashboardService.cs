@@ -8,6 +8,7 @@ namespace ActPro.Services.Services
 {
     public class AuditDashboardService(ApplicationDbContext context) : IAuditDashboardService
     {
+        //---Logs---
         public async Task<IEnumerable<AuditLog>> GetAllLogsAsync()
         {
             return await context.AuditLogs.OrderByDescending(l => l.Id).ToListAsync();

@@ -31,8 +31,16 @@ namespace ActPro.Controllers
             {
                 try
                 {
+                    var user = await userManager.GetUserAsync(User);
+                    if (user == null) return Unauthorized();
+                    if (!user.EmailConfirmed)
+                    {
+                        TempData["Error"] = "Профилът Ви не е потвърден. Моля, потвърдете имейла си, за да можете да добавяте обекти.";
+                        return RedirectToAction("Index", "Home");
+                    }
                     var userId = userManager.GetUserId(User);
                     await placeService.CreatePlaceRequestAsync(place, imageFiles, userId, env.WebRootPath);
+                  
 
                     TempData["Success"] = "Вашата заявка е изпратена успешно!";
                     return RedirectToAction("Index", "Home");

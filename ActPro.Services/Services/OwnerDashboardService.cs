@@ -9,6 +9,7 @@ namespace ActPro.Services.Services
 {
     public class OwnerDashboardService(IRepository<Place> placeRepo, IRepository<Reservation> resRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo) : IOwnerDashboardService
     {
+        //--- Owner Dashboard Stats ---
         public async Task<OwnerDashboardViewModel> GetOwnerStatsAsync(string userId)
         {
             var model = new OwnerDashboardViewModel();

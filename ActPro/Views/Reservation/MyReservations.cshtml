@@ -136,19 +136,16 @@
 {
     <script>
         document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() 
-            {
+            btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active', 'btn-success', 'btn-dark'));
                 this.classList.add('active');
 
                 const filter = this.getAttribute('data-filter');
                 document.querySelectorAll('.res-card').forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-status') === filter) 
-                    {
+                    if (filter === 'all' || card.getAttribute('data-status') === filter){
                         card.style.display = 'block';
                     }
-                    else 
-                    {
+                    else {
                         card.style.display = 'none';
                     }
                 });
@@ -156,10 +153,8 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
-        function confirmCancel(id) 
-        {
+        function confirmCancel(id){
             Swal.fire({
                 title: 'Сигурни ли сте?',
                 text: "Искате ли да откажете тази резервация?",
@@ -170,8 +165,7 @@
                 confirmButtonText: 'Да, откажи я!',
                 cancelButtonText: 'Не'
             }).then((result) => {
-                if (result.isConfirmed)
-                {
+                if (result.isConfirmed){
                     $.ajax({
                         url: '/Reservation/Cancel',
                         type: 'POST',
@@ -179,10 +173,8 @@
                             id: id,
                             __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
                         },
-                        success: function (response)
-                        {
-                            if (response.success) 
-                            {
+                        success: function (response){
+                            if (response.success){
                                 Swal.fire(
                                     'Отказана!',
                                     response.message,
@@ -191,13 +183,11 @@
                                     location.reload();
                                 });
                             } 
-                            else 
-                            {
+                            else{
                                 Swal.fire('Грешка!', response.message, 'error');
                             }
                         },
-                        error: function () 
-                        {
+                        error: function (){
                             Swal.fire('Грешка!', 'Възникна проблем при комуникацията със сървъра.', 'error');
                         }
                     });

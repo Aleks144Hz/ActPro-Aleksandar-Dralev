@@ -189,8 +189,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const NewsApp = {
-            deleteConfirm: function (id, title) 
-            {
+            deleteConfirm: function (id, title){
                 Swal.fire({
                     title: 'Сигурни ли сте?',
                     text: `Ще изтриете новината: "${title}"`,
@@ -201,8 +200,7 @@
                     confirmButtonText: 'Да, изтрий!',
                     cancelButtonText: 'Отказ'
                 }).then((result) => {
-                    if (result.isConfirmed)
-                    {
+                    if (result.isConfirmed){
                         const form = document.createElement('form');
                         form.method = 'POST';
                         form.action = '/Home/DeleteNews';
@@ -226,8 +224,7 @@
                 });
             }
         };
-        document.addEventListener('DOMContentLoaded', function () 
-        {
+        document.addEventListener('DOMContentLoaded', function (){
             const modalEl = document.getElementById('viewModal');
             const viewModal = new bootstrap.Modal(modalEl);
             const likeBtn = document.getElementById('vLikeBtn');
@@ -258,12 +255,10 @@
                     likesCountSpan.innerText = d.likes || 0;
 
 
-                    if (this.getAttribute('data-is-liked') === "true") 
-                    {
+                    if (this.getAttribute('data-is-liked') === "true") {
                         likeBtn.classList.add('active');
                     } 
-                    else 
-                    {
+                    else {
                         likeBtn.classList.remove('active');
                     }
 
@@ -276,14 +271,12 @@
                 const isLogged = this.dataset.isLogged === "true";
                 const newsId = this.dataset.id;
 
-                if (!isLogged) 
-                {
+                if (!isLogged) {
                     toastr.error('Трябва да сте влезли в профил, за да харесате!');
                     return;
                 }
 
-                try 
-                {
+                try {
                     const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
                     const response = await fetch(`/Home/LikeNews/${newsId}`, {
                         method: 'POST',
@@ -294,16 +287,13 @@
                     });
                     const result = await response.json();
 
-                    if (response.ok && result.success)
-                    {
+                    if (response.ok && result.success){
                         likesCountSpan.innerText = result.likes;
 
-                        if (result.isLiked) 
-                        {
+                        if (result.isLiked){
                             this.classList.add('active');
                         } 
-                        else 
-                        {
+                        else{
                             this.classList.remove('active');
                         }
                         document.querySelectorAll(`.js-view-news[data-id="${newsId}"]`).forEach(el => {
@@ -312,8 +302,7 @@
                         });
                     }
                 } 
-                catch (err) 
-                {
+                catch (err){
                     showToast('Грешка при комуникация със сървъра.', 'error');
                 }
             });

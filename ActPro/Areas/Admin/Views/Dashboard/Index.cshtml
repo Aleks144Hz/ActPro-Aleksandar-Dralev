@@ -118,8 +118,7 @@
     <script>
         let activityChart;
 
-        document.addEventListener("DOMContentLoaded", function () 
-        {
+        document.addEventListener("DOMContentLoaded", function () {
             const ctx = document.getElementById('activityChart').getContext('2d');
 
             activityChart = new Chart(ctx, {
@@ -205,8 +204,7 @@
             updateChart('week');
         });
 
-        async function updateChart(period)
-        {
+        async function updateChart(period){
            const buttons = document.querySelectorAll('.chart-filter-group button');
             buttons.forEach(btn => {
                 btn.classList.remove('btn-primary', 'active');
@@ -215,8 +213,7 @@
 
             const activeBtn = document.getElementById(`btn-${period}`);
 
-            if (activeBtn) 
-            {
+            if (activeBtn) {
                 activeBtn.classList.remove('btn-light');
                 activeBtn.classList.add('btn-primary', 'active');
             }

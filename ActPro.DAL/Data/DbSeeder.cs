@@ -20,7 +20,7 @@ namespace ActPro.DAL.Data
                 }
             }
 
-            var adminEmail = "admin@actpro.com";
+            var adminEmail = "admin@actprobg.com";
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
             if (adminUser == null)
@@ -29,8 +29,8 @@ namespace ActPro.DAL.Data
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
-                    FirstName = "System",
-                    LastName = "Administrator",
+                    FirstName = "Системен",
+                    LastName = "Администратор",
                     EmailConfirmed = true,
                     Credits = 9999
                 };

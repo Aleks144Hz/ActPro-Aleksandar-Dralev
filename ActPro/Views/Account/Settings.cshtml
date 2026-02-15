@@ -97,17 +97,14 @@
 {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        $(document).ready(function ()
-        {
-            @if (ViewData["ShowDeleteModal"] != null && (bool)ViewData["ShowDeleteModal"])
-            {
+        $(document).ready(function (){
+            @if (ViewData["ShowDeleteModal"] != null && (bool)ViewData["ShowDeleteModal"]){
                    <text>
                        var deleteModal = new bootstrap.Modal(document.getElementById('deleteProfileModal'));
                        deleteModal.show();
                    </text>
             }
-            @if (ViewData["ShowChangePasswordModal"] != null && (bool)ViewData["ShowChangePasswordModal"])
-            {
+            @if (ViewData["ShowChangePasswordModal"] != null && (bool)ViewData["ShowChangePasswordModal"]){
                    <text>
                        var passModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
                        passModal.show();

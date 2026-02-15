@@ -68,17 +68,14 @@
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
 }
 <script>
-    document.getElementById('profileInput').onchange = function (evt)
-    {
+    document.getElementById('profileInput').onchange = function (evt){
         const [file] = this.files;
-        if (file) 
-        {
+        if (file) {
             const previewImg = document.getElementById('previewImg');
             const placeholder = document.getElementById('placeholderContainer');
             previewImg.src = URL.createObjectURL(file);
             previewImg.classList.remove('d-none');
-            if (placeholder) 
-            {
+            if (placeholder) {
                 placeholder.style.display = 'none';
             }
         }

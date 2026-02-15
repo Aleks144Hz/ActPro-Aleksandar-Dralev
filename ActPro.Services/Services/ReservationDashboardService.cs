@@ -7,6 +7,7 @@ namespace ActPro.Services.Services
 {
     public class IReservationDashboardService(ApplicationDbContext context, IAuditService auditService) : Interfaces.IReservationDashboardService
     {
+        //-- Admin Dashboard: Reservations Management --
         public async Task<ReservationsIndexViewModel> GetReservationsIndexModelAsync(string? ownerId = null)
         {
             var query = context.Reservations

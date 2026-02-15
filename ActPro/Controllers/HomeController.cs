@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace ActPro.Controllers
 {
-    public class HomeController(IHomeService homeService, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, IAuditService auditService) : Controller
+    public class HomeController(IHomeService homeService, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager, IAuditService auditService, IEmailSender emailSender) : Controller
     {
         //---HOME PAGE---
         public async Task<IActionResult> Index()
@@ -86,5 +86,32 @@ namespace ActPro.Controllers
                 isLiked = result.isLiked
             });
         }
+
+        //---CONTACT SUPPORT---
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ContactSupport(SupportTicketViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Моля, попълнете всички задължителни полета правилно.";
+                return View("Support", model);
+            }
+
+            try
+            {
+                await emailSender.SendSupportTicketAsync(model);
+                TempData["Success"] = "Вашата заявка беше изпратена успешно! Проверете имейла си за потвърждение.";
+                return RedirectToAction("Support");
+            }
+            catch
+            {
+                TempData["Error"] = "Възникна грешка при изпращането. Моля, опитайте по-късно.";
+                return View("Support", model);
+            }
+        }
+        public IActionResult Privacy() => View();
+        public IActionResult Terms() => View();
+        public IActionResult Support() => View();
     }
 }

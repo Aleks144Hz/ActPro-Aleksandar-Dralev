@@ -4,13 +4,14 @@ using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace ActPro.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class PlacesController(IPlaceDashboardService placeService, ApplicationDbContext context) : Controller
+    public class PlacesController(IPlaceDashboardService placeService, ApplicationDbContext context, IEmailSender emailSender) : Controller
     {
         //--- INDEX ---
         [HttpGet]
@@ -86,6 +87,21 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            var place = await context.Places
+            .Include(p => p.Owner)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (place != null)
+            {
+                if (!place.IsApproved)
+                {
+                    await emailSender.SendPlaceRejectedAsync(place.Owner.Email, place.Owner.FirstName, place.Name);
+                }
+                else 
+                {
+                    await emailSender.SendPlaceDeletedAsync(place.Owner.Email, place.Owner.FirstName, place.Name);
+                }
+            }
             await placeService.DeletePlaceAsync(id);
             TempData["Success"] = "Обектът и всички свързани данни бяха изтрити.";
             return RedirectToAction(nameof(Index));
@@ -95,8 +111,17 @@ namespace ActPro.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Approve(int id)
         {
-            if (await placeService.ApprovePlaceAsync(id))
+            var place = await context.Places
+            .Include(p => p.Owner)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (place != null && await placeService.ApprovePlaceAsync(id))
             {
+                // ПРАЩАМЕ ИМЕЙЛ ЗА ОДОБРЕНИЕ
+                await emailSender.SendPlaceApprovedAsync(
+                    place.Owner.Email,
+                    place.Owner.FirstName,
+                    place.Name);
                 TempData["Success"] = "Обектът беше одобрен успешно.";
             }
             return RedirectToAction(nameof(Index));

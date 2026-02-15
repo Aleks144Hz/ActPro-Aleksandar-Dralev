@@ -13,6 +13,7 @@ namespace ActPro.Services
     public class ReservationService(IRepository<Place> placeRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<PlaceClosure> closureRepo,
         IRepository<Favorite> favRepo, UserManager<ApplicationUser> userManager) : IReservationService
     {
+        // --INDEX
         public async Task<ReservationViewModel> GetReservationIndexModelAsync(int placeId, string userId)
         {
             var place = await placeRepo.AllAsNoTracking()
@@ -34,6 +35,7 @@ namespace ActPro.Services
             };
         }
 
+        // -- RESERVATION
         public async Task<(bool success, string message)> BookAsync(int placeId, DateTime date, string timeSlot, ApplicationUser user)
         {
             if (await closureRepo.AllAsNoTracking().AnyAsync(c => c.PlaceId == placeId && c.ClosureDate.Date == date.Date))
@@ -95,6 +97,7 @@ namespace ActPro.Services
             return (true, "Коментарът е добавен успешно.");
         }
 
+        //-- DELETE REVIEW
         public async Task<(bool success, string message)> DeleteReviewAsync(int reviewId, string userId)
         {
             var comment = await commentRepo.All().FirstOrDefaultAsync(c => c.Id == reviewId && c.AspNetUserId == userId);
@@ -113,6 +116,7 @@ namespace ActPro.Services
             return (true, "Коментарът е изтрит успешно.");
         }
 
+        //-- UPDATE PLACE RATING
         private async Task UpdatePlaceRatingAsync(int placeId)
         {
             var place = await placeRepo.All().Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == placeId);
@@ -123,6 +127,7 @@ namespace ActPro.Services
             }
         }
 
+        //-- GET OCCUPIED SLOTS
         public async Task<List<string>> GetOccupiedSlotsAsync(int placeId, DateTime date)
         {
             var parsedDate = DateOnly.FromDateTime(date);
@@ -132,6 +137,7 @@ namespace ActPro.Services
             .ToListAsync();
         }
 
+        // -- GET USER RESERVATIONS
         public async Task<UserReservationsViewModel> GetUserReservationsAsync(string userId, int page, int pageSize, string filter)
         {
             var query = resRepo.AllAsNoTracking().Where(r => r.AspNetUserId == userId);
@@ -173,6 +179,7 @@ namespace ActPro.Services
             };
         }
 
+        //-- CANCEL RESERVATION
         public async Task<(bool success, string message)> CancelReservationAsync(int reservationId, string userId)
         {
             var res = await resRepo.All().FirstOrDefaultAsync(r => r.Id == reservationId && r.AspNetUserId == userId);
@@ -189,6 +196,7 @@ namespace ActPro.Services
             return (true, "Успешно отказана.");
         }
 
+        //-- GET USER REVIEWS
         public async Task<List<UserReviewItemViewModel>> GetUserReviewsAsync(string userId)
         {
             return await commentRepo.AllAsNoTracking()
@@ -207,6 +215,7 @@ namespace ActPro.Services
                 .ToListAsync();
         }
 
+        //-- EDIT REVIEW
         public async Task<(bool success, string message)> EditReviewAsync(int commentId, string userId, string commentText, int rating)
         {
             var comment = await commentRepo.All().FirstOrDefaultAsync(c => c.Id == commentId && c.AspNetUserId == userId);

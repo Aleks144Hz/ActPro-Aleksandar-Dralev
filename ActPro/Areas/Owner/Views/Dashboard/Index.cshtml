@@ -167,8 +167,7 @@
 @section Scripts 
 {
     <script>
-        $(document).ready(function () 
-        {
+        $(document).ready(function () {
             $('.modal').on('shown.bs.modal', function () 
             {
                 $(this).find('.select2-setup').select2({
@@ -179,8 +178,7 @@
             });
         });
 
-        function deleteImageAjax(btn, imageId)
-        {
+        function deleteImageAjax(btn, imageId){
             var token = $('input[name="__RequestVerificationToken"]').val();
 
             $.ajax({
@@ -190,15 +188,13 @@
                     imageId: imageId,
                     __RequestVerificationToken: token
                 },
-                success: function () 
-                {
+                success: function () {
                     $(btn).closest('.position-relative').fadeOut(300, function()
                     {
                         $(this).remove();
                     });
                 },
                 error: function (xhr) {
-
                     console.error("Грешка:", xhr.status, xhr.responseText);
                     alert("Грешка " + xhr.status + ": Нямате достъп или сесията е изтекла.");
                 }

@@ -6,6 +6,6 @@
         public int TotalUsers { get; set; }
         public int TotalPlaces { get; set; }
         public int PendingComments { get; set; }
-        public IEnumerable<ActPro.DAL.Entities.Reservation> LatestReservations { get; set; }
+        public IEnumerable<DAL.Entities.Reservation> LatestReservations { get; set; }
     }
 }

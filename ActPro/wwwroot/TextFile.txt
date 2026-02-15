@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: http://actprobg.com/sitemap.xml

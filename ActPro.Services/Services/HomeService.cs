@@ -10,6 +10,7 @@ namespace ActPro.Services
 {
     public class HomeService(IRepository<Place> placeRepo, IRepository<City> cityRepo, IRepository<Activity> activityRepo, IRepository<News> newsRepo, ApplicationDbContext context) : IHomeService
     {
+        //---Home Page---
         public async Task<HomeViewModel> GetHomeViewModelAsync()
         {
             var topPlaces = await placeRepo.AllAsNoTracking()
@@ -43,6 +44,7 @@ namespace ActPro.Services
             };
         }
 
+        //---News Page---
         public async Task<(IEnumerable<News> news, int totalPages)> GetNewsPagedAsync(int page, int pageSize, string? userId)
         {
             var query = newsRepo.AllAsNoTracking();
@@ -71,6 +73,7 @@ namespace ActPro.Services
             return (newsList, totalPages);
         }
 
+        //---Admin News Management---
         public async Task CreateNewsAsync(string title, string content, IFormFile? imageFile, string webRootPath)
         {
             if (imageFile != null)
@@ -122,6 +125,7 @@ namespace ActPro.Services
             return true;
         }
 
+        //---News Like/Unlike---
         public async Task<(int likes, bool isLiked)> LikeNewsAsync(int newsId, string userId)
         {
             var news = await newsRepo.All().FirstOrDefaultAsync(n => n.Id == newsId);

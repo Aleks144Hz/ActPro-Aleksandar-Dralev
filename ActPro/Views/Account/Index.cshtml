@@ -176,12 +176,10 @@
 {  
     <partial name="_ValidationScriptsPartial" />
     <script>
-         $(document).ready(function ()
-         {
+         $(document).ready(function (){
              const rowsPerPage = 5;
              let currentPage = 1;
-             function paginateTable()
-             {
+             function paginateTable(){
                  const rows = $('.table tbody tr:not(.no-favorites-row)');
                  const totalRows = rows.length;
                  const totalPages = Math.ceil(totalRows / rowsPerPage);
@@ -189,10 +187,8 @@
                  rows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).show();
                  const paginationHtml = $('#favoritesPagination');
                  paginationHtml.empty();
-                 if (totalPages > 1)
-                 {
-                     for (let i = 1; i <= totalPages; i++)
-                     {
+                 if (totalPages > 1){
+                     for (let i = 1; i <= totalPages; i++){
                          const li = $(`<li class="page-item ${i === currentPage ? 'active' : ''}">
                                          <a class="page-link" href="javascript:void(0);">${i}</a>
                                       </li>`);
@@ -207,8 +203,7 @@
              }
              paginateTable();
 
-             $(document).on('click', '.remove-favorite', function ()
-             {
+             $(document).on('click', '.remove-favorite', function (){
                  var btn = $(this);
                  var id = btn.data('id');
                  var row = btn.closest('tr');
@@ -232,22 +227,19 @@
                  });
              });
              const originalSortTable = window.sortTable;
-             window.sortTable = function(n)
-             {
+             window.sortTable = function(n){
                  originalSortTable(n);
                  currentPage = 1;
                  paginateTable();
              };
          });
-        function sortTable(n)
-        {
+        function sortTable(n){
              var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
              table = document.querySelector(".table");
              switching = true;
              dir = "asc";
 
-             while (switching)
-             {
+             while (switching){
                  switching = false;
                  rows = table.rows;
 
@@ -258,39 +250,31 @@
                      var xContent = x.textContent.toLowerCase().trim();
                      var yContent = y.textContent.toLowerCase().trim();
 
-                     if (n === 2)
-                     {
+                     if (n === 2) {
                          xContent = parseFloat(xContent.replace(/[^0-9.]/g, '')) || 0;
                          yContent = parseFloat(yContent.replace(/[^0-9.]/g, '')) || 0;
                      }
 
-                     if (dir == "asc")
-                     {
-                         if (xContent > yContent)
-                         {
+                     if (dir == "asc") {
+                         if (xContent > yContent){
                              shouldSwitch = true;
                              break;
                          }
                      }
-                     else if (dir == "desc")
-                     {
-                         if (xContent < yContent)
-                         {
+                     else if (dir == "desc"){
+                         if (xContent < yContent){
                              shouldSwitch = true;
                              break;
                          }
                      }
                  }
-                 if (shouldSwitch)
-                 {
+                 if (shouldSwitch) {
                      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                      switching = true;
                      switchcount++;
                  }
-                 else
-                 {
-                     if (switchcount == 0 && dir == "asc")
-                     {
+                 else {
+                     if (switchcount == 0 && dir == "asc") {
                          dir = "desc";
                          switching = true;
                      }

@@ -10,6 +10,7 @@ namespace ActPro.Services.Services
 {
     public class UserService(UserManager<ApplicationUser> userManager, ApplicationDbContext context, IAuditService auditService) : IUserService
     {
+        // -- GET ALL USERS-- //
         public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
             return await userManager.Users.ToListAsync();
@@ -37,6 +38,8 @@ namespace ActPro.Services.Services
             return result;
         }
 
+
+        // Toggle Admin or Owner role for a user
         public async Task<bool> ToggleRoleAsync(string userId, string roleName)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -56,6 +59,7 @@ namespace ActPro.Services.Services
             return true;
         }
 
+        //--BAN USER--//
         public async Task<bool> BanUserAsync(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);

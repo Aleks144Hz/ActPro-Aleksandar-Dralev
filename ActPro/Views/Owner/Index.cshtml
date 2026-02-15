@@ -128,13 +128,11 @@
     fileInput.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
     fileInput.addEventListener('drop', () => dropZone.classList.remove('dragover'));
 
-    fileInput.addEventListener('change', function() 
-    {
+    fileInput.addEventListener('change', function(){
         previewContainer.innerHTML = '';
         const files = this.files;
 
-        if (files) 
-        {
+        if (files){
             Array.from(files).forEach(file => 
                 {
                 const reader = new FileReader();
