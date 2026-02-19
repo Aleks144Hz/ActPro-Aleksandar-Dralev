@@ -46,14 +46,21 @@
                     <div class="d-lg-none me-3">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a asp-controller="Account" asp-action="Index">
-                                <img src="/images/profiles/@user?.ProfilePicturePath" class="rounded-circle border" style="width: 35px; height: 35px; object-fit: cover;" />
+                            <a asp-controller="Account" asp-action="Index" class="d-flex align-items-center text-decoration-none shadow-none">
+                                @if (user != null && !string.IsNullOrEmpty(user.ProfilePicturePath))
+                                {
+                                    <img src="/images/profiles/@user.ProfilePicturePath" class="rounded-circle border" style="width: 35px; height: 35px; object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <i class="bi bi-person-circle text-dark d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; font-size: 35px; line-height: 1;"></i>
+                                }
                             </a>
                         }
                         else
                         {
-                            <div class="d-flex align-items-center d-lg-none me-1">
-                                <a class="btn btn-success fw-bold shadow-sm px-3 py-1" style="font-size: 0.8rem; border-radius: 8px;"
+                            <div class="d-flex align-items-center d-lg-none me-2">
+                                <a class="btn btn-success fw-bold shadow-sm px-4 py-2" style="font-size: 0.87rem; border-radius: 8px;"
                                    asp-controller="Account" asp-action="Login">Вход</a>
                             </div>
                         }
@@ -236,9 +243,9 @@
                             <p class="footer-text">Намерете и резервирайте спортни занимания лесно и бързо в цялата страна само с един клик. Какво чакаш?</p>
                         </div>
                         <div class="footer-socials">
-                            <a href="https://www.instagram.com/actpro.bg/" class="social-icon ig"><i class="bi bi-instagram text-primary"></i></a>
-                            <a href="https://www.facebook.com/profile.php?id=61588195074502" class="social-icon yt"><i class="bi bi-facebook text-primary"></i></a>
-                            <a href="#" class="social-icon tt"><i class="bi bi-tiktok text-primary"></i></a>
+                            <a href="https://www.instagram.com/actpro.bg/" class="social-icon ig"><i class="bi bi-instagram text-success"></i></a>
+                            <a href="https://www.facebook.com/profile.php?id=61588195074502" class="social-icon yt"><i class="bi bi-facebook text-success"></i></a>
+                            <a href="https://www.tiktok.com/@@actpro" class="social-icon tt"><i class="bi bi-tiktok text-success"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-5 col-md-6 d-flex flex-column align-items-lg-center">

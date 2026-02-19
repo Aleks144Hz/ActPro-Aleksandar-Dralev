@@ -12,6 +12,9 @@ namespace ActPro.Services.Interfaces
         Task SendPlaceApprovedAsync(string email, string firstName, string placeName);
         Task SendPlaceRejectedAsync(string email, string firstName, string placeName);
         Task SendPlaceDeletedAsync(string email, string firstName, string placeName);
+        Task SendNewBookingNotificationAsync(string ownerEmail, string ownerName, string placeName, string customerName, string date, string timeSlot, string number);
+        Task SendNewReviewNotificationAsync(string ownerEmail, string ownerName, string placeName, string customerName, int rating, string comment);
         Task SendSupportTicketAsync(SupportTicketViewModel model);
+
     }
 }

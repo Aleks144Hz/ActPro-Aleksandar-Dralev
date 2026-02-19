@@ -55,6 +55,19 @@
                         <div class="g-recaptcha" data-sitekey="@Configuration["GoogleReCaptcha:SiteKey"]"></div>
                         <span asp-validation-for="CaptchaResponse" class="text-danger small mt-2"></span>
                     </div>
+                    <div class="mb-4">
+                        <div class="form-check custom-checkbox d-flex align-items-center">
+                            <input type="checkbox" name="AcceptTerms" value="true" class="form-check-input me-2" id="acceptTermsCheck">
+                            <label class="form-check-label text-muted small" for="acceptTermsCheck">
+                                Съгласен съм с <a href="/Home/Terms" target="_blank" class="text-success fw-bold">общите условия</a>
+                                и <a href="/Home/Privacy" target="_blank" class="text-success fw-bold">политиката за поверителност</a>.
+                            </label>
+                        </div>
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState["AcceptTerms"]?.Errors.Count > 0)
+                        {
+                            <span class="text-danger small d-block mt-1">Трябва да приемете общите условия.</span>
+                        }
+                    </div>
                     <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-5 shadow-sm">Регистрирай се</button>
                 </form>
             </div>

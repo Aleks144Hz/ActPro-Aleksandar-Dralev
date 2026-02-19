@@ -23,6 +23,7 @@ public partial class Reservation
     public DateTime? CreatedAt { get; set; }
 
     public virtual Place? Place { get; set; }
+
     [ForeignKey("AspNetUserId")]
     public virtual ApplicationUser? AspNetUser { get; set; }
 }

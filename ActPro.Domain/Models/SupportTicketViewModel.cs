@@ -1,21 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Domain.Models
 {
     public class SupportTicketViewModel
     {
-        [Required(ErrorMessage = "Моля, въведете вашето име.")]
+        [Required(ErrorMessage = EnterFirstName)]
         public string FullName { get; set; }
 
-        [Required(ErrorMessage = "Моля, въведете имейл адрес.")]
-        [EmailAddress(ErrorMessage = "Невалиден имейл адрес.")]
+        [Required(ErrorMessage = EnterEmail)]
+        [EmailAddress(ErrorMessage = Helpers.MessageConstants.Email)]
         public string Email { get; set; }
 
         [Required]
-        public string Subject { get; set; } // Тип проблем
+        public string Subject { get; set; }
 
-        [Required(ErrorMessage = "Моля, опишете проблема си.")]
-        [MinLength(10, ErrorMessage = "Описанието трябва да е поне 10 символа.")]
+        [Required(ErrorMessage = DescribeYourIssue)]
+        [MinLength(10, ErrorMessage = IssueLenght)]
         public string Description { get; set; }
     }
 }

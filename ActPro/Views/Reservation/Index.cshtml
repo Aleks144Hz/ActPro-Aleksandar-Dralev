@@ -359,6 +359,11 @@
         };
         $(document).on('click', '.favorite-btn-large', function (e){
             e.preventDefault();
+            const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
+            if (!isUserLoggedIn) {
+                toastr.error("Трябва да сте влезли в профил, за да добавите в любими!");
+                return;
+            }
             var btn = $(this);
             var pId = btn.attr('data-id');
             $.ajax({
@@ -382,7 +387,7 @@
                     }
                 },
                 error: function (xhr){
-                    toastr.error(xhr.status === 401 ? "Трябва да сте влезли в профил, за да добавите в любими!" : "Грешка.");
+                        toastr.error("Възникна грешка при обработката на заявката.");
                 }
             });
         });

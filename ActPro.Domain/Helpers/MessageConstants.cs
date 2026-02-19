@@ -4,9 +4,13 @@
     {
         //Error
         public const string NameIsRequired = "Името е задължително!";
+        public const string EnterFirstName = "Моля, въведете вашето име.";
+        public const string EnterEmail = "Моля, въведете имейл адрес.";
         public const string LastNameIsRequired = "Фамилията е задължителнa!";
         public const string Email = "Моля, въведете валиден имейл адрес.";
         public const string EmailIsRequired = "Имейлa е задължителен!";
+        public const string CurrentPasswordIsRequired = "Текущата парола е задължителна!";
+        public const string NewPasswordIsRequired = "Новата парола е задължителна!";
         public const string PasswordMismatch = "Паролите трябва да съвпадат.";
         public const string PasswordIsRequired = "Паролата е задължителна!";
         public const string ConfirmPasswordIsRequired = "Паролата за потвърждение е задължителна!";
@@ -23,13 +27,61 @@
         public const string ErrorWhileCreatingCheckData = "Грешка при създаване, проверете въведените данни!";
         public const string UserIsNotRegistered = "Потребителят не съществува в системата!";
         public const string NotValidPassword = "Невалидна парола! Моля проверете отново!";
-        public const string InvalidPasswordFormat =
-            "Невалидна парола. Паролата трябва да е изписана на латиница, да съдържа поне 6 символа,\nот които поне една цифра, една главна и една малка буква,\nкакто и поне един специален символ.";
+        public const string InvalidPasswordFormat = "Невалидна парола. Паролата трябва да е изписана на латиница, да съдържа поне 6 символа,\nот които поне една цифра, една главна и една малка буква,\nкакто и поне един специален символ.";
         public const string UserWithThisEmailExists = "Потребител с този имейл вече съществува.";
-
-        //Success
+        public const string UserAccountIsBanned = "Акаунтът ви е блокиран.";
+        public const string EmailIsBanned = "Този имейл адрес е блокиран.";
+        public const string UserLoggedInSuccessfully = "Потребителят влезе в системата.";
+        public const string Welcome = "Добре дошли в ActPro!";
+        public const string AgreeWithTerms = "Трябва да приемете общите условия.";
+        public const string ProveYouAreNotRobot = "Моля потвърдете, че не сте робот.";
+        public const string AccountApproved = "Потвърждение на акаунт - ActPro";
+        public const string SuccsessfullRegistration = "Регистрацията е успешна! Добре дошли.";
+        public const string NewUserRegistered = "Нов потребител се регистрира";
+        public const string ValidEmailAddress = "Ако имейлът съществува, сме изпратили линк за възстановяване.";
+        public const string PasswordResetSuccess = "Паролата беше успешно променена! Можете да влезете с новата си парола.";
+        public const string EmailApprovedSuccess = "Имейлът ви беше потвърден успешно! Вече можете да правите резервации.";
+        public const string EmailAlreadyApproved = "Акаунтът вече е потвърден или не съществува.";
+        public const string AccountEmailApprovel = "Потвърждение на акаунт - ActPro";
+        public const string AccountInfoUpadate = "Потребителят обнови профилните си данни.";
+        public const string UserUpdatePasswordSuccess = "Потребителят смени паролата си успешно.";
+        public const string WrongPassword = "Въвели сте грешна парола.";
+        public const string UserDeleteAccountSuccess = "Потребителят изтри профила си";
+        public const string WrongEmail = "Грешен имейл";
+        public const string GoodBye = "Довиждане! Надяваме се да ви видим отново скоро.";
         public const string SuccessfulDeletedAccount = "Профилът бе изтрит! До нови срещи.";
         public const string SuccessfulUserEdit = "Успешно редактирахте данните на потребителя";
         public const string SuccessfulSaveChanges = "Успешно запазихте промените";
+        public const string NewsIsPublished = "Публикувана е нова новина:";
+        public const string NewsIsPublishedSuccessfully = "Новината е публикувана успешно!";
+        public const string NewsDeleted = "Изтрита новина с ID:";
+        public const string NewsDeletedSuccessfully = "Новината е изтрита успешно!";
+        public const string FillInAllFields = "Моля, попълнете всички задължителни полета правилно.";
+        public const string TicketSendSuccessfully = "Вашата заявка беше изпратена успешно! Проверете имейла си за потвърждение.";
+        public const string ProfileNotApprovedForCreatingPlace = "Профилът Ви не е потвърден. Моля, потвърдете имейла си, за да можете да добавяте обекти.";
+        public const string RequestSentSuccessfully = "Вашата заявка е изпратена успешно!";
+        public const string ErrorWhileTryingToFill = "Грешка при запис: ";
+        public const string ReservationNeedApproval = "Трябва да потвърдите имейла си, преди да направите резервация!";
+        public const string SportPlace = "Спортен обект";
+        public const string UserMadeReservation = "Потребителят направи резервация.";
+        public const string UserDeletedReservation = "Потребителят отказа резервация.";
+        public const string CommentNeedApproval = "Трябва да потвърдите имейла си, преди да добавите коментар!";
+        public const string UserMadeComment = "Потребителят добави коментар.";
+        public const string UserDeletedComment = "Потребителят изтри коментар.";
+        public const string DescribeYourIssue = "Моля, опишете вашия проблем или въпрос подробно.";
+        public const string IssueLenght = "Описанието трябва да е поне 10 символа.";
+        public const string PlaceAddedSuccessfully = "Обектът беше създаден успешно.";
+        public const string PlaceUpdatedSuccessfully = "Успешно редактирахте данните на обекта.";
+        public const string PlaceDeletedSuccessfully = "Обектът и всички свързани данни бяха изтрити.";
+        public const string PlaceApprovedSuccessfully = "Обектът беше одобрен успешно.";
+        public const string DateClosedSuccessfully = "Датите бяха заключени успешно.";
+        public const string DateOpenedSuccessfully = "Датата беше отключена успешно.";
+        public const string DateError = "Крайната дата не може да бъде преди началната.";
+        public const string ReservationClosed = "Резервацията беше анулирана";
+        public const string ReservationTimeEdited = "Часът беше променен успешно!";
+        public const string AdminRuleChanged = "Администраторските права бяха променени.";
+        public const string OwnerRuleChanged = "Правата на собственика бяха променени.";
+        public const string UserBanned = "Потребителят беше блокиран и изтрит успешно.";
+        public const string ReservationApproved = "Резервацията беше одобрена!";
     }
 }

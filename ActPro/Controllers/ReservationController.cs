@@ -1,10 +1,10 @@
 ﻿using ActPro.DAL;
-using ActPro.DAL.Entities;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -29,7 +29,7 @@ namespace ActPro.Controllers
             if (user == null) return Unauthorized();
             if (!user.EmailConfirmed)
             {
-                TempData["Error"] = "Трябва да потвърдите имейла си, преди да направите резервация!";
+                TempData["Error"] = ReservationNeedApproval;
                 return RedirectToAction("Index", new { id = placeId });
             }
             var result = await reservationService.BookAsync(placeId, date, timeSlot, user);
@@ -41,7 +41,7 @@ namespace ActPro.Controllers
                     if (string.IsNullOrEmpty(placeName))
                     {
                         var placeModel = await reservationService.GetReservationIndexModelAsync(placeId, user.Id);
-                        placeName = placeModel?.Place?.Name ?? "Спортен обект";
+                        placeName = placeModel?.Place?.Name ?? SportPlace;
                     }
                     string formattedDate = date.ToString("dd.MM.yyyy (dddd)");
 
@@ -57,7 +57,7 @@ namespace ActPro.Controllers
                 {
 
                 }
-                await auditService.LogAsync("Create Reservation", "User", user.Id, "Потребителят направи резервация.");
+                await auditService.LogAsync("Create Reservation", "User", user.Id, UserMadeReservation);
                 return RedirectToAction("Confirmation", new { id = placeId });
             }
 
@@ -66,6 +66,43 @@ namespace ActPro.Controllers
         }
 
         public IActionResult Confirmation(int id) { ViewBag.PlaceId = id; return View(); }
+
+        //--- CANCEL RESERVATION ---
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var userId = userManager.GetUserId(User);
+            var user = await userManager.GetUserAsync(User);
+            var reservationsData = await reservationService.GetUserReservationsAsync(userId, 1, 100, "all");
+            var reservationToDelete = reservationsData.Reservations.FirstOrDefault(r => r.Id == id);
+            var result = await reservationService.CancelReservationAsync(id, userId);
+
+            if (result.success)
+            {
+                await auditService.LogAsync("Cancel Reservation", "User", userId, UserDeletedReservation);
+
+                if (reservationToDelete != null)
+                {
+                    try
+                    {
+                        string formattedDate = reservationToDelete.ReservationDate.ToString();
+
+                        await emailSender.SendBookingCancellationAsync(
+                            user.Email,
+                            user.FirstName,
+                            reservationToDelete.PlaceName,
+                            formattedDate,
+                            reservationToDelete.ReservationTime.ToString()
+                        );
+                    }
+                    catch { }
+                }
+            }
+
+            return Json(new { success = result.success, message = result.message });
+        }
 
         //--- ADD REVIEW ---
         [HttpPost]
@@ -77,7 +114,7 @@ namespace ActPro.Controllers
             var userId = userManager.GetUserId(User);
             if (!user.EmailConfirmed)
             {
-                TempData["Error"] = "Трябва да потвърдите имейла си, преди да добавите коментар!";
+                TempData["Error"] = CommentNeedApproval;
                 return RedirectToAction("Index", new { id = placeId });
             }
             var result = await reservationService.AddReviewAsync(placeId, userId, commentText, rating);
@@ -85,7 +122,7 @@ namespace ActPro.Controllers
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await auditService.LogAsync("Add Review", "User", userId, "Потребителят добави коментар.");
+                await auditService.LogAsync("Add Review", "User", userId, UserMadeComment);
             }
             else TempData["Error"] = result.message;
 
@@ -115,7 +152,7 @@ namespace ActPro.Controllers
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await auditService.LogAsync("Delete Review", "User", userId, "Потребителят изтри коментар.");
+                await auditService.LogAsync("Delete Review", "User", userId, UserDeletedComment);
             }
 
             if (Request.Headers["Referer"].ToString().Contains("MyReviews")) return RedirectToAction("MyReviews");
@@ -131,47 +168,8 @@ namespace ActPro.Controllers
         public async Task<IActionResult> MyReservations(int page = 1, string filter = "all")
         {
             var userId = userManager.GetUserId(User);
-
             var viewModel = await reservationService.GetUserReservationsAsync(userId, page, 10, filter);
-
             return View(viewModel);
-        }
-
-        //--- CANCEL RESERVATION ---
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cancel(int id)
-        {
-            var userId = userManager.GetUserId(User);
-            var user = await userManager.GetUserAsync(User);
-            var reservationsData = await reservationService.GetUserReservationsAsync(userId, 1, 100, "all");
-            var reservationToDelete = reservationsData.Reservations.FirstOrDefault(r => r.Id == id);
-            var result = await reservationService.CancelReservationAsync(id, userId);
-
-            if (result.success)
-            {
-                await auditService.LogAsync("Cancel Reservation", "User", userId, "Потребителят отказа резервация.");
-
-                if (reservationToDelete != null)
-                {
-                    try
-                    {
-                        string formattedDate = reservationToDelete.ReservationDate.ToString();
-
-                        await emailSender.SendBookingCancellationAsync(
-                            user.Email,
-                            user.FirstName,
-                            reservationToDelete.PlaceName,
-                            formattedDate,
-                            reservationToDelete.ReservationTime.ToString()
-                        );
-                    }
-                    catch { }
-                }
-            }
-
-            return Json(new { success = result.success, message = result.message });
         }
 
         //--- MY REVIEWS PAGE ---

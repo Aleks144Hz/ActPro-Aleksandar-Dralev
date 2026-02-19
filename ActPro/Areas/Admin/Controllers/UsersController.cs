@@ -2,6 +2,7 @@
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Admin.Controllers
 {
@@ -26,7 +27,7 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await userService.ToggleRoleAsync(userId, "Admin"))
             {
-                TempData["Success"] = "Администраторските права бяха променени.";
+                TempData["Success"] = AdminRuleChanged;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -37,7 +38,7 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await userService.ToggleRoleAsync(userId, "Owner"))
             {
-                TempData["Success"] = "Собственик правата бяха променени.";
+                TempData["Success"] = OwnerRuleChanged;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -49,11 +50,11 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await userService.BanUserAsync(userId))
             {
-                TempData["Success"] = "Потребителят беше блокиран и изтрит успешно.";
+                TempData["Success"] = UserBanned;
             }
             else
             {
-                TempData["Error"] = "Възникна грешка при блокирането.";
+                TempData["Error"] = Error;
             }
             return RedirectToAction(nameof(Index));
         }

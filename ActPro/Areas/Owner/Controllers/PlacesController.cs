@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Owner.Controllers
 {
@@ -45,7 +46,7 @@ namespace ActPro.Areas.Owner.Controllers
             {
                 if (await placeService.UpdatePlaceAsync(place, imageFiles, userId))
                 {
-                    TempData["Success"] = "Успешно редактирахте данните на обекта.";
+                    TempData["Success"] = PlaceUpdatedSuccessfully;
                     return RedirectToAction("Index", "Dashboard");
                 }
                 return Forbid();
@@ -90,11 +91,11 @@ namespace ActPro.Areas.Owner.Controllers
 
             if (await placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
             {
-                TempData["Success"] = $"Успешно затворихте избрания период.";
+                TempData["Success"] = DateClosedSuccessfully;
             }
             else
             {
-                TempData["Error"] = "Крайната дата не може да бъде преди началната.";
+                TempData["Error"] = DateError;
             }
 
             return RedirectToAction("Index", "Dashboard");
@@ -107,7 +108,7 @@ namespace ActPro.Areas.Owner.Controllers
         {
             if (await placeService.RemoveClosureAsync(id))
             {
-                TempData["Success"] = "Датата беше отключена успешно.";
+                TempData["Success"] = DateOpenedSuccessfully;
             }
             return RedirectToAction("Index", "Dashboard");
         }

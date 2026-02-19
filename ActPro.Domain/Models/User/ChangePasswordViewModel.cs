@@ -1,16 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static ActPro.Helpers.MessageConstants;
+
 namespace ActPro.Models.User
 {
     public class ChangePasswordViewModel
     {
-        [Required(ErrorMessage = "Текущата парола е задължителна.")]
+        [Required(ErrorMessage = CurrentPasswordIsRequired)]
         public string OldPassword { get; set; }
 
-        [Required(ErrorMessage = "Новата парола е задължителна.")]
+        [Required(ErrorMessage = NewPasswordIsRequired)]
         public string NewPassword { get; set; }
 
-        [Required(ErrorMessage = "Потвърждението на новата парола е задължителна.")]
-        [Compare("NewPassword", ErrorMessage = "Паролите не съвпадат.")]
+        [Required(ErrorMessage = ConfirmPasswordIsRequired)]
+        [Compare("NewPassword", ErrorMessage = PasswordMismatch)]
         public string ConfirmPassword { get; set; }
     }
 }

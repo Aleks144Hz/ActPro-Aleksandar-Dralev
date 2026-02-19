@@ -142,17 +142,17 @@
                     var resultText = resultsCount == 1 ? "място за спорт" : "места за спорт";
                 }
                 <h4 class="mb-0"> 
-                    @Model.City@(!string.IsNullOrEmpty(Model.Activity) ? $": {Model.Activity}" : ""): 
+                    @Model.City@(!string.IsNullOrEmpty(Model.Activity) ? $" {Model.Activity}" : ""): 
                     <small class="text-muted"> @(resultsCount == 1 ? "открито" : "открити") @resultsCount @resultText</small>
                 </h4>
             <div class="d-flex align-items-center gap-3 mb-4">
                <button type="button" class="btn btn-outline-success shadow-sm d-none d-md-inline-block" id="viewToggleBtn" onclick="toggleView()">
                     <i id="viewIcon" class="bi bi-grid-3x3-gap-fill"></i>
-                </button>
+               </button>
                     <div class="dropdown search-sort-dropdown">
-                        <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            Подреди по
-                        </button>
+                       <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-sort-down"></i> <span>Подреди по</span>
+                       </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
                                 <button type="button" class="dropdown-item" onclick="submitWithSort('price_asc')">Цена (най-ниска)</button>

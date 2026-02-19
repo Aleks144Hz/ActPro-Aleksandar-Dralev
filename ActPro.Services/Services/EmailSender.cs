@@ -117,7 +117,7 @@ namespace ActPro.Services.Services
                 <p>След преглед на Вашия обект <strong>{placeName}</strong>, установихме, че той не отговаря на изискванията на платформата в настоящия си вид.</p>             
                 <p>Моля, направете необходимите корекции и подайте заявката отново.</p>";
 
-            string html = BuildEmailTemplate("Отказ за публикуване", content, "Към профила", "https://actprobg.com/Owner/Index");
+            string html = BuildEmailTemplate("Отказ за публикуване", content, "Нов опит", "https://actprobg.com/Owner/Index");
             await ExecuteSendAsync(email, subject, html);
         }
 
@@ -173,6 +173,46 @@ namespace ActPro.Services.Services
 
             string userHtml = BuildEmailTemplate("Заявка за поддръжка", userContent, "Към сайта", "https://actprobg.com");
             await ExecuteSendAsync(model.Email, userSubject, userHtml);
+        }
+
+        // Send notification to owner for new booking
+        public async Task SendNewBookingNotificationAsync(string ownerEmail, string ownerName, string placeName, string customerName, string date, string timeSlot, string number)
+        {
+            string subject = $"Нова резервация за {placeName}";
+
+            string content = $@"
+            <p>Здравейте, {ownerName},</p>
+            <p>Имате нова резервация за Вашия обект <strong>{placeName}</strong>.</p>
+            <ul style='list-style-type: none; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #198754; border-radius: 4px; margin: 20px 0;'>
+                <li style='margin-bottom: 10px;'><strong>Клиент:</strong> {customerName}</li>
+                <li style='margin-bottom: 10px;'><strong>Номер:</strong> {number}</li>
+                <li style='margin-bottom: 10px;'><strong>Дата:</strong> {date}</li>
+                <li style='font-size: 16px;'><strong>Час:</strong> {timeSlot}</li>
+            </ul>
+            <p>Можете да прегледате детайлите и да управлявате резервацията през Вашия панел.</p>";
+
+            string html = BuildEmailTemplate("Нова резервация", content, "Към Таблото", "https://actprobg.com/Owner/Dashboard/Index");
+            await ExecuteSendAsync(ownerEmail, subject, html);
+        }
+
+        // Send notification to owner for new review
+        public async Task SendNewReviewNotificationAsync(string ownerEmail, string ownerName, string placeName, string customerName, int rating, string comment)
+        {
+            string subject = $"Нов отзив за {placeName}";
+
+            string stars = new string('⭐', rating);
+
+            string content = $@"
+            <p>Здравейте, {ownerName},</p>
+            <p>Потребителят <strong>{customerName}</strong> остави нов коментар за Вашия обект <strong>{placeName}</strong>.</p>
+            <div style='padding: 20px; background-color: #fffaf0; border: 1px dashed #ffc107; border-radius: 8px; margin: 20px 0;'>
+                <p style='margin: 0; font-size: 18px;'>{stars} ({rating}/5)</p>
+                <p style='font-style: italic; margin-top: 10px; color: #555;'>""{comment}""</p>
+            </div>
+            <p>Обратната връзка е важна за развитието на Вашия бизнес!</p>";
+
+            string html = BuildEmailTemplate("Нов отзив", content, "Към таблото", "https://actprobg.com/Owner/Dashboard/Index");
+            await ExecuteSendAsync(ownerEmail, subject, html);
         }
 
         //Email template builder

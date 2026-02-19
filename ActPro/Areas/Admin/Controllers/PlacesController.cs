@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Admin.Controllers
 {
@@ -36,7 +37,7 @@ namespace ActPro.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await placeService.CreatePlaceAsync(place, imageFiles, userId, true);
-                TempData["Success"] = "Обектът беше създаден успешно.";
+                TempData["Success"] = PlaceAddedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -73,7 +74,7 @@ namespace ActPro.Areas.Admin.Controllers
             {
                 if (await placeService.UpdatePlaceAsync(place, imageFiles))
                 {
-                    TempData["Success"] = "Успешно редактирахте данните на обекта.";
+                    TempData["Success"] = PlaceUpdatedSuccessfully;
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -103,7 +104,7 @@ namespace ActPro.Areas.Admin.Controllers
                 }
             }
             await placeService.DeletePlaceAsync(id);
-            TempData["Success"] = "Обектът и всички свързани данни бяха изтрити.";
+            TempData["Success"] = PlaceDeletedSuccessfully;
             return RedirectToAction(nameof(Index));
         }
 
@@ -117,12 +118,11 @@ namespace ActPro.Areas.Admin.Controllers
 
             if (place != null && await placeService.ApprovePlaceAsync(id))
             {
-                // ПРАЩАМЕ ИМЕЙЛ ЗА ОДОБРЕНИЕ
                 await emailSender.SendPlaceApprovedAsync(
                     place.Owner.Email,
                     place.Owner.FirstName,
                     place.Name);
-                TempData["Success"] = "Обектът беше одобрен успешно.";
+                TempData["Success"] = PlaceApprovedSuccessfully;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -153,11 +153,11 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
             {
-                TempData["Success"] = "Датите бяха затворени успешно.";
+                TempData["Success"] = DateClosedSuccessfully;
             }
             else
             {
-                TempData["Error"] = "Грешка при затваряне на датите.";
+                TempData["Error"] = Error;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -169,7 +169,7 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await placeService.RemoveClosureAsync(id))
             {
-                TempData["Success"] = "Датата беше отключена успешно.";
+                TempData["Success"] = DateOpenedSuccessfully;
             }
             return RedirectToAction(nameof(Index));
         }

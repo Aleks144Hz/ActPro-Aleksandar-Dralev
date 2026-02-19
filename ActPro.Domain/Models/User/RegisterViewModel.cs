@@ -27,8 +27,11 @@ namespace ActPro.Models.User
         [Required(ErrorMessage = ConfirmPasswordIsRequired)]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Моля потвърдете, че не сте робот.")]
+        [Required(ErrorMessage = ProveYouAreNotRobot)]
         [BindProperty(Name = "g-recaptcha-response")]
         public string? CaptchaResponse { get; set; }
+
+        public bool AcceptTerms { get; set; }
+
     }
 }

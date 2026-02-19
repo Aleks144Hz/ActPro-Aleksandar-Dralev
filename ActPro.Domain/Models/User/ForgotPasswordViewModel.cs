@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using static ActPro.Helpers.MessageConstants;
 namespace ActPro.Domain.Models.Account
 {
     public class ForgotPasswordViewModel
@@ -14,11 +14,11 @@ namespace ActPro.Domain.Models.Account
         [Required]
         public string Token { get; set; }
 
-        [Required(ErrorMessage = "Новата парола е задължителна.")]
+        [Required(ErrorMessage = NewPasswordIsRequired)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Потвърждението на новата парола е задължителна.")]
-        [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
+        [Required(ErrorMessage = ConfirmPasswordIsRequired)]
+        [Compare("Password", ErrorMessage = PasswordMismatch)]
         public string ConfirmPassword { get; set; }
     }
 }

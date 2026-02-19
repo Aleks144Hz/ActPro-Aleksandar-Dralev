@@ -1,5 +1,6 @@
 ﻿body {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
     min-height: 100vh;
 }
 
@@ -63,6 +64,21 @@ hr {
 .form-check-input:focus {
     box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.15) !important;
     border-color: #198754 !important;
+}
+
+.form-check-label a {
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.form-check-label a:hover {
+    text-decoration: underline !important;
+}
+
+.form-check-input {
+    cursor: pointer;
+    width: 1.2em;
+    height: 1.2em;
 }
 
 .text-danger.small {

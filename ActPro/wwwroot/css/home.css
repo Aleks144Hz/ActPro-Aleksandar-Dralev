@@ -385,6 +385,34 @@ h2.fw-bold {
     border-top: 1px solid #f1f1f1;
 }
 
+@media (min-width: 577px) and (max-width: 1400px) {
+    .sports-category-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 20px;
+        padding-bottom: 15px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sport-card {
+        flex: 0 0 200px;
+        scroll-snap-align: start;
+    }
+
+    .sports-category-grid::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .sports-category-grid::-webkit-scrollbar-thumb {
+        background: #198754;
+        border-radius: 10px;
+    }
+
+    .sports-category-grid::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+}
 @media (max-width: 576px) {
 
     .sports-category-grid {

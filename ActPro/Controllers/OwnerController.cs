@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -35,20 +36,20 @@ namespace ActPro.Controllers
                     if (user == null) return Unauthorized();
                     if (!user.EmailConfirmed)
                     {
-                        TempData["Error"] = "Профилът Ви не е потвърден. Моля, потвърдете имейла си, за да можете да добавяте обекти.";
+                        TempData["Error"] = ProfileNotApprovedForCreatingPlace;
                         return RedirectToAction("Index", "Home");
                     }
                     var userId = userManager.GetUserId(User);
                     await placeService.CreatePlaceRequestAsync(place, imageFiles, userId, env.WebRootPath);
                   
 
-                    TempData["Success"] = "Вашата заявка е изпратена успешно!";
+                    TempData["Success"] = RequestSentSuccessfully;
                     return RedirectToAction("Index", "Home");
                 }
                 catch (Exception ex)
                 {
                     var msg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                    ModelState.AddModelError("", "Грешка при запис: " + msg);
+                    ModelState.AddModelError("", ErrorWhileTryingToFill + msg);
                 }
             }
 

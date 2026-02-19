@@ -3,7 +3,7 @@ using ActPro.DAL.Entities;
 using ActPro.Domain.Models.Areas;
 using Microsoft.EntityFrameworkCore;
 
-namespace ActPro.Services.Services
+namespace ActPro.Services
 {
     public class IReservationDashboardService(ApplicationDbContext context, IAuditService auditService) : Interfaces.IReservationDashboardService
     {
@@ -75,6 +75,11 @@ namespace ActPro.Services.Services
             await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
 
             return true;
+        }
+
+        public Task<(bool success, string message)> LockSlotAsync(int placeId, DateTime date, string timeSlot)
+        {
+            throw new NotImplementedException();
         }
     }
 }

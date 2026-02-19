@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ActPro.Domain.Models.User
+﻿namespace ActPro.Domain.Models.User
 {
     public class UserReservationsViewModel
     {
@@ -25,6 +19,6 @@ namespace ActPro.Domain.Models.User
         public DateOnly? ReservationDate { get; set; }
         public TimeOnly? ReservationTime { get; set; }
 
-        public bool IsPast => ReservationDate.HasValue && ReservationTime.HasValue? ReservationDate.Value.ToDateTime(ReservationTime.Value) < DateTime.Now : false;
+        public bool IsPast => ReservationDate.HasValue && ReservationTime.HasValue ? ReservationDate.Value.ToDateTime(ReservationTime.Value) < DateTime.Now : false;
     }
 }

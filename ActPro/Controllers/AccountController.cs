@@ -55,7 +55,7 @@ namespace ActPro.Controllers
         {
             if (await accountService.IsUserBannedAsync(model.Email))
             {
-                ModelState.AddModelError(string.Empty, "Акаунтът ви е блокиран.");
+                ModelState.AddModelError(string.Empty, UserAccountIsBanned);
                 return View(model);
             }
 
@@ -66,8 +66,8 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
-                await auditService.LogAsync("User Login", "User", user.Id, "Потребителят влезе в системата.");
-                TempData["Success"] = "Добре дошли!";
+                await auditService.LogAsync("User Login", "User", user.Id, UserLoggedInSuccessfully);
+                TempData["Success"] = Welcome;
                 return RedirectToAction("Index", "Home");
             }
 
@@ -94,16 +94,23 @@ namespace ActPro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            var accepted = Request.Form["AcceptTerms"] == "true";
+
+            if (!accepted)
+            {
+                ModelState.AddModelError("AcceptTerms", AgreeWithTerms);
+            }
+
             if (await accountService.IsUserBannedAsync(model.Email, model.PhoneNumber))
             {
-                ModelState.AddModelError("", "Този имейл е блокиран.");
+                ModelState.AddModelError("", EmailIsBanned);
                 return View(model);
             }
 
             string captchaResponse = Request.Form["g-recaptcha-response"];
             if (!await accountService.VerifyReCaptchaAsync(captchaResponse))
             {
-                ModelState.AddModelError("CaptchaResponse", "Моля потвърдете, че не сте робот.");
+                ModelState.AddModelError("CaptchaResponse", ProveYouAreNotRobot);
                 return View(model);
             }
 
@@ -115,12 +122,10 @@ namespace ActPro.Controllers
                 {
                     var user = await userManager.FindByEmailAsync(model.Email);
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                        new { userId = user.Id, token = token }, Request.Scheme);
-
-                    await emailSender.SendEmailAsync(user.Email, "Потвърждение на акаунт - ActPro", confirmationLink);
-                    TempData["Success"] = "Регистрацията е успешна! Добре дошли.";
-                    await auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+                    await emailSender.SendEmailAsync(user.Email, AccountApproved, confirmationLink);
+                    TempData["Success"] = SuccsessfullRegistration;
+                    await auditService.LogAsync("Create User", "User", user.Id, NewUserRegistered);
                     return RedirectToAction("RegisterConfirmation", new { email = model.Email });
                 }
 
@@ -161,7 +166,7 @@ namespace ActPro.Controllers
                 await emailSender.SendPasswordResetAsync(model.Email, callbackUrl);
             }
 
-            TempData["Success"] = "Ако имейлът съществува, сме изпратили линк за възстановяване.";
+            TempData["Success"] = ValidEmailAddress;
             return RedirectToAction("Login");
         }
 
@@ -175,7 +180,7 @@ namespace ActPro.Controllers
             var result = await accountService.ResetPasswordAsync(model);
             if (result.Succeeded)
             {
-                TempData["Success"] = "Паролата ви е сменена успешно! Вече можете да влезете.";
+                TempData["Success"] = PasswordResetSuccess;
                 return RedirectToAction("Login");
             }
 
@@ -213,7 +218,7 @@ namespace ActPro.Controllers
             var result = await userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                TempData["Success"] = "Имейлът ви беше потвърден успешно! Вече можете да правите резервации.";
+                TempData["Success"] = EmailApprovedSuccess;
                 return RedirectToAction("Login");
             }
 
@@ -233,7 +238,7 @@ namespace ActPro.Controllers
 
             if (user == null || user.EmailConfirmed)
             {
-                TempData["Info"] = "Акаунтът вече е потвърден или не съществува.";
+                TempData["Info"] = EmailAlreadyApproved;
                 return RedirectToAction("Login");
             }
 
@@ -241,7 +246,7 @@ namespace ActPro.Controllers
             var confirmationLink = Url.Action("ConfirmEmail", "Account",
                 new { userId = user.Id, token = token }, Request.Scheme);
 
-            await emailSender.SendEmailAsync(user.Email, "Потвърждение на акаунт - ActPro", confirmationLink);
+            await emailSender.SendEmailAsync(user.Email, AccountEmailApprovel, confirmationLink);
 
             return RedirectToAction("RegisterConfirmation", new { email = user.Email });
         }
@@ -289,7 +294,7 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 TempData["Success"] = SuccessfulUserEdit;
-                await auditService.LogAsync("Update Settings", "User", userId, "Потребителят обнови профилните си данни.");
+                await auditService.LogAsync("Update Settings", "User", userId, AccountInfoUpadate);
             }
 
             return RedirectToAction("Settings");
@@ -313,7 +318,7 @@ namespace ActPro.Controllers
 
             if (result.Succeeded)
             {
-                await auditService.LogAsync("Update Settings", "User", userId, "Потребителят смени паролата си успешно.");
+                await auditService.LogAsync("Update Settings", "User", userId, UserUpdatePasswordSuccess);
                 TempData["Success"] = "Паролата е променена успешно!";
                 return RedirectToAction("Settings");
             }
@@ -322,7 +327,7 @@ namespace ActPro.Controllers
             foreach (var error in result.Errors)
             {
                 if (error.Code == "PasswordMismatch")
-                    ModelState.AddModelError("OldPassword", "Въвели сте грешна парола.");
+                    ModelState.AddModelError("OldPassword", WrongPassword);
                 else if (error.Code.Contains("Password") && !hasPasswordError)
                 {
                     ModelState.AddModelError("NewPassword", error.Description);
@@ -351,7 +356,7 @@ namespace ActPro.Controllers
             var isPasswordCorrect = await userManager.CheckPasswordAsync(user, model.Password);
             if (!isPasswordCorrect)
             {
-                ModelState.AddModelError("Password", "Грешна парола, моля опитайте отново!");
+                ModelState.AddModelError("Password", WrongPassword);
                 ViewData["ShowDeleteModal"] = true;
                 return View("Settings", MapToSettingsViewModel(user));
             }
@@ -362,11 +367,11 @@ namespace ActPro.Controllers
                 await emailSender.SendProfileDeletedAsync(user.Email, user.FirstName);
                 await accountService.LogoutAsync();
                 TempData["Success"] = SuccessfulDeletedAccount;
-                await auditService.LogAsync("Delete User", "User", userId, "Потребителят сам изтри профила си");
+                await auditService.LogAsync("Delete User", "User", userId, UserDeleteAccountSuccess);
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError(string.Empty, "Грешка при изтриване.");
+            ModelState.AddModelError(string.Empty, Error);
             ViewData["ShowDeleteModal"] = true;
             return View("Index", MapToSettingsViewModel(user));
         }
@@ -377,7 +382,7 @@ namespace ActPro.Controllers
         public async Task<IActionResult> Logout()
         {
             await accountService.LogoutAsync();
-            TempData["Success"] = "Довиждане!";
+            TempData["Success"] = GoodBye;
             return RedirectToAction("Index", "Home");
         }
 

@@ -6,7 +6,7 @@ namespace ActPro.Models.User
     public class LoginViewModel
     {
         [Required(ErrorMessage = EmailIsRequired)]
-        [EmailAddress(ErrorMessage = "Грешен имейл")]
+        [EmailAddress(ErrorMessage = WrongEmail)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = PasswordIsRequired)]

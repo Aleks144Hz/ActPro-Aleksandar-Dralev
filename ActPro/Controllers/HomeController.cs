@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -50,8 +51,8 @@ namespace ActPro.Controllers
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(content))
             {
                 await homeService.CreateNewsAsync(title, content, imageFile, webHostEnvironment.WebRootPath);
-                await auditService.LogAsync("Create News", "User", user.Id, $"Публикувана е нова новина: \"{title}\"");
-                TempData["SuccessMessage"] = "Новината е публикувана успешно!";
+                await auditService.LogAsync("Create News", "User", user.Id, $"{NewsIsPublished} \"{title}\"");
+                TempData["SuccessMessage"] = NewsIsPublishedSuccessfully;
                 return RedirectToAction(nameof(News));
             }
             return RedirectToAction(nameof(News));
@@ -64,8 +65,8 @@ namespace ActPro.Controllers
         {
             var user = await userManager.GetUserAsync(User);
             await homeService.DeleteNewsAsync(id, webHostEnvironment.WebRootPath);
-            await auditService.LogAsync("Delete News", "User", user.Id, $"Изтрита новина с ID: {id}");
-            TempData["SuccessMessage"] = "Новината е успешно изтрита";
+            await auditService.LogAsync("Delete News", "User", user.Id, $"{NewsDeleted} {id}");
+            TempData["SuccessMessage"] = NewsDeletedSuccessfully;
             return RedirectToAction(nameof(News));
         }
 
@@ -94,19 +95,19 @@ namespace ActPro.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = "Моля, попълнете всички задължителни полета правилно.";
+                TempData["Error"] = FillInAllFields;
                 return View("Support", model);
             }
 
             try
             {
                 await emailSender.SendSupportTicketAsync(model);
-                TempData["Success"] = "Вашата заявка беше изпратена успешно! Проверете имейла си за потвърждение.";
+                TempData["Success"] = TicketSendSuccessfully;
                 return RedirectToAction("Support");
             }
             catch
             {
-                TempData["Error"] = "Възникна грешка при изпращането. Моля, опитайте по-късно.";
+                TempData["Error"] = Error;
                 return View("Support", model);
             }
         }
