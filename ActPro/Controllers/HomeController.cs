@@ -4,6 +4,7 @@ using ActPro.Services;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using static ActPro.Helpers.MessageConstants;
@@ -17,6 +18,19 @@ namespace ActPro.Controllers
         {
             var viewModel = await homeService.GetHomeViewModelAsync();
             return View(viewModel);
+        }
+
+        //---SET LANGUAGE---
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
 
         //---NEWS PAGE---

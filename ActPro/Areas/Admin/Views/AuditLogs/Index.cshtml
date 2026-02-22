@@ -61,7 +61,7 @@
     string GetBadgeClass(string action) => action switch
     {
         "Delete Place" or "Delete Review" or "Delete Reservation" or "Delete User" or "Ban User" or "Remove Closure" or "Cancel Reservation" or "Delete News" => "bg-danger",
-        "Create Place" or "Add Review" or "Create Reservation" or "Add Closure" or "Create User" or "Create News" or "Approve Place" => "bg-success",
+        "Create Place" or "Add Review" or "Create Reservation" or "Add Closure" or "Create User" or "Create News" or "Approve Place" or "Manual Reservation" => "bg-success",
         "Edit Place" or "Update Settings" or "Edit User" or "Edit Reservation" => "bg-info text-dark",
         "User Login" => "bg-warning text-dark",
         _ => "bg-secondary"

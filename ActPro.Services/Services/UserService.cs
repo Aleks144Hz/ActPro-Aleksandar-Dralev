@@ -5,6 +5,7 @@ using ActPro.Domain.Models.Areas;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
@@ -39,7 +40,7 @@ namespace ActPro.Services.Services
         }
 
 
-        // Toggle Admin or Owner role for a user
+        // --TOGGLE ROLE-- //
         public async Task<bool> ToggleRoleAsync(string userId, string roleName)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -49,12 +50,12 @@ namespace ActPro.Services.Services
             if (isInRole)
             {
                 await userManager.RemoveFromRoleAsync(user, roleName);
-                await auditService.LogAsync("Edit User", "User", userId, $"Премахната роля {roleName} на: {user.FirstName} {user.LastName}");
+                await auditService.LogAsync("Edit User", "User", userId, $"{RemovedRole} {roleName} {On}: {user.FirstName} {user.LastName}");
             }
             else
             {
                 await userManager.AddToRoleAsync(user, roleName);
-                await auditService.LogAsync("Edit User", "User", userId, $"Добавена роля {roleName} на: {user.FirstName} {user.LastName}");
+                await auditService.LogAsync("Edit User", "User", userId, $"{AddedRole} {roleName} {On}: {user.FirstName} {user.LastName}");
             }
             return true;
         }
@@ -78,7 +79,7 @@ namespace ActPro.Services.Services
             if (result.Succeeded)
             {
                 await context.SaveChangesAsync();
-                await auditService.LogAsync("Ban User", "User", userId, $"Блокиран и изтрит: {user.FirstName} {user.LastName} | Email: {user.Email}");
+                await auditService.LogAsync("Ban User", "User", userId, $"{BAN}: {user.FirstName} {user.LastName} | Email: {user.Email}");
                 return true;
             }
             return false;

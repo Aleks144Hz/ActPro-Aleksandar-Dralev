@@ -7,6 +7,7 @@ using ActPro.Domain.Repository;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services
 {
@@ -23,6 +24,13 @@ namespace ActPro.Services
             .Include(p => p.Activity)
             .FirstOrDefaultAsync(m => m.Id == placeId);
 
+            double userCredits = 0;
+            if (userId != null)
+            {
+                var user = await userManager.FindByIdAsync(userId);
+                userCredits = user?.Credits ?? 0;
+            }
+
             if (place == null) return null;
             return new ReservationViewModel
             {
@@ -30,6 +38,7 @@ namespace ActPro.Services
                 IsFavorite = userId != null && await favRepo.AllAsNoTracking()
                 .AnyAsync(f => f.PlaceId == placeId && f.AspNetUserId == userId),
                 CurrentUserId = userId,
+                UserCredits = userCredits,
                 UserCommentsCount = userId != null ? place.Comments.Count(c => c.AspNetUserId == userId) : 0
             };
         }
@@ -42,19 +51,19 @@ namespace ActPro.Services
 
             if (closure != null)
             {
-                string reason = !string.IsNullOrEmpty(closure.Reason) ? closure.Reason : "планирана профилактика";
-                return (false, $"Обектът е затворен за резервации на тази дата поради {reason}.");
+                string reason = !string.IsNullOrEmpty(closure.Reason) ? closure.Reason : PlanedManufacture;
+                return (false, $"{PlaceIsClosedOnThisDate} {reason}.");
             }
 
-            if (!TimeOnly.TryParse(timeSlot, out TimeOnly parsedTime)) return (false, "Невалиден час.");
+            if (!TimeOnly.TryParse(timeSlot, out TimeOnly parsedTime)) return (false, InvalidHour);
 
             DateOnly parsedDate = DateOnly.FromDateTime(date);
             var combinedDateTime = parsedDate.ToDateTime(parsedTime);
 
-            if (combinedDateTime < DateTime.Now) return (false, "Часът вече е минал.");
+            if (combinedDateTime < DateTime.Now) return (false, HourAlreadyPassed);
 
             if (await resRepo.AllAsNoTracking().AnyAsync(r => r.PlaceId == placeId && r.ReservationDate == parsedDate && r.ReservationTime == parsedTime))
-                return (false, "Този час току-що беше зает!");
+                return (false, HourAlreadyReserved);
             var place = await placeRepo.AllAsNoTracking()
             .Include(p => p.Owner)
             .FirstOrDefaultAsync(p => p.Id == placeId);
@@ -87,13 +96,13 @@ namespace ActPro.Services
                     user.PhoneNumber);
             }
 
-            return (true, "Резервацията е успешно направена.");
+            return (true, SuccessfullReservation);
         }
         //-- ADD REVIEW
         public async Task<(bool success, string message)> AddReviewAsync(int placeId, string userId, string commentText, int rating)
         {
             int userCommentCount = await commentRepo.AllAsNoTracking().CountAsync(c => c.PlaceId == placeId && c.AspNetUserId == userId);
-            if (userCommentCount >= 3) return (false, "Вече сте оставили максималния брой коментари (3) за този обект.");
+            if (userCommentCount >= 3) return (false, MaximumComments);
 
             var newComment = new Comment
             {
@@ -126,14 +135,14 @@ namespace ActPro.Services
                     commentText);
             }
 
-            return (true, "Коментарът е добавен успешно.");
+            return (true, CommentAdded);
         }
 
         //-- DELETE REVIEW
         public async Task<(bool success, string message)> DeleteReviewAsync(int reviewId, string userId)
         {
             var comment = await commentRepo.All().FirstOrDefaultAsync(c => c.Id == reviewId && c.AspNetUserId == userId);
-            if (comment == null) return (false, "Коментарът не е намерен.");
+            if (comment == null) return (false, CommentNotFound);
 
             int placeId = comment.PlaceId;
             await commentRepo.DeleteAsync(comment);
@@ -145,7 +154,7 @@ namespace ActPro.Services
             user.Credits = Math.Round(Math.Max(0, user.Credits - 0.1), 2);
             await userManager.UpdateAsync(user);
 
-            return (true, "Коментарът е изтрит успешно.");
+            return (true, CommentDeleted);
         }
 
         //-- UPDATE PLACE RATING
@@ -214,18 +223,54 @@ namespace ActPro.Services
         //-- CANCEL RESERVATION
         public async Task<(bool success, string message)> CancelReservationAsync(int reservationId, string userId)
         {
-            var res = await resRepo.All().FirstOrDefaultAsync(r => r.Id == reservationId && r.AspNetUserId == userId);
-            if (res == null) return (false, "Резервацията не е намерена.");
+            var res = await resRepo.All()
+                .Include(r => r.Place)
+                .ThenInclude(p => p.Owner)
+                .FirstOrDefaultAsync(r => r.Id == reservationId && r.AspNetUserId == userId);
+
+            if (res == null) return (false, ReservationNotFound);
 
             var resDateTime = (res.ReservationDate ?? DateOnly.FromDateTime(DateTime.Now)).ToDateTime(res.ReservationTime ?? new TimeOnly(0, 0));
-            if (resDateTime < DateTime.Now) return (false, "Не можете да откажете изминала резервация.");
+            if (resDateTime < DateTime.Now) return (false, CannotCancelPastReservation);
+
+            var owner = res.Place?.Owner;
+            var placeName = res.Place?.Name ?? Helpers.MessageConstants.Place;
+            var customerName = $"{res.FirstName} {res.LastName}";
+            var dateFormatted = res.ReservationDate?.ToString("dd.MM.yyyy") ?? "";
+            var timeSlot = res.ReservationTime?.ToString() ?? "";
+            var number = res.Phone ?? "";
 
             await resRepo.DeleteAsync(res);
             await resRepo.SaveChangesAsync();
+
             var user = await userManager.FindByIdAsync(userId);
-            user.Credits = Math.Max(0, user.Credits - 1);
-            await userManager.UpdateAsync(user);
-            return (true, "Успешно отказана.");
+            if (user != null)
+            {
+                user.Credits = Math.Max(0, user.Credits - 1);
+                await userManager.UpdateAsync(user);
+            }
+
+            if (owner != null)
+            {
+                try
+                {
+                    await emailSender.SendBookingCancellationToOwnerAsync(
+                        owner.Email,
+                        owner.FirstName,
+                        placeName,
+                        customerName,
+                        dateFormatted,
+                        timeSlot,
+                        number
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{Error} {ex.Message}");
+                }
+            }
+
+            return (true, Cancelled);
         }
 
         //-- GET USER REVIEWS
@@ -251,13 +296,13 @@ namespace ActPro.Services
         public async Task<(bool success, string message)> EditReviewAsync(int commentId, string userId, string commentText, int rating)
         {
             var comment = await commentRepo.All().FirstOrDefaultAsync(c => c.Id == commentId && c.AspNetUserId == userId);
-            if (comment == null) return (false, "Не е намерен.");
+            if (comment == null) return (false, NotFound);
 
             comment.CommentText = commentText;
             comment.Rating = rating;
             await commentRepo.SaveChangesAsync();
             await UpdatePlaceRatingAsync(comment.PlaceId);
-            return (true, "Обновено.");
+            return (true, Update);
         }
 
         //-- GET CLOSED DATES

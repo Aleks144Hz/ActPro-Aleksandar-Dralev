@@ -1,51 +1,52 @@
 ﻿@using ActPro.Models
+@using static ActPro.Helpers.MessageConstants
 @model ActPro.Models.HomeViewModel
 @{
-    ViewData["Title"] = "Начало";
+    ViewData["Title"] = PageTitle;
 }
 <div class="container-fluid p-0">
     <main>
         <section class="py-5 position-relative">
             <div class="container position-relative z-index-2">
                 <div class="text-center mb-4 reveal reveal-up">
-                    <h1 class="fw-bold text-dark">Намери своето място за спорт</h1>
-                    <p class="text-muted">Лесно, бързо и удобно резервиране по всяко време.</p>
+                    <h1 class="fw-bold text-dark">@ActPro.Helpers.MessageConstants.SearchHeroTitle</h1>
+                    <p class="text-muted">@ActPro.Helpers.MessageConstants.SearchHeroSubtitle</p>
                 </div>
                 <div class="search-container-styled reveal reveal-up">
                     <form asp-controller="Search" asp-action="Index" method="get" id="mainSearchForm">
                         <div class="row align-items-center">
                             <div class="col-md-5 position-relative divider-end">
-                                <label class="search-label-small">Населено място</label>
+                                <label class="search-label-small">@ActPro.Helpers.MessageConstants.LabelCity</label>
                                 <div class="input-wrapper">
                                     <i class="fas fa-map-marker-alt input-icon"></i>
                                     <input type="text"
                                            class="form-control form-control-custom"
                                            id="cityInput"
                                            name="city"
-                                           placeholder="Избери или въведи град"
+                                           placeholder="@ActPro.Helpers.MessageConstants.PlaceholderCity"
                                            autocomplete="off"
                                            required
-                                           oninvalid="this.setCustomValidity('Моля, изберете населено място!')"
+                                           oninvalid="this.setCustomValidity('@ActPro.Helpers.MessageConstants.ValidationCityRequired')"
                                            oninput="this.setCustomValidity('')">
                                 </div>
                                 <div id="cityList" class="custom-dropdown-list"></div>
                             </div>
                             <div class="col-md-5 position-relative">
-                                <label class="search-label-small">Какво ще спортувате?</label>
+                                <label class="search-label-small">@ActPro.Helpers.MessageConstants.LabelActivity</label>
                                 <div class="input-wrapper">
                                     <i class="fas fa-running input-icon"></i>
                                     <input type="text"
                                            class="form-control form-control-custom"
                                            id="activityInput"
                                            name="activity"
-                                           placeholder="Избери или въведи активност"
+                                           placeholder="@ActPro.Helpers.MessageConstants.PlaceholderActivity"
                                            autocomplete="off" />
                                 </div>
                                 <div id="activityList" class="custom-dropdown-list"></div>
                             </div>
                             <div class="col-md-2 text-center">
                                 <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm" style="border-radius: 25px; height: 50px;">
-                                    ТЪРСИ
+                                    @ActPro.Helpers.MessageConstants.SearchButton
                                 </button>
                             </div>
                         </div>
@@ -58,13 +59,13 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6 pr-lg-5">
                         <div class="reveal reveal-left delay-1">
-                            <span class="text-success fw-bold text-uppercase small">Какво е ActPro?</span>
-                            <h2 class="fw-bold mb-4">Твоят дигитален асистент за активен живот</h2>
-                            <p class="text-muted lead">ActPro е иновативна платформа, която свързва ентусиастите със спортните бази. Нашата мисия е да премахнем бариерите пред спорта, като ви дадем достъп до стотици обекти само с няколко клика.</p>
+                            <span class="text-success fw-bold text-uppercase small">@ActPro.Helpers.MessageConstants.AboutBadge</span>
+                            <h2 class="fw-bold mb-4">@ActPro.Helpers.MessageConstants.AboutTitle</h2>
+                            <p class="text-muted lead">@ActPro.Helpers.MessageConstants.AboutDescription</p>
                             <ul class="list-unstyled mt-4">
-                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Резервации в реално време</li>
-                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Голямо разнообразие от спортове</li>
-                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Достъпно от всякакъв вид устройство</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> @ActPro.Helpers.MessageConstants.FeatureRealTime</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> @ActPro.Helpers.MessageConstants.FeatureVariety</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> @ActPro.Helpers.MessageConstants.FeatureAllDevices</li>
 
                             </ul>
                         </div>
@@ -77,18 +78,18 @@
         </section>
         <section class="py-4">
             <div class="container">
-                <h3 class="text-center mb-4 fw-bold reveal reveal-up delay-1">Популярни категории</h3>
+                <h3 class="text-center mb-4 fw-bold reveal reveal-up delay-1">@ActPro.Helpers.MessageConstants.CategoriesTitle</h3>
                 <div class="sports-category-grid">
                     @{
                         int GetCount(string key) => Model.SportCounts != null && Model.SportCounts.ContainsKey(key) ? Model.SportCounts[key] : 0;
 
                         var sportsList = new[] {
-                                        new { Name = "Футбол", Icon = "fa-futbol", Class = "football" },
-                                        new { Name = "Баскетбол", Icon = "fa-basketball-ball", Class = "basketball" },
-                                        new { Name = "Волейбол", Icon = "fa-volleyball-ball", Class = "volleyball" },
-                                        new { Name = "Тенис", Icon = "fa-table-tennis", Class = "tennis" },
-                                        new { Name = "Фитнес", Icon = "fa-dumbbell", Class = "fitness" },
-                                        new { Name = "Плуване", Icon = "fa-swimmer", Class = "swimming" }
+                                        new { Name = @ActPro.Helpers.MessageConstants.SportFootball, Icon = "fa-futbol", Class = "football" },
+                                        new { Name = @ActPro.Helpers.MessageConstants.SportBasketball, Icon = "fa-basketball-ball", Class = "basketball" },
+                                        new { Name = @ActPro.Helpers.MessageConstants.SportVolleyball, Icon = "fa-volleyball-ball", Class = "volleyball" },
+                                        new { Name = @ActPro.Helpers.MessageConstants.SportTennis, Icon = "fa-table-tennis", Class = "tennis" },
+                                        new { Name = @ActPro.Helpers.MessageConstants.SportFitness, Icon = "fa-dumbbell", Class = "fitness" },
+                                        new { Name = @ActPro.Helpers.MessageConstants.SportSwimming, Icon = "fa-swimmer", Class = "swimming" }
                                         };
                     }
 
@@ -100,7 +101,7 @@
                             </div>
                             <div class="sport-card-info">
                                 <span class="name">@sport.Name</span>
-                                <span class="count">@GetCount(sport.Name) обекта</span>
+                                <span class="count">@GetCount(sport.Name) @ActPro.Helpers.MessageConstants.Place</span>
                             </div>
                         </a>
                     }
@@ -111,22 +112,22 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-lg-6 ps-lg-5 reveal reveal-right delay-1">
-                        <span class="text-success fw-bold text-uppercase small">Ползи</span>
-                        <h2 class="fw-bold mb-4">С какво ви помагаме?</h2>
-                        <p class="text-muted mb-4">Забравете за десетките телефонни обаждания, за да разберете дали тенис кортът е свободен. С нас пестите време и нерви:</p>
+                        <span class="text-success fw-bold text-uppercase small">@ActPro.Helpers.MessageConstants.BenefitsBadge</span>
+                        <h2 class="fw-bold mb-4">@ActPro.Helpers.MessageConstants.BenefitsTitle</h2>
+                        <p class="text-muted mb-4">@ActPro.Helpers.MessageConstants.BenefitsDescription</p>
 
                         <div class="benefit-list">
                             <div class="d-flex align-items-center mb-3">
                                 <i class="fas fa-clock text-success me-3 fs-4"></i>
-                                <span class="fw-bold">Бързина при резервация</span>
+                                <span class="fw-bold">@ActPro.Helpers.MessageConstants.BenefitSpeed</span>
                             </div>
                             <div class="d-flex align-items-center mb-3">
                                 <i class="fas fa-wallet text-success me-3 fs-4"></i>
-                                <span class="fw-bold">Сигурност на плащанията</span>
+                                <span class="fw-bold">@ActPro.Helpers.MessageConstants.BenefitSecurity</span>
                             </div>
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-mobile-alt text-success me-3 fs-4"></i>
-                                <span class="fw-bold">Достъпност от всяко устройство</span>
+                                <span class="fw-bold">@ActPro.Helpers.MessageConstants.BenefitAccessibility</span>
                             </div>
                         </div>
                     </div>
@@ -138,7 +139,7 @@
         </section>
         <section class="py-5">
             <div class="container">
-                <h2 class="mb-5 text-center fw-bold display-6 reveal reveal-up delay-1">Топ обекти с най-висок рейтинг</h2>
+                <h2 class="mb-5 text-center fw-bold display-6 reveal reveal-up delay-1">@ActPro.Helpers.MessageConstants.TopPlacesTitle</h2>
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     @foreach (var place in Model.TopPlaces)
                     {
@@ -152,10 +153,10 @@
                                         <p class="text-muted small mb-2">
                                             <i class="bi bi-geo-alt"></i> @place.City?.Name
                                         </p>
-                                        <p class="card-text text-warning fw-bold">Рейтинг: ⭐ @place.Rating</p>
+                                        <p class="card-text text-warning fw-bold">@ActPro.Helpers.MessageConstants.Rating: ⭐ @place.Rating</p>
                                     </div>
                                     <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id"
-                                       class="btn btn-success w-100 fw-bold py-2 shadow-sm mt-3">Виж детайли</a>
+                                       class="btn btn-success w-100 fw-bold py-2 shadow-sm mt-3">@ActPro.Helpers.MessageConstants.ViewMore</a>
                                 </div>
                             </div>
                         </div>
@@ -167,19 +168,19 @@
             <div class="container">
                 <div class="row align-items-center reveal reveal-up delay-1">
                     <div class="col-lg-6">
-                        <span class="text-success fw-bold text-uppercase small">Решения</span>
-                        <h2 class="fw-bold mb-4">Проблемите, които решаваме</h2>
+                        <span class="text-success fw-bold text-uppercase small">@ActPro.Helpers.MessageConstants.SolutionsBadge</span>
+                        <h2 class="fw-bold mb-4">@ActPro.Helpers.MessageConstants.SolutionsTitle</h2>
                         <div class="problem-card p-3 mb-3 bg-white rounded shadow-sm border-start border-success border-4">
-                            <h6 class="fw-bold mb-1">Липса на информация</h6>
-                            <p class="small text-muted mb-0">Вече няма нужда да търсите контакти по форуми – всичко е на едно място.</p>
+                            <h6 class="fw-bold mb-1">@ActPro.Helpers.MessageConstants.ProbInfoTitle</h6>
+                            <p class="small text-muted mb-0">@ActPro.Helpers.MessageConstants.ProbInfoDesc</p>
                         </div>
                         <div class="problem-card p-3 mb-3 bg-white rounded shadow-sm border-start border-success border-4">
-                            <h6 class="fw-bold mb-1">Неактуални графици</h6>
-                            <p class="small text-muted mb-0">Виждате само свободните часове, актуализирани в реално време.</p>
+                            <h6 class="fw-bold mb-1">@ActPro.Helpers.MessageConstants.ProbScheduleTitle</h6>
+                            <p class="small text-muted mb-0">@ActPro.Helpers.MessageConstants.ProbScheduleDesc</p>
                         </div>
                         <div class="problem-card p-3 mb-3 bg-white rounded shadow-sm border-start border-success border-4">
-                            <h6 class="fw-bold mb-1">Възможността за отзив</h6>
-                            <p class="small text-muted mb-0">Вече можете да изразите вашето мнение относно дадения обект, който сте посетили.</p>
+                            <h6 class="fw-bold mb-1">@ActPro.Helpers.MessageConstants.ProbReviewTitle</h6>
+                            <p class="small text-muted mb-0">@ActPro.Helpers.MessageConstants.ProbReviewDesc</p>
                         </div>
                     </div>
                     <div class="col-lg-6 text-center reveal reveal-right delay-1">
@@ -192,26 +193,26 @@
             <div class="container position-relative z-index-2">
                 <div class="row align-items-center">
                     <div class="col-lg-5 mb-4 mb-lg-0">
-                        <h2 class="display-6 fw-bold mb-3">Имаш спортен обект?</h2>
-                        <p class="lead text-white-50 mb-4">Стани част от нашата мрежа в три лесни стъпки и увеличи клиентите си.</p>
-                        <a class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn" asp-area="" asp-controller="Owner" asp-action="Index">Регистрирай го</a>
+                        <h2 class="display-6 fw-bold mb-3">@ActPro.Helpers.MessageConstants.OwnerTitle</h2>
+                        <p class="lead text-white-50 mb-4">@ActPro.Helpers.MessageConstants.OwnerSubtitle</p>
+                        <a class="btn btn-light btn-lg rounded-pill fw-bold px-5 shadow-lg partner-cta-btn" asp-area="" asp-controller="Owner" asp-action="Index">@ActPro.Helpers.MessageConstants.OwnerRegisterBtn</a>
                     </div>
                     <div class="col-lg-7">
                         <div class="row text-center">
                             <div class="col-4">
                                 <div class="step-circle mb-3 reveal reveal-up delay-1">1</div>
-                                <h6 class="fw-bold">Създаване</h6>
-                                <p class="small text-white-50">Регистрирай своя бизнес.</p>
+                                <h6 class="fw-bold">@ActPro.Helpers.MessageConstants.Step1Title</h6>
+                                <p class="small text-white-50">@ActPro.Helpers.MessageConstants.Step1Desc</p>
                             </div>
                             <div class="col-4">
                                 <div class="step-circle mb-3 reveal reveal-up delay-2">2</div>
-                                <h6 class="fw-bold">Потвърждаване</h6>
-                                <p class="small text-white-50">Предоставяне на документи за собственост.</p>
+                                <h6 class="fw-bold">@ActPro.Helpers.MessageConstants.Step2Title</h6>
+                                <p class="small text-white-50">@ActPro.Helpers.MessageConstants.Step2Desc</p>
                             </div>
                             <div class="col-4">
                                 <div class="step-circle mb-3 reveal reveal-up delay-3">3</div>
-                                <h6 class="fw-bold">Печели</h6>
-                                <p class="small text-white-50">Приемай резервации онлайн.</p>
+                                <h6 class="fw-bold">@ActPro.Helpers.MessageConstants.Step3Title</h6>
+                                <p class="small text-white-50">@ActPro.Helpers.MessageConstants.Step3Desc</p>
                             </div>
                         </div>
                     </div>
@@ -223,8 +224,8 @@
             <div class="container py-5">
                 <div class="row justify-content-center text-center mb-5 reveal reveal-up delay-1">
                     <div class="col-lg-8">
-                        <h2 class="display-5 fw-bold mb-3">Нашата история и цел</h2>
-                        <p class="lead text-muted">Ние не просто правим софтуер. Ние градим общност, където здравето и спортът са приоритет за всеки.</p>
+                        <h2 class="display-5 fw-bold mb-3">@ActPro.Helpers.MessageConstants.StoryTitle</h2>
+                        <p class="lead text-muted">@ActPro.Helpers.MessageConstants.StorySubtitle</p>
                         <div class="mx-auto" style="width: 100px; height: 4px; background-color: #198754; border-radius: 2px;"></div>
                     </div>
                 </div>
@@ -234,8 +235,8 @@
                             <div class="about-icon-circle bg-success-soft mb-4">
                                 <i class="fas fa-bullseye fa-3x text-success"></i>
                             </div>
-                            <h3 class="fw-bold mb-3">Мисия</h3>
-                            <p class="text-muted fs-5">Да направим спорта достъпен за всеки българин чрез модерни технологии.</p>
+                            <h3 class="fw-bold mb-3">@ActPro.Helpers.MessageConstants.MissionTitle</h3>
+                            <p class="text-muted fs-5">@ActPro.Helpers.MessageConstants.MissionDesc</p>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -243,8 +244,8 @@
                             <div class="about-icon-circle bg-white-soft mb-4">
                                 <i class="fas fa-eye fa-3x text-success"></i>
                             </div>
-                            <h3 class="fw-bold mb-3">Визия</h3>
-                            <p class="text-light-50 fs-5">Най-голямата екосистема за активен отдих и управление на спортни бази в страната.</p>
+                            <h3 class="fw-bold mb-3">@ActPro.Helpers.MessageConstants.VisionTitle</h3>
+                            <p class="text-light-50 fs-5">@ActPro.Helpers.MessageConstants.VisionDesc</p>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -252,8 +253,8 @@
                             <div class="about-icon-circle bg-success-soft mb-4">
                                 <i class="fas fa-handshake fa-3x text-success"></i>
                             </div>
-                            <h3 class="fw-bold mb-3">Ценности</h3>
-                            <p class="text-muted fs-5">Прозрачност, иновация и непоколебима подкрепа за местния бизнес и спортни клубове.</p>
+                            <h3 class="fw-bold mb-3">@ActPro.Helpers.MessageConstants.ValuesTitle</h3>
+                            <p class="text-muted fs-5">@ActPro.Helpers.MessageConstants.ValuesDesc</p>
                         </div>
                     </div>
                 </div>
@@ -279,8 +280,8 @@
         };
 
         const labelsMap = {
-            'cityInput': "Известни локации",
-            'activityInput': "Популярни активности"
+            'cityInput': "@ActPro.Helpers.MessageConstants.JsFamousLocations",
+            'activityInput': "@ActPro.Helpers.MessageConstants.JsPopularActivities"
         };
 
         function renderList(items){
@@ -298,7 +299,7 @@
 
                 const divider = document.createElement('div');
                 divider.className = 'dropdown-header-custom mt-2';
-                divider.innerHTML = `<strong>Всички предложения</strong>`;
+                divider.innerHTML = `<strong>@ActPro.Helpers.MessageConstants.JsAllSuggestions</strong>`;
                 list.appendChild(divider);
             }
 
@@ -316,8 +317,6 @@
             div.className = 'dropdown-item-custom';
             div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
             const activityIcons = {
-                    'Айкидо': 'fas fa-user-ninja',
-                    'Акробатика': 'fas fa-child',
                     'Бадминтон': 'fas fa-table-tennis',
                     'Балет': 'fas fa-shoe-prints',
                     'Баскетбол': 'fas fa-basketball-ball',
@@ -334,7 +333,6 @@
                     'Йога': 'fas fa-spa',
                     'Карате': 'fas fa-hand-rock',
                     'Конна езда': 'fas fa-horse',
-                    'Крикет': 'fas fa-baseball-ball',
                     'Лека атлетика': 'fas fa-running',
                     'ММА': 'fas fa-fist-raised',
                     'Падел': 'fas fa-table-tennis',
@@ -391,7 +389,7 @@
 
             if (!isCityValid){
                 e.preventDefault();
-                toastr.info("Моля, изберете град от предложенията!");
+                toastr.info("@ActPro.Helpers.MessageConstants.JsToastSelectCity");
 
                 cityInput.classList.add('input-error');
                 cityInput.value = '';
@@ -404,7 +402,7 @@
 
             if (activityValue !== "" && !isActivityValid){
                 e.preventDefault();
-                toastr.info("Моля, изберете валидна активност!");
+                toastr.info("@ActPro.Helpers.MessageConstants.JsToastSelectActivity");
 
                 activityInput.classList.add('input-error');
                 activityInput.value = '';

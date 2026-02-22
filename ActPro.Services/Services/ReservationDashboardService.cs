@@ -2,6 +2,7 @@
 using ActPro.DAL.Entities;
 using ActPro.Domain.Models.Areas;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services
 {
@@ -29,7 +30,7 @@ namespace ActPro.Services
                 {
                     Id = r.Id,
                     PlaceId = r.PlaceId ?? 0,
-                    PlaceName = r.Place?.Name ?? "Няма обект",
+                    PlaceName = r.Place?.Name ?? NoPlace,
                     FirstName = r.FirstName,
                     LastName = r.LastName,
                     Phone = r.Phone,
@@ -57,7 +58,7 @@ namespace ActPro.Services
             context.Reservations.Remove(res);
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"Изтрита резервация на {res.FirstName} {res.LastName} за {res.ReservationDate:dd.MM.yyyy}");
+            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"{DeletedReservation} {res.FirstName} {res.LastName} {For} {res.ReservationDate:dd.MM.yyyy}");
 
             return true;
         }
@@ -72,7 +73,7 @@ namespace ActPro.Services
             res.ReservationTime = newTime;
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
+            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"{ReservationUpdate} {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
 
             return true;
         }
@@ -80,6 +81,46 @@ namespace ActPro.Services
         public Task<(bool success, string message)> LockSlotAsync(int placeId, DateTime date, string timeSlot)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> CreateManualReservationAsync(int placeId, string customerNote, DateOnly date, TimeOnly time)
+        {
+            bool isSlotTaken = await context.Reservations
+                .AnyAsync(r => r.PlaceId == placeId &&
+                               r.ReservationDate == date &&
+                               r.ReservationTime == time);
+
+            if (isSlotTaken) return false;
+
+            var reservation = new Reservation
+            {
+                PlaceId = placeId,
+                FirstName = Manual,
+                LastName = customerNote,
+                ReservationDate = date,
+                ReservationTime = time,
+                CreatedAt = DateTime.Now,
+                AspNetUserId = null,
+                Phone = "N/A"
+            };
+
+            try
+            {
+                await context.Reservations.AddAsync(reservation);
+                await context.SaveChangesAsync();
+
+                await auditService.LogAsync(
+                    "Manual Reservation",
+                    "Reservation",
+                    reservation.Id.ToString(),
+                    $"{OwnerManualReservation} {customerNote} {On} {date:dd.MM.yyyy} {In} {time:HH:mm}");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

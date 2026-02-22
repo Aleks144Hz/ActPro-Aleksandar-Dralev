@@ -12,5 +12,6 @@ namespace ActPro.Domain.Models
         public int UserCommentsCount { get; set; }
         public bool CanUserLeaveComment => UserCommentsCount < 3;
         public string CurrentUserId { get; set; }
+        public double UserCredits { get; set; }
     }
 }

@@ -207,3 +207,9 @@ input[name="timeSlot"]:checked + .time-slot-label {
     border-width: 2px;
     background-color: rgba(13, 202, 240, 0.05);
 }
+
+.text-decoration-line-through {
+    text-decoration: line-through !important;
+    color: #dc3545 !important;
+    opacity: 0.6;
+}

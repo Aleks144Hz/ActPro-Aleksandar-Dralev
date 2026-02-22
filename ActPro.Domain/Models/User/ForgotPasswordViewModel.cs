@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static ActPro.Helpers.MessageConstants;
 namespace ActPro.Domain.Models.Account
 {
     public class ForgotPasswordViewModel
@@ -14,11 +13,11 @@ namespace ActPro.Domain.Models.Account
         [Required]
         public string Token { get; set; }
 
-        [Required(ErrorMessage = NewPasswordIsRequired)]
+        [Required(ErrorMessage = "NewPasswordIsRequired")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = ConfirmPasswordIsRequired)]
-        [Compare("Password", ErrorMessage = PasswordMismatch)]
+        [Required(ErrorMessage = "ConfirmPasswordIsRequired")]
+        [Compare("Password", ErrorMessage = "PasswordMismatch")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -10,11 +10,12 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
     public class AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IRepository<ApplicationUser> userRepo,
-        IRepository<Favorite> favRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<BannedUser> banRepo, IConfiguration configuration) : IAccountService
+        IRepository<Favorite> favRepo, IRepository<Reservation> resRepo, IRepository<Comment> commentRepo, IRepository<BannedUser> banRepo, IConfiguration configuration, Interfaces.IEmailSender emailSender) : IAccountService
     {
         //--- GET USER PROFILE ---
         public async Task<ApplicationUser> GetUserFullProfileAsync(string userId) => await userRepo.AllAsNoTracking()
@@ -25,7 +26,7 @@ namespace ActPro.Services.Services
         .ThenInclude(f => f.Place)
         .ThenInclude(p => p.City)
         .FirstOrDefaultAsync(u => u.Id == userId);
-        
+
         public async Task<ApplicationUser> GetUserByIdAsync(string userId) => await userManager.FindByIdAsync(userId);
 
         public async Task<(int resCount, int revCount)> GetUserActivityStatsAsync(string userId)
@@ -144,23 +145,25 @@ namespace ActPro.Services.Services
             {
                 favRepo.Delete(existingFavorite);
                 await favRepo.SaveChangesAsync();
-                return (false, "Премахнато от любими");
+                return (false, RemovedFromFavorites);
             }
 
             var favorite = new Favorite { AspNetUserId = userId, PlaceId = placeId };
             await favRepo.AddAsync(favorite);
             await favRepo.SaveChangesAsync();
-            return (true, "Добавено в любими!");
+            return (true, AddedToFavorites);
         }
 
         //--- CHANGE PASSWORD ---
         public async Task<IdentityResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword)
         {
             var user = await userManager.FindByIdAsync(userId);
+            if (user == null) return IdentityResult.Failed(new IdentityError { Description = NotFound });
             var result = await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             if (result.Succeeded)
             {
                 await signInManager.RefreshSignInAsync(user);
+                await emailSender.SendPasswordChangedNotificationAsync(user.Email, user.FirstName);
             }
             return result;
         }

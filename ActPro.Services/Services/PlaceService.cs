@@ -3,6 +3,7 @@ using ActPro.DAL.Entities;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
@@ -48,7 +49,7 @@ namespace ActPro.Services.Services
                 }
             }
 
-            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{CreatedPlace}: {place.Name}");
             return true;
         }
     }

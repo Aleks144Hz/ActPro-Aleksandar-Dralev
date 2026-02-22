@@ -47,8 +47,11 @@ namespace ActPro
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             })
-            .AddDataAnnotationsLocalization()
-            .AddViewLocalization();
+           .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+           .AddDataAnnotationsLocalization(options => {
+               options.DataAnnotationLocalizerProvider = (type, factory) =>
+                   factory.Create(typeof(Domain.Helpers.Resources.SharedResource));
+           });
 
 
             builder.Services.AddDataProtection()
@@ -82,11 +85,12 @@ namespace ActPro
 
             builder.Services.AddScoped<IAuditDashboardService, AuditDashboardService>();
 
-            builder.Services.AddTransient<ActPro.Services.Interfaces.IEmailSender, EmailSender>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
             builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -109,6 +113,13 @@ namespace ActPro
                     logger.LogError(ex, "Ãðåøêà ïðè ñúçäàâàíåòî íà Àäìèíà.");
                 }
             }
+            var supportedCultures = new[] { "bg", "en" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseHttpsRedirection();
 

@@ -1,0 +1,576 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="NameIsRequired">
+		<value>Името е задължително!</value>
+	</data>
+	<data name="EnterFirstName">
+		<value>Моля, въведете вашето име.</value>
+	</data>
+	<data name="EnterEmail">
+		<value>Моля, въведете имейл адрес.</value>
+	</data>
+	<data name="LastNameIsRequired">
+		<value>Фамилията е задължителнa!</value>
+	</data>
+	<data name="Email">
+		<value>Моля, въведете валиден имейл адрес.</value>
+	</data>
+	<data name="EmailIsRequired">
+		<value>Имейлa е задължителен!</value>
+	</data>
+	<data name="CurrentPasswordIsRequired">
+		<value>Текущата парола е задължителна!</value>
+	</data>
+	<data name="NewPasswordIsRequired">
+		<value>Новата парола е задължителна!</value>
+	</data>
+	<data name="PasswordMismatch">
+		<value>Паролите трябва да съвпадат.</value>
+	</data>
+	<data name="PasswordIsRequired">
+		<value>Паролата е задължителна!</value>
+	</data>
+	<data name="ConfirmPasswordIsRequired">
+		<value>Паролата за потвърждение е задължителна!</value>
+	</data>
+	<data name="InvalidPhoneNumber">
+		<value>Моля, въведете валиден телефонен номер.</value>
+	</data>
+	<data name="PhoneNumberRequired">
+		<value>Телефонен номер е задължителен!</value>
+	</data>
+	<data name="AddressNotValid">
+		<value>Полето може да съдържа букви, цифри и символи ““,.- №.</value>
+	</data>
+	<data name="Error">
+		<value>Възникна грешка.</value>
+	</data>
+	<data name="OnlyLettersAllowed">
+		<value>Полето може да съдържа само букви.</value>
+	</data>
+	<data name="OnlyNumbersAllowed">
+		<value>Полето може да съдържа само цифри.</value>
+	</data>
+	<data name="OnlyDecimalNumbersAllowed">
+		<value>Полето може да съдържа само десетични числа.</value>
+	</data>
+	<data name="LettersNumbersAllowed">
+		<value>Полето може да съдържа букви и цифри</value>
+	</data>
+	<data name="LettersNumbersEnglAllowed">
+		<value>Полето може да съдържа латински букви и цифри</value>
+	</data>
+	<data name="RoleNotFound">
+		<value>Не съществува такава роля.</value>
+	</data>
+	<data name="ErrorWhileCreatingCheckData">
+		<value>Грешка при създаване, проверете въведените данни!</value>
+	</data>
+	<data name="UserIsNotRegistered">
+		<value>Потребителят не съществува в системата!</value>
+	</data>
+	<data name="NotValidPassword">
+		<value>Невалидна парола! Моля проверете отново!</value>
+	</data>
+	<data name="InvalidPasswordFormat">
+		<value>Невалидна парола. Паролата трябва да е изписана на латиница, да съдържа поне 6 символа,\nот които поне една цифра, една главна и една малка буква,\nкакто и поне един специален символ.</value>
+	</data>
+	<data name="UserWithThisEmailExists">
+		<value>Потребител с този имейл вече съществува.</value>
+	</data>
+	<data name="UserAccountIsBanned">
+		<value>Акаунтът ви е блокиран.</value>
+	</data>
+	<data name="EmailIsBanned">
+		<value>Този имейл адрес е блокиран.</value>
+	</data>
+	<data name="UserLoggedInSuccessfully">
+		<value>Потребителят влезе в системата.</value>
+	</data>
+	<data name="Welcome">
+		<value>Добре дошли в ActPro!</value>
+	</data>
+	<data name="AgreeWithTerms">
+		<value>Трябва да приемете общите условия.</value>
+	</data>
+	<data name="ProveYouAreNotRobot">
+		<value>Моля потвърдете, че не сте робот.</value>
+	</data>
+	<data name="AccountApproved">
+		<value>Потвърждение на акаунт - ActPro</value>
+	</data>
+	<data name="SuccsessfullRegistration">
+		<value>Регистрацията е успешна! Добре дошли.</value>
+	</data>
+	<data name="NewUserRegistered">
+		<value>Нов потребител се регистрира</value>
+	</data>
+	<data name="ValidEmailAddress">
+		<value>Ако имейлът съществува, сме изпратили линк за възстановяване.</value>
+	</data>
+	<data name="PasswordResetSuccess">
+		<value>Паролата беше успешно променена! Можете да влезете с новата си парола.</value>
+	</data>
+	<data name="EmailApprovedSuccess">
+		<value>Имейлът ви беше потвърден успешно! Вече можете да правите резервации.</value>
+	</data>
+	<data name="EmailAlreadyApproved">
+		<value>Акаунтът вече е потвърден или не съществува.</value>
+	</data>
+	<data name="AccountEmailApprovel">
+		<value>Потвърждение на акаунт - ActPro</value>
+	</data>
+	<data name="AccountInfoUpadate">
+		<value>Потребителят обнови профилните си данни.</value>
+	</data>
+	<data name="UserUpdatePasswordSuccess">
+		<value>Потребителят смени паролата си успешно.</value>
+	</data>
+	<data name="PasswordUpdatedSuccessfully">
+		<value>Паролата е променена успешно!</value>
+	</data>
+	<data name="WrongPassword">
+		<value>Въвели сте грешна парола.</value>
+	</data>
+	<data name="UserDeleteAccountSuccess">
+		<value>Потребителят изтри профила си</value>
+	</data>
+	<data name="WrongEmail">
+		<value>Грешен имейл</value>
+	</data>
+	<data name="GoodBye">
+		<value>Довиждане! Надяваме се да ви видим отново скоро.</value>
+	</data>
+	<data name="SuccessfulDeletedAccount">
+		<value>Профилът бе изтрит! До нови срещи.</value>
+	</data>
+	<data name="SuccessfulUserEdit">
+		<value>Успешно редактирахте данните на потребителя</value>
+	</data>
+	<data name="SuccessfulSaveChanges">
+		<value>Успешно запазихте промените</value>
+	</data>
+	<data name="NewsIsPublished">
+		<value>Публикувана е нова новина:</value>
+	</data>
+	<data name="NewsIsPublishedSuccessfully">
+		<value>Новината е публикувана успешно!</value>
+	</data>
+	<data name="NewsDeleted">
+		<value>Изтрита новина с ID:</value>
+	</data>
+	<data name="NewsDeletedSuccessfully">
+		<value>Новината е изтрита успешно!</value>
+	</data>
+	<data name="FillInAllFields">
+		<value>Моля, попълнете всички задължителни полета правилно.</value>
+	</data>
+	<data name="TicketSendSuccessfully">
+		<value>Вашата заявка беше изпратена успешно! Проверете имейла си за потвърждение.</value>
+	</data>
+	<data name="ProfileNotApprovedForCreatingPlace">
+		<value>Профилът Ви не е потвърден. Моля, потвърдете имейла си, за да можете да добавяте обекти.</value>
+	</data>
+	<data name="RequestSentSuccessfully">
+		<value>Вашата заявка е изпратена успешно!</value>
+	</data>
+	<data name="ErrorWhileTryingToFill">
+		<value>Грешка при запис: </value>
+	</data>
+	<data name="ReservationNeedApproval">
+		<value>Трябва да потвърдите имейла си, преди да направите резервация!</value>
+	</data>
+	<data name="SportPlace">
+		<value>Спортен обект</value>
+	</data>
+	<data name="UserMadeReservation">
+		<value>Потребителят направи резервация.</value>
+	</data>
+	<data name="UserDeletedReservation">
+		<value>Потребителят отказа резервация.</value>
+	</data>
+	<data name="CommentNeedApproval">
+		<value>Трябва да потвърдите имейла си, преди да добавите коментар!</value>
+	</data>
+	<data name="UserMadeComment">
+		<value>Потребителят добави коментар.</value>
+	</data>
+	<data name="UserDeletedComment">
+		<value>Потребителят изтри коментар.</value>
+	</data>
+	<data name="DescribeYourIssue">
+		<value>Моля, опишете вашия проблем или въпрос подробно.</value>
+	</data>
+	<data name="IssueLenght">
+		<value>Описанието трябва да е поне 10 символа.</value>
+	</data>
+	<data name="PlaceAddedSuccessfully">
+		<value>Обектът беше създаден успешно.</value>
+	</data>
+	<data name="PlaceUpdatedSuccessfully">
+		<value>Успешно редактирахте данните на обекта.</value>
+	</data>
+	<data name="PlaceDeletedSuccessfully">
+		<value>Обектът и всички свързани данни бяха изтрити.</value>
+	</data>
+	<data name="PlaceApprovedSuccessfully">
+		<value>Обектът беше одобрен успешно.</value>
+	</data>
+	<data name="DateClosedSuccessfully">
+		<value>Датите бяха заключени успешно.</value>
+	</data>
+	<data name="DateOpenedSuccessfully">
+		<value>Датата беше отключена успешно.</value>
+	</data>
+	<data name="DateError">
+		<value>Крайната дата не може да бъде преди началната.</value>
+	</data>
+	<data name="ReservationClosed">
+		<value>Резервацията беше анулирана успешно!</value>
+	</data>
+	<data name="ReservationTimeEdited">
+		<value>Часът беше променен успешно!</value>
+	</data>
+	<data name="AdminRuleChanged">
+		<value>Администраторските права бяха променени.</value>
+	</data>
+	<data name="OwnerRuleChanged">
+		<value>Правата на собственика бяха променени.</value>
+	</data>
+	<data name="UserBanned">
+		<value>Потребителят беше блокиран и изтрит успешно.</value>
+	</data>
+	<data name="ReservationApproved">
+		<value>Резервацията беше одобрена!</value>
+	</data>
+	<data name="ReservationBlocked">
+		<value>Часът беше блокиран успешно!</value>
+	</data>
+	<data name="AddedToFavorites">
+		<value>Добавено в любими!</value>
+	</data>
+	<data name="RemovedFromFavorites">
+		<value>Премахнато от любими!</value>
+	</data>
+	<data name="NoCities">
+		<value>Няма град</value>
+	</data>
+	<data name="NoActivities">
+		<value>Няма дейност</value>
+	</data>
+	<data name="NoPlace">
+		<value>Няма обект</value>
+	</data>
+	<data name="CreatedPlace">
+		<value>Създаден обект</value>
+	</data>
+	<data name="UpdatedPlace">
+		<value>Променени данни за</value>
+	</data>
+	<data name="DeletedPlace">
+		<value>Изтрит обект</value>
+	</data>
+	<data name="ApprovedPlace">
+		<value>Одобрен обект</value>
+	</data>
+	<data name="PlaceClosed">
+		<value>Заключен период от</value>
+	</data>
+	<data name="PlaceOpened">
+		<value>Отключен дата</value>
+	</data>
+	<data name="PlaceId">
+		<value>за обект с ID</value>
+	</data>
+	<data name="To">
+		<value>до</value>
+	</data>
+	<data name="For">
+		<value>за</value>
+	</data>
+	<data name="On">
+		<value>на</value>
+	</data>
+	<data name="In">
+		<value>в</value>
+	</data>
+	<data name="Reason">
+		<value>Причина</value>
+	</data>
+	<data name="DeletedReservation">
+		<value>Изтрита резервация на</value>
+	</data>
+	<data name="ReservationUpdate">
+		<value>Променен час за</value>
+	</data>
+	<data name="Manual">
+		<value>РЪЧНА</value>
+	</data>
+	<data name="OwnerManualReservation">
+		<value>Собственик блокира час за</value>
+	</data>
+	<data name="PlanedManufacture">
+		<value>планирана профилактика</value>
+	</data>
+	<data name="PlaceIsClosedOnThisDate">
+		<value>Обектът е затворен за резервации на тази дата поради</value>
+	</data>
+	<data name="InvalidHour">
+		<value>Невалиден час.</value>
+	</data>
+	<data name="HourAlreadyPassed">
+		<value>Часът вече е минал.</value>
+	</data>
+	<data name="HourAlreadyReserved">
+		<value>Този час току-що беше зает!</value>
+	</data>
+	<data name="SuccessfullReservation">
+		<value>Резервацията е успешно направена.</value>
+	</data>
+	<data name="MaximumComments">
+		<value>Вече сте оставили максималния брой коментари (3) за този обект.</value>
+	</data>
+	<data name="CommentAdded">
+		<value>Коментарът е добавен успешно.</value>
+	</data>
+	<data name="CommentNotFound">
+		<value>Коментарът не е намерен.</value>
+	</data>
+	<data name="CommentDeleted">
+		<value>Коментарът е изтрит успешно.</value>
+	</data>
+	<data name="CommentUpdated">
+		<value>Коментарът е обновен успешно.</value>
+	</data>
+	<data name="ReservationNotFound">
+		<value>Резервацията не е намерена.</value>
+	</data>
+	<data name="CannotCancelPastReservation">
+		<value>Не можете да откажете изминала резервация.</value>
+	</data>
+	<data name="Cancelled">
+		<value>Успешно отказана.</value>
+	</data>
+	<data name="NotFound">
+		<value>Не е намерен.</value>
+	</data>
+	<data name="Update">
+		<value>Oбновенo.</value>
+	</data>
+	<data name="AddedRole">
+		<value>Добавена роля</value>
+	</data>
+	<data name="RemovedRole">
+		<value>Премахната роля</value>
+	</data>
+	<data name="BAN">
+		<value>Блокиран и изтрит</value>
+	</data>
+	<data name="Place">
+		<value>Обектa</value>
+	</data>
+	<data name="Rating">
+		<value>Рейтинг</value>
+	</data>
+	<data name="ViewMore">
+		<value>Виж повече</value>
+	</data>
+	<data name="PageTitle">
+		<value>Начало</value>
+	</data>
+	<data name="ObjectsCountSuffix">
+		<value>обекта</value>
+	</data>
+	<data name="RatingLabel">
+		<value>Рейтинг: ⭐</value>
+	</data>
+	<data name="ViewDetails">
+		<value>Виж детайли</value>
+	</data>
+	<data name="SearchHeroTitle">
+		<value>Намери своето място за спорт</value>
+	</data>
+	<data name="SearchHeroSubtitle">
+		<value>Лесно, бързо и удобно резервиране по всяко време.</value>
+	</data>
+	<data name="LabelCity">
+		<value>Населено място</value>
+	</data>
+	<data name="PlaceholderCity">
+		<value>Избери или въведи град</value>
+	</data>
+	<data name="ValidationCityRequired">
+		<value>Моля, изберете населено място!</value>
+	</data>
+	<data name="LabelActivity">
+		<value>Какво ще спортувате?</value>
+	</data>
+	<data name="PlaceholderActivity">
+		<value>Избери или въведи активност</value>
+	</data>
+	<data name="SearchButton">
+		<value>ТЪРСИ</value>
+	</data>
+	<data name="AboutBadge">
+		<value>Какво е ActPro?</value>
+	</data>
+	<data name="AboutTitle">
+		<value>Твоят дигитален асистент за активен живот</value>
+	</data>
+	<data name="AboutDescription">
+		<value>ActPro е иновативна платформа, която свързва ентусиастите със спортните бази. Нашата мисия е да премахнем бариерите пред спорта, като ви дадем достъп до стотици обекти само с няколко клика.</value>
+	</data>
+	<data name="FeatureRealTime">
+		<value>Резервации в реално време</value>
+	</data>
+	<data name="FeatureVariety">
+		<value>Голямо разнообразие от спортове</value>
+	</data>
+	<data name="FeatureAllDevices">
+		<value>Достъпно от всякакъв вид устройство</value>
+	</data>
+	<data name="CategoriesTitle">
+		<value>Популярни категории</value>
+	</data>
+	<data name="SportFootball">
+		<value>Футбол</value>
+	</data>
+	<data name="SportBasketball">
+		<value>Баскетбол</value>
+	</data>
+	<data name="SportVolleyball">
+		<value>Волейбол</value>
+	</data>
+	<data name="SportTennis">
+		<value>Тенис</value>
+	</data>
+	<data name="SportFitness">
+		<value>Фитнес</value>
+	</data>
+	<data name="SportSwimming">
+		<value>Плуване</value>
+	</data>
+	<data name="BenefitsBadge">
+		<value>Ползи</value>
+	</data>
+	<data name="BenefitsTitle">
+		<value>С какво ви помагаме?</value>
+	</data>
+	<data name="BenefitsDescription">
+		<value>Забравете за десетките телефонни обаждания, за да разберете дали тенис кортът е свободен. С нас пестите време и нерви:</value>
+	</data>
+	<data name="BenefitSpeed">
+		<value>Бързина при резервация</value>
+	</data>
+	<data name="BenefitSecurity">
+		<value>Сигурност на плащанията</value>
+	</data>
+	<data name="BenefitAccessibility">
+		<value>Достъпност от всяко устройство</value>
+	</data>
+	<data name="TopPlacesTitle">
+		<value>Топ обекти с най-висок рейтинг</value>
+	</data>
+	<data name="SolutionsBadge">
+		<value>Решения</value>
+	</data>
+	<data name="SolutionsTitle">
+		<value>Проблемите, които решаваме</value>
+	</data>
+	<data name="ProbInfoTitle">
+		<value>Липса на информация</value>
+	</data>
+	<data name="ProbInfoDesc">
+		<value>Вече няма нужда да търсите контакти по форуми – всичко е на едно място.</value>
+	</data>
+	<data name="ProbScheduleTitle">
+		<value>Неактуални графици</value>
+	</data>
+	<data name="ProbScheduleDesc">
+		<value>Виждате само свободните часове, актуализирани в реално време.</value>
+	</data>
+	<data name="ProbReviewTitle">
+		<value>Възможността за отзив</value>
+	</data>
+	<data name="ProbReviewDesc">
+		<value>Вече можете да изразите вашето мнение относно дадения обект, който сте посетили.</value>
+	</data>
+	<data name="OwnerTitle">
+		<value>Имаш спортен обект?</value>
+	</data>
+	<data name="OwnerSubtitle">
+		<value>Стани част от нашата мрежа в три лесни стъпки и увеличи клиентите си.</value>
+	</data>
+	<data name="OwnerRegisterBtn">
+		<value>Регистрирай го</value>
+	</data>
+	<data name="Step1Title">
+		<value>Създаване</value>
+	</data>
+	<data name="Step1Desc">
+		<value>Регистрирай своя бизнес.</value>
+	</data>
+	<data name="Step2Title">
+		<value>Потвърждаване</value>
+	</data>
+	<data name="Step2Desc">
+		<value>Предоставяне на документи за собственост.</value>
+	</data>
+	<data name="Step3Title">
+		<value>Печели</value>
+	</data>
+	<data name="Step3Desc">
+		<value>Приемай резервации онлайн.</value>
+	</data>
+	<data name="StoryTitle">
+		<value>Нашата история и цел</value>
+	</data>
+	<data name="StorySubtitle">
+		<value>Ние не просто правим софтуер. Ние градим общност, където здравето и спортът са приоритет за всеки.</value>
+	</data>
+	<data name="MissionTitle">
+		<value>Мисия</value>
+	</data>
+	<data name="MissionDesc">
+		<value>Да направим спорта достъпен за всеки българин чрез модерни технологии.</value>
+	</data>
+	<data name="VisionTitle">
+		<value>Визия</value>
+	</data>
+	<data name="VisionDesc">
+		<value>Най-голямата екосистема за активен отдих и управление на спортни бази в страната.</value>
+	</data>
+	<data name="ValuesTitle">
+		<value>Ценности</value>
+	</data>
+	<data name="ValuesDesc">
+		<value>Прозрачност, иновация и непоколебима подкрепа за местния бизнес и спортни клубове.</value>
+	</data>
+	<data name="JsFamousLocations">
+		<value>Известни локации</value>
+	</data>
+	<data name="JsPopularActivities">
+		<value>Популярни активности</value>
+	</data>
+	<data name="JsAllSuggestions">
+		<value>Всички предложения</value>
+	</data>
+	<data name="JsToastSelectCity">
+		<value>Моля, изберете град от предложенията!</value>
+	</data>
+	<data name="JsToastSelectActivity">
+		<value>Моля, изберете валидна активност!</value>
+	</data>
+</root>

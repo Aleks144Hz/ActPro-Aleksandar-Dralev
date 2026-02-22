@@ -44,8 +44,31 @@
         <div class="col-md-4">
             <div class="card border-success shadow-sm sticky-top" style="top: 20px;">
                 <div class="card-body text-center">
-                    <h2 class="card-title text-success mb-3">@Model.Place.Price €/ч</h2>
-                    <p class="text-muted">Капацитет: до @Model.Place.Capacity души</p>
+                    @{
+                        double discountPercent = 0;
+                        if (Model.UserCredits >= 500) discountPercent = 10;
+                        else if (Model.UserCredits >= 100) discountPercent = 5;
+                        decimal originalPrice = (decimal)Model.Place.Price;
+                        decimal finalPrice = originalPrice * (1 - (decimal)discountPercent / 100);
+                    }
+                    @if (discountPercent > 0)
+                    {
+                        <div class="mb-1">
+                            <span class="badge bg-warning text-dark shadow-sm">
+                                <i class="bi bi-patch-check-fill"></i> -@discountPercent% Отстъпка
+                            </span>
+                        </div>
+                        <h2 class="card-title mb-0">
+                            <span class="text-muted text-decoration-line-through fs-4 me-2">@originalPrice.ToString("F2")€</span>
+                            <span class="text-success fw-bold">@finalPrice.ToString("F2") €/ч</span>
+                        </h2>
+                    }
+                    else
+                    {
+                        <h2 class="card-title text-success mb-3">@originalPrice.ToString("F2") €/ч</h2>
+                    }
+                    <p class="text-muted small">Капацитет: до @Model.Place.Capacity души</p>
+
                     <button type="button" class="btn btn-success btn-lg w-100 py-3 shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
                         Запази час
                     </button>

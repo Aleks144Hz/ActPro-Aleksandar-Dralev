@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Owner.Controllers
 {
@@ -22,16 +23,18 @@ namespace ActPro.Areas.Owner.Controllers
 
             if (res != null)
             {
-                string userEmail = res.AspNetUser.Email;
-                string userFirstName = res.AspNetUser.FirstName;
-                string placeName = res.Place.Name;
-                string formattedDate = res.ReservationDate.ToString();
-                string timeSlot = res.ReservationTime.ToString();
-
+                if (res.AspNetUserId != null && res.AspNetUser != null)
+                {
+                    string userEmail = res.AspNetUser.Email;
+                    string userFirstName = res.AspNetUser.FirstName;
+                    string placeName = res.Place.Name;
+                    string formattedDate = res.ReservationDate.ToString();
+                    string timeSlot = res.ReservationTime.ToString();
+                    await emailSender.SendBookingCancellationAsync(userEmail, userFirstName, placeName, formattedDate, timeSlot);
+                }
                 if (await resService.DeleteReservationAsync(id))
                 {
-                    await emailSender.SendBookingCancellationAsync(userEmail, userFirstName, placeName, formattedDate, timeSlot);
-                    TempData["Success"] = "Резервацията беше анулирана.";
+                    TempData["Success"] = ReservationClosed;
                 }
             }
 
@@ -63,7 +66,29 @@ namespace ActPro.Areas.Owner.Controllers
                     oldTime,
                     newTime,
                     res.ReservationDate.ToString());
-                TempData["Success"] = "Часът беше променен!";
+                TempData["Success"] = ReservationTimeEdited;
+            }
+
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateManual(int placeId, string customerNote, DateOnly date, TimeOnly time)
+        {
+            if (string.IsNullOrEmpty(customerNote))
+            {
+                TempData["Error"] = Error;
+                return RedirectToAction("Index", "Dashboard");
+            }
+
+            if (await resService.CreateManualReservationAsync(placeId, customerNote, date, time))
+            {
+                TempData["Success"] = ReservationBlocked;
+            }
+            else
+            {
+                TempData["Error"] = Error;
             }
 
             return RedirectToAction("Index", "Dashboard");

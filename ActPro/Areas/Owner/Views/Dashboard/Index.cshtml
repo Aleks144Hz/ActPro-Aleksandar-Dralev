@@ -22,6 +22,10 @@
                                     </a>
                                 </span>
                                 <div class="btn-group gap-1">
+                                    <button class="btn btn-outline-success btn-sm border-0 p-1" title="Запълни час (ръчно)"
+                                            data-bs-toggle="modal" data-bs-target="#manualReservationModal-@item.Id">
+                                        <i class="bi bi-plus-circle-fill"></i>
+                                    </button>
                                     <button class="btn btn-outline-primary btn-sm border-0 p-1" title="Редактирай"
                                             data-bs-toggle="modal" data-bs-target="#editPlaceModal-@item.Id">
                                         <i class="bi bi-pencil-square"></i>
@@ -137,6 +141,48 @@
 </div>
 @foreach (var item in Model.MyPlaces)
 {
+    <div class="modal fade" id="manualReservationModal-@item.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Ръчна резервация - @item.Name</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-area="Owner" asp-controller="Reservations" asp-action="CreateManual" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="PlaceId" value="@item.Id" />
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Бележка/ Име на клиент</label>
+                            <input type="text" name="CustomerNote" class="form-control" placeholder="напр. Резервация по телефон / Иван Петров" required />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold small">Дата</label>
+                                <input type="date" name="Date" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold small">Час</label>
+                                <input type="time" name="Time" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info py-2 mb-0" style="font-size: 0.85rem;">
+                            <i class="bi bi-info-circle me-1"></i> Този час ще бъде отбелязан като зает в публичния календар.
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
+                        <button type="submit" class="btn btn-success px-4">Запази час</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+@foreach (var item in Model.MyPlaces)
+{
     if (Model.EditPlaces.ContainsKey(item.Id))
     {
         @await Html.PartialAsync("EditPlace", Model.EditPlaces[item.Id])
@@ -160,6 +206,7 @@
         })
     }
 }
+
 @section Styles
 {
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />

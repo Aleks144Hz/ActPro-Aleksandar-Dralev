@@ -119,10 +119,14 @@
                     <div class="share-section d-flex align-items-center">
                         <span class="small fw-bold text-muted me-3 text-uppercase">Сподели статията:</span>
                         <div class="share-buttons">
-                            <a href="#" id="shareFB" target="_blank" class="fb-bg"><i class="bi bi-facebook"></i></a>
-                            <a href="#" id="shareIG" target="_blank" class="ig-bg"><i class="bi bi-instagram"></i></a>
-                            <a href="#" id="shareVB" target="_blank" class="vb-bg"><i class="bi bi-chat-dots-fill"></i></a>
+                            <a href="#" id="shareFB" target="_blank" class="fb-bg">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="javascript:void(0);" id="copyLink" class="ig-bg" onclick="copyToClipboard()" title="Копирай линк">
+                                <i class="bi bi-link-45deg"></i>
+                            </a>
                         </div>
+                        <span id="copyMessage" class="small text-success ms-2" style="display: none;">Копирано!</span>
                     </div>
                 </div>
             </div>
@@ -307,5 +311,24 @@
                 }
             });
         });
+        document.addEventListener("DOMContentLoaded", function () {
+        const currentUrl = encodeURIComponent(window.location.href);
+
+        const fbBtn = document.getElementById('shareFB');
+        if (fbBtn) {
+            fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+        }
+    });
+
+        function copyToClipboard() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                const msg = document.getElementById('copyMessage');
+                msg.style.display = 'inline';
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                }, 2000);
+            });
+        }
     </script>
 }

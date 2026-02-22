@@ -82,6 +82,24 @@ namespace ActPro.Services.Services
             await ExecuteSendAsync(email, subject, html);
         }
 
+        // Password Changed Notification
+        public async Task SendPasswordChangedNotificationAsync(string email, string firstName)
+        {
+            string subject = "Вашата парола беше променена";
+            string content = $@"
+            <p>Здравейте, {firstName}</p>
+            <p>Този имейл е потвърждение, че паролата за Вашия акаунт в <strong>ActPro</strong> беше успешно променена преди малко.</p>
+            <div style='padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107; margin: 20px 0;'>
+                <p style='margin: 0; font-size: 14px; color: #856404;'>
+                    <strong>Важно:</strong> Ако не сте инициирали тази промяна, моля свържете се с нашата поддръжка веднага, тъй като сигурността на акаунта Ви може да е застрашена.
+                </p>
+            </div>
+            <p>Ако Вие сте извършили промяната, можете да игнорирате това съобщение.</p>";
+
+            string html = BuildEmailTemplate("Сигурност на акаунта", content);
+            await ExecuteSendAsync(email, subject, html);
+        }
+
         //Delete profile
         public async Task SendProfileDeletedAsync(string email, string firstName)
         {
@@ -121,6 +139,19 @@ namespace ActPro.Services.Services
             await ExecuteSendAsync(email, subject, html);
         }
 
+        //Deleted place
+        public async Task SendPlaceDeletedAsync(string email, string firstName, string placeName)
+        {
+            string subject = "Вашият обект е премахнат";
+            string content = $@"
+                <p>Уважаеми/а {firstName}</p>
+                <p>Информираме Ви, че Вашият обект <strong>{placeName}</strong> беше премахнат от нашата платформа от администратор.</p>
+                <p>Ако смятате, че е станала грешка, моля свържете се с поддръжката ни.</p>";
+
+            string html = BuildEmailTemplate("Премахнат обект", content);
+            await ExecuteSendAsync(email, subject, html);
+        }
+
         //Change reservation time
         public async Task SendReservationTimeChangedAsync(string email, string firstName, string placeName, string oldTime, string newTime, string date)
         {
@@ -139,18 +170,6 @@ namespace ActPro.Services.Services
             await ExecuteSendAsync(email, subject, html);
         }
 
-        //Deleted place
-        public async Task SendPlaceDeletedAsync(string email, string firstName, string placeName)
-        {
-            string subject = "Вашият обект е премахнат";
-            string content = $@"
-                <p>Уважаеми/а {firstName}</p>
-                <p>Информираме Ви, че Вашият обект <strong>{placeName}</strong> беше премахнат от нашата платформа от администратор.</p>
-                <p>Ако смятате, че е станала грешка, моля свържете се с поддръжката ни.</p>";
-
-            string html = BuildEmailTemplate("Премахнат обект", content);
-            await ExecuteSendAsync(email, subject, html);
-        }
         //Support ticket
         public async Task SendSupportTicketAsync(SupportTicketViewModel model)
         {
@@ -192,6 +211,27 @@ namespace ActPro.Services.Services
             <p>Можете да прегледате детайлите и да управлявате резервацията през Вашия панел.</p>";
 
             string html = BuildEmailTemplate("Нова резервация", content, "Към Таблото", "https://actprobg.com/Owner/Dashboard/Index");
+            await ExecuteSendAsync(ownerEmail, subject, html);
+        }
+
+        // Send notification to owner when a customer cancels a booking
+        public async Task SendBookingCancellationToOwnerAsync(string ownerEmail, string ownerName, string placeName, string customerName, string date, string timeSlot, string number)
+        {
+            string subject = $"Анулирана резервация: {placeName}";
+
+            string content = $@"
+            <p>Здравейте, {ownerName},</p>
+            <p>Клиентът <strong>{customerName}</strong> анулира своята резервация за Вашия обект <strong>{placeName}</strong>.</p>
+            <p>Детайли за анулираната резервация:</p>
+            <ul style='list-style-type: none; padding: 15px; background-color: #fff5f5; border-left: 4px solid #dc3545; border-radius: 4px; margin: 20px 0;'>
+                <li style='margin-bottom: 10px;'><strong>Клиент:</strong> {customerName}</li>
+                <li style='margin-bottom: 10px;'><strong>Номер:</strong> {number}</li>
+                <li style='margin-bottom: 10px;'><strong>Дата:</strong> {date}</li>
+                <li style='font-size: 16px;'><strong>Час:</strong> {timeSlot}</li>
+            </ul>
+            <p>Часът вече е свободен и може да бъде резервиран от други потребители.</p>";
+
+            string html = BuildEmailTemplate("Анулирана резервация", content, "Към Таблото", "https://actprobg.com/Owner/Dashboard/Index");
             await ExecuteSendAsync(ownerEmail, subject, html);
         }
 
@@ -277,21 +317,29 @@ namespace ActPro.Services.Services
 
         private async Task ExecuteSendAsync(string email, string subject, string finalHtml)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderEmail));
-            message.To.Add(new MailboxAddress("", email));
-            message.Subject = subject;
-
-            var bodyBuilder = new BodyBuilder { HtmlBody = finalHtml };
-            message.Body = bodyBuilder.ToMessageBody();
-
-            using (var client = new SmtpClient())
+            try
             {
-                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, SecureSocketOptions.Auto);
-                await client.AuthenticateAsync(_emailSettings.SenderEmail, _emailSettings.Password);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderEmail));
+                message.To.Add(new MailboxAddress("", email));
+                message.Subject = subject;
+
+                var bodyBuilder = new BodyBuilder { HtmlBody = finalHtml };
+                message.Body = bodyBuilder.ToMessageBody();
+
+                using (var client = new SmtpClient())
+                {
+                    client.Timeout = 5000;
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, SecureSocketOptions.Auto);
+                    await client.AuthenticateAsync(_emailSettings.SenderEmail, _emailSettings.Password);
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"---> EMAIL ERROR: {ex.Message}");
             }
         }
     }

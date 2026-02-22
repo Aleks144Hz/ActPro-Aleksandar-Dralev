@@ -319,7 +319,7 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 await auditService.LogAsync("Update Settings", "User", userId, UserUpdatePasswordSuccess);
-                TempData["Success"] = "Паролата е променена успешно!";
+                TempData["Success"] = PasswordUpdatedSuccessfully;
                 return RedirectToAction("Settings");
             }
 

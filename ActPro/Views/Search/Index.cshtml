@@ -4,8 +4,18 @@
 }
 <div class="container-fluid mt-4">
     <div class="row">
-        <aside class="col-md-3 mb-4">
-            <div class="position-relative">
+        <div class="col-12 d-md-none mb-3">
+            <div class="d-flex gap-2 sticky-top py-2" style="z-index: 1020;">
+                <button class="btn btn-success flex-grow-1 shadow-sm rounded-pill" onclick="toggleMobileFilters()">
+                    <i class="bi bi-sliders me-1"></i> Филтри
+                </button>
+                <button class="btn btn-outline-success flex-grow-1 shadow-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#largeMapModal">
+                    <i class="bi bi-map me-1"></i> Карта
+                </button>
+            </div>
+        </div>
+        <aside class="col-md-3 mb-4" id="sidebarContainer">
+            <div class="position-relative d-none d-md-block">
                 <iframe id="miniMap"
                         width="100%"
                         height="150"
@@ -20,8 +30,10 @@
             </div>
             <div class="card shadow-sm border-success">
                 <div class="card-body">
-                    <h5 class="card-title text-center mb-3">Филтрирай</h5>
-
+                       <div class="d-flex align-items-center mb-3">
+                            <h5 class="card-title mb-0 flex-grow-1 text-center">Филтрирай</h5>
+                            <button type="button" class="btn-close d-md-none" onclick="toggleMobileFilters()" aria-label="Close"></button>
+                       </div>
                     <form method="get" asp-controller="Search" asp-action="Index" id="filterForm">
                         <input type="hidden" name="sortOrder" id="currentSortOrder" value="@Context.Request.Query["sortOrder"]" />
 
@@ -407,9 +419,7 @@
             const div = document.createElement('div');
             div.className = 'dropdown-item-custom';
             div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
-            const activityIcons = {
-                    'Айкидо': 'fas fa-user-ninja',
-                    'Акробатика': 'fas fa-child',
+            const activityIcons = {                 
                     'Бадминтон': 'fas fa-table-tennis',
                     'Балет': 'fas fa-shoe-prints',
                     'Баскетбол': 'fas fa-basketball-ball',
@@ -426,7 +436,6 @@
                     'Йога': 'fas fa-spa',
                     'Карате': 'fas fa-hand-rock',
                     'Конна езда': 'fas fa-horse',
-                    'Крикет': 'fas fa-baseball-ball',
                     'Лека атлетика': 'fas fa-running',
                     'ММА': 'fas fa-fist-raised',
                     'Падел': 'fas fa-table-tennis',
@@ -578,4 +587,16 @@
         });
     }
 });
+function toggleMobileFilters() {
+    const sidebar = document.getElementById('sidebarContainer');
+    const body = document.body;
+
+    if (sidebar.classList.contains('mobile-active')) {
+        sidebar.classList.remove('mobile-active');
+        body.style.overflow = 'auto';
+    } else {
+        sidebar.classList.add('mobile-active');
+        body.style.overflow = 'hidden';
+    }
+}
 </script>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
@@ -43,8 +44,8 @@ namespace ActPro.Services.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    CityName = p.City?.Name ?? "Няма град",
-                    ActivityName = p.Activity?.Name ?? "Няма дейност",
+                    CityName = p.City?.Name ?? NoCities,
+                    ActivityName = p.Activity?.Name ?? NoActivities,
                     Price = (decimal)p.Price,
                     IsApproved = p.IsApproved
                 }).ToList(),
@@ -122,7 +123,7 @@ namespace ActPro.Services.Services
                 }
             }
 
-            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{CreatedPlace}: {place.Name}");
             return true;
         }
 
@@ -147,7 +148,7 @@ namespace ActPro.Services.Services
                 await ProcessImagesRawSql(place.Id, images);
             }
 
-            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"Променени данни за: {place.Name}");
+            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"{UpdatedPlace}: {place.Name}");
             return true;
         }
 
@@ -183,7 +184,7 @@ namespace ActPro.Services.Services
             context.Places.Remove(place);
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"Изтрит обект: {place.Name}");
+            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"{DeletedPlace}: {place.Name}");
             return true;
         }
 
@@ -204,7 +205,7 @@ namespace ActPro.Services.Services
             }
 
             await context.SaveChangesAsync();
-            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"Одобрен обект: {place.Name}");
+            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"{ApprovedPlace}: {place.Name}");
             return true;
         }
 
@@ -259,7 +260,7 @@ namespace ActPro.Services.Services
             {
                 context.PlaceClosures.AddRange(closuresToAdd);
                 await context.SaveChangesAsync();
-                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключен период от {start:dd.MM.yyyy} до {end:dd.MM.yyyy}. Причина: {reason}");
+                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"{PlaceClosed} {start:dd.MM.yyyy} {To} {end:dd.MM.yyyy}. {Reason}: {reason}");
             }
             return true;
         }
@@ -272,7 +273,7 @@ namespace ActPro.Services.Services
             DateTime closedDate = closure.ClosureDate;
             context.PlaceClosures.Remove(closure);
             await context.SaveChangesAsync();
-            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"Отключена дата {closedDate:dd.MM.yyyy} за обект ID: {closureId}");
+            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"{PlaceOpened} {closedDate:dd.MM.yyyy} {PlaceId}: {closureId}");
             return true;
         }
     }
