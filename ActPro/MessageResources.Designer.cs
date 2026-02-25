@@ -1663,11 +1663,110 @@ namespace ActPro {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Моля, изберете вид спорт!.
+        /// </summary>
+        public static string ValidationActivityRequired {
+            get {
+                return ResourceManager.GetString("ValidationActivityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, въведете адрес!.
+        /// </summary>
+        public static string ValidationAddressRequired {
+            get {
+                return ResourceManager.GetString("ValidationAddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Капацитетът трябва да е между 1 и 1000 души!.
+        /// </summary>
+        public static string ValidationCapacityRange {
+            get {
+                return ResourceManager.GetString("ValidationCapacityRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, въведете капацитет!.
+        /// </summary>
+        public static string ValidationCapacityRequired {
+            get {
+                return ResourceManager.GetString("ValidationCapacityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Моля, изберете населено място!.
         /// </summary>
         public static string ValidationCityRequired {
             get {
                 return ResourceManager.GetString("ValidationCityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, въведете описание!.
+        /// </summary>
+        public static string ValidationDescriptionRequired {
+            get {
+                return ResourceManager.GetString("ValidationDescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Описанието трябва да е между 10 и 2000 символа..
+        /// </summary>
+        public static string ValidationDescriptionTooLong {
+            get {
+                return ResourceManager.GetString("ValidationDescriptionTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, въведете име на обекта!.
+        /// </summary>
+        public static string ValidationNameRequired {
+            get {
+                return ResourceManager.GetString("ValidationNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Името е твърде дълго! Максимум 200 символа..
+        /// </summary>
+        public static string ValidationNameTooLong {
+            get {
+                return ResourceManager.GetString("ValidationNameTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Цената трябва да е между 0.01 и 9999 лв.!.
+        /// </summary>
+        public static string ValidationPriceRange {
+            get {
+                return ResourceManager.GetString("ValidationPriceRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, въведете цена!.
+        /// </summary>
+        public static string ValidationPriceRequired {
+            get {
+                return ResourceManager.GetString("ValidationPriceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Моля, изберете тип!.
+        /// </summary>
+        public static string ValidationTypeRequired {
+            get {
+                return ResourceManager.GetString("ValidationTypeRequired", resourceCulture);
             }
         }
         
