@@ -1,26 +1,29 @@
 ﻿@using ActPro.Models
 @model LoginViewModel
 @{
-    ViewData["Title"] = "Вход";
+    ViewData["Title"] = DomainResources.Login;
+    ViewData["SeoTitle"] = "Вход - ActPro";
+    ViewData["SeoDescription"] = "Влез в своя ActPro профил, за да управляваш резервациите, любимите си площадки и персоналните си данни. Новата платформа за спортни резервации в България.";
+    ViewData["SeoKeywords"] = "вход, профил, резервации, любими, ActPro";
 }
 <div class="container d-flex align-items-center justify-content-center min-vh-100 py-5">
     <div class="col-md-6 col-lg-5 col-xl-5">
         <div class="card shadow-lg border-0">
             <div class="card-body p-5">
-                <h2 class="text-center mb-4 fw-bold text-dark">Влез</h2>
+                <h2 class="text-center mb-4 fw-bold text-dark">@DomainResources.Login</h2>
                 <form asp-controller="Account" asp-action="Login" method="post">
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-4" role="alert"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Email" class="form-control" />
-                        <label asp-for="Email">Имейл</label>
+                        <input asp-for="Email" class="form-control"/>
+                        <label asp-for="Email">@DomainResources.Email</label>
                         <span asp-validation-for="Email" class="text-danger small ps-1"></span>
                     </div>
                     <div class="mb-3">
                         <div class="input-group">
                             <div class="form-floating flex-grow-1">
                                 <input asp-for="Password" type="password" class="form-control" id="passwordInput" style="border-top-right-radius: 0; border-bottom-right-radius: 0;" />
-                                <label asp-for="Password">Парола</label>
+                                <label asp-for="Password">@DomainResources.Password</label>
                             </div>
                             <button class="btn btn-outline-secondary" type="button" id="togglePassword" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
                                 <i class="bi bi-eye fs-5"></i>
@@ -31,20 +34,20 @@
                     <div class="d-flex justify-content-between align-items-center mb-4 px-1">
                         <div class="form-check custom-checkbox">
                             <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="rememberMe">
-                            <label class="form-check-label text-muted" for="rememberMe">Запомни ме</label>
+                            <label class="form-check-label text-muted" for="rememberMe">@DomainResources.LoginRememberMe</label>
                         </div>
                         <a asp-controller="Account" asp-action="ForgotPassword" class="text-decoration-none small fw-bold text-success">
-                            Забравена парола?
+                            @DomainResources.LoginForgotPassword
                         </a>
                     </div>
                     <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-5 shadow-sm">
-                        Влез<i class="bi bi-box-arrow-in-right ms-2"></i>
+                        @DomainResources.Login<i class="bi bi-box-arrow-in-right ms-2"></i>
                     </button>
                 </form>
                 <div class="text-center mt-4">
                     <p class="text-muted small mb-0">
-                        Нямаш профил?
-                        <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold text-success">Регистрирай се тук</a>
+                        @DomainResources.LoginNoAccount
+                        <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold text-success">@DomainResources.LoginRegisterHere</a>
                     </p>
                 </div>
             </div>

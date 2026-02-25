@@ -1,4 +1,5 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
+using ActPro.Domain;
 using ActPro.Domain.Models.Account;
 using ActPro.Models.User;
 using ActPro.Services;
@@ -6,7 +7,6 @@ using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -55,7 +55,7 @@ namespace ActPro.Controllers
         {
             if (await accountService.IsUserBannedAsync(model.Email))
             {
-                ModelState.AddModelError(string.Empty, UserAccountIsBanned);
+                ModelState.AddModelError(string.Empty, DomainResources.UserAccountIsBanned);
                 return View(model);
             }
 
@@ -66,19 +66,19 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
-                await auditService.LogAsync("User Login", "User", user.Id, UserLoggedInSuccessfully);
-                TempData["Success"] = Welcome;
+                await auditService.LogAsync("User Login", "User", user.Id, DomainResources.UserLoggedInSuccessfully);
+                TempData["Success"] = DomainResources.Welcome;
                 return RedirectToAction("Index", "Home");
             }
 
             var userExists = await userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
             {
-                ModelState.AddModelError("Password", NotValidPassword);
+                ModelState.AddModelError("Password", DomainResources.NotValidPassword);
             }
             else
             {
-                ModelState.AddModelError("Email", UserIsNotRegistered);
+                ModelState.AddModelError("Email", DomainResources.UserIsNotRegistered);
             }
 
             return View(model);
@@ -98,19 +98,19 @@ namespace ActPro.Controllers
 
             if (!accepted)
             {
-                ModelState.AddModelError("AcceptTerms", AgreeWithTerms);
+                ModelState.AddModelError("AcceptTerms", DomainResources.AgreeWithTerms);
             }
 
             if (await accountService.IsUserBannedAsync(model.Email, model.PhoneNumber))
             {
-                ModelState.AddModelError("", EmailIsBanned);
+                ModelState.AddModelError("", DomainResources.EmailIsBanned);
                 return View(model);
             }
 
             string captchaResponse = Request.Form["g-recaptcha-response"];
             if (!await accountService.VerifyReCaptchaAsync(captchaResponse))
             {
-                ModelState.AddModelError("CaptchaResponse", ProveYouAreNotRobot);
+                ModelState.AddModelError("CaptchaResponse", DomainResources.ProveYouAreNotRobot);
                 return View(model);
             }
 
@@ -123,9 +123,9 @@ namespace ActPro.Controllers
                     var user = await userManager.FindByEmailAsync(model.Email);
                     var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
-                    await emailSender.SendEmailAsync(user.Email, AccountApproved, confirmationLink);
-                    TempData["Success"] = SuccsessfullRegistration;
-                    await auditService.LogAsync("Create User", "User", user.Id, NewUserRegistered);
+                    await emailSender.SendEmailAsync(user.Email, DomainResources.AccountApproved, confirmationLink);
+                    TempData["Success"] = DomainResources.SuccsessfullRegistration;
+                    await auditService.LogAsync("Create User", "User", user.Id, DomainResources.NewUserRegistered);
                     return RedirectToAction("RegisterConfirmation", new { email = model.Email });
                 }
 
@@ -166,7 +166,7 @@ namespace ActPro.Controllers
                 await emailSender.SendPasswordResetAsync(model.Email, callbackUrl);
             }
 
-            TempData["Success"] = ValidEmailAddress;
+            TempData["Success"] = DomainResources.ValidEmailAddress;
             return RedirectToAction("Login");
         }
 
@@ -180,7 +180,7 @@ namespace ActPro.Controllers
             var result = await accountService.ResetPasswordAsync(model);
             if (result.Succeeded)
             {
-                TempData["Success"] = PasswordResetSuccess;
+                TempData["Success"] = DomainResources.PasswordResetSuccess;
                 return RedirectToAction("Login");
             }
 
@@ -218,7 +218,7 @@ namespace ActPro.Controllers
             var result = await userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
-                TempData["Success"] = EmailApprovedSuccess;
+                TempData["Success"] = DomainResources.EmailApprovedSuccess;
                 return RedirectToAction("Login");
             }
 
@@ -238,7 +238,7 @@ namespace ActPro.Controllers
 
             if (user == null || user.EmailConfirmed)
             {
-                TempData["Info"] = EmailAlreadyApproved;
+                TempData["Info"] = DomainResources.EmailAlreadyApproved;
                 return RedirectToAction("Login");
             }
 
@@ -246,7 +246,7 @@ namespace ActPro.Controllers
             var confirmationLink = Url.Action("ConfirmEmail", "Account",
                 new { userId = user.Id, token = token }, Request.Scheme);
 
-            await emailSender.SendEmailAsync(user.Email, AccountEmailApprovel, confirmationLink);
+            await emailSender.SendEmailAsync(user.Email, DomainResources.AccountEmailApprovel, confirmationLink);
 
             return RedirectToAction("RegisterConfirmation", new { email = user.Email });
         }
@@ -293,8 +293,8 @@ namespace ActPro.Controllers
 
             if (result.Succeeded)
             {
-                TempData["Success"] = SuccessfulUserEdit;
-                await auditService.LogAsync("Update Settings", "User", userId, AccountInfoUpadate);
+                TempData["Success"] = DomainResources.SuccessfulUserEdit;
+                await auditService.LogAsync("Update Settings", "User", userId, DomainResources.AccountInfoUpadate);
             }
 
             return RedirectToAction("Settings");
@@ -318,8 +318,8 @@ namespace ActPro.Controllers
 
             if (result.Succeeded)
             {
-                await auditService.LogAsync("Update Settings", "User", userId, UserUpdatePasswordSuccess);
-                TempData["Success"] = PasswordUpdatedSuccessfully;
+                await auditService.LogAsync("Update Settings", "User", userId, DomainResources.UserUpdatePasswordSuccess);
+                TempData["Success"] = DomainResources.PasswordUpdatedSuccessfully;
                 return RedirectToAction("Settings");
             }
 
@@ -327,7 +327,7 @@ namespace ActPro.Controllers
             foreach (var error in result.Errors)
             {
                 if (error.Code == "PasswordMismatch")
-                    ModelState.AddModelError("OldPassword", WrongPassword);
+                    ModelState.AddModelError("OldPassword", DomainResources.WrongPassword);
                 else if (error.Code.Contains("Password") && !hasPasswordError)
                 {
                     ModelState.AddModelError("NewPassword", error.Description);
@@ -356,7 +356,7 @@ namespace ActPro.Controllers
             var isPasswordCorrect = await userManager.CheckPasswordAsync(user, model.Password);
             if (!isPasswordCorrect)
             {
-                ModelState.AddModelError("Password", WrongPassword);
+                ModelState.AddModelError("Password", DomainResources.WrongPassword);
                 ViewData["ShowDeleteModal"] = true;
                 return View("Settings", MapToSettingsViewModel(user));
             }
@@ -366,12 +366,12 @@ namespace ActPro.Controllers
             {
                 await emailSender.SendProfileDeletedAsync(user.Email, user.FirstName);
                 await accountService.LogoutAsync();
-                TempData["Success"] = SuccessfulDeletedAccount;
-                await auditService.LogAsync("Delete User", "User", userId, UserDeleteAccountSuccess);
+                TempData["Success"] = DomainResources.SuccessfulDeletedAccount;
+                await auditService.LogAsync("Delete User", "User", userId, DomainResources.UserDeleteAccountSuccess);
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError(string.Empty, Error);
+            ModelState.AddModelError(string.Empty, DomainResources.Error);
             ViewData["ShowDeleteModal"] = true;
             return View("Index", MapToSettingsViewModel(user));
         }
@@ -382,7 +382,7 @@ namespace ActPro.Controllers
         public async Task<IActionResult> Logout()
         {
             await accountService.LogoutAsync();
-            TempData["Success"] = GoodBye;
+            TempData["Success"] = DomainResources.GoodBye;
             return RedirectToAction("Index", "Home");
         }
 

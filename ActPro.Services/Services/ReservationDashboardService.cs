@@ -1,8 +1,8 @@
-﻿using ActPro.DAL.Data;
+using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Domain.Models.Areas;
 using Microsoft.EntityFrameworkCore;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services
 {
@@ -30,7 +30,7 @@ namespace ActPro.Services
                 {
                     Id = r.Id,
                     PlaceId = r.PlaceId ?? 0,
-                    PlaceName = r.Place?.Name ?? NoPlace,
+                    PlaceName = r.Place?.Name ?? DomainResources.NoPlace,
                     FirstName = r.FirstName,
                     LastName = r.LastName,
                     Phone = r.Phone,
@@ -58,7 +58,7 @@ namespace ActPro.Services
             context.Reservations.Remove(res);
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"{DeletedReservation} {res.FirstName} {res.LastName} {For} {res.ReservationDate:dd.MM.yyyy}");
+            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"{DomainResources.DeletedReservation} {res.FirstName} {res.LastName} {DomainResources.For} {res.ReservationDate:dd.MM.yyyy}");
 
             return true;
         }
@@ -73,7 +73,7 @@ namespace ActPro.Services
             res.ReservationTime = newTime;
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"{ReservationUpdate} {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
+            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"{DomainResources.ReservationUpdate} {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
 
             return true;
         }
@@ -95,7 +95,7 @@ namespace ActPro.Services
             var reservation = new Reservation
             {
                 PlaceId = placeId,
-                FirstName = Manual,
+                FirstName = DomainResources.Manual,
                 LastName = customerNote,
                 ReservationDate = date,
                 ReservationTime = time,
@@ -113,7 +113,7 @@ namespace ActPro.Services
                     "Manual Reservation",
                     "Reservation",
                     reservation.Id.ToString(),
-                    $"{OwnerManualReservation} {customerNote} {On} {date:dd.MM.yyyy} {In} {time:HH:mm}");
+                    $"{DomainResources.OwnerManualReservation} {customerNote} {DomainResources.On} {date:dd.MM.yyyy} {DomainResources.In} {time:HH:mm}");
 
                 return true;
             }

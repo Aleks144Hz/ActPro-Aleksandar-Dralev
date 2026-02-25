@@ -4,23 +4,23 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-danger">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>Изтриване на профил</h5>
+                <h5 class="modal-title fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>@DomainResources.DeleteProfile</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p class="text-dark">Тази операция е необратима. Всички ваши данни и любими обекти ще бъдат изтрити завинаги.</p>
+                <p class="text-dark">@DomainResources.DeleteProfileWarning</p>
                 <form asp-controller="Account" asp-action="DeleteProfile" method="post">
                     @Html.AntiForgeryToken()
 
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label fw-bold">Въведете вашата парола, за да потвърдите:</label>
+                        <label asp-for="Password" class="form-label fw-bold">@DomainResources.EnterPasswordConfirm</label>
                         <input asp-for="Password" type="password" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отказ</button>
-                        <button type="submit" class="btn btn-danger">Изтрий</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">@DomainResources.Cancel</button>
+                        <button type="submit" class="btn btn-danger">@DomainResources.Delete</button>
                     </div>
                 </form>
             </div>

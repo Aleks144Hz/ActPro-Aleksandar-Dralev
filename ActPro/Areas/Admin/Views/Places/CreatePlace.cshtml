@@ -1,11 +1,12 @@
 ﻿@using ActPro.Domain.Models.Areas
+@using ActPro.Helpers
 @model PlaceFormViewModel
 <div class="modal fade shadow-lg" id="createPlaceModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0" style="border-radius: 15px; overflow: hidden;">
             <div class="modal-header bg-success text-white p-3 border-0">
                 <h5 class="modal-title fw-bold">
-                    <i class="bi bi-plus-circle me-2"></i> ДОБАВЯНЕ НА НОВ ОБЕКТ
+                    <i class="bi bi-plus-circle me-2"></i> @DomainResources.AddNewPlace
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
@@ -13,39 +14,39 @@
                 <div class="modal-body p-4">
                     <div class="row g-3">
                         <div class="col-md-12">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Име на обекта</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName</label>
                             <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4"
-                                   placeholder="Въведете име..." required />
+                                   placeholder="@DomainResources.EnterPlaceName" required />
                         </div>
                         <div class="col-md-8">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Точен адрес</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.ExactAddress</label>
                             <input asp-for="Address" class="form-control rounded-pill shadow-sm px-4"
-                                   placeholder="ул. Свобода №12, ж.к. Еленово..." required />
+                                   placeholder="@DomainResources.ExactAddressPlaceholder" required />
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Тип база</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceType</label>
                             <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4" required>
-                                <option value="">-- Избери тип --</option>
-                                <option value="true">Открито</option>
-                                <option value="false">Закрито</option>
+                                <option value="">@DomainResources.SelectType</option>
+                                <option value="true">@DomainResources.Outdoor</option>
+                                <option value="false">@DomainResources.Indoor</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.City</label>
                             <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4"
                                     asp-items="Model.CityOptions" required>
-                                <option value="">-- Избери град --</option>
+                                <option value="">@DomainResources.SelectCity</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.ActivityType</label>
                             <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4"
                                     asp-items="Model.ActivityOptions" required>
-                                <option value="">-- Избери дейност --</option>
+                                <option value="">@DomainResources.SelectActivity</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Цена (€/ч)</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PricePerHour</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-white border-end-0 rounded-start-pill text-success fw-bold">€</span>
                                 <input asp-for="Price" type="number" step="0.01"
@@ -53,22 +54,22 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Капацитет (лица)</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.CapacityLabel</label>
                             <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4" required />
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label small fw-bold text-muted text-uppercase">Описание</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description</label>
                             <textarea asp-for="Description" class="form-control shadow-sm px-4"
-                                      rows="3" style="border-radius: 20px;" placeholder="Кратко описание на обекта..."></textarea>
+                                      rows="3" style="border-radius: 20px;" placeholder="@DomainResources.PlaceDescriptionPlaceholder"></textarea>
                         </div>
                         <div class="col-md-12">
                             <div id="drop-zone" class="p-3 bg-light rounded-4 text-center position-relative transition-all"
                                  style="border: 2px dashed #dee2e6; cursor: pointer;">
                                 <i class="bi bi-cloud-arrow-up-fill fs-1 text-primary mb-3"></i>
                                 <h5 class="fw-bold">
-                                    КАЧИ СНИМКИ НА ОБЕКТА
+                                    @DomainResources.UploadPlaceImages
                                 </h5>
-                                <p class="text-muted small">Поддържани формати: JPG, PNG (Максимум 5MB на файл)</p>
+                                <p class="text-muted small">@DomainResources.SupportedFormats</p>
 
                                 <input type="file" name="imageFiles" id="file-input"
                                        class="position-absolute opacity-0 w-100 h-100 top-0 start-0"
@@ -81,7 +82,7 @@
                 </div>
                 <div class="modal-footer border-0 p-4 pt-0">
                     <button type="submit" class="btn btn-success text-white rounded-pill px-5 fw-bold shadow-sm">
-                        <i class="bi bi-check-circle me-1"></i> СЪЗДАЙ ОБЕКТА
+                        <i class="bi bi-check-circle me-1"></i> @DomainResources.CreatePlace
                     </button>
                 </div>
             </form>

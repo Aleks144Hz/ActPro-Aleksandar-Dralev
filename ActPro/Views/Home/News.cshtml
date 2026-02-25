@@ -1,19 +1,22 @@
 ﻿@model ActPro.Domain.Models.NewsViewModel
 @{
-    ViewData["Title"] = "Новини";
+    ViewData["Title"] = DomainResources.News;
+    ViewData["SeoTitle"] = "Новини и статии за спорта - ActPro";
+    ViewData["SeoDescription"] = "Прочети най-новите новини и статии за спорта, фитнеса и здравословния начин на живот. Намери полезна информация за тренировки, хранене и мотивация в блога на ActPro.";
+    ViewData["SeoKeywords"] = "новини, спорт, фитнес, здраве, тренировки, блог, статии";
 }
 <section class="news-page py-5 bg-light-custom">
     <div class="container">
         <div class="row align-items-center mb-5">
             <div class="col-md-8">
-                <h1 class="display-4 fw-800 text-dark mb-2 fw-bold">Новини</h1>
-                <p class="text-muted lead-custom">Научете първи за нашите нови проекти и постижения.</p>
+                <h1 class="display-4 fw-800 text-dark mb-2 fw-bold">@DomainResources.News</h1>
+                <p class="text-muted lead-custom">@DomainResources.NewsSubtitle</p>
             </div>
             <div class="col-md-4 text-md-end">
                 @if (User.IsInRole("Admin"))
                 {
                     <button class="btn btn-create-new shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">
-                        <i class="bi bi-plus-lg me-2"></i>Нова публикация
+                        <i class="bi bi-plus-lg me-2"></i>@DomainResources.NewPublication
                     </button>
                 }
             </div>
@@ -35,7 +38,7 @@
                                     <span class="month">@item.CreatedAt.ToString("MMM")</span>
                                 </div>
                                 <div class="image-overlay">
-                                    <span class="view-btn">Прочети</span>
+                                    <span class="view-btn">@DomainResources.ReadMore</span>
                                 </div>
                             </div>
 
@@ -47,7 +50,7 @@
 
                                 <div class="card-footer-custom">
                                     <button class="btn-read-more js-view-news" @Html.Raw(dataAttrs)>
-                                        Виж повече <i class="bi bi-arrow-right ms-1"></i>
+                                        @DomainResources.ViewMore <i class="bi bi-arrow-right ms-1"></i>
                                     </button>
 
                                     @if (User.IsInRole("Admin"))
@@ -67,7 +70,7 @@
                 <div class="col-12 text-center py-5">
                     <div class="empty-state-container">
                         <i class="bi bi-journal-x display-1 text-muted opacity-25"></i>
-                        <h4 class="mt-3">В момента няма новини</h4>
+                        <h4 class="mt-3">@DomainResources.NoNewsAvailable</h4>
                     </div>
                 </div>
             }
@@ -100,7 +103,7 @@
             </div>
             <div class="modal-body">
                 <div class="article-meta d-flex align-items-center">
-                    <span class="badge bg-success me-3">НОВИНИ</span>
+                    <span class="badge bg-success me-3">@DomainResources.News.ToUpper()</span>
                     <span class="text-muted fw-bold small" id="vDate"></span>
                 </div>
 
@@ -117,16 +120,16 @@
                         </button>
                     </div>
                     <div class="share-section d-flex align-items-center">
-                        <span class="small fw-bold text-muted me-3 text-uppercase">Сподели статията:</span>
+                        <span class="small fw-bold text-muted me-3 text-uppercase">@DomainResources.ShareArticle</span>
                         <div class="share-buttons">
                             <a href="#" id="shareFB" target="_blank" class="fb-bg">
                                 <i class="bi bi-facebook"></i>
                             </a>
-                            <a href="javascript:void(0);" id="copyLink" class="ig-bg" onclick="copyToClipboard()" title="Копирай линк">
+                            <a href="javascript:void(0);" id="copyLink" class="ig-bg" onclick="copyToClipboard()" title="@DomainResources.CopyLink">
                                 <i class="bi bi-link-45deg"></i>
                             </a>
                         </div>
-                        <span id="copyMessage" class="small text-success ms-2" style="display: none;">Копирано!</span>
+                        <span id="copyMessage" class="small text-success ms-2" style="display: none;">@DomainResources.Copied</span>
                     </div>
                 </div>
             </div>
@@ -141,33 +144,33 @@
                 <form asp-action="CreateNews" method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
                     <div class="modal-header border-0 p-4 pb-0">
-                        <h5 class="fw-bold"><i class="bi bi-pencil-square me-2"></i>Създаване на статия</h5>
+                        <h5 class="fw-bold"><i class="bi bi-pencil-square me-2"></i>@DomainResources.CreateArticle</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold small">Заглавие</label>
-                            <input name="Title" class="form-control modern-input" placeholder="Въведете заглавие..." required />
+                            <label class="form-label fw-semibold small">@DomainResources.Title</label>
+                            <input name="Title" class="form-control modern-input" placeholder="@DomainResources.TitlePlaceholder" required />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-semibold small">Съдържание</label>
-                            <textarea name="Content" class="form-control modern-input" rows="6" placeholder="Напишете съдържанието тук..." required></textarea>
+                            <label class="form-label fw-semibold small">@DomainResources.Content</label>
+                            <textarea name="Content" class="form-control modern-input" rows="6" placeholder="@DomainResources.ContentPlaceholder" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-semibold small">Снимка</label>
+                            <label class="form-label fw-semibold small">@DomainResources.Image</label>
                             <div class="upload-area" id="dropZone" onclick="document.getElementById('mainFileInput').click()">
                                 <input type="file" name="imageFile" id="mainFileInput" class="file-input" accept="image/*" required style="display:none" />
                                 <div id="prompt">
                                     <i class="bi bi-cloud-arrow-up text-green-gradient fs-1"></i>
-                                    <p class="mb-0 fw-bold">Кликнете, за да качите снимка</p>
-                                    <small class="text-muted">JPG, PNG или WebP</small>
+                                    <p class="mb-0 fw-bold">@DomainResources.ClickToUpload</p>
+                                    <small class="text-muted">@DomainResources.ImageFormats</small>
                                 </div>
                                 <img id="imgPreview" class="d-none img-preview-box mt-2">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer border-0 p-4 pt-0">
-                        <button type="submit" class="btn btn-green-action w-100 py-3">Публикувай новината</button>
+                        <button type="submit" class="btn btn-green-action w-100 py-3">@DomainResources.PublishNews</button>
                     </div>
                 </form>
             </div>
@@ -195,14 +198,14 @@
         const NewsApp = {
             deleteConfirm: function (id, title){
                 Swal.fire({
-                    title: 'Сигурни ли сте?',
-                    text: `Ще изтриете новината: "${title}"`,
+                    title: '@DomainResources.AreYouSure',
+                    text: `@DomainResources.WillDeleteNews: "${title}"`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Да, изтрий!',
-                    cancelButtonText: 'Отказ'
+                    confirmButtonText: '@DomainResources.YesDelete',
+                    cancelButtonText: '@DomainResources.Cancel'
                 }).then((result) => {
                     if (result.isConfirmed){
                         const form = document.createElement('form');
@@ -276,7 +279,7 @@
                 const newsId = this.dataset.id;
 
                 if (!isLogged) {
-                    toastr.error('Трябва да сте влезли в профил, за да харесате!');
+                    toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MustBeLoggedIn)));
                     return;
                 }
 
@@ -307,7 +310,7 @@
                     }
                 } 
                 catch (err){
-                    showToast('Грешка при комуникация със сървъра.', 'error');
+                    showToast('@DomainResources.ServerCommunicationError', 'error');
                 }
             });
         });

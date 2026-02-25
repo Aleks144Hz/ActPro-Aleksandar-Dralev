@@ -1,14 +1,14 @@
 ﻿@using ActPro.Domain.Models.Areas
 @model OwnerDashboardViewModel
 @{
-    ViewData["Title"] = "Бизнес Панел";
+    ViewData["Title"] = DomainResources.BusinessPanel;
 }
 <div class="container-fluid mt-4">
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="card shadow-sm border-0 border-top border-primary border-4">
                 <div class="card-header bg-white border-0 py-2">
-                    <h6 class="fw-bold mb-0 text-primary"><i class="bi bi-building me-2"></i>Моите обекти</h6>
+                    <h6 class="fw-bold mb-0 text-primary"><i class="bi bi-building me-2"></i>@DomainResources.MyPlaces</h6>
                 </div>
                 <div class="card-body pt-0 px-2" style="max-height: 300px; overflow-y: auto;">
                     @foreach (var item in Model.MyPlaces)
@@ -22,15 +22,15 @@
                                     </a>
                                 </span>
                                 <div class="btn-group gap-1">
-                                    <button class="btn btn-outline-success btn-sm border-0 p-1" title="Запълни час (ръчно)"
+                                <button class="btn btn-outline-success btn-sm border-0 p-1" title="@DomainResources.FillTimeManually"
                                             data-bs-toggle="modal" data-bs-target="#manualReservationModal-@item.Id">
                                         <i class="bi bi-plus-circle-fill"></i>
                                     </button>
-                                    <button class="btn btn-outline-primary btn-sm border-0 p-1" title="Редактирай"
+                                <button class="btn btn-outline-primary btn-sm border-0 p-1" title="@DomainResources.EditTimeHour"
                                             data-bs-toggle="modal" data-bs-target="#editPlaceModal-@item.Id">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    <button class="btn btn-outline-danger btn-sm border-0 p-1" title="График"
+                                <button class="btn btn-outline-danger btn-sm border-0 p-1" title="@DomainResources.Schedule"
                                             data-bs-toggle="modal" data-bs-target="#manageScheduleModal-@item.Id">
                                         <i class="bi bi-calendar3"></i>
                                     </button>
@@ -46,7 +46,7 @@
                                 </span>
                                 <span class="mx-1">|</span>
                                 <span class="ms-2 fw-bold text-success">
-                                    <i class="bi bi-cash-stack me-1"></i>@item.Price €/час
+                                    <i class="bi bi-cash-stack me-1"></i>@item.Price @DomainResources.PricePerHour
                                 </span>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0 text-white" style="background: linear-gradient(45deg, #1cc88a, #13855c);">
                         <div class="card-body py-3">
-                            <h6 class="text-uppercase small opacity-75 mb-1">Общ приход</h6>
+                            <h6 class="text-uppercase small opacity-75 mb-1">@DomainResources.TotalRevenue</h6>
                             <h3 class="fw-bold mb-0">@Model.TotalIncome €</h3>
                             <i class="bi bi-currency-euro float-end fs-2 opacity-25" style="margin-top: -30px;"></i>
                         </div>
@@ -68,7 +68,7 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0 text-white" style="background: linear-gradient(45deg, #E88C31, #BD640D);">
                         <div class="col-body py-3 px-3">
-                            <h6 class="text-uppercase small opacity-75 mb-1">Брой Резервации</h6>
+                            <h6 class="text-uppercase small opacity-75 mb-1">@DomainResources.NumberOfReservations</h6>
                             <h3 class="fw-bold mb-0">@Model.TotalReservationsCount</h3>
                             <i class="bi bi-calendar-check float-end fs-2 opacity-25" style="margin-top: -30px;"></i>
                         </div>
@@ -79,18 +79,18 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <h4 class="fw-bold mb-3"><i class="bi bi-calendar-event me-2 text-primary"></i>Последни Резервации</h4>
+            <h4 class="fw-bold mb-3"><i class="bi bi-calendar-event me-2 text-primary"></i>@DomainResources.RecentReservations</h4>
             <div class="card shadow-sm border-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0 admin-table">
                         <thead class="table-dark">
                             <tr>
-                                <th>Обект</th>
-                                <th>Клиент</th>
-                                <th>Телефон</th>
-                                <th>Дата и Час</th>
-                                <th>Направена на</th>
-                                <th class="text-center no-sort">Действия</th>
+                                <th>@DomainResources.Place</th>
+                                <th>@DomainResources.CustomerLabel</th>
+                                <th>@DomainResources.PhoneNumber</th>
+                                <th>@DomainResources.DateAndTime</th>
+                                <th>@DomainResources.ReservationCreated</th>
+                                <th class="text-center no-sort">@DomainResources.Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,7 +99,7 @@
                                 @foreach (var res in Model.RecentReservations)
                                 {
                                     <tr>
-                                        <td data-label="ОБЕКТ">
+                                        <td data-label="@DomainResources.Place.ToUpper()">
                                             <div class="fw-bold">
                                                 <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
                                                    class="text-decoration-none text-dark hover-success">
@@ -107,24 +107,24 @@
                                                 </a>
                                             </div>
                                         </td>
-                                        <td data-label="КЛИЕНТ">@res.FirstName @res.LastName</td>
-                                        <td data-label="ТЕЛЕФОН">@res.Phone</td>
-                                        <td data-label ="ДАТА И ЧАС">
+                                        <td data-label="@DomainResources.CustomerLabel.ToUpper()">@res.FirstName @res.LastName</td>
+                                        <td data-label="@DomainResources.PhoneNumber.ToUpper()">@res.Phone</td>
+                                        <td data-label ="@DomainResources.DateAndTime.ToUpper()">
                                             @res.ReservationDate @res.ReservationTime
                                         </td>
-                                        <td data-label="НАПРАВЕНА НА">
+                                        <td data-label="@DomainResources.ReservationCreated.ToUpper()">
                                             <div class="fw-bold">@res.CreatedAt</div>
                                         </td>
-                                        <td class="text-center" data-label="ДЕЙСТВИЯ">
+                                        <td class="text-center" data-label="@DomainResources.Actions.ToUpper()">
                                             <div class="d-flex justify-content-center gap-2">
                                                 <button type="button" class="btn btn-sm btn-outline-primary"
                                                         data-bs-toggle="modal" data-bs-target="#editTimeModal-@res.Id">
-                                                    <i class="bi bi-clock"></i> Промяна
+                                                    <i class="bi bi-clock"></i> @DomainResources.EditTimeHour
                                                 </button>
                                                 <form asp-area="Owner" asp-controller="Reservations" asp-action="Delete" asp-route-id="@res.Id" method="post">
                                                     <button type="submit" class="btn btn-sm btn-danger confirm-action"
-                                                            data-message="Сигурни ли сте, че искате да анулирате тази резервация?">
-                                                        <i class="bi bi-trash"></i> Анулирай
+                                                            data-message="@DomainResources.ConfirmCancelReservation">
+                                                        <i class="bi bi-trash"></i> @DomainResources.Cancellation
                                                     </button>
                                                 </form>
                                             </div>
@@ -145,7 +145,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Ръчна резервация - @item.Name</h5>
+                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>@DomainResources.ManualReservation - @item.Name</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form asp-area="Owner" asp-controller="Reservations" asp-action="CreateManual" method="post">
@@ -153,28 +153,28 @@
                         <input type="hidden" name="PlaceId" value="@item.Id" />
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold small">Бележка/ Име на клиент</label>
-                            <input type="text" name="CustomerNote" class="form-control" placeholder="напр. Резервация по телефон / Иван Петров" required />
+                            <label class="form-label fw-bold small">@DomainResources.Note</label>
+                            <input type="text" name="CustomerNote" class="form-control" placeholder="@DomainResources.PhoneReservationExample" required />
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold small">Дата</label>
+                                <label class="form-label fw-bold small">@DomainResources.DateLabel</label>
                                 <input type="date" name="Date" class="form-control" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold small">Час</label>
+                                <label class="form-label fw-bold small">@DomainResources.TimeLabel</label>
                                 <input type="time" name="Time" class="form-control" required />
                             </div>
                         </div>
 
-                        <div class="alert alert-info py-2 mb-0" style="font-size: 0.85rem;">
-                            <i class="bi bi-info-circle me-1"></i> Този час ще бъде отбелязан като зает в публичния календар.
+                         <div class="alert alert-info py-2 mb-0" style="font-size: 0.85rem;">
+                            <i class="bi bi-info-circle me-1"></i> @DomainResources.ThisSlotWillBeMarkedAsBusy
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
-                        <button type="submit" class="btn btn-success px-4">Запази час</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@DomainResources.Cancel</button>
+                        <button type="submit" class="btn btn-success px-4">@DomainResources.Save</button>
                     </div>
                 </form>
             </div>
@@ -242,8 +242,8 @@
                     });
                 },
                 error: function (xhr) {
-                    console.error("Грешка:", xhr.status, xhr.responseText);
-                    alert("Грешка " + xhr.status + ": Нямате достъп или сесията е изтекла.");
+                console.error("@DomainResources.Error:", xhr.status, xhr.responseText);
+                    alert("@DomainResources.Error " + xhr.status + ": @DomainResources.ServerCommunicationError");
                 }
             });
         }

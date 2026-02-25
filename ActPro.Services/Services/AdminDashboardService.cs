@@ -1,9 +1,10 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
 using ActPro.DAL.Entities;
 using ActPro.Domain.Models.Areas;
 using ActPro.Domain.Repository;
 using ActPro.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace ActPro.Services.Services
 {
@@ -48,7 +49,7 @@ namespace ActPro.Services.Services
 
             var result = allDates.Select(d => new
             {
-                date = d.ToString(period == "year" ? "MM.yyyy" : "dd.MM"),
+                date = d.ToString(period == "year" ? "MM.yyyy" : "dd.MM", CultureInfo.InvariantCulture),
                 reservations = resData.FirstOrDefault(x => x.Date == d)?.Count ?? 0,
                 users = userData.FirstOrDefault(x => x.Date == d)?.Count ?? 0,
                 comments = commData.FirstOrDefault(x => x.Date == d)?.Count ?? 0
@@ -56,10 +57,10 @@ namespace ActPro.Services.Services
 
             return new
             {
-                labels = result.Select(r => r.date),
-                reservations = result.Select(r => r.reservations),
-                users = result.Select(r => r.users),
-                comments = result.Select(r => r.comments)
+                labels = result.Select(r => r.date).ToList(),
+                reservations = result.Select(r => r.reservations).ToList(),
+                users = result.Select(r => r.users).ToList(),
+                comments = result.Select(r => r.comments).ToList()
             };
         }
     }

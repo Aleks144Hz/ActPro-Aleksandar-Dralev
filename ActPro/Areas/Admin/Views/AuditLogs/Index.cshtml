@@ -1,7 +1,7 @@
 ﻿@using ActPro.Domain.Models.Areas
 @model AuditLogsViewModel
 @{
-    ViewData["Title"] = "Логове";
+    ViewData["Title"] = DomainResources.AuditLogs;
 }
 
 <div class="container-fluid mt-4">
@@ -12,7 +12,7 @@
 
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0"><i class="bi bi-journal-text me-2"></i>Дневник на събитията</h2>
+                <h2 class="mb-0"><i class="bi bi-journal-text me-2"></i>@DomainResources.AuditLogs</h2>
             </div>
 
             <div class="card shadow-sm border-0">
@@ -20,32 +20,32 @@
                     <table class="table table-hover align-middle mb-0 admin-table">
                         <thead class="table-dark">
                             <tr>
-                                <th>Направено на</th>
-                                <th>Потребител</th>
-                                <th>Действие</th>
-                                <th>Детайли</th>
-                                <th>IP адрес</th>
+                                <th>@DomainResources.CreatedAt</th>
+                                <th>@DomainResources.User</th>
+                                <th>@DomainResources.Action</th>
+                                <th>@DomainResources.DescriptionLabel</th>
+                                <th>IP</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var log in Model.Logs.OrderByDescending(l => l.CreatedAt))
                             {
                                 <tr>
-                                    <td class="small" data-label="НАПРАВЕНО НА"><strong>@log.CreatedAt</strong></td>
-                                    <td data-label ="ПОТРЕБИТЕЛ">
+                                    <td class="small" data-label="@DomainResources.CreatedAt.ToUpper()"><strong>@log.CreatedAt</strong></td>
+                                    <td data-label ="@DomainResources.User.ToUpper()">
                                         <span class="fw-bold text-primary">@log.UserEmail</span>
                                     </td>
-                                    <td data-label="ДЕЙСТВИЕ">
+                                    <td data-label="@DomainResources.Action.ToUpper()">
                                         <span class="badge @GetBadgeClass(log.Action) shadow-sm" style="min-width: 100px;">
                                             @log.Action
                                         </span>
                                     </td>
-                                    <td style="min-width: 250px; max-width: 400px; white-space: normal; word-wrap: break-word;" data-label="ДЕТАЙЛИ">
+                                    <td style="min-width: 250px; max-width: 400px; white-space: normal; word-wrap: break-word;" data-label="@DomainResources.DescriptionLabel.ToUpper()">
                                         <div style="font-size: 0.9rem; line-height: 1.2;">
                                             @log.Details
                                         </div>
                                     </td>
-                                    <td data-label="IP АДРЕС"><small class="text-muted">@log.IpAddress</small></td>
+                                    <td data-label="IP"><small class="text-muted">@log.IpAddress</small></td>
                                 </tr>
                             }
                         </tbody>

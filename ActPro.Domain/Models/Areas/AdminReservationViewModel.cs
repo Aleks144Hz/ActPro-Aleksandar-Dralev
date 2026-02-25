@@ -23,6 +23,6 @@
         public int Id { get; set; }
         public string? PlaceName { get; set; }
         public string? CustomerName { get; set; }
-        public string? ReservationTime { get; set; } = string.Empty;
+        public string? ReservationTime { get; set; }
     }
 }

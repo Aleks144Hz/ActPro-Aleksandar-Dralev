@@ -1,11 +1,11 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Domain.Models.Areas;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
@@ -50,12 +50,12 @@ namespace ActPro.Services.Services
             if (isInRole)
             {
                 await userManager.RemoveFromRoleAsync(user, roleName);
-                await auditService.LogAsync("Edit User", "User", userId, $"{RemovedRole} {roleName} {On}: {user.FirstName} {user.LastName}");
+                await auditService.LogAsync("Edit User", "User", userId, $"{DomainResources.RemovedRole} {roleName} {DomainResources.On}: {user.FirstName} {user.LastName}");
             }
             else
             {
                 await userManager.AddToRoleAsync(user, roleName);
-                await auditService.LogAsync("Edit User", "User", userId, $"{AddedRole} {roleName} {On}: {user.FirstName} {user.LastName}");
+                await auditService.LogAsync("Edit User", "User", userId, $"{DomainResources.AddedRole} {roleName} {DomainResources.On}: {user.FirstName} {user.LastName}");
             }
             return true;
         }
@@ -66,6 +66,9 @@ namespace ActPro.Services.Services
             var user = await userManager.FindByIdAsync(userId);
             if (user == null) return false;
 
+            var userReservations = await context.Reservations.Where(r => r.AspNetUserId == userId).ToListAsync();
+            context.Reservations.RemoveRange(userReservations);
+            
             var bannedEntry = new BannedUser
             {
                 Email = user.Email,
@@ -79,7 +82,7 @@ namespace ActPro.Services.Services
             if (result.Succeeded)
             {
                 await context.SaveChangesAsync();
-                await auditService.LogAsync("Ban User", "User", userId, $"{BAN}: {user.FirstName} {user.LastName} | Email: {user.Email}");
+                await auditService.LogAsync("Ban User", "User", userId, $"{DomainResources.Ban}: {user.FirstName} {user.LastName} | Email: {user.Email}");
                 return true;
             }
             return false;

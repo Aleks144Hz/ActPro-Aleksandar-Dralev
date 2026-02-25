@@ -1,4 +1,5 @@
-﻿using ActPro.Domain.Models;
+using ActPro.Domain;
+using ActPro.Domain.Models;
 using ActPro.Helpers;
 using ActPro.Services.Interfaces;
 using MailKit.Net.Smtp;
@@ -20,238 +21,236 @@ namespace ActPro.Services.Services
         //Account Confirmation
         public async Task SendEmailAsync(string email, string userName, string htmlMessage)
         {
-            string subject = $"Потвърждение на акаут: {userName}";
+            string subject = string.Format(DomainResources.EmailConfirmationSubject, userName);
 
             string content = $@"
-                    <p>Радваме се, че избрахте <strong>ActPro</strong>. Остават само няколко стъпки, преди да можете да резервирате любимите си спортни зали.</p>
+                    <p>{DomainResources.WelcomeToActPro}</p>
                     <div style=""text-align: center; margin: 35px 0;"">
-                        <a href=""{htmlMessage}"" style=""background-color: #198754; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;"">ПОТВЪРДИ МОЯ АКАУНТ</a>
+                        <a href=""{htmlMessage}"" style=""background-color: #198754; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;"">{DomainResources.ConfirmMyAccount}</a>
                     </div>
-                    <p style=""font-size: 14px; color: #777;"">Бутонът е валиден за следващите 24 часа.<br>Ако не сте правили регистрация при нас, моля игнорирайте този имейл.</p>";
+                    <p style=""font-size: 14px; color: #777;"">{DomainResources.ButtonValid24Hours}<br>{DomainResources.IgnoreEmail}</p>";
 
-            string html = BuildEmailTemplate("Потвърждение на акаут", content);
+            string html = BuildEmailTemplate(DomainResources.EmailConfirmationTitle, content);
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Made reservation
         public async Task SendBookingConfirmationAsync(string email, string firstName, string placeName, string date, string timeSlot)
         {
-            string subject = $"Потвърждение на резервация: {placeName}";
+            string subject = string.Format(DomainResources.ReservationConfirmationSubject, placeName);
 
             string content = $@"
-             <p>Здравейте, {firstName}</p>
-             <p>Вашата резервация беше успешно потвърдена. Детайли за посещението:</p>
+             <p>{DomainResources.Greeting}, {firstName}</p>
+             <p>{DomainResources.ReservationConfirmedText} {DomainResources.ReservationDetailsText}</p>
              <ul style='list-style-type: none; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #198754; border-radius: 4px; margin: 20px 0;'>
-                 <li style='margin-bottom: 10px; font-size: 16px;'><strong>Обект:</strong> {placeName}</li>
-                 <li style='margin-bottom: 10px; font-size: 16px;'><strong>Дата:</strong> {date}</li>
-                 <li style='font-size: 16px;'><strong>Час:</strong> {timeSlot}</li>
+                 <li style='margin-bottom: 10px; font-size: 16px;'><strong>{DomainResources.PlaceLabel}:</strong> {placeName}</li>
+                 <li style='margin-bottom: 10px; font-size: 16px;'><strong>{DomainResources.DateLabel}:</strong> {date}</li>
+                 <li style='font-size: 16px;'><strong>{DomainResources.TimeLabel}:</strong> {timeSlot}</li>
              </ul>
-             <p>Моля, представете този имейл при пристигане на мястото.</p>";
-            string html = BuildEmailTemplate("Успешна резервация", content, "Към моите резервации", "https://actprobg.com/Reservation/MyReservations");
+             <p>{DomainResources.ShowEmailOnArrival}</p>";
+            string html = BuildEmailTemplate(DomainResources.ReservationConfirmationTitle, content, DomainResources.MyReservations, "https://actprobg.com/Reservation/MyReservations");
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Cancel reservation
         public async Task SendBookingCancellationAsync(string email, string firstName, string placeName, string date, string timeSlot)
         {
-            string subject = $"Отказана резервация: {placeName}";
+            string subject = string.Format(DomainResources.ReservationCancelledSubject, placeName);
             string content = $@"
-                <p>Здравейте, {firstName}</p>
-                <p>Уведомяваме Ви, че следната резервация беше <strong>отказана</strong>:</p>
+                <p>{DomainResources.Greeting}, {firstName}</p>
+                <p>{DomainResources.ReservationCanceledText}</p>
                 <ul style='list-style-type: none; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #dc3545; border-radius: 4px; margin: 20px 0;'>
-                    <li style='margin-bottom: 10px; font-size: 16px;'><strong>Обект:</strong> {placeName}</li>
-                    <li style='margin-bottom: 10px; font-size: 16px;'><strong>Дата:</strong> {date}</li>
-                    <li style='font-size: 16px;'><strong>Час:</strong> {timeSlot}</li>
+                    <li style='margin-bottom: 10px; font-size: 16px;'><strong>{DomainResources.PlaceLabel}:</strong> {placeName}</li>
+                    <li style='margin-bottom: 10px; font-size: 16px;'><strong>{DomainResources.DateLabel}:</strong> {date}</li>
+                    <li style='font-size: 16px;'><strong>{DomainResources.TimeLabel}:</strong> {timeSlot}</li>
                 </ul>
-                <p>Ако желаете да запазите нов час, можете да го направите през нашата платформа.</p>";
+                <p>{DomainResources.BookNewTime}</p>";
 
-            string html = BuildEmailTemplate("Отказана резервация", content, "Нова резервация", "https://actprobg.com/");
+            string html = BuildEmailTemplate(DomainResources.ReservationCancelledTitle, content, DomainResources.NewReservationBtn, "https://actprobg.com/");
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Password reset
         public async Task SendPasswordResetAsync(string email, string resetLink)
         {
-            string subject = "Възстановяване на парола";
+            string subject = DomainResources.PasswordResetSubject;
             string content = $@"
-                <p>Здравейте,</p>
-                <p>Получихме заявка за възстановяване на паролата за Вашия профил. Кликнете на бутона по-долу, за да зададете нова.</p>
-                <p style='font-size: 13px; color: #6c757d; margin-top: 20px;'>Ако не сте заявявали промяна, моля, игнорирайте този имейл.</p>";
+                <p>{DomainResources.Greeting},</p>
+                <p>{DomainResources.PasswordResetRequestText}</p>
+                <p style='font-size: 13px; color: #6c757d; margin-top: 20px;'>{DomainResources.IgnorePasswordReset}</p>";
 
-            string html = BuildEmailTemplate("Възстановяване на парола", content, "Смяна на паролата", resetLink);
+            string html = BuildEmailTemplate(DomainResources.PasswordResetTitle, content, DomainResources.ChangePasswordBtn, resetLink);
             await ExecuteSendAsync(email, subject, html);
         }
 
         // Password Changed Notification
         public async Task SendPasswordChangedNotificationAsync(string email, string firstName)
         {
-            string subject = "Вашата парола беше променена";
+            string subject = DomainResources.PasswordChangedSubject;
             string content = $@"
-            <p>Здравейте, {firstName}</p>
-            <p>Този имейл е потвърждение, че паролата за Вашия акаунт в <strong>ActPro</strong> беше успешно променена преди малко.</p>
+            <p>{DomainResources.Greeting}, {firstName}</p>
+            <p>{DomainResources.PasswordChangedConfirmText}</p>
             <div style='padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107; margin: 20px 0;'>
                 <p style='margin: 0; font-size: 14px; color: #856404;'>
-                    <strong>Важно:</strong> Ако не сте инициирали тази промяна, моля свържете се с нашата поддръжка веднага, тъй като сигурността на акаунта Ви може да е застрашена.
+                    <strong>{DomainResources.ImportantSecurityWarning}</strong>
                 </p>
             </div>
-            <p>Ако Вие сте извършили промяната, можете да игнорирате това съобщение.</p>";
+            <p>{DomainResources.IgnoreIfNoChange}</p>";
 
-            string html = BuildEmailTemplate("Сигурност на акаунта", content);
+            string html = BuildEmailTemplate(DomainResources.PasswordChangedTitle, content);
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Delete profile
         public async Task SendProfileDeletedAsync(string email, string firstName)
         {
-            string subject = "Потвърждение за изтриване на профил";
+            string subject = DomainResources.ProfileDeletedSubject;
             string content = $@"
-                <p>Здравейте, {firstName}</p>
-                <p>Вашият профил в ActPro беше успешно изтрит от нашата система, заедно с всички свързани с него лични данни и история.</p>
-                <p>Съжаляваме, че си тръгвате. Винаги сте добре дошли отново!</p>";
+                <p>{DomainResources.Greeting}, {firstName}</p>
+                <p>{DomainResources.ProfileDeletedText}</p>
+                <p>{DomainResources.SorryToSeeYouGo}</p>";
 
-            string html = BuildEmailTemplate("Изтрит профил", content);
+            string html = BuildEmailTemplate(DomainResources.ProfileDeletedTitle, content);
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Approved place
         public async Task SendPlaceApprovedAsync(string email, string firstName, string placeName)
         {
-            string subject = "Вашият обект е одобрен";
+            string subject = DomainResources.PlaceApprovedSubject;
             string content = $@"
-                <p>Здравейте, {firstName}</p>
-                <p>Имаме удоволствието да Ви съобщим, че вашият обект <strong>{placeName}</strong> премина успешна проверка от нашия екип и вече е активен в платформата.</p>
-                <p>Потребителите вече могат да разглеждат обекта и да правят резервации при вас.</p>";
+                <p>{DomainResources.Greeting}, {firstName}</p>
+                <p>{DomainResources.PlaceApprovedText}</p>
+                <p>{DomainResources.PlaceCanBeBooked}</p>";
 
-            string html = BuildEmailTemplate("Обектът е активен", content, "Управление на обекта", "https://actprobg.com/Owner/Dashboard");
+            string html = BuildEmailTemplate(DomainResources.PlaceApprovedTitle, content, DomainResources.ManagePlaceBtn, "https://actprobg.com/Owner/Dashboard");
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Rejected place
         public async Task SendPlaceRejectedAsync(string email, string firstName, string placeName)
         {
-            string subject = "Статус на заявката за обект";
+            string subject = DomainResources.PlaceRejectedSubject;
             string content = $@"
-                <p>Здравейте, {firstName}</p>
-                <p>След преглед на Вашия обект <strong>{placeName}</strong>, установихме, че той не отговаря на изискванията на платформата в настоящия си вид.</p>             
-                <p>Моля, направете необходимите корекции и подайте заявката отново.</p>";
+                <p>{DomainResources.Greeting}, {firstName}</p>
+                <p>{string.Format(DomainResources.PlaceRejectedText, placeName)}</p>             
+                <p>{DomainResources.MakeCorrectionsAndRetry}</p>";
 
-            string html = BuildEmailTemplate("Отказ за публикуване", content, "Нов опит", "https://actprobg.com/Owner/Index");
+            string html = BuildEmailTemplate(DomainResources.PlaceRejectedTitle, content, DomainResources.TryAgainBtn, "https://actprobg.com/Owner/Index");
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Deleted place
         public async Task SendPlaceDeletedAsync(string email, string firstName, string placeName)
         {
-            string subject = "Вашият обект е премахнат";
+            string subject = DomainResources.PlaceDeletedSubject;
             string content = $@"
-                <p>Уважаеми/а {firstName}</p>
-                <p>Информираме Ви, че Вашият обект <strong>{placeName}</strong> беше премахнат от нашата платформа от администратор.</p>
-                <p>Ако смятате, че е станала грешка, моля свържете се с поддръжката ни.</p>";
+                <p>{DomainResources.Greeting}, {firstName}</p>
+                <p>{string.Format(DomainResources.PlaceDeletedByAdminText, placeName)}</p>
+                <p>{DomainResources.ContactSupportIfMistake}</p>";
 
-            string html = BuildEmailTemplate("Премахнат обект", content);
+            string html = BuildEmailTemplate(DomainResources.PlaceDeletedTitle, content);
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Change reservation time
         public async Task SendReservationTimeChangedAsync(string email, string firstName, string placeName, string oldTime, string newTime, string date)
         {
-            string subject = "Промяна в часа на резервация";
+            string subject = DomainResources.ReservationTimeChangedSubject;
             string content = $@"
-                <p>Здравейте, {firstName}</p>
-                <p>Администратор промени часа на Вашата резервация за <strong>{placeName}</strong>.</p>
+                <p>{DomainResources.Greeting}, {firstName}</p>
+                <p>{DomainResources.ReservationTimeChangedText}</p>
                 <ul style='list-style-type: none; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #ffc107; border-radius: 4px; margin: 20px 0;'>
-                    <li style='margin-bottom: 10px;'><strong>Дата:</strong> {date}</li>
-                    <li style='margin-bottom: 10px;'><strong>Стар час:</strong> <span style='text-decoration: line-through; color: #dc3545;'>{oldTime}</span></li>
-                    <li><strong>Нов час:</strong> <span style='color: #198754; font-weight: bold; font-size: 16px;'>{newTime}</span></li>
-                </ul>
-                <p>Ако новият час не Ви е удобен, можете да анулирате резервацията от профила си.</p>";
+                    <li style='margin-bottom: 10px;'><strong>{DomainResources.DateLabel}:</strong> {date}</li>
+                    <li style='margin-bottom: 10px;'><strong>{DomainResources.OldTimeLabel}:</strong> <span style='text-decoration: line-through; color: #dc3545;'>{oldTime}</span></li>
+                    <li><strong>{DomainResources.NewTimeLabel}:</strong> <span style='color: #198754; font-weight: bold; font-size: 16px;'>{newTime}</span></li>
+                </ul>";
 
-            string html = BuildEmailTemplate("Променен час", content, "Към резервациите", "https://actprobg.com/Reservation/MyReservations");
+            string html = BuildEmailTemplate(DomainResources.ReservationTimeChangedTitle, content, DomainResources.MyReservations, "https://actprobg.com/Reservation/MyReservations");
             await ExecuteSendAsync(email, subject, html);
         }
 
         //Support ticket
         public async Task SendSupportTicketAsync(SupportTicketViewModel model)
         {
-            string adminSubject = $"[Support Ticket] {model.Subject} - от {model.FullName}";
+            string adminSubject = string.Format(DomainResources.NewSupportTicketSubject, model.Subject, model.FullName);
             string adminHtml = $@"
-            <h2>Нова заявка за поддръжка</h2>
-            <p><strong>От:</strong> {model.FullName} ({model.Email})</p>
-            <p><strong>Тип проблем:</strong> {model.Subject}</p>
-            <p><strong>Описание:</strong></p>
+            <h2>{DomainResources.NewSupportTicketTitle}</h2>
+            <p><strong>{DomainResources.FromLabel}:</strong> {model.FullName} ({model.Email})</p>
+            <p><strong>{DomainResources.IssueTypeLabel}:</strong> {model.Subject}</p>
+            <p><strong>{DomainResources.DescriptionLabel}:</strong></p>
             <p style='background: #f8f9fa; pading: 15px;'>{model.Description}</p>";
 
             await ExecuteSendAsync("contact@actprobg.com", adminSubject, adminHtml);
 
-            string userSubject = "ActPro - Вашата заявка е получена";
+            string userSubject = DomainResources.SupportTicketReceivedSubject;
             string userContent = $@"
-            <p>Здравейте, {model.FullName},</p>
-            <p>Благодарим Ви, че се свързахте с нас! Вашата заявка относно <strong>'{model.Subject}'</strong> е приета успешно.</p>
-            <p>Нашият екип ще прегледа информацията и ще се свърже с вас в рамките на 24 часа.</p>
-            <p style='font-size: 12px; color: #666;'>Това е автоматично съобщение, моля не отговаряйте на него.</p>";
+            <p>{DomainResources.Greeting}, {model.FullName},</p>
+            <p>{DomainResources.ThankYouForContacting} <strong>'{model.Subject}'</strong> {DomainResources.TicketReceivedSuccessfully}.</p>
+            <p>{DomainResources.TeamWillContact}</p>";
 
-            string userHtml = BuildEmailTemplate("Заявка за поддръжка", userContent, "Към сайта", "https://actprobg.com");
+            string userHtml = BuildEmailTemplate(DomainResources.SupportTicketReceivedTitle, userContent, DomainResources.GoToSiteBtn, "https://actprobg.com");
             await ExecuteSendAsync(model.Email, userSubject, userHtml);
         }
 
         // Send notification to owner for new booking
         public async Task SendNewBookingNotificationAsync(string ownerEmail, string ownerName, string placeName, string customerName, string date, string timeSlot, string number)
         {
-            string subject = $"Нова резервация за {placeName}";
+            string subject = string.Format(DomainResources.NewReservationSubject, placeName);
 
             string content = $@"
-            <p>Здравейте, {ownerName},</p>
-            <p>Имате нова резервация за Вашия обект <strong>{placeName}</strong>.</p>
+            <p>{DomainResources.Greeting}, {ownerName},</p>
+            <p>{DomainResources.YouHaveNewBooking} <strong>{placeName}</strong>.</p>
             <ul style='list-style-type: none; padding: 15px; background-color: #f8f9fa; border-left: 4px solid #198754; border-radius: 4px; margin: 20px 0;'>
-                <li style='margin-bottom: 10px;'><strong>Клиент:</strong> {customerName}</li>
-                <li style='margin-bottom: 10px;'><strong>Номер:</strong> {number}</li>
-                <li style='margin-bottom: 10px;'><strong>Дата:</strong> {date}</li>
-                <li style='font-size: 16px;'><strong>Час:</strong> {timeSlot}</li>
+                <li style='margin-bottom: 10px;'><strong>{DomainResources.CustomerLabel}:</strong> {customerName}</li>
+                <li style='margin-bottom: 10px;'><strong>{DomainResources.NumberLabel}:</strong> {number}</li>
+                <li style='margin-bottom: 10px;'><strong>{DomainResources.DateLabel}:</strong> {date}</li>
+                <li style='font-size: 16px;'><strong>{DomainResources.TimeLabel}:</strong> {timeSlot}</li>
             </ul>
-            <p>Можете да прегледате детайлите и да управлявате резервацията през Вашия панел.</p>";
+            <p>{DomainResources.ManageReservationsFromPanel}</p>";
 
-            string html = BuildEmailTemplate("Нова резервация", content, "Към Таблото", "https://actprobg.com/Owner/Dashboard/Index");
+            string html = BuildEmailTemplate(DomainResources.NewBookingTitle, content, DomainResources.GoToDashboardBtn, "https://actprobg.com/Owner/Dashboard/Index");
             await ExecuteSendAsync(ownerEmail, subject, html);
         }
 
         // Send notification to owner when a customer cancels a booking
         public async Task SendBookingCancellationToOwnerAsync(string ownerEmail, string ownerName, string placeName, string customerName, string date, string timeSlot, string number)
         {
-            string subject = $"Анулирана резервация: {placeName}";
+            string subject = string.Format(DomainResources.ReservationCancelledByOwnerSubject, placeName);
 
             string content = $@"
-            <p>Здравейте, {ownerName},</p>
-            <p>Клиентът <strong>{customerName}</strong> анулира своята резервация за Вашия обект <strong>{placeName}</strong>.</p>
-            <p>Детайли за анулираната резервация:</p>
+            <p>{DomainResources.Greeting}, {ownerName},</p>
+            <p>{DomainResources.CustomerCancelledBooking} <strong>{placeName}</strong>.</p>
+            <p>{DomainResources.CancelledBookingDetails}</p>
             <ul style='list-style-type: none; padding: 15px; background-color: #fff5f5; border-left: 4px solid #dc3545; border-radius: 4px; margin: 20px 0;'>
-                <li style='margin-bottom: 10px;'><strong>Клиент:</strong> {customerName}</li>
-                <li style='margin-bottom: 10px;'><strong>Номер:</strong> {number}</li>
-                <li style='margin-bottom: 10px;'><strong>Дата:</strong> {date}</li>
-                <li style='font-size: 16px;'><strong>Час:</strong> {timeSlot}</li>
+                <li style='margin-bottom: 10px;'><strong>{DomainResources.CustomerLabel}:</strong> {customerName}</li>
+                <li style='margin-bottom: 10px;'><strong>{DomainResources.NumberLabel}:</strong> {number}</li>
+                <li style='margin-bottom: 10px;'><strong>{DomainResources.DateLabel}:</strong> {date}</li>
+                <li style='font-size: 16px;'><strong>{DomainResources.TimeLabel}:</strong> {timeSlot}</li>
             </ul>
-            <p>Часът вече е свободен и може да бъде резервиран от други потребители.</p>";
+            <p>{DomainResources.TimeNowAvailable}</p>";
 
-            string html = BuildEmailTemplate("Анулирана резервация", content, "Към Таблото", "https://actprobg.com/Owner/Dashboard/Index");
+            string html = BuildEmailTemplate(DomainResources.BookingCancelledByCustomerTitle, content, DomainResources.GoToDashboardBtn, "https://actprobg.com/Owner/Dashboard/Index");
             await ExecuteSendAsync(ownerEmail, subject, html);
         }
 
         // Send notification to owner for new review
         public async Task SendNewReviewNotificationAsync(string ownerEmail, string ownerName, string placeName, string customerName, int rating, string comment)
         {
-            string subject = $"Нов отзив за {placeName}";
+            string subject = string.Format(DomainResources.NewReviewSubject, placeName);
 
             string stars = new string('⭐', rating);
 
             string content = $@"
-            <p>Здравейте, {ownerName},</p>
-            <p>Потребителят <strong>{customerName}</strong> остави нов коментар за Вашия обект <strong>{placeName}</strong>.</p>
+            <p>{DomainResources.Greeting}, {ownerName},</p>
+            <p>{DomainResources.UserLeftComment} <strong>{placeName}</strong>.</p>
             <div style='padding: 20px; background-color: #fffaf0; border: 1px dashed #ffc107; border-radius: 8px; margin: 20px 0;'>
                 <p style='margin: 0; font-size: 18px;'>{stars} ({rating}/5)</p>
                 <p style='font-style: italic; margin-top: 10px; color: #555;'>""{comment}""</p>
             </div>
-            <p>Обратната връзка е важна за развитието на Вашия бизнес!</p>";
+            <p>{DomainResources.FeedbackImportantForBusiness}</p>";
 
-            string html = BuildEmailTemplate("Нов отзив", content, "Към таблото", "https://actprobg.com/Owner/Dashboard/Index");
+            string html = BuildEmailTemplate(DomainResources.NewReviewTitle, content, DomainResources.GoToDashboardBtn, "https://actprobg.com/Owner/Dashboard/Index");
             await ExecuteSendAsync(ownerEmail, subject, html);
         }
 
@@ -302,8 +301,8 @@ namespace ActPro.Services.Services
 
                                 <tr>
                                     <td style='padding: 25px 40px; background-color: #f1f3f5; border-top: 1px solid #dee2e6; text-align: center;'>
-                                        <p style='margin: 0 0 8px 0; color: #6c757d; font-size: 13px;'>Това съобщение е генерирано автоматично. Моля, не отговаряйте на този имейл.</p>
-                                        <p style='margin: 0; color: #adb5bd; font-size: 12px;'>&copy; {DateTime.Now.Year} ActPro. Всички права запазени.</p>
+                                        <p style='margin: 0 0 8px 0; color: #6c757d; font-size: 13px;'>{DomainResources.AutoMessageDisclaimer}</p>
+                                        <p style='margin: 0; color: #adb5bd; font-size: 12px;'>&copy; {DateTime.Now.Year} ActPro. {DomainResources.AllRightsReserved}</p>
                                     </td>
                                 </tr>
 

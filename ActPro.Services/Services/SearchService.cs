@@ -57,8 +57,24 @@ namespace ActPro.Services
                 .Include(p => p.PlaceImages)
                 .Where(p => p.IsApproved);
 
-            if (!string.IsNullOrEmpty(city)) query = query.Where(p => p.City.Name == city);
-            if (!string.IsNullOrEmpty(activity)) query = query.Where(p => p.Activity.Name == activity);
+            var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+
+            if (!string.IsNullOrEmpty(city))
+            {
+                if (isEnglish)
+                    query = query.Where(p => p.City.NameEn == city || p.City.Name == city);
+                else
+                    query = query.Where(p => p.City.Name == city);
+            }
+
+            if (!string.IsNullOrEmpty(activity))
+            {
+                if (isEnglish)
+                    query = query.Where(p => p.Activity.NameEn == activity || p.Activity.Name == activity);
+                else
+                    query = query.Where(p => p.Activity.Name == activity);
+            }
+
             if (minPrice.HasValue) query = query.Where(p => p.Price >= minPrice.Value);
             if (maxPrice.HasValue) query = query.Where(p => p.Price <= maxPrice.Value);
             if (isOutdoor.HasValue) query = query.Where(p => p.IsOutdoor == isOutdoor.Value);
@@ -66,8 +82,20 @@ namespace ActPro.Services
             return query;
         }
 
-        public async Task<List<string>> GetCityNamesAsync() => await cityRepo.AllAsNoTracking().Select(c => c.Name).ToListAsync();
-        public async Task<List<string>> GetActivityNamesAsync() => await activityRepo.AllAsNoTracking().Select(a => a.Name).ToListAsync();
+        public async Task<List<string>> GetCityNamesAsync()
+        {
+            var cities = await cityRepo.AllAsNoTracking().ToListAsync();
+            var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+            return cities.Select(c => isEnglish && !string.IsNullOrEmpty(c.NameEn) ? c.NameEn : c.Name).ToList();
+        }
+
+        public async Task<List<string>> GetActivityNamesAsync()
+        {
+            var activities = await activityRepo.AllAsNoTracking().ToListAsync();
+            var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+            return activities.Select(a => isEnglish && !string.IsNullOrEmpty(a.NameEn) ? a.NameEn : a.Name).ToList();
+        }
+
         public async Task<List<City>> GetAllCitiesAsync() => await cityRepo.AllAsNoTracking().ToListAsync();
         public async Task<List<Activity>> GetAllActivitiesAsync() => await activityRepo.AllAsNoTracking().ToListAsync();
     }

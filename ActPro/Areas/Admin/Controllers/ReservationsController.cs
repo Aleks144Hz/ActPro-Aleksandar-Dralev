@@ -1,5 +1,5 @@
-﻿using ActPro.Services;
-using ActPro.Services.Interfaces;
+﻿using ActPro.Domain;
+using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace ActPro.Areas.Admin.Controllers
                 if (await resService.DeleteReservationAsync(id))
                 {
                     await emailSender.SendBookingCancellationAsync(userEmail, userFirstName, placeName, formattedDate, timeSlot);
-                    TempData["Success"] = "Резервацията беше анулирана";
+                    TempData["Success"] = DomainResources.ReservationCancelledSuccess;
                 }
             }
             return RedirectToAction(nameof(Index));
@@ -47,8 +47,14 @@ namespace ActPro.Areas.Admin.Controllers
         //--- EDIT TIME ---
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTime(int id, TimeOnly reservationTime)
+        public async Task<IActionResult> EditTime(int id, string reservationTime)
         {
+            if (!TimeOnly.TryParse(reservationTime, out var newTimeOnly))
+            {
+                TempData["Error"] = DomainResources.Error;
+                return RedirectToAction(nameof(Index));
+            }
+
             var res = await context.Reservations
             .Include(r => r.AspNetUser)
             .Include(r => r.Place)
@@ -57,9 +63,9 @@ namespace ActPro.Areas.Admin.Controllers
             if (res == null) return NotFound();
 
             string oldTime = res.ReservationTime.ToString();
-            string newTime = reservationTime.ToString("HH:mm");
+            string newTime = newTimeOnly.ToString("HH:mm");
 
-            if (await resService.UpdateReservationTimeAsync(id, reservationTime))
+            if (await resService.UpdateReservationTimeAsync(id, newTimeOnly))
             {
                 await emailSender.SendReservationTimeChangedAsync(
                     res.AspNetUser.Email,
@@ -68,7 +74,7 @@ namespace ActPro.Areas.Admin.Controllers
                     oldTime,
                     newTime,
                     res.ReservationDate.ToString());
-                TempData["Success"] = "Часът беше променен успешно!";
+                TempData["Success"] = DomainResources.ReservationTimeChangedSuccess;
             }
 
             return RedirectToAction(nameof(Index));

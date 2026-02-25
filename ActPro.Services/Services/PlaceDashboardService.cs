@@ -1,13 +1,13 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Domain.Models.Areas;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
@@ -43,10 +43,10 @@ namespace ActPro.Services.Services
                 Places = places.Select(p => new PlaceViewModel
                 {
                     Id = p.Id,
-                    Name = p.Name,
-                    CityName = p.City?.Name ?? NoCities,
-                    ActivityName = p.Activity?.Name ?? NoActivities,
-                    Price = (decimal)p.Price,
+                    Name = p.Name ?? string.Empty,
+                    CityName = p.City?.Name ?? DomainResources.NoCities,
+                    ActivityName = p.Activity?.Name ?? DomainResources.NoActivities,
+                    Price = p.Price ?? 0,
                     IsApproved = p.IsApproved
                 }).ToList(),
 
@@ -56,16 +56,16 @@ namespace ActPro.Services.Services
                 EditPlaces = places.ToDictionary(p => p.Id, p => new PlaceFormViewModel
                 {
                     Id = p.Id,
-                    Name = p.Name,
+                    Name = p.Name ?? string.Empty,
                     Address = p.Address,
                     Description = p.Description,
-                    Price = (decimal)p.Price,
+                    Price = p.Price ?? 0,
                     Capacity = p.Capacity.GetValueOrDefault(),
                     IsOutdoor = p.IsOutdoor ?? false,
                     CityId = p.CityId.GetValueOrDefault(),
                     ActivityId = p.ActivityId.GetValueOrDefault(),
-                    Rating = p.Rating,
-                    OwnerId = p.OwnerId,
+                    Rating = p.Rating ?? 0,
+                    OwnerId = p.OwnerId ?? string.Empty,
                     CityOptions = cities,
                     ActivityOptions = activities,
                     ExistingImages = p.PlaceImages?.Select(img => new PlaceImageViewModel
@@ -123,7 +123,7 @@ namespace ActPro.Services.Services
                 }
             }
 
-            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{CreatedPlace}: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{DomainResources.CreatedPlace}: {place.Name}");
             return true;
         }
 
@@ -148,7 +148,7 @@ namespace ActPro.Services.Services
                 await ProcessImagesRawSql(place.Id, images);
             }
 
-            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"{UpdatedPlace}: {place.Name}");
+            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"{DomainResources.UpdatedPlace}: {place.Name}");
             return true;
         }
 
@@ -184,7 +184,7 @@ namespace ActPro.Services.Services
             context.Places.Remove(place);
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"{DeletedPlace}: {place.Name}");
+            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"{DomainResources.DeletedPlace}: {place.Name}");
             return true;
         }
 
@@ -205,7 +205,7 @@ namespace ActPro.Services.Services
             }
 
             await context.SaveChangesAsync();
-            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"{ApprovedPlace}: {place.Name}");
+            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"{DomainResources.ApprovedPlace}: {place.Name}");
             return true;
         }
 
@@ -260,7 +260,7 @@ namespace ActPro.Services.Services
             {
                 context.PlaceClosures.AddRange(closuresToAdd);
                 await context.SaveChangesAsync();
-                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"{PlaceClosed} {start:dd.MM.yyyy} {To} {end:dd.MM.yyyy}. {Reason}: {reason}");
+                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"{DomainResources.PlaceClosed} {start:dd.MM.yyyy} {DomainResources.To} {end:dd.MM.yyyy}. {DomainResources.Reason}: {reason}");
             }
             return true;
         }
@@ -273,7 +273,7 @@ namespace ActPro.Services.Services
             DateTime closedDate = closure.ClosureDate;
             context.PlaceClosures.Remove(closure);
             await context.SaveChangesAsync();
-            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"{PlaceOpened} {closedDate:dd.MM.yyyy} {PlaceId}: {closureId}");
+            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"{DomainResources.PlaceOpened} {closedDate:dd.MM.yyyy} {DomainResources.PlaceId}: {closureId}");
             return true;
         }
     }

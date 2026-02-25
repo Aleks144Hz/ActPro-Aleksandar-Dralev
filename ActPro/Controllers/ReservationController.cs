@@ -1,10 +1,10 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
+using ActPro.Domain;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -29,7 +29,7 @@ namespace ActPro.Controllers
             if (user == null) return Unauthorized();
             if (!user.EmailConfirmed)
             {
-                TempData["Error"] = ReservationNeedApproval;
+                TempData["Error"] = DomainResources.ReservationNeedApproval;
                 return RedirectToAction("Index", new { id = placeId });
             }
             var result = await reservationService.BookAsync(placeId, date, timeSlot, user);
@@ -41,7 +41,7 @@ namespace ActPro.Controllers
                     if (string.IsNullOrEmpty(placeName))
                     {
                         var placeModel = await reservationService.GetReservationIndexModelAsync(placeId, user.Id);
-                        placeName = placeModel?.Place?.Name ?? SportPlace;
+                        placeName = placeModel?.Place?.Name ?? DomainResources.SportPlace;
                     }
                     string formattedDate = date.ToString("dd.MM.yyyy (dddd)");
 
@@ -57,7 +57,7 @@ namespace ActPro.Controllers
                 {
 
                 }
-                await auditService.LogAsync("Create Reservation", "User", user.Id, UserMadeReservation);
+                await auditService.LogAsync("Create Reservation", "User", user.Id, DomainResources.UserMadeReservation);
                 return RedirectToAction("Confirmation", new { id = placeId });
             }
 
@@ -81,7 +81,7 @@ namespace ActPro.Controllers
 
             if (result.success)
             {
-                await auditService.LogAsync("Cancel Reservation", "User", userId, UserDeletedReservation);
+                await auditService.LogAsync("Cancel Reservation", "User", userId, DomainResources.UserDeletedReservation);
 
                 if (reservationToDelete != null)
                 {
@@ -114,7 +114,7 @@ namespace ActPro.Controllers
             var userId = userManager.GetUserId(User);
             if (!user.EmailConfirmed)
             {
-                TempData["Error"] = CommentNeedApproval;
+                TempData["Error"] = DomainResources.CommentNeedApproval;
                 return RedirectToAction("Index", new { id = placeId });
             }
             var result = await reservationService.AddReviewAsync(placeId, userId, commentText, rating);
@@ -122,7 +122,7 @@ namespace ActPro.Controllers
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await auditService.LogAsync("Add Review", "User", userId, UserMadeComment);
+                await auditService.LogAsync("Add Review", "User", userId, DomainResources.UserMadeComment);
             }
             else TempData["Error"] = result.message;
 
@@ -152,7 +152,7 @@ namespace ActPro.Controllers
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await auditService.LogAsync("Delete Review", "User", userId, UserDeletedComment);
+                await auditService.LogAsync("Delete Review", "User", userId, DomainResources.UserDeletedComment);
             }
 
             if (Request.Headers["Referer"].ToString().Contains("MyReviews")) return RedirectToAction("MyReviews");

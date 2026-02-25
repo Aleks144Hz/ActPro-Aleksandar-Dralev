@@ -1,7 +1,7 @@
 ﻿@using ActPro.Domain.Models.Areas
 @model AdminDashboardViewModel
 @{
-    ViewData["Title"] = "Админ Панел";
+    ViewData["Title"] = DomainResources.AdminPanel;
 }
 
 <div class="container-fluid mt-4">
@@ -10,23 +10,23 @@
             <div class="list-group">
                 <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
                    class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
-                    <i class="bi bi-speedometer2"></i> Табло
+                    <i class="bi bi-speedometer2"></i> @DomainResources.OwnerDashboard
                 </a>
                 <a asp-area="Admin" asp-controller="Reservations" asp-action="Index"
                    class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reservations" ? "active" : "")">
-                    <i class="bi bi-calendar-check"></i> Резервации
+                    <i class="bi bi-calendar-check"></i> @DomainResources.Reservations
                 </a>
                 <a asp-area="Admin" asp-controller="Places" asp-action="Index"
                    class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Places" ? "active" : "")">
-                    <i class="bi bi-geo-alt"></i> Обекти
+                    <i class="bi bi-geo-alt"></i> @DomainResources.Places
                 </a>
                 <a asp-area="Admin" asp-controller="Users" asp-action="Index"
                    class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
-                    <i class="bi bi-people"></i> Потребители
+                    <i class="bi bi-people"></i> @DomainResources.Users
                 </a>
                 <a asp-area="Admin" asp-controller="AuditLogs" asp-action="Index"
                    class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "AuditLogs" ? "active" : "")">
-                    <i class="bi bi-journal-text"></i> Логове
+                    <i class="bi bi-journal-text"></i> @DomainResources.AuditLogs
                 </a>
             </div>
         </div>
@@ -38,7 +38,7 @@
                             <div class="card-body p-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-white-50 small text-uppercase mb-1">Общо Резервации</h6>
+                                        <h6 class="text-white-50 small text-uppercase mb-1">@DomainResources.Total @DomainResources.Reservations</h6>
                                         <h3 class="fw-bold mb-0">@ViewBag.TotalReservations</h3>
                                     </div>
                                     <div class="icon-shape bg-white bg-opacity-25 rounded p-2">
@@ -55,7 +55,7 @@
                             <div class="card-body p-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-white-50 small text-uppercase mb-1">Активни Обекти</h6>
+                                        <h6 class="text-white-50 small text-uppercase mb-1">@DomainResources.Places</h6>
                                         <h3 class="fw-bold mb-0">@ViewBag.TotalPlaces</h3>
                                     </div>
                                     <div class="icon-shape bg-white bg-opacity-25 rounded p-2">
@@ -72,7 +72,7 @@
                             <div class="card-body p-3">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-white-50 small text-uppercase mb-1">Потребители</h6>
+                                        <h6 class="text-white-50 small text-uppercase mb-1">@DomainResources.Users</h6>
                                         <h3 class="fw-bold mb-0">@ViewBag.TotalUsers</h3>
                                     </div>
                                     <div class="icon-shape bg-white bg-opacity-25 rounded p-2">
@@ -93,12 +93,12 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="chart-title fw-bold mb-0">
-                        <i class="bi bi-bar-chart-line me-2 text-primary"></i>Активност на платформата
+                        <i class="bi bi-bar-chart-line me-2 text-primary"></i>@DomainResources.ActivityInSite
                     </h5>
                     <div class="btn-group chart-filter-group shadow-sm">
-                        <button id="btn-week" class="btn btn-sm btn-primary active" onclick="updateChart('week')">Седмица</button>
-                        <button id="btn-month" class="btn btn-sm btn-light border" onclick="updateChart('month')">Месец</button>
-                        <button id="btn-year" class="btn btn-sm btn-light border" onclick="updateChart('year')">Година</button>
+                        <button id="btn-week" class="btn btn-sm btn-primary active" onclick="updateChart('week')">@DomainResources.Week</button>
+                        <button id="btn-month" class="btn btn-sm btn-light border" onclick="updateChart('month')">@DomainResources.Month</button>
+                        <button id="btn-year" class="btn btn-sm btn-light border" onclick="updateChart('year')">@DomainResources.Year</button>
                     </div>
                 </div>
                 <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
@@ -127,7 +127,7 @@
                     labels: [],
                     datasets: [
                         {
-                            label: 'Резервации',
+                            label: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.Reservations)),
                             data: [],
                             borderColor: '#4e73df',
                             backgroundColor: '#4e73df',
@@ -136,7 +136,7 @@
                             borderWidth: 3
                         },
                         {
-                            label: 'Нови Потребители',
+                            label: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.User)),
                             data: [],
                             borderColor: '#1cc88a',
                             backgroundColor: '#1cc88a',
@@ -145,7 +145,7 @@
                             borderWidth: 3
                         },
                         {
-                            label: 'Коментари',
+                            label: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.Comments)),
                             data: [],
                             borderColor: '#f6c23e',
                             backgroundColor: '#f6c23e',

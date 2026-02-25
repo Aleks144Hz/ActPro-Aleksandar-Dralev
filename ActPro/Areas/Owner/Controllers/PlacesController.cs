@@ -1,12 +1,12 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
 using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Owner.Controllers
 {
@@ -46,7 +46,7 @@ namespace ActPro.Areas.Owner.Controllers
             {
                 if (await placeService.UpdatePlaceAsync(place, imageFiles, userId))
                 {
-                    TempData["Success"] = PlaceUpdatedSuccessfully;
+                    TempData["Success"] = DomainResources.PlaceUpdatedSuccessfully;
                     return RedirectToAction("Index", "Dashboard");
                 }
                 return Forbid();
@@ -91,11 +91,11 @@ namespace ActPro.Areas.Owner.Controllers
 
             if (await placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
             {
-                TempData["Success"] = DateClosedSuccessfully;
+                TempData["Success"] = DomainResources.DateClosedSuccessfully;
             }
             else
             {
-                TempData["Error"] = DateError;
+                TempData["Error"] = DomainResources.DateError;
             }
 
             return RedirectToAction("Index", "Dashboard");
@@ -108,7 +108,7 @@ namespace ActPro.Areas.Owner.Controllers
         {
             if (await placeService.RemoveClosureAsync(id))
             {
-                TempData["Success"] = DateOpenedSuccessfully;
+                TempData["Success"] = DomainResources.DateOpenedSuccessfully;
             }
             return RedirectToAction("Index", "Dashboard");
         }

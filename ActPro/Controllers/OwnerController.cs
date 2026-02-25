@@ -1,12 +1,12 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Domain.Models.Owner;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -24,38 +24,52 @@ namespace ActPro.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(Place place, IEnumerable<IFormFile>? imageFiles)
+        public async Task<IActionResult> Index(PlaceEntryViewModel model, IEnumerable<IFormFile>? imageFiles)
         {
-            new[] { "PlaceImages", "City", "Activity", "Owner", "OwnerId" }.ToList().ForEach(k => ModelState.Remove(k));
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    var user = await userManager.GetUserAsync(User);
-                    if (user == null) return Unauthorized();
-                    if (!user.EmailConfirmed)
-                    {
-                        TempData["Error"] = ProfileNotApprovedForCreatingPlace;
-                        return RedirectToAction("Index", "Home");
-                    }
-                    var userId = userManager.GetUserId(User);
-                    await placeService.CreatePlaceRequestAsync(place, imageFiles, userId, env.WebRootPath);
-                  
-
-                    TempData["Success"] = RequestSentSuccessfully;
-                    return RedirectToAction("Index", "Home");
-                }
-                catch (Exception ex)
-                {
-                    var msg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                    ModelState.AddModelError("", ErrorWhileTryingToFill + msg);
-                }
+                ViewBag.Cities = new SelectList(await placeService.GetCitiesAsync(), "Id", "Name", model.CityId);
+                ViewBag.ActivityTypes = new SelectList(await placeService.GetActivitiesAsync(), "Id", "Name", model.ActivityId);
+                return View(model);
             }
 
-            ViewBag.Cities = new SelectList(await placeService.GetCitiesAsync(), "Id", "Name", place.CityId);
-            ViewBag.ActivityTypes = new SelectList(await placeService.GetActivitiesAsync(), "Id", "Name", place.ActivityId);
-            return View(place);
+            try
+            {
+                var user = await userManager.GetUserAsync(User);
+                if (user == null) return Unauthorized();
+                if (!user.EmailConfirmed)
+                {
+                    TempData["Error"] = DomainResources.ProfileNotApprovedForCreatingPlace;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var place = new Place
+                {
+                    Name = model.Name,
+                    Address = model.Address,
+                    Description = model.Description,
+                    Price = model.Price,
+                    Capacity = model.Capacity,
+                    IsOutdoor = model.IsOutdoor,
+                    CityId = model.CityId,
+                    ActivityId = model.ActivityId
+                };
+
+                var userId = userManager.GetUserId(User);
+                await placeService.CreatePlaceRequestAsync(place, imageFiles, userId, env.WebRootPath);
+
+                TempData["Success"] = DomainResources.RequestSentSuccessfully;
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                var msg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                ModelState.AddModelError("", DomainResources.ErrorWhileTryingToFill + msg);
+            }
+
+            ViewBag.Cities = new SelectList(await placeService.GetCitiesAsync(), "Id", "Name", model.CityId);
+            ViewBag.ActivityTypes = new SelectList(await placeService.GetActivitiesAsync(), "Id", "Name", model.ActivityId);
+            return View(model);
         }
     }
 }

@@ -1,0 +1,2420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>Името е задължително!</value>
+  </data>
+  <data name="JoinUsTitle" xml:space="preserve">
+    <value>Присъедини се към нас</value>
+  </data>
+  <data name="EnterFirstName" xml:space="preserve">
+    <value>Моля, въведете вашето име.</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Моля, въведете имейл адрес.</value>
+  </data>
+  <data name="LastNameIsRequired" xml:space="preserve">
+    <value>Фамилията е задължителнa!</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Имейл</value>
+  </data>
+  <data name="EmailPlaceholder" xml:space="preserve">
+    <value>Въведете валиден имейл</value>
+  </data>
+  <data name="EmailIsRequired" xml:space="preserve">
+    <value>Имейлa е задължителен!</value>
+  </data>
+  <data name="CurrentPasswordIsRequired" xml:space="preserve">
+    <value>Текущата парола е задължителна!</value>
+  </data>
+  <data name="NewPasswordIsRequired" xml:space="preserve">
+    <value>Новата парола е задължителна!</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Паролите трябва да съвпадат.</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>Паролата е задължителна!</value>
+  </data>
+  <data name="ConfirmPasswordIsRequired" xml:space="preserve">
+    <value>Паролата за потвърждение е задължителна!</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Моля, въведете валиден телефонен номер.</value>
+  </data>
+  <data name="PhoneNumberRequired" xml:space="preserve">
+    <value>Телефонен номер е задължителен!</value>
+  </data>
+  <data name="AddressNotValid" xml:space="preserve">
+    <value>Полето може да съдържа букви, цифри и символи "",.- №.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Възникна грешка.</value>
+  </data>
+  <data name="OnlyLettersAllowed" xml:space="preserve">
+    <value>Полето може да съдържа само букви.</value>
+  </data>
+  <data name="OnlyNumbersAllowed" xml:space="preserve">
+    <value>Полето може да съдържа само цифри.</value>
+  </data>
+  <data name="OnlyDecimalNumbersAllowed" xml:space="preserve">
+    <value>Полето може да съдържа само десетични числа.</value>
+  </data>
+  <data name="LettersNumbersAllowed" xml:space="preserve">
+    <value>Полето може да съдържа букви и цифри</value>
+  </data>
+  <data name="LettersNumbersEnglAllowed" xml:space="preserve">
+    <value>Полето може да съдържа латински букви и цифри</value>
+  </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>Не съществува такава роля.</value>
+  </data>
+  <data name="ErrorWhileCreatingCheckData" xml:space="preserve">
+    <value>Грешка при създаване, проверете въведените данни!</value>
+  </data>
+  <data name="UserIsNotRegistered" xml:space="preserve">
+    <value>Потребителят не съществува в системата!</value>
+  </data>
+  <data name="NotValidPassword" xml:space="preserve">
+    <value>Невалидна парола! Моля проверете отново!</value>
+  </data>
+  <data name="InvalidPasswordFormat" xml:space="preserve">
+    <value>Невалидна парола. Паролата трябва да е изписана на латиница, да съдържа поне 6 символа,
+от които поне една цифра, една главна и една малка буква,
+както и поне един специален символ.</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Паролата трябва да е поне {0} символа.</value>
+  </data>
+  <data name="UserWithThisEmailExists" xml:space="preserve">
+    <value>Потребител с този имейл вече съществува.</value>
+  </data>
+  <data name="UserAccountIsBanned" xml:space="preserve">
+    <value>Акаунтът ви е блокиран.</value>
+  </data>
+  <data name="DefaultError" xml:space="preserve">
+    <value>Възникна неизвестна грешка. Моля, опитайте отново.</value>
+  </data>
+  <data name="EmailIsBanned" xml:space="preserve">
+    <value>Този имейл адрес е блокиран.</value>
+  </data>
+  <data name="UserLoggedInSuccessfully" xml:space="preserve">
+    <value>Потребителят влезе в системата.</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Добре дошли в ActPro!</value>
+  </data>
+  <data name="AgreeWithTerms" xml:space="preserve">
+    <value>Трябва да приемете общите условия.</value>
+  </data>
+  <data name="ProveYouAreNotRobot" xml:space="preserve">
+    <value>Моля потвърдете, че не сте робот.</value>
+  </data>
+  <data name="AccountApproved" xml:space="preserve">
+    <value>Потвърждение на акаунт - ActPro</value>
+  </data>
+  <data name="SuccsessfullRegistration" xml:space="preserve">
+    <value>Регистрацията е успешна! Добре дошли.</value>
+  </data>
+  <data name="NewUserRegistered" xml:space="preserve">
+    <value>Нов потребител се регистрира</value>
+  </data>
+  <data name="ValidEmailAddress" xml:space="preserve">
+    <value>Ако имейлът съществува, сме изпратили линк за възстановяване.</value>
+  </data>
+  <data name="PasswordResetSuccess" xml:space="preserve">
+    <value>Паролата беше успешно променена! Можете да влезете с новата си парола.</value>
+  </data>
+  <data name="EmailApprovedSuccess" xml:space="preserve">
+    <value>Имейлът ви беше потвърден успешно! Вече можете да правите резервации.</value>
+  </data>
+  <data name="EmailAlreadyApproved" xml:space="preserve">
+    <value>Акаунтът вече е потвърден или не съществува.</value>
+  </data>
+  <data name="AccountEmailApprovel" xml:space="preserve">
+    <value>Потвърждение на акаунт - ActPro</value>
+  </data>
+  <data name="AccountInfoUpadate" xml:space="preserve">
+    <value>Потребителят обнови профилните си данни.</value>
+  </data>
+  <data name="UserUpdatePasswordSuccess" xml:space="preserve">
+    <value>Потребителят смени паролата си успешно.</value>
+  </data>
+  <data name="PasswordUpdatedSuccessfully" xml:space="preserve">
+    <value>Паролата е променена успешно!</value>
+  </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>Въвели сте грешна парола.</value>
+  </data>
+  <data name="UserDeleteAccountSuccess" xml:space="preserve">
+    <value>Потребителят изтри профила си</value>
+  </data>
+  <data name="WrongEmail" xml:space="preserve">
+    <value>Грешен имейл</value>
+  </data>
+  <data name="GoodBye" xml:space="preserve">
+    <value>Довиждане! Надяваме се да ви видим отново скоро.</value>
+  </data>
+  <data name="SuccessfulDeletedAccount" xml:space="preserve">
+    <value>Профилът бе изтрит! До нови срещи.</value>
+  </data>
+  <data name="SuccessfulUserEdit" xml:space="preserve">
+    <value>Успешно редактирахте данните на потребителя</value>
+  </data>
+  <data name="SuccessfulSaveChanges" xml:space="preserve">
+    <value>Успешно запазихте промените</value>
+  </data>
+  <data name="NewsIsPublished" xml:space="preserve">
+    <value>Публикувана е нова новина:</value>
+  </data>
+  <data name="NewsIsPublishedSuccessfully" xml:space="preserve">
+    <value>Новината е публикувана успешно!</value>
+  </data>
+  <data name="NewsDeleted" xml:space="preserve">
+    <value>Изтрита новина с ID:</value>
+  </data>
+  <data name="NewsDeletedSuccessfully" xml:space="preserve">
+    <value>Новината е изтрита успешно!</value>
+  </data>
+  <data name="FillInAllFields" xml:space="preserve">
+    <value>Моля, попълнете всички задължителни полета правилно.</value>
+  </data>
+  <data name="TicketSendSuccessfully" xml:space="preserve">
+    <value>Вашата заявка беше изпратена успешно! Проверете имейла си за потвърждение.</value>
+  </data>
+  <data name="ProfileNotApprovedForCreatingPlace" xml:space="preserve">
+    <value>Профилът Ви не е потвърден. Моля, потвърдете имейла си, за да можете да добавяте обекти.</value>
+  </data>
+  <data name="RequestSentSuccessfully" xml:space="preserve">
+    <value>Вашата заявка е изпратена успешно!</value>
+  </data>
+  <data name="ErrorWhileTryingToFill" xml:space="preserve">
+    <value>Грешка при запис: </value>
+  </data>
+  <data name="ReservationNeedApproval" xml:space="preserve">
+    <value>Трябва да потвърдите имейла си, преди да направите резервация!</value>
+  </data>
+  <data name="SportPlace" xml:space="preserve">
+    <value>Спортен обект</value>
+  </data>
+  <data name="UserMadeReservation" xml:space="preserve">
+    <value>Потребителят направи резервация.</value>
+  </data>
+  <data name="UserDeletedReservation" xml:space="preserve">
+    <value>Потребителят отказа резервация.</value>
+  </data>
+  <data name="CommentNeedApproval" xml:space="preserve">
+    <value>Трябва да потвърдите имейла си, преди да добавите коментар!</value>
+  </data>
+  <data name="UserMadeComment" xml:space="preserve">
+    <value>Потребителят добави коментар.</value>
+  </data>
+  <data name="UserDeletedComment" xml:space="preserve">
+    <value>Потребителят изтри коментар.</value>
+  </data>
+  <data name="DescribeYourIssue" xml:space="preserve">
+    <value>Моля, опишете вашия проблем или въпрос подробно.</value>
+  </data>
+  <data name="IssueLenght" xml:space="preserve">
+    <value>Описанието трябва да е поне 10 символа.</value>
+  </data>
+  <data name="PlaceAddedSuccessfully" xml:space="preserve">
+    <value>Обектът беше създаден успешно.</value>
+  </data>
+  <data name="PlaceUpdatedSuccessfully" xml:space="preserve">
+    <value>Успешно редактирахте данните на обекта.</value>
+  </data>
+  <data name="PlaceDeletedSuccessfully" xml:space="preserve">
+    <value>Обектът и всички свързани данни бяха изтрити.</value>
+  </data>
+  <data name="PlaceApprovedSuccessfully" xml:space="preserve">
+    <value>Обектът беше одобрен успешно.</value>
+  </data>
+  <data name="DateClosedSuccessfully" xml:space="preserve">
+    <value>Датите бяха заключени успешно.</value>
+  </data>
+  <data name="DateOpenedSuccessfully" xml:space="preserve">
+    <value>Датата беше отключена успешно.</value>
+  </data>
+  <data name="DateError" xml:space="preserve">
+    <value>Крайната дата не може да бъде преди началната.</value>
+  </data>
+  <data name="ReservationClosed" xml:space="preserve">
+    <value>Резервацията беше анулирана успешно!</value>
+  </data>
+  <data name="ReservationTimeEdited" xml:space="preserve">
+    <value>Часът беше променен успешно!</value>
+  </data>
+  <data name="AdminRuleChanged" xml:space="preserve">
+    <value>Администраторските права бяха променени.</value>
+  </data>
+  <data name="OwnerRuleChanged" xml:space="preserve">
+    <value>Правата на собственика бяха променени.</value>
+  </data>
+  <data name="UserBanned" xml:space="preserve">
+    <value>Потребителят беше блокиран и изтрит успешно.</value>
+  </data>
+  <data name="ReservationApproved" xml:space="preserve">
+    <value>Резервацията беше одобрена!</value>
+  </data>
+  <data name="ReservationBlocked" xml:space="preserve">
+    <value>Часът беше блокиран успешно!</value>
+  </data>
+  <data name="AddedToFavorites" xml:space="preserve">
+    <value>Добавено в любими!</value>
+  </data>
+  <data name="RemovedFromFavorites" xml:space="preserve">
+    <value>Премахнато от любими!</value>
+  </data>
+  <data name="NoCities" xml:space="preserve">
+    <value>Няма град</value>
+  </data>
+  <data name="NoActivities" xml:space="preserve">
+    <value>Няма дейност</value>
+  </data>
+  <data name="NoPlace" xml:space="preserve">
+    <value>Няма обект</value>
+  </data>
+  <data name="CreatedPlace" xml:space="preserve">
+    <value>Създаден обект</value>
+  </data>
+  <data name="UpdatedPlace" xml:space="preserve">
+    <value>Променени данни за</value>
+  </data>
+  <data name="DeletedPlace" xml:space="preserve">
+    <value>Изтрит обект</value>
+  </data>
+  <data name="ApprovedPlace" xml:space="preserve">
+    <value>Одобрен обект</value>
+  </data>
+  <data name="PlaceClosed" xml:space="preserve">
+    <value>Заключен период от</value>
+  </data>
+  <data name="PlaceOpened" xml:space="preserve">
+    <value>Отключен дата</value>
+  </data>
+  <data name="PlaceId" xml:space="preserve">
+    <value>за обект с ID</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>до</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>за</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>на</value>
+  </data>
+  <data name="In" xml:space="preserve">
+    <value>в</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>ПРИЧИНА</value>
+  </data>
+  <data name="DeletedReservation" xml:space="preserve">
+    <value>Изтрита резервация на</value>
+  </data>
+  <data name="ReservationUpdate" xml:space="preserve">
+    <value>Променен час за</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>РЪЧНА</value>
+  </data>
+  <data name="OwnerManualReservation" xml:space="preserve">
+    <value>Собственик блокира час за</value>
+  </data>
+  <data name="PlanedManufacture" xml:space="preserve">
+    <value>планирана профилактика</value>
+  </data>
+  <data name="PlaceIsClosedOnThisDate" xml:space="preserve">
+    <value>Обектът е затворен за резервации на тази дата поради</value>
+  </data>
+  <data name="InvalidHour" xml:space="preserve">
+    <value>Невалиден час.</value>
+  </data>
+  <data name="HourAlreadyPassed" xml:space="preserve">
+    <value>Часът вече е минал.</value>
+  </data>
+  <data name="HourAlreadyReserved" xml:space="preserve">
+    <value>Този час току-що беше зает!</value>
+  </data>
+  <data name="SuccessfullReservation" xml:space="preserve">
+    <value>Резервацията е успешно направена.</value>
+  </data>
+  <data name="MaximumComments" xml:space="preserve">
+    <value>Вече сте оставили максималния брой коментари (3) за този обект.</value>
+  </data>
+  <data name="CommentAdded" xml:space="preserve">
+    <value>Коментарът е добавен успешно.</value>
+  </data>
+  <data name="CommentNotFound" xml:space="preserve">
+    <value>Коментарът не е намерен.</value>
+  </data>
+  <data name="CommentDeleted" xml:space="preserve">
+    <value>Коментарът е изтрит успешно.</value>
+  </data>
+  <data name="CommentUpdated" xml:space="preserve">
+    <value>Коментарът е обновен успешно.</value>
+  </data>
+  <data name="ReservationNotFound" xml:space="preserve">
+    <value>Резервацията не е намерена.</value>
+  </data>
+  <data name="CannotCancelPastReservation" xml:space="preserve">
+    <value>Не можете да откажете изминала резервация.</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Успешно отказана.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Не е намерен.</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Oбновенo.</value>
+  </data>
+  <data name="AddedRole" xml:space="preserve">
+    <value>Добавена роля</value>
+  </data>
+  <data name="RemovedRole" xml:space="preserve">
+    <value>Премахната роля</value>
+  </data>
+  <data name="UserBan" xml:space="preserve">
+    <value>Блокиран и изтрит</value>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Обект</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="ViewMore" xml:space="preserve">
+    <value>Виж повече</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="ObjectsCountSuffix" xml:space="preserve">
+    <value>обекта</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>ОЦЕНКА</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>Виж детайли</value>
+  </data>
+  <data name="SearchHeroTitle" xml:space="preserve">
+    <value>Намери своето място за спорт</value>
+  </data>
+  <data name="SearchHeroSubtitle" xml:space="preserve">
+    <value>Лесно, бързо и удобно резервиране по всяко време.</value>
+  </data>
+  <data name="LabelCity" xml:space="preserve">
+    <value>Населено място</value>
+  </data>
+  <data name="PlaceholderCity" xml:space="preserve">
+    <value>Избери или въведи град</value>
+  </data>
+  <data name="ValidationCityRequired" xml:space="preserve">
+    <value>Моля, изберете населено място!</value>
+  </data>
+  <data name="LabelActivity" xml:space="preserve">
+    <value>Какво ще спортувате?</value>
+  </data>
+  <data name="PlaceholderActivity" xml:space="preserve">
+    <value>Избери или въведи активност</value>
+  </data>
+  <data name="SearchButton" xml:space="preserve">
+    <value>ТЪРСИ</value>
+  </data>
+  <data name="AboutBadge" xml:space="preserve">
+    <value>Какво е ActPro?</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Твоят дигитален асистент за активен живот</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>ActPro е иновативна платформа, която свързва ентусиастите със спортните бази. Нашата мисия е да премахнем бариерите пред спорта, като ви дадем достъп до стотици обекти само с няколко клика.</value>
+  </data>
+  <data name="FeatureRealTime" xml:space="preserve">
+    <value>Резервации в реално време</value>
+  </data>
+  <data name="FeatureVariety" xml:space="preserve">
+    <value>Голямо разнообразие от спортове</value>
+  </data>
+  <data name="FeatureAllDevices" xml:space="preserve">
+    <value>Достъпно от всякакъв вид устройство</value>
+  </data>
+  <data name="CategoriesTitle" xml:space="preserve">
+    <value>Популярни категории</value>
+  </data>
+  <data name="SportFootball" xml:space="preserve">
+    <value>Футбол</value>
+  </data>
+  <data name="SportBasketball" xml:space="preserve">
+    <value>Баскетбол</value>
+  </data>
+  <data name="SportVolleyball" xml:space="preserve">
+    <value>Волейбол</value>
+  </data>
+  <data name="SportTennis" xml:space="preserve">
+    <value>Тенис</value>
+  </data>
+  <data name="SportFitness" xml:space="preserve">
+    <value>Фитнес</value>
+  </data>
+  <data name="SportSwimming" xml:space="preserve">
+    <value>Плуване</value>
+  </data>
+  <data name="BenefitsBadge" xml:space="preserve">
+    <value>Ползи</value>
+  </data>
+  <data name="BenefitsTitle" xml:space="preserve">
+    <value>С какво ви помагаме?</value>
+  </data>
+  <data name="BenefitsDescription" xml:space="preserve">
+    <value>Забравете за десетките телефонни обаждания, за да разберете дали тенис кортът е свободен. С нас пестите време и нерви:</value>
+  </data>
+  <data name="BenefitSpeed" xml:space="preserve">
+    <value>Бързина при резервация</value>
+  </data>
+  <data name="BenefitSecurity" xml:space="preserve">
+    <value>Сигурност на плащанията</value>
+  </data>
+  <data name="BenefitAccessibility" xml:space="preserve">
+    <value>Достъпност от всяко устройство</value>
+  </data>
+  <data name="TopPlacesTitle" xml:space="preserve">
+    <value>Топ обекти с най-висок рейтинг</value>
+  </data>
+  <data name="SolutionsBadge" xml:space="preserve">
+    <value>Решения</value>
+  </data>
+  <data name="SolutionsTitle" xml:space="preserve">
+    <value>Проблемите, които решаваме</value>
+  </data>
+  <data name="ProbInfoTitle" xml:space="preserve">
+    <value>Липса на информация</value>
+  </data>
+  <data name="ProbInfoDesc" xml:space="preserve">
+    <value>Вече няма нужда да търсите контакти по форуми – всичко е на едно място.</value>
+  </data>
+  <data name="ProbScheduleTitle" xml:space="preserve">
+    <value>Неактуални графици</value>
+  </data>
+  <data name="ProbScheduleDesc" xml:space="preserve">
+    <value>Виждате само свободните часове, актуализирани в реално време.</value>
+  </data>
+  <data name="ProbReviewTitle" xml:space="preserve">
+    <value>Възможността за отзив</value>
+  </data>
+  <data name="ProbReviewDesc" xml:space="preserve">
+    <value>Вече можете да изразите вашето мнение относно дадения обект, който сте посетили.</value>
+  </data>
+  <data name="OwnerTitle" xml:space="preserve">
+    <value>Имаш спортен обект?</value>
+  </data>
+  <data name="OwnerSubtitle" xml:space="preserve">
+    <value>Стани част от нашата мрежа в три лесни стъпки и увеличи клиентите си.</value>
+  </data>
+  <data name="OwnerRegisterBtn" xml:space="preserve">
+    <value>Регистрирай го</value>
+  </data>
+  <data name="Step1Title" xml:space="preserve">
+    <value>Създаване</value>
+  </data>
+  <data name="Step1Desc" xml:space="preserve">
+    <value>Регистрирай своя бизнес.</value>
+  </data>
+  <data name="Step2Title" xml:space="preserve">
+    <value>Потвърждаване</value>
+  </data>
+  <data name="Step2Desc" xml:space="preserve">
+    <value>Предоставяне на документи за собственост.</value>
+  </data>
+  <data name="Step3Title" xml:space="preserve">
+    <value>Печели</value>
+  </data>
+  <data name="Step3Desc" xml:space="preserve">
+    <value>Приемай резервации онлайн.</value>
+  </data>
+  <data name="StoryTitle" xml:space="preserve">
+    <value>Нашата история и цел</value>
+  </data>
+  <data name="StorySubtitle" xml:space="preserve">
+    <value>Ние не просто правим софтуер. Ние градим общност, където здравето и спортът са приоритет за всеки.</value>
+  </data>
+  <data name="MissionTitle" xml:space="preserve">
+    <value>Мисия</value>
+  </data>
+  <data name="MissionDesc" xml:space="preserve">
+    <value>Да направим спорта достъпен за всеки българин чрез модерни технологии.</value>
+  </data>
+  <data name="VisionTitle" xml:space="preserve">
+    <value>Визия</value>
+  </data>
+  <data name="VisionDesc" xml:space="preserve">
+    <value>Най-голямата екосистема за активен отдих и управление на спортни бази в страната.</value>
+  </data>
+  <data name="ValuesTitle" xml:space="preserve">
+    <value>Ценности</value>
+  </data>
+  <data name="ValuesDesc" xml:space="preserve">
+    <value>Прозрачност, иновация и непоколебима подкрепа за местния бизнес и спортни клубове.</value>
+  </data>
+  <data name="JsFamousLocations" xml:space="preserve">
+    <value>Известни локации</value>
+  </data>
+  <data name="JsPopularActivities" xml:space="preserve">
+    <value>Популярни активности</value>
+  </data>
+  <data name="JsAllSuggestions" xml:space="preserve">
+    <value>Всички предложения</value>
+  </data>
+  <data name="JsToastSelectCity" xml:space="preserve">
+    <value>Моля, изберете град от предложенията!</value>
+  </data>
+  <data name="JsToastSelectActivity" xml:space="preserve">
+    <value>Моля, изберете валидна активност!</value>
+  </data>
+  <data name="EmailConfirmationSubject" xml:space="preserve">
+    <value>Потвърждение на акаунт: {0}</value>
+  </data>
+  <data name="EmailConfirmationTitle" xml:space="preserve">
+    <value>Потвърждение на акаунт</value>
+  </data>
+  <data name="ReservationConfirmationSubject" xml:space="preserve">
+    <value>Потвърждение на резервация: {0}</value>
+  </data>
+  <data name="ReservationConfirmationTitle" xml:space="preserve">
+    <value>Успешна резервация</value>
+  </data>
+  <data name="ReservationCancelledSubject" xml:space="preserve">
+    <value>Отказана резервация: {0}</value>
+  </data>
+  <data name="ReservationCancelledTitle" xml:space="preserve">
+    <value>Отказана резервация</value>
+  </data>
+  <data name="PasswordResetSubject" xml:space="preserve">
+    <value>Възстановяване на парола</value>
+  </data>
+  <data name="PasswordResetTitle" xml:space="preserve">
+    <value>Възстановяване на парола</value>
+  </data>
+  <data name="PasswordChangedSubject" xml:space="preserve">
+    <value>Вашата парола беше променена</value>
+  </data>
+  <data name="PasswordChangedTitle" xml:space="preserve">
+    <value>Сигурност на акаунта</value>
+  </data>
+  <data name="ProfileDeletedSubject" xml:space="preserve">
+    <value>Потвърждение за изтриване на профил</value>
+  </data>
+  <data name="ProfileDeletedTitle" xml:space="preserve">
+    <value>Изтрит профил</value>
+  </data>
+  <data name="PlaceApprovedSubject" xml:space="preserve">
+    <value>Вашият обект е одобрен</value>
+  </data>
+  <data name="PlaceApprovedTitle" xml:space="preserve">
+    <value>Обектът е активен</value>
+  </data>
+  <data name="PlaceRejectedSubject" xml:space="preserve">
+    <value>Статус на заявката за обект</value>
+  </data>
+  <data name="PlaceRejectedTitle" xml:space="preserve">
+    <value>Отказ за публикуване</value>
+  </data>
+  <data name="PlaceDeletedSubject" xml:space="preserve">
+    <value>Вашият обект е премахнат</value>
+  </data>
+  <data name="PlaceDeletedTitle" xml:space="preserve">
+    <value>Премахнат обект</value>
+  </data>
+  <data name="ReservationTimeChangedSubject" xml:space="preserve">
+    <value>Промяна в часа на резервация</value>
+  </data>
+  <data name="ReservationTimeChangedTitle" xml:space="preserve">
+    <value>Променен час</value>
+  </data>
+  <data name="NewReservationSubject" xml:space="preserve">
+    <value>Нова резервация за {0}</value>
+  </data>
+  <data name="NewReservationTitle" xml:space="preserve">
+    <value>Нова резервация</value>
+  </data>
+  <data name="ReservationCancelledByOwnerSubject" xml:space="preserve">
+    <value>Анулирана резервация: {0}</value>
+  </data>
+  <data name="ReservationCancelledByOwnerTitle" xml:space="preserve">
+    <value>Анулирана резервация</value>
+  </data>
+  <data name="NewReviewSubject" xml:space="preserve">
+    <value>Нов отзив за {0}</value>
+  </data>
+  <data name="NewReviewTitle" xml:space="preserve">
+    <value>Нов отзив</value>
+  </data>
+  <data name="MaintenanceRequestSubject" xml:space="preserve">
+    <value>Заявка за поддръжка</value>
+  </data>
+  <data name="MaintenanceRequestTitle" xml:space="preserve">
+    <value>Заявка за поддръжка</value>
+  </data>
+  <data name="MyReservations" xml:space="preserve">
+    <value>Моите резервации</value>
+  </data>
+  <data name="NewReservationBtn" xml:space="preserve">
+    <value>Нова резервация</value>
+  </data>
+  <data name="ChangePasswordBtn" xml:space="preserve">
+    <value>Смяна на паролата</value>
+  </data>
+  <data name="AccountSecurityBtn" xml:space="preserve">
+    <value>Сигурност на акаунта</value>
+  </data>
+  <data name="ManagePlaceBtn" xml:space="preserve">
+    <value>Управление на обекта</value>
+  </data>
+  <data name="TryAgainBtn" xml:space="preserve">
+    <value>Нов опит</value>
+  </data>
+  <data name="GoToDashboardBtn" xml:space="preserve">
+    <value>Към таблото</value>
+  </data>
+  <data name="GoToSiteBtn" xml:space="preserve">
+    <value>Към сайта</value>
+  </data>
+  <data name="ReservationCancelledSuccess" xml:space="preserve">
+    <value>Резервацията беше анулирана</value>
+  </data>
+  <data name="ReservationTimeChangedSuccess" xml:space="preserve">
+    <value>Часът беше променен успешно!</value>
+  </data>
+  <data name="SystemAdmin" xml:space="preserve">
+    <value>Системен</value>
+  </data>
+  <data name="SystemAdministrator" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="SystemBanReason" xml:space="preserve">
+    <value>Системна забрана</value>
+  </data>
+  <data name="ConfirmMyAccount" xml:space="preserve">
+    <value>ПОТВЪРДИ МОЯ АКАУНТ</value>
+  </data>
+  <data name="ButtonValid24Hours" xml:space="preserve">
+    <value>Бутонът е валиден за следващите 24 часа.</value>
+  </data>
+  <data name="IgnoreEmail" xml:space="preserve">
+    <value>Ако не сте правили регистрация при нас, моля игнорирайте този имейл.</value>
+  </data>
+  <data name="Greeting" xml:space="preserve">
+    <value>Здравейте</value>
+  </data>
+  <data name="ReservationConfirmedText" xml:space="preserve">
+    <value>Вашата резервация беше успешно потворена.</value>
+  </data>
+  <data name="ReservationDetailsText" xml:space="preserve">
+    <value>Детайли за посещението:</value>
+  </data>
+  <data name="PlaceLabel" xml:space="preserve">
+    <value>Обект</value>
+  </data>
+  <data name="DateLabel" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="TimeLabel" xml:space="preserve">
+    <value>Час</value>
+  </data>
+  <data name="ShowEmailOnArrival" xml:space="preserve">
+    <value>Моля, представете този имейл при пристигане на мястото.</value>
+  </data>
+  <data name="ReservationCanceledText" xml:space="preserve">
+    <value>Уведомяваме Ви, че следната резервация беше отказана:</value>
+  </data>
+  <data name="BookNewTime" xml:space="preserve">
+    <value>Ако желаете да запазите нов час, можете да го направите през нашата платформа.</value>
+  </data>
+  <data name="PasswordResetRequestText" xml:space="preserve">
+    <value>Получихме заявка за възстановяване на паролата за Вашия профил. Кликнете на бутона по-долу, за да зададете нова.</value>
+  </data>
+  <data name="IgnorePasswordReset" xml:space="preserve">
+    <value>Ако не сте заявявали промяна, моля, игнорирайте този имейл.</value>
+  </data>
+  <data name="PasswordChangedConfirmText" xml:space="preserve">
+    <value>Този имейл е потвърждение, че паролата за Вашия акаунт в ActPro беше успешно променена преди малко.</value>
+  </data>
+  <data name="ImportantSecurityWarning" xml:space="preserve">
+    <value>Важно: Ако не сте инициирали тази промяна, моля свържете се с нашата поддръжка веднага, тъй като сигурността на акаунта Ви може да е застрашена.</value>
+  </data>
+  <data name="IgnoreIfNoChange" xml:space="preserve">
+    <value>Ако Вие сте извършили промяната, можете да игнорирате това съобщение.</value>
+  </data>
+  <data name="ProfileDeletedText" xml:space="preserve">
+    <value>Вашият профил в ActPro беше успешно изтрит от нашата система, заедно с всички свързани с него лични данни и история.</value>
+  </data>
+  <data name="SorryToSeeYouGo" xml:space="preserve">
+    <value>Съжаляваме, че си тръгвате. Винаги сте добре дошли отново!</value>
+  </data>
+  <data name="PlaceApprovedText" xml:space="preserve">
+    <value>Имаме удоволствието да Ви съобщим, че Вашият обект премина успешна проверка от нашия екип и вече е активен в платформата.</value>
+  </data>
+  <data name="PlaceCanBeBooked" xml:space="preserve">
+    <value>Потребителите вече могат да разглеждат обекта и да правят резервации при Вас.</value>
+  </data>
+  <data name="PlaceRejectedText" xml:space="preserve">
+    <value>След преглед на Вашия обект, установихме, че той не отговаря на изискванията на платформата в настоящия си вид.</value>
+  </data>
+  <data name="MakeCorrectionsAndRetry" xml:space="preserve">
+    <value>Моля, направете необходимите корекции и подайте заявката отново.</value>
+  </data>
+  <data name="PlaceDeletedByAdminText" xml:space="preserve">
+    <value>Информираме Ви, че Вашият обект беше премахнат от нашата платформа от администратор.</value>
+  </data>
+  <data name="ContactSupportIfMistake" xml:space="preserve">
+    <value>Ако смятате, че е станала грешка, моля свържете се с поддръжката ни.</value>
+  </data>
+  <data name="ReservationTimeChangedText" xml:space="preserve">
+    <value>Уведомяваме Ви, че часът на Вашата резервация беше променен.</value>
+  </data>
+  <data name="OldTimeLabel" xml:space="preserve">
+    <value>Старо време</value>
+  </data>
+  <data name="NewTimeLabel" xml:space="preserve">
+    <value>Ново време</value>
+  </data>
+  <data name="WelcomeToActPro" xml:space="preserve">
+    <value>Радваме се, че избрахте ActPro. Остават само няколко стъпки, преди да можете да резервирате любимите си спортни зали.</value>
+  </data>
+  <data name="ThankYouForChoosing" xml:space="preserve">
+    <value>Благодарим Ви, че избрахте ActPro!</value>
+  </data>
+  <data name="NewSupportTicketSubject" xml:space="preserve">
+    <value>[Support Ticket] {0} - от {1}</value>
+  </data>
+  <data name="NewSupportTicketTitle" xml:space="preserve">
+    <value>Нова заявка за поддръжка</value>
+  </data>
+  <data name="FromLabel" xml:space="preserve">
+    <value>От</value>
+  </data>
+  <data name="IssueTypeLabel" xml:space="preserve">
+    <value>Тип проблем</value>
+  </data>
+  <data name="DescriptionLabel" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="SupportTicketReceivedSubject" xml:space="preserve">
+    <value>ActPro - Вашата заявка е получена</value>
+  </data>
+  <data name="SupportTicketReceivedTitle" xml:space="preserve">
+    <value>Вашата заявка е получена</value>
+  </data>
+  <data name="ThankYouForContacting" xml:space="preserve">
+    <value>Благодарим Ви, че се свързахте с нас! Вашата заявка относно</value>
+  </data>
+  <data name="TicketReceivedSuccessfully" xml:space="preserve">
+    <value>е приета успешно.</value>
+  </data>
+  <data name="TeamWillContact" xml:space="preserve">
+    <value>Нашият екип ще прегледа информацията и ще се свърже с вас в рамките на 24 часа.</value>
+  </data>
+  <data name="AutoMessageDisclaimer" xml:space="preserve">
+    <value>Това съобщение е генерирано автоматично. Моля, не отговаряйте на този имейл.</value>
+  </data>
+  <data name="NewBookingTitle" xml:space="preserve">
+    <value>Нова резервация</value>
+  </data>
+  <data name="CustomerLabel" xml:space="preserve">
+    <value>Клиент</value>
+  </data>
+  <data name="NumberLabel" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="YouHaveNewBooking" xml:space="preserve">
+    <value>Имате нова резервация за Вашия обект</value>
+  </data>
+  <data name="ManageReservationsFromPanel" xml:space="preserve">
+    <value>Можете да прегледате детайлите и да управлявате резервацията през Вашия панел.</value>
+  </data>
+  <data name="BookingCancelledByCustomerTitle" xml:space="preserve">
+    <value>Анулирана резервация</value>
+  </data>
+  <data name="CustomerCancelledBooking" xml:space="preserve">
+    <value>Клиентът анулира своята резервация за Вашия обект</value>
+  </data>
+  <data name="CancelledBookingDetails" xml:space="preserve">
+    <value>Детайли за анулираната резервация:</value>
+  </data>
+  <data name="TimeNowAvailable" xml:space="preserve">
+    <value>Часът вече е свободен и може да бъде резервиран от други потребители.</value>
+  </data>
+  <data name="UserLeftComment" xml:space="preserve">
+    <value>Потребителят остави нов коментар за Вашия обект</value>
+  </data>
+  <data name="FeedbackImportantForBusiness" xml:space="preserve">
+    <value>Обратната връзка е важна за развитието на Вашия бизнес!</value>
+  </data>
+  <data name="AllRightsReserved" xml:space="preserve">
+    <value>Всички права запазени.</value>
+  </data>
+  <data name="OldTime" xml:space="preserve">
+    <value>Стар час</value>
+  </data>
+  <data name="NewTime" xml:space="preserve">
+    <value>Нов час</value>
+  </data>
+  <data name="IfNewTimeNotConvenient" xml:space="preserve">
+    <value>Ако новият час не Ви е удобен, можете да анулирате резервацията от профила си.</value>
+  </data>
+  <data name="AdminChangedReservationTime" xml:space="preserve">
+    <value>Администратор промени часа на Вашата резервация за</value>
+  </data>
+  <data name="TicketSubject" xml:space="preserve">
+    <value>заявката относно</value>
+  </data>
+  <data name="IsReceivedSuccessfully" xml:space="preserve">
+    <value>е приета успешно</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>Новини</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Поддръжка</value>
+  </data>
+  <data name="AddPlace" xml:space="preserve">
+    <value>Добави обект</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>АДМИН ПАНЕЛ</value>
+  </data>
+  <data name="BusinessPanel" xml:space="preserve">
+    <value>БИЗНЕС ПАНЕЛ</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Здравей</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Профил</value>
+  </data>
+  <data name="Reservations" xml:space="preserve">
+    <value>Резервации</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Отзиви</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value>Вашият профил не е потвърден. Моля, проверете имейла си, за да отключите всички функции.</value>
+  </data>
+  <data name="ResendConfirmationEmail" xml:space="preserve">
+    <value>Изпрати нов имейл</value>
+  </data>
+  <data name="FindAndBookSports" xml:space="preserve">
+    <value>Намерете и резервирайте спортни занимания лесно и бързо в цялата страна само с един клик. Какво чакаш?</value>
+  </data>
+  <data name="SupportFooter" xml:space="preserve">
+    <value>Поддръжка</value>
+  </data>
+  <data name="HelpCenter" xml:space="preserve">
+    <value>Помощен център</value>
+  </data>
+  <data name="TermsOfService" xml:space="preserve">
+    <value>Условия за ползване</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Политика за поверителност</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Контакти</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>ул. "Марица" 4, Благоевград</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>Всички права запазени.</value>
+  </data>
+  <data name="CreatedForNOIT" xml:space="preserve">
+    <value>Сайтът е създаден за НОИТ 2025/2026. Автори: Александър Дралев и Илиян Митев</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Сигурни ли сте?</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>Потвърждение</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отказ</value>
+  </data>
+  <data name="Cancellation" xml:space="preserve">
+    <value>Анулирай</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Търсене</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Филтри</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Карта</value>
+  </data>
+  <data name="EnlargeMap" xml:space="preserve">
+    <value>Уголеми картата</value>
+  </data>
+  <data name="FilterBy" xml:space="preserve">
+    <value>Филтрирай</value>
+  </data>
+  <data name="PricePerHour" xml:space="preserve">
+    <value>Цена (€/ч)</value>
+  </data>
+  <data name="PlaceType" xml:space="preserve">
+    <value>Тип база</value>
+  </data>
+  <data name="Outdoor" xml:space="preserve">
+    <value>Открито</value>
+  </data>
+  <data name="Indoor" xml:space="preserve">
+    <value>Закрито</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Изчисти</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Приложи</value>
+  </data>
+  <data name="PlaceForSports" xml:space="preserve">
+    <value>място за спорт</value>
+  </data>
+  <data name="PlacesForSports" xml:space="preserve">
+    <value>места за спорт</value>
+  </data>
+  <data name="PlacesFound" xml:space="preserve">
+    <value>открити</value>
+  </data>
+  <data name="PlaceFound" xml:space="preserve">
+    <value>открито</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Подреди по</value>
+  </data>
+  <data name="PriceLowToHigh" xml:space="preserve">
+    <value>Цена (най-ниска)</value>
+  </data>
+  <data name="PriceHighToLow" xml:space="preserve">
+    <value>Цена (най-висока)</value>
+  </data>
+  <data name="RatingDescending" xml:space="preserve">
+    <value>Рейтинг (низходящ ред)</value>
+  </data>
+  <data name="RatingAscending" xml:space="preserve">
+    <value>Рейтинг (възходящ ред)</value>
+  </data>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>Опа! Нищо не открихме.</value>
+  </data>
+  <data name="NoPlacesMatchCriteria" xml:space="preserve">
+    <value>В момента няма места, които да отговарят на избраните критерии за град</value>
+  </data>
+  <data name="TryChangingFilters" xml:space="preserve">
+    <value>Опитайте да промените цената или да потърсите друга активност.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Запомни ме</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Забравена парола</value>
+  </data>
+  <data name="DontHaveAccount" xml:space="preserve">
+    <value>Нямате профил?</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Създай профил</value>
+  </data>
+  <data name="AlreadyHaveAccount" xml:space="preserve">
+    <value>Имате профил?</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Потвърди парола</value>
+  </data>
+  <data name="AgreeToTerms" xml:space="preserve">
+    <value>Съгласен съм с</value>
+  </data>
+  <data name="TermsAndConditions" xml:space="preserve">
+    <value>Общите условия</value>
+  </data>
+  <data name="ConfirmEmail" xml:space="preserve">
+    <value>Потвърди имейл</value>
+  </data>
+  <data name="RegistrationConfirmation" xml:space="preserve">
+    <value>Потвърждение на регистрацията</value>
+  </data>
+  <data name="RemoveOwner" xml:space="preserve">
+    <value>Махни Owner</value>
+  </data>
+  <data name="MakeOwner" xml:space="preserve">
+    <value>Направи Owner</value>
+  </data>
+  <data name="BanUserWarning" xml:space="preserve">
+    <value>ВНИМАНИЕ: Това ще добави имейла и телефона в черен списък и ще изтрие профила!</value>
+  </data>
+  <data name="ConfirmDeletePlace" xml:space="preserve">
+    <value>Наистина ли искате да изтриете</value>
+  </data>
+  <data name="ConfirmCancelReservation" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да анулирате тази резервация?</value>
+  </data>
+  <data name="ConfirmDialogTitle" xml:space="preserve">
+    <value>Сигурни ли сте?</value>
+  </data>
+  <data name="ConfirmYes" xml:space="preserve">
+    <value>Да!</value>
+  </data>
+  <data name="ConfirmCancel" xml:space="preserve">
+    <value>Отказ</value>
+  </data>
+  <data name="OpenSlot" xml:space="preserve">
+    <value>Отвори (Отключи)</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Отвори</value>
+  </data>
+  <data name="CheckEmailForConfirmation" xml:space="preserve">
+    <value>Проверете имейла си за линк за потвърждение.</value>
+  </data>
+  <data name="CheckEmailForResetLink" xml:space="preserve">
+    <value>Проверете имейла си за линк за нулиране на паролата.</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Нулирай паролата</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Смени парола</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Текуща парола</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Нова парола</value>
+  </data>
+  <data name="DeleteProfile" xml:space="preserve">
+    <value>Изтрий профила</value>
+  </data>
+  <data name="EditProfile" xml:space="preserve">
+    <value>Редактиране на профил</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>ЗАПАЗИ</value>
+  </data>
+  <data name="Cancel2" xml:space="preserve">
+    <value>Отмени</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактирай</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтрий</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="MyReviews" xml:space="preserve">
+    <value>Моите отзиви</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Час</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="CancelReservation" xml:space="preserve">
+    <value>Отмени резервация</value>
+  </data>
+  <data name="Confirmed" xml:space="preserve">
+    <value>Потвърдена</value>
+  </data>
+  <data name="CancelledStatus" xml:space="preserve">
+    <value>Отменена</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Чакаща</value>
+  </data>
+  <data name="WriteReview" xml:space="preserve">
+    <value>Напиши отзив</value>
+  </data>
+  <data name="RatingPlaceholder" xml:space="preserve">
+    <value>Оцени</value>
+  </data>
+  <data name="ReviewPlaceholder" xml:space="preserve">
+    <value>Споделете вашето мнение...</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Изпрати</value>
+  </data>
+  <data name="OwnerDashboard" xml:space="preserve">
+    <value>Табло</value>
+  </data>
+  <data name="MyPlaces" xml:space="preserve">
+    <value>Моите обекти</value>
+  </data>
+  <data name="AddNewPlace" xml:space="preserve">
+    <value>ДОБАВЯНЕ НА НОВ ОБЕКТ</value>
+  </data>
+  <data name="PlaceName" xml:space="preserve">
+    <value>Име на обекта</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="Address2" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>Град</value>
+  </data>
+  <data name="Activity" xml:space="preserve">
+    <value>Активност</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Снимки</value>
+  </data>
+  <data name="WorkingHours" xml:space="preserve">
+    <value>Работно време</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>График</value>
+  </data>
+  <data name="ManageSchedule" xml:space="preserve">
+    <value>Управление на график</value>
+  </data>
+  <data name="PendingApprovals" xml:space="preserve">
+    <value>Чакащи одобрения</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Одобрен</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Отхвърлен</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Активен</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Неактивен</value>
+  </data>
+  <data name="BlockTime" xml:space="preserve">
+    <value>Блокирай час</value>
+  </data>
+  <data name="BlockDate" xml:space="preserve">
+    <value>Блокирай дата</value>
+  </data>
+  <data name="SelectDate" xml:space="preserve">
+    <value>Избери дата</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Начална дата</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Крайна дата</value>
+  </data>
+  <data name="BlockReason" xml:space="preserve">
+    <value>Причина за блокиране</value>
+  </data>
+  <data name="AdminDashboard" xml:space="preserve">
+    <value>Админ панел</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Потребители</value>
+  </data>
+  <data name="Places" xml:space="preserve">
+    <value>Обекти</value>
+  </data>
+  <data name="AllReservations" xml:space="preserve">
+    <value>Списък с всички резервации</value>
+  </data>
+  <data name="AuditLogs" xml:space="preserve">
+    <value>Логове</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Одобри</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Отхвърли</value>
+  </data>
+  <data name="Ban" xml:space="preserve">
+    <value>БАН</value>
+  </data>
+  <data name="Unban" xml:space="preserve">
+    <value>Разблокирай</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Роля</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Потребител</value>
+  </data>
+  <data name="CreatedAt" xml:space="preserve">
+    <value>Създадено на</value>
+  </data>
+  <data name="UpdatedAt" xml:space="preserve">
+    <value>Обновен на</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Общо</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Зареждане...</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>Възникна грешка</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Успешно</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Информация</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>Няма данни</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Търси...</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Покажи</value>
+  </data>
+  <data name="Entries" xml:space="preserve">
+    <value>записа</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Предишна</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Следваща</value>
+  </data>
+  <data name="YesDelete" xml:space="preserve">
+    <value>Да, изтрий!</value>
+  </data>
+  <data name="NoKeep" xml:space="preserve">
+    <value>Не, запази</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Потвърди изтриване</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Сигурни ли сте, че искате да изтриете този елемент?</value>
+  </data>
+  <data name="OperationSuccessful" xml:space="preserve">
+    <value>Операцията завърши успешно.</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Операцията не беше успешна.</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Задължително</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>По избор</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Приеми</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Откажи</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Затвори</value>
+  </data>
+  <data name="SelectCityPlaceholder" xml:space="preserve">
+    <value>Избери или въведи град</value>
+  </data>
+  <data name="SelectSportPlaceholder" xml:space="preserve">
+    <value>Избери спорт</value>
+  </data>
+  <data name="PleaseSelectCity" xml:space="preserve">
+    <value>Моля, изберете населено място!</value>
+  </data>
+  <data name="SupportPageTitle" xml:space="preserve">
+    <value>Поддръжка</value>
+  </data>
+  <data name="SupportSubtitle" xml:space="preserve">
+    <value>Свържете се с нас</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Име и фамилия</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Относно</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Съобщение</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Изпрати</value>
+  </data>
+  <data name="ContactInfo" xml:space="preserve">
+    <value>Контактна информация</value>
+  </data>
+  <data name="TermsTitle" xml:space="preserve">
+    <value>Условия за ползване</value>
+  </data>
+  <data name="PrivacyTitle" xml:space="preserve">
+    <value>Политика за поверителност</value>
+  </data>
+  <data name="NewsTitle" xml:space="preserve">
+    <value>Новини</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Прочетете още</value>
+  </data>
+  <data name="PostedOn" xml:space="preserve">
+    <value>Публикувано на</value>
+  </data>
+  <data name="ReservationConfirmed" xml:space="preserve">
+    <value>Резервацията е потвърдена!</value>
+  </data>
+  <data name="ThankYouReservation" xml:space="preserve">
+    <value>Благодарим ви за резервацията!</value>
+  </data>
+  <data name="ReservationDetails" xml:space="preserve">
+    <value>Детайли за резервацията:</value>
+  </data>
+  <data name="GoToMyReservations" xml:space="preserve">
+    <value>Мои резервации</value>
+  </data>
+  <data name="GoHome" xml:space="preserve">
+    <value>Към начало</value>
+  </data>
+  <data name="NewsSubtitle" xml:space="preserve">
+    <value>Научете първи за нашите нови проекти и постижения.</value>
+  </data>
+  <data name="NewPublication" xml:space="preserve">
+    <value>Нова публикация</value>
+  </data>
+  <data name="NoNewsAvailable" xml:space="preserve">
+    <value>В момента няма новини</value>
+  </data>
+  <data name="ShareArticle" xml:space="preserve">
+    <value>Сподели статията:</value>
+  </data>
+  <data name="CopyLink" xml:space="preserve">
+    <value>Копирай линк</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Копирано!</value>
+  </data>
+  <data name="CreateArticle" xml:space="preserve">
+    <value>Създаване на статия</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Задание</value>
+  </data>
+  <data name="TitlePlaceholder" xml:space="preserve">
+    <value>Въведете заглавието...</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Съдържание</value>
+  </data>
+  <data name="ContentPlaceholder" xml:space="preserve">
+    <value>Напишете съдържанието тук...</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Снимка</value>
+  </data>
+  <data name="ClickToUpload" xml:space="preserve">
+    <value>Кликнете, за да качите снимка</value>
+  </data>
+  <data name="ImageFormats" xml:space="preserve">
+    <value>JPG, PNG или WebP</value>
+  </data>
+  <data name="PublishNews" xml:space="preserve">
+    <value>Публикувай новината</value>
+  </data>
+  <data name="WillDeleteNews" xml:space="preserve">
+    <value>Ще изтриете новината</value>
+  </data>
+  <data name="MustBeLoggedIn" xml:space="preserve">
+    <value>Трябва да сте влезли в профил, за да харесате!</value>
+  </data>
+  <data name="ServerCommunicationError" xml:space="preserve">
+    <value>Грешка при комуникация със сървъра.</value>
+  </data>
+  <data name="JoinActPro" xml:space="preserve">
+    <value>СТАНЕТЕ ЧАСТ ОТ ACTPRO</value>
+  </data>
+  <data name="FillPlaceDetails" xml:space="preserve">
+    <value>Попълнете данните за вашия обект и започнете да приемате резервации.</value>
+  </data>
+  <data name="PlaceNamePlaceholder" xml:space="preserve">
+    <value>напр. Спортен комплекс 'Арена'...</value>
+  </data>
+  <data name="ExactAddress" xml:space="preserve">
+    <value>Точен адрес</value>
+  </data>
+  <data name="ExactAddressPlaceholder" xml:space="preserve">
+    <value>ул. Свобода №12...</value>
+  </data>
+  <data name="SelectType" xml:space="preserve">
+    <value>-- Избери тип --</value>
+  </data>
+  <data name="SelectCity" xml:space="preserve">
+    <value>-- Избери град --</value>
+  </data>
+  <data name="ActivityType" xml:space="preserve">
+    <value>Тип дейност</value>
+  </data>
+  <data name="SelectActivity" xml:space="preserve">
+    <value>-- Избери дейност --</value>
+  </data>
+  <data name="CapacityLabel" xml:space="preserve">
+    <value>Капацитет (лица)</value>
+  </data>
+  <data name="DescriptionPlaceholder" xml:space="preserve">
+    <value>Разкажете повече за условията, които предлагате...</value>
+  </data>
+  <data name="DragDropImages" xml:space="preserve">
+    <value>Плъзнете снимки тук или кликнете за избор</value>
+  </data>
+  <data name="SupportedFormats" xml:space="preserve">
+    <value>Поддържани формати: JPG, PNG (Максимум 5MB на файл)</value>
+  </data>
+  <data name="UploadPlaceImages" xml:space="preserve">
+    <value>КАЧИ СНИМКИ НА ОБЕКТА</value>
+  </data>
+  <data name="PlaceDescriptionPlaceholder" xml:space="preserve">
+    <value>Кратко описание на обекта...</value>
+  </data>
+  <data name="EnterPlaceName" xml:space="preserve">
+    <value>Въведете име...</value>
+  </data>
+  <data name="SubmitForApproval" xml:space="preserve">
+    <value>ИЗПРАТИ ЗАЯВКА ЗА ОДОБРЕНИЕ</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>Профилна снимка</value>
+  </data>
+  <data name="ActProCredits" xml:space="preserve">
+    <value>ActPro Кредити</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Фаворити</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Действие</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Виж</value>
+  </data>
+  <data name="NoFavoritesYet" xml:space="preserve">
+    <value>Все още нямате добавени любими обекти.</value>
+  </data>
+  <data name="CreditsInfo" xml:space="preserve">
+    <value>Събирайте кредити чрез активност в платформата и отключвайте ексклузивни нива и отстъпки!</value>
+  </data>
+  <data name="CreditsPerReservation" xml:space="preserve">
+    <value>за резервация</value>
+  </data>
+  <data name="CreditsPerComment" xml:space="preserve">
+    <value>за коментар</value>
+  </data>
+  <data name="LevelsAndPrivileges" xml:space="preserve">
+    <value>Нива и Привилегии</value>
+  </data>
+  <data name="Bronze" xml:space="preserve">
+    <value>Бронз (0-99 кр.)</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="Silver" xml:space="preserve">
+    <value>Сребро (100-499 кр.)</value>
+  </data>
+  <data name="SilverDiscount" xml:space="preserve">
+    <value>5% отстъпка</value>
+  </data>
+  <data name="Gold" xml:space="preserve">
+    <value>Злато (500+ кр.)</value>
+  </data>
+  <data name="GoldDiscount" xml:space="preserve">
+    <value>10% отстъпка</value>
+  </data>
+  <data name="Discount" xml:space="preserve">
+    <value>отстъпка</value>
+  </data>
+  <data name="Understood" xml:space="preserve">
+    <value>Разбрах!</value>
+  </data>
+  <data name="PlaceRemovedSuccessfully" xml:space="preserve">
+    <value>Обектът беше премахнат успешно!</value>
+  </data>
+  <data name="ManageYourReviews" xml:space="preserve">
+    <value>Тук можете да видите и управлявате всички ваши отзиви за посетените обекти.</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>Отзива</value>
+  </data>
+  <data name="NoComment" xml:space="preserve">
+    <value>Няма коментар.</value>
+  </data>
+  <data name="EditReview" xml:space="preserve">
+    <value>Редактирай отзив</value>
+  </data>
+  <data name="CommentText" xml:space="preserve">
+    <value>Текст на коментара</value>
+  </data>
+  <data name="NoReviewsYet" xml:space="preserve">
+    <value>Все още нямате отзиви.</value>
+  </data>
+  <data name="BrowsePlaces" xml:space="preserve">
+    <value>Разгледайте обекти</value>
+  </data>
+  <data name="AddYourPlace" xml:space="preserve">
+    <value>Добави своя обект</value>
+  </data>
+  <data name="EmailNotConfirmedText" xml:space="preserve">
+    <value>Вашият профил не е потвърден. Моля, проверете имейла си, за да отключите всички функции.</value>
+  </data>
+  <data name="DeleteProfileWarning" xml:space="preserve">
+    <value>Тази операция е необратима. Всички ваши данни и любими обекти ще бъдат изтрити завинаги.</value>
+  </data>
+  <data name="EnterPasswordConfirm" xml:space="preserve">
+    <value>Въведете вашата парола, за да потвърдите:</value>
+  </data>
+  <data name="PrivacyPageContent" xml:space="preserve">
+    <value>Настоящата Политика за поверителност описва как ActPro събира, използва и защитава вашата лична информация, когато използвате нашата услуга за резервация на спортни занимания.</value>
+  </data>
+  <data name="PrivacyInfoWeCollect" xml:space="preserve">
+    <value>Информация, която събираме</value>
+  </data>
+  <data name="PrivacyInfoCollectedList" xml:space="preserve">
+    <value>Ние събираме лична информация, предоставена директно от Вас при използване на платформата: Данни за акаунта: Име, имейл адрес и телефонен номер при регистрация. Информация за обектите (за партньори): Местоположение на спортната база, снимки и графици. Технически данни: IP адрес, тип браузър и бисквитки (cookies) за подобряване на работата на сайта.</value>
+  </data>
+  <data name="PrivacyHowWeUse" xml:space="preserve">
+    <value>Как използваме вашата информация</value>
+  </data>
+  <data name="PrivacyHowWeUseList" xml:space="preserve">
+    <value>Вашите данни се обработват със следните цели: Улесняване и управление на вашите резервации за спортни занимания. Комуникация относно потвърждения, промени в часовете или отговори на запитвания. Подобряване на функционалността на платформата и потребителското изживяване. Осигуряване на сигурност и предотвратяване на измами.</value>
+  </data>
+  <data name="PrivacySharingInfo" xml:space="preserve">
+    <value>Споделяне на информация</value>
+  </data>
+  <data name="PrivacySharingList" xml:space="preserve">
+    <value>Ние не продаваме вашите лични данни. Споделяме информация само със: Спортните обекти: Само необходимите данни за Вашата резервация (име и час). Доставчици на услуги: Партньори като ПМГ "Акад. С. Корольов" и хостинг доставчици. Правни органи: Само при законово изискване.</value>
+  </data>
+  <data name="PrivacyYourRights" xml:space="preserve">
+    <value>Вашите права (GDPR)</value>
+  </data>
+  <data name="PrivacyYourRightsList" xml:space="preserve">
+    <value>Като потребител, вие имате право на: Достъп до вашите лични данни и искане на копие от тях. Коригиране на неточна информация. Изтриване на вашите данни („Правото да бъдеш забравен“). Възражение срещу обработването на данните за маркетингови цели.</value>
+  </data>
+  <data name="PrivacySecurity" xml:space="preserve">
+    <value>Сигурност</value>
+  </data>
+  <data name="PrivacySecurityText" xml:space="preserve">
+    <value>Прилагаме съвременни технически мерки за защита на вашите данни, включително SSL криптиране и защитени сървъри. Въпреки това, моля имайте предвид, че нито един метод на предаване по интернет не е 100% сигурен.</value>
+  </data>
+  <data name="PrivacyLastUpdated" xml:space="preserve">
+    <value>Последна актуализация: Февруари 2026 г.</value>
+  </data>
+  <data name="PrivacyContactEmail" xml:space="preserve">
+    <value>За въпроси относно вашите данни, моля свържете се с нас на: contact@actprobg.com</value>
+  </data>
+  <data name="TermsPageContent" xml:space="preserve">
+    <value>Настоящите Общи условия уреждат използването на платформата ActPro за резервиране на спортни занимания и обекти. С използването на нашите услуги, Вие се съгласявате с тези условия.</value>
+  </data>
+  <data name="TermsReservations" xml:space="preserve">
+    <value>Резервации и плащания</value>
+  </data>
+  <data name="TermsReservationsText" xml:space="preserve">
+    <value>Потребителите могат да резервират спортни занимания само чрез наличната система в платформата. ActPro действа като посредник между спортните бази и крайните потребители.</value>
+  </data>
+  <data name="TermsRules" xml:space="preserve">
+    <value>Правила на платформата</value>
+  </data>
+  <data name="TermsRulesList" xml:space="preserve">
+    <value>Потребителите са длъжни да предоставят точна информация при регистрация. Резервацията е валидна само за посочения час и обект. Неразрешено използване на чужди профили или злоупотреба със системата за резервации е забранено.</value>
+  </data>
+  <data name="TermsRefund" xml:space="preserve">
+    <value>Рекламация и възстановяване на суми</value>
+  </data>
+  <data name="TermsRefundText" xml:space="preserve">
+    <value>Всички направени плащания в ActPro са окончателни. Възстановяване на суми се допуска само при невъзможност на обекта да предостави услугата или при изрично посочени условия в конкретната обява.</value>
+  </data>
+  <data name="TermsLiability" xml:space="preserve">
+    <value>Отговорност</value>
+  </data>
+  <data name="TermsLiabilityText" xml:space="preserve">
+    <value>ActPro не носи отговорност за качеството на провежданите тренировки или инциденти, възникнали на територията на спортните обекти. Потребителите използват услугите на собствен риск.</value>
+  </data>
+  <data name="TermsChanges" xml:space="preserve">
+    <value>Промени в условията</value>
+  </data>
+  <data name="TermsChangesText" xml:space="preserve">
+    <value>Запазваме правото си да променяме тези условия по всяко време. Всички промени влизат в сила веднага след публикуването им на тази страница.</value>
+  </data>
+  <data name="TermsLastUpdated" xml:space="preserve">
+    <value>Последна актуализация: Февруари 2026 г.</value>
+  </data>
+  <data name="TermsContactEmail" xml:space="preserve">
+    <value>За въпроси относно нашите условия, моля свържете се с нас на: contact@actprobg.com</value>
+  </data>
+  <data name="SupportTitleText" xml:space="preserve">
+    <value>Помощ и поддръжка</value>
+  </data>
+  <data name="SupportSubtitleText" xml:space="preserve">
+    <value>Намерете отговори на често задавани въпроси и получете поддръжката, от която се нуждаете за ActPro.</value>
+  </data>
+  <data name="SupportFAQs" xml:space="preserve">
+    <value>Често задавани въпроси</value>
+  </data>
+  <data name="SupportFAQ1Question" xml:space="preserve">
+    <value>Как да намеря свободни спортни обекти?</value>
+  </data>
+  <data name="SupportFAQ1Answer" xml:space="preserve">
+    <value>Използвайте търсачката на началната страница, като изберете град и вид спорт. Системата ще ви покаже всички налични обекти в реално време.</value>
+  </data>
+  <data name="SupportFAQ2Question" xml:space="preserve">
+    <value>Как да резервирам час за игра?</value>
+  </data>
+  <data name="SupportFAQ2Answer" xml:space="preserve">
+    <value>След като изберете обект, кликнете върху свободния час, който ви е удобен, и потвърдете резервацията. Ще получите имейл за потвърждение.</value>
+  </data>
+  <data name="SupportFAQ3Question" xml:space="preserve">
+    <value>Мога ли да отменя резервацията си?</value>
+  </data>
+  <data name="SupportFAQ3Answer" xml:space="preserve">
+    <value>Да, можете да отмените резервация през вашия профил в секция "Моите резервации" поне 2 часа преди началния час.</value>
+  </data>
+  <data name="SupportFAQ4Question" xml:space="preserve">
+    <value>Как да добавя свой собствен спортен обект?</value>
+  </data>
+  <data name="SupportFAQ4Answer" xml:space="preserve">
+    <value>Отидете на секция "Добави своя обект" в главното меню. След регистрация като собственик, ще можете да управлявате графиците си.</value>
+  </data>
+  <data name="SupportFAQ5Question" xml:space="preserve">
+    <value>Как да се свържа с поддръжката на клиенти?</value>
+  </data>
+  <data name="SupportFAQ5Answer" xml:space="preserve">
+    <value>Можете да ни достигнете чрез приложението, имейл на contact@actprobg.com или телефон +359 897 734 888. Ние сме тук, за да помогнем с всякакви въпроси или проблеми.</value>
+  </data>
+  <data name="SupportContactTitle" xml:space="preserve">
+    <value>Свържете се с нас</value>
+  </data>
+  <data name="SupportContactSubtitle" xml:space="preserve">
+    <value>Изпратете ни заявка за поддръжка и ще се свържем с Вас възможно най-скоро.</value>
+  </data>
+  <data name="SupportFullNameLabel" xml:space="preserve">
+    <value>Пълно име</value>
+  </data>
+  <data name="SupportFullNamePlaceholder" xml:space="preserve">
+    <value>Вашите имена</value>
+  </data>
+  <data name="SupportEmailLabel" xml:space="preserve">
+    <value>Имейл адрес</value>
+  </data>
+  <data name="SupportEmailPlaceholder" xml:space="preserve">
+    <value>email@example.com</value>
+  </data>
+  <data name="SupportIssueTypeLabel" xml:space="preserve">
+    <value>Тип проблем</value>
+  </data>
+  <data name="SupportIssueTechnical" xml:space="preserve">
+    <value>Технически проблем</value>
+  </data>
+  <data name="SupportIssueReservation" xml:space="preserve">
+    <value>Проблем с резервация</value>
+  </data>
+  <data name="SupportIssuePayment" xml:space="preserve">
+    <value>Въпрос относно плащане</value>
+  </data>
+  <data name="SupportIssueOther" xml:space="preserve">
+    <value>Друго</value>
+  </data>
+  <data name="SupportDescriptionLabel" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="SupportDescriptionPlaceholder" xml:space="preserve">
+    <value>Опишете проблема си тук...</value>
+  </data>
+  <data name="SupportSubmitButton" xml:space="preserve">
+    <value>Изпратете заявка</value>
+  </data>
+  <data name="SupportEmailInfo" xml:space="preserve">
+    <value>Имейл: contact@actprobg.com</value>
+  </data>
+  <data name="SupportPhoneInfo" xml:space="preserve">
+    <value>Телефон: +359 897 734 888</value>
+  </data>
+  <data name="SupportResponseTime" xml:space="preserve">
+    <value>Време за отговор: В рамките на един работен ден</value>
+  </data>
+  <data name="SearchMobileFilters" xml:space="preserve">
+    <value>Филтри</value>
+  </data>
+  <data name="SearchMobileMap" xml:space="preserve">
+    <value>Карта</value>
+  </data>
+  <data name="SearchEnlargeMap" xml:space="preserve">
+    <value>Уголеми картата</value>
+  </data>
+  <data name="SearchFilterBy" xml:space="preserve">
+    <value>Филтрирай</value>
+  </data>
+  <data name="SearchPricePerHour" xml:space="preserve">
+    <value>Цена (евро/ч)</value>
+  </data>
+  <data name="SearchCityPlaceholder" xml:space="preserve">
+    <value>Избери град</value>
+  </data>
+  <data name="SearchActivityPlaceholder" xml:space="preserve">
+    <value>Избери спорт</value>
+  </data>
+  <data name="SearchCapacityLabel" xml:space="preserve">
+    <value>Капацитет</value>
+  </data>
+  <data name="SearchPlaceTypeLabel" xml:space="preserve">
+    <value>Тип база</value>
+  </data>
+  <data name="SearchClearFilters" xml:space="preserve">
+    <value>Изчисти</value>
+  </data>
+  <data name="SearchApplyFilters" xml:space="preserve">
+    <value>Приложи</value>
+  </data>
+  <data name="SearchPlacesFound" xml:space="preserve">
+    <value>открити</value>
+  </data>
+  <data name="SearchPlaceFound" xml:space="preserve">
+    <value>открито</value>
+  </data>
+  <data name="SearchPlaceForSports" xml:space="preserve">
+    <value>място за спорт</value>
+  </data>
+  <data name="SearchPlacesForSports" xml:space="preserve">
+    <value>места за спорт</value>
+  </data>
+  <data name="SearchSortBy" xml:space="preserve">
+    <value>Подреди по</value>
+  </data>
+  <data name="SearchNewSearch" xml:space="preserve">
+    <value>Ново търсене</value>
+  </data>
+  <data name="SearchSeeMore" xml:space="preserve">
+    <value>Вижте повече</value>
+  </data>
+  <data name="SearchPrice" xml:space="preserve">
+    <value>Цена:</value>
+  </data>
+  <data name="SearchPerHour" xml:space="preserve">
+    <value>/ч</value>
+  </data>
+  <data name="SearchOutdoor" xml:space="preserve">
+    <value>Открито</value>
+  </data>
+  <data name="SearchIndoor" xml:space="preserve">
+    <value>Закрито</value>
+  </data>
+  <data name="SearchUpTo" xml:space="preserve">
+    <value>до</value>
+  </data>
+  <data name="SearchPeople" xml:space="preserve">
+    <value>души</value>
+  </data>
+  <data name="NewsTitleLabel" xml:space="preserve">
+    <value>Задание</value>
+  </data>
+  <data name="NewsContentLabel" xml:space="preserve">
+    <value>Съдържание</value>
+  </data>
+  <data name="NewsDuplicateWarning" xml:space="preserve">
+    <value>Внимание: Имате дублирани полета в модала!</value>
+  </data>
+  <data name="LayoutContactEmail" xml:space="preserve">
+    <value>contact@actprobg.com</value>
+  </data>
+  <data name="LayoutAddressLink" xml:space="preserve">
+    <value>ул. Марица 4, Благоевград</value>
+  </data>
+  <data name="ConfirmationThankYou" xml:space="preserve">
+    <value>Благодарим ви!</value>
+  </data>
+  <data name="ConfirmationSuccessText" xml:space="preserve">
+    <value>Вашата резервация беше направена успешно.</value>
+  </data>
+  <data name="ConfirmationManageText" xml:space="preserve">
+    <value>Можете да прегледате вашите резервации в профила си или да се върнете към началото.</value>
+  </data>
+  <data name="ConfirmationGoHome" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="ConfirmationMyReservations" xml:space="preserve">
+    <value>Мои резервации</value>
+  </data>
+  <data name="MyResManageText" xml:space="preserve">
+    <value>Управлявайте вашите предстоящи и изминали посещения Общо:</value>
+  </data>
+  <data name="MyResAll" xml:space="preserve">
+    <value>Всички</value>
+  </data>
+  <data name="MyResUpcoming" xml:space="preserve">
+    <value>Предстоящи</value>
+  </data>
+  <data name="MyResPast" xml:space="preserve">
+    <value>Изминали</value>
+  </data>
+  <data name="MyResNoReservations" xml:space="preserve">
+    <value>Все още нямате резервации</value>
+  </data>
+  <data name="MyResEmptyHistory" xml:space="preserve">
+    <value>Вашата история е празна. Открийте нови интересни места и направете първата си резервация.</value>
+  </data>
+  <data name="MyResBrowsePlaces" xml:space="preserve">
+    <value>Разгледай обекти</value>
+  </data>
+  <data name="MyResPastBadge" xml:space="preserve">
+    <value>Изминала</value>
+  </data>
+  <data name="MyResUpcomingBadge" xml:space="preserve">
+    <value>Предстояща</value>
+  </data>
+  <data name="MyResCancel" xml:space="preserve">
+    <value>Откажи</value>
+  </data>
+  <data name="MyResCancelConfirmTitle" xml:space="preserve">
+    <value>Сигурни ли сте?</value>
+  </data>
+  <data name="MyResCancelConfirmText" xml:space="preserve">
+    <value>Искате ли да откажете тази резервация?</value>
+  </data>
+  <data name="MyResCancelConfirmBtn" xml:space="preserve">
+    <value>Да, откажи я!</value>
+  </data>
+  <data name="MyResCancelBtnText" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="MyResCancelledTitle" xml:space="preserve">
+    <value>Отказана!</value>
+  </data>
+  <data name="MyResErrorTitle" xml:space="preserve">
+    <value>Грешка!</value>
+  </data>
+  <data name="MyResErrorText" xml:space="preserve">
+    <value>Възникна проблем при комуникацията със сървъра.</value>
+  </data>
+  <data name="SettingsPersonalInfo" xml:space="preserve">
+    <value>Лична информация</value>
+  </data>
+  <data name="SettingsPhoneNotSet" xml:space="preserve">
+    <value>Не е въведен</value>
+  </data>
+  <data name="SettingsMemberSince" xml:space="preserve">
+    <value>Член от</value>
+  </data>
+  <data name="SettingsChangePassword" xml:space="preserve">
+    <value>Редактиране на парола</value>
+  </data>
+  <data name="SettingsPasswordWarning" xml:space="preserve">
+    <value>Внимавайте с кого споделяте паролата. Екипът на ActPro не държи отговорност при открадване на акаунт.</value>
+  </data>
+  <data name="SettingsSecurityZone" xml:space="preserve">
+    <value>Зона за сигурност</value>
+  </data>
+  <data name="SettingsSecurityWarning" xml:space="preserve">
+    <value>Внимавайте с действията в този панел. Изтриването на профила е необратимо.</value>
+  </data>
+  <data name="EditUploadPhoto" xml:space="preserve">
+    <value>Качи снимка</value>
+  </data>
+  <data name="EditFirstNamePlaceholder" xml:space="preserve">
+    <value>Въведете име...</value>
+  </data>
+  <data name="EditLastNamePlaceholder" xml:space="preserve">
+    <value>Въведете фамилия...</value>
+  </data>
+  <data name="ForgotEnterEmail" xml:space="preserve">
+    <value>Въведете имейла си и ще ви пратим инструкции.</value>
+  </data>
+  <data name="ForgotSendLink" xml:space="preserve">
+    <value>Изпрати линк</value>
+  </data>
+  <data name="ForgotEnterNewPassword" xml:space="preserve">
+    <value>Въведете новата си парола за</value>
+  </data>
+  <data name="ForgotSavePassword" xml:space="preserve">
+    <value>Запази паролата</value>
+  </data>
+  <data name="ForgotBackToLogin" xml:space="preserve">
+    <value>Обратно към входа</value>
+  </data>
+  <data name="LoginRememberMe" xml:space="preserve">
+    <value>Запомни ме</value>
+  </data>
+  <data name="LoginForgotPassword" xml:space="preserve">
+    <value>Забравена парола?</value>
+  </data>
+  <data name="LoginNoAccount" xml:space="preserve">
+    <value>Нямаш профил?</value>
+  </data>
+  <data name="LoginRegisterHere" xml:space="preserve">
+    <value>Регистрирай се тук</value>
+  </data>
+  <data name="RegisterHasAccount" xml:space="preserve">
+    <value>Вече имаш акаунт?</value>
+  </data>
+  <data name="RegisterLoginHere" xml:space="preserve">
+    <value>Влез тук</value>
+  </data>
+  <data name="RegisterAgreeTerms" xml:space="preserve">
+    <value>Съгласен съм с</value>
+  </data>
+  <data name="RegisterAgreePrivacy" xml:space="preserve">
+    <value>и</value>
+  </data>
+  <data name="RegisterTermsLink" xml:space="preserve">
+    <value>общите условия</value>
+  </data>
+  <data name="RegisterPrivacyLink" xml:space="preserve">
+    <value>политиката за поверителност</value>
+  </data>
+  <data name="RegisterAcceptTermsError" xml:space="preserve">
+    <value>Трябва да приемете общите условия.</value>
+  </data>
+  <data name="ResPlaceNoImage" xml:space="preserve">
+    <value>Няма снимка</value>
+  </data>
+  <data name="ResDiscount" xml:space="preserve">
+    <value>Отстъпка</value>
+  </data>
+  <data name="ResPricePerHour" xml:space="preserve">
+    <value>€/ч</value>
+  </data>
+  <data name="ResInLocation" xml:space="preserve">
+    <value>в</value>
+  </data>
+  <data name="ResCapacity" xml:space="preserve">
+    <value>Капацитет:</value>
+  </data>
+  <data name="ResCapacityUpTo" xml:space="preserve">
+    <value>до</value>
+  </data>
+  <data name="ResPeople" xml:space="preserve">
+    <value>души</value>
+  </data>
+  <data name="ResBookTime" xml:space="preserve">
+    <value>Запази час</value>
+  </data>
+  <data name="ResPlaceDescription" xml:space="preserve">
+    <value>Описание на обекта</value>
+  </data>
+  <data name="ResVerified" xml:space="preserve">
+    <value>Проверен</value>
+  </data>
+  <data name="ResCommentsAndReviews" xml:space="preserve">
+    <value>Коментари и отзиви</value>
+  </data>
+  <data name="ResDeleteComment" xml:space="preserve">
+    <value>Изтрий коментара</value>
+  </data>
+  <data name="ResNoReviews" xml:space="preserve">
+    <value>Все още няма добавени отзиви.</value>
+  </data>
+  <data name="ResLeaveReview" xml:space="preserve">
+    <value>Остави отзив</value>
+  </data>
+  <data name="ResShareOpinion" xml:space="preserve">
+    <value>Сподели мнение...</value>
+  </data>
+  <data name="ResPublish" xml:space="preserve">
+    <value>Публикувай</value>
+  </data>
+  <data name="ResReviewLimit" xml:space="preserve">
+    <value>Достигнали сте лимита от 3 коментара за това място.</value>
+  </data>
+  <data name="ResLoginToReview" xml:space="preserve">
+    <value>За да оставите коментар</value>
+  </data>
+  <data name="ResLoginToReviewLink" xml:space="preserve">
+    <value>присъединeте се</value>
+  </data>
+  <data name="ResSelectDate" xml:space="preserve">
+    <value>Изберете дата</value>
+  </data>
+  <data name="ResBook" xml:space="preserve">
+    <value>Резервирай</value>
+  </data>
+  <data name="ResProfileRequired" xml:space="preserve">
+    <value>Необходим е профил</value>
+  </data>
+  <data name="ResBookNeedProfile" xml:space="preserve">
+    <value>За да направите резервация, трябва да сте част от ActPro.</value>
+  </data>
+  <data name="ResLogin" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="ResCreateAccount" xml:space="preserve">
+    <value>Създаване на акаунт</value>
+  </data>
+  <data name="ResToday" xml:space="preserve">
+    <value>ДНЕС</value>
+  </data>
+  <data name="ResMustBeLoggedIn" xml:space="preserve">
+    <value>Трябва да сте влезли в профил, за да добавите в любими!</value>
+  </data>
+  <data name="ResAddedToFavorites" xml:space="preserve">
+    <value>Добавено в любими!</value>
+  </data>
+  <data name="ResRemovedFromFavorites" xml:space="preserve">
+    <value>Премахнато от любими.</value>
+  </data>
+  <data name="ResErrorProcessing" xml:space="preserve">
+    <value>Възникна грешка при обработката на заявката.</value>
+  </data>
+  <data name="ResSelectTime" xml:space="preserve">
+    <value>Моля, изберете час!</value>
+  </data>
+  <data name="FillTimeManually" xml:space="preserve">
+    <value>Запълни час (ръчно)</value>
+  </data>
+  <data name="TotalRevenue" xml:space="preserve">
+    <value>Общ приход</value>
+  </data>
+  <data name="NumberOfReservations" xml:space="preserve">
+    <value>Брой Резервации</value>
+  </data>
+  <data name="RecentReservations" xml:space="preserve">
+    <value>Последни Резервации</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Дата и Час</value>
+  </data>
+  <data name="ManualReservation" xml:space="preserve">
+    <value>Ръчна резервация</value>
+  </data>
+  <data name="CustomerNote" xml:space="preserve">
+    <value>Бележка/ Име на клиент</value>
+  </data>
+  <data name="ThisSlotWillBeMarkedAsBusy" xml:space="preserve">
+    <value>Този час ще бъде отбелязан като зает в публичния календар.</value>
+  </data>
+  <data name="PlaceManagement" xml:space="preserve">
+    <value>Управление на обекти</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>Седмица</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Месец</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Година</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Бележка</value>
+  </data>
+  <data name="ErrorProcessing" xml:space="preserve">
+    <value>Грешка при обработка</value>
+  </data>
+  <data name="ScheduleFor" xml:space="preserve">
+    <value>График на:</value>
+  </data>
+  <data name="CloseDate" xml:space="preserve">
+    <value>Затвори дата</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>ОТ ДАТА</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>ДО ДАТА</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Поддръжка</value>
+  </data>
+  <data name="LockPeriod" xml:space="preserve">
+    <value>ЗАКЛЮЧИ ПЕРИОДА</value>
+  </data>
+  <data name="ClosedDatesList" xml:space="preserve">
+    <value>Списък със затворени дати</value>
+  </data>
+  <data name="NoClosedDates" xml:space="preserve">
+    <value>Няма затворени дати за този обект</value>
+  </data>
+  <data name="CheckYourEmail" xml:space="preserve">
+    <value>Проверете пощата си!</value>
+  </data>
+  <data name="WeSentConfirmationLink" xml:space="preserve">
+    <value>Изпратихме линк за потвърждение на:</value>
+  </data>
+  <data name="WhatNext" xml:space="preserve">
+    <value>Какво следва?</value>
+  </data>
+  <data name="OpenEmailAndClick" xml:space="preserve">
+    <value>Отворете имейла и натиснете бутона</value>
+  </data>
+  <data name="CheckSpamFolder" xml:space="preserve">
+    <value>Ако не виждате имейла, проверете папка "Спам"</value>
+  </data>
+  <data name="AfterConfirmationCanBook" xml:space="preserve">
+    <value>След потвърждение ще можете да правите резервации веднага</value>
+  </data>
+  <data name="DidNotReceiveEmail" xml:space="preserve">
+    <value>Не сте получили имейл?</value>
+  </data>
+  <data name="Resend" xml:space="preserve">
+    <value>Изпрати отново</value>
+  </data>
+  <data name="NoReservationsFound" xml:space="preserve">
+    <value>Няма намерени резервации.</value>
+  </data>
+  <data name="PhoneReservationExample" xml:space="preserve">
+    <value>напр. резервция по телефон / Иван Петров</value>
+  </data>
+  <data name="Editing" xml:space="preserve">
+    <value>Редактиране:</value>
+  </data>
+  <data name="CurrentImages" xml:space="preserve">
+    <value>Налични снимки</value>
+  </data>
+  <data name="NoImages" xml:space="preserve">
+    <value>Няма снимки.</value>
+  </data>
+  <data name="AddNewImages" xml:space="preserve">
+    <value>ДОБАВИ НОВИ СНИМКИ</value>
+  </data>
+  <data name="DragDropImagesOrClick" xml:space="preserve">
+    <value>Плъзнете снимки тук или кликнете за избор</value>
+  </data>
+  <data name="SupportedFormatsImage" xml:space="preserve">
+    <value>Поддържани формати: JPG, PNG (Максимум 5MB на файл)</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>ЗАПАЗИ ПРОМЕНИТЕ</value>
+  </data>
+  <data name="CreatePlace" xml:space="preserve">
+    <value>СЪЗДАЙ ОБЕКТА</value>
+  </data>
+  <data name="EditTime" xml:space="preserve">
+    <value>РЕДАКТИРАНЕ НА ЧАС</value>
+  </data>
+  <data name="SelectNewTime" xml:space="preserve">
+    <value>Изберете нов час за резервацията</value>
+  </data>
+  <data name="CurrentTime" xml:space="preserve">
+    <value>Текущ час:</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Табло</value>
+  </data>
+  <data name="JsPopularCities" xml:space="preserve">
+    <value>София, Пловдив, Варна, Бургас, Благоевград</value>
+  </data>
+  <data name="JsDefaultActivities" xml:space="preserve">
+    <value>Футбол, Волейбол, Баскетбол, Тенис, Фитнес</value>
+  </data>
+  <data name="CurrencyEuro" xml:space="preserve">
+    <value>€</value>
+  </data>
+  <data name="PerHour" xml:space="preserve">
+    <value>/ч</value>
+  </data>
+  <data name="LanguageBg" xml:space="preserve">
+    <value>БГ</value>
+  </data>
+  <data name="LanguageEn" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="CompanyAddressUrl" xml:space="preserve">
+    <value>ул. Марица 4, Благоевград</value>
+  </data>
+  <data name="EditTimeHour" xml:space="preserve">
+    <value>Промяна</value>
+  </data>
+  <data name="ReservationCreated" xml:space="preserve">
+    <value>Направенa на</value>
+  </data>
+  <data name="ActivityInSite" xml:space="preserve">
+    <value>Активност на платформата</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Коментари</value>
+  </data>
+  <data name="ValidationNameRequired" xml:space="preserve">
+    <value>Моля, въведете име на обекта!</value>
+  </data>
+  <data name="ValidationAddressRequired" xml:space="preserve">
+    <value>Моля, въведете адрес!</value>
+  </data>
+  <data name="ValidationTypeRequired" xml:space="preserve">
+    <value>Моля, изберете тип!</value>
+  </data>
+  <data name="ValidationActivityRequired" xml:space="preserve">
+    <value>Моля, изберете вид спорт!</value>
+  </data>
+  <data name="ValidationPriceRequired" xml:space="preserve">
+    <value>Моля, въведете цена!</value>
+  </data>
+  <data name="ValidationPriceRange" xml:space="preserve">
+    <value>Цената трябва да е между 0.01 и 9999 лв.!</value>
+  </data>
+  <data name="ValidationCapacityRequired" xml:space="preserve">
+    <value>Моля, въведете капацитет!</value>
+  </data>
+  <data name="ValidationCapacityRange" xml:space="preserve">
+    <value>Капацитетът трябва да е между 1 и 1000 души!</value>
+  </data>
+</root>

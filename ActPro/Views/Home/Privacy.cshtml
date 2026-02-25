@@ -1,49 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Политика за поверителност";
+@{
+    ViewData["Title"] = DomainResources.PrivacyPolicy;
 }
 <div class="container my-5" style="max-width: 900px;">
     <div class="terms-header mb-5">
-        <h1 class="fw-bold">Политика за поверителност</h1>
-        <p class="text-muted">Последна актуализация: Февруари 2026 г.</p>
+        <h1 class="fw-bold">@DomainResources.PrivacyPolicy</h1>
+        <p class="text-muted">@DomainResources.PrivacyLastUpdated</p>
         <hr>
     </div>
     <div class="terms-body" style="line-height: 1.7; color: #333;">
-        <p>Настоящата Политика за поверителност описва как <strong>ActPro</strong> събира, използва и защитава вашата лична информация, когато използвате нашата услуга за резервация на спортни занимания.</p>
-        <h4 class="mt-4 fw-bold">1. Информация, която събираме</h4>
-        <p>Ние събираме лична информация, предоставена директно от Вас при използване на платформата:</p>
-        <ul>
-            <li><strong>Данни за акаунта:</strong> Име, имейл адрес и телефонен номер при регистрация.</li>
-            <li><strong>Информация за обектите (за партньори):</strong> Местоположение на спортната база, снимки и графици.</li>
-            <li><strong>Технически данни:</strong> IP адрес, тип браузър и бисквитки (cookies) за подобряване на работата на сайта.</li>
-        </ul>
-        <h4 class="mt-4 fw-bold">2. Как използваме вашата информация</h4>
-        <p>Вашите данни се обработват със следните цели:</p>
-        <ul>
-            <li>Улесняване и управление на вашите резервации за спортни занимания.</li>
-            <li>Комуникация относно потвърждения, промени в часовете или отговори на запитвания.</li>
-            <li>Подобряване на функционалността на платформата и потребителското изживяване.</li>
-            <li>Осигуряване на сигурност и предотвратяване на измами.</li>
-        </ul>
-        <h4 class="mt-4 fw-bold">3. Споделяне на информация</h4>
-        <p>Ние <strong>не продаваме</strong> вашите лични данни. Споделяме информация само с:</p>
-        <ul>
-            <li><strong>Спортните обекти:</strong> Само необходимите данни за Вашата резервация (име и час).</li>
-            <li><strong>Доставчици на услуги:</strong> Партньори като ПМГ "Акад. С. Корольов" и хостинг доставчици.</li>
-            <li><strong>Правни органи:</strong> Само при законово изискване.</li>
-        </ul>
-        <h4 class="mt-4 fw-bold">4. Вашите права (GDPR)</h4>
-        <p>Като потребител, вие имате право на:</p>
-        <ul>
-            <li>Достъп до вашите лични данни и искане на копие от тях.</li>
-            <li>Коригиране на неточна информация.</li>
-            <li>Изтриване на вашите данни („Правото да бъдеш забравен“).</li>
-            <li>Възражение срещу обработването на данните за маркетингови цели.</li>
-        </ul>
-        <h4 class="mt-4 fw-bold">5. Сигурност</h4>
-        <p>Прилагаме съвременни технически мерки за защита на вашите данни, включително SSL криптиране и защитени сървъри. Въпреки това, моля имайте предвид, че нито един метод на предаване по интернет не е 100% сигурен.</p>
+        <p>@DomainResources.PrivacyPageContent</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.PrivacyInfoWeCollect</h4>
+        <p>@DomainResources.PrivacyInfoCollectedList</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.PrivacyHowWeUse</h4>
+        <p>@DomainResources.PrivacyHowWeUseList</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.PrivacySharingInfo</h4>
+        <p>@DomainResources.PrivacySharingList</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.PrivacyYourRights</h4>
+        <p>@DomainResources.PrivacyYourRightsList</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.PrivacySecurity</h4>
+        <p>@DomainResources.PrivacySecurityText</p>
 
         <div class="mt-5 pt-4 border-top">
-            <p class="small text-muted italic">За въпроси относно вашите данни, моля свържете се с нас на: <strong>contact@actprobg.com</strong></p>
+            <p class="small text-muted italic"><strong>@DomainResources.PrivacyContactEmail</strong></p>
         </div>
     </div>
 </div>

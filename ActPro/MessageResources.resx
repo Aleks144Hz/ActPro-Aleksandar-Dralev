@@ -414,6 +414,39 @@
 	<data name="ValidationCityRequired">
 		<value>Моля, изберете населено място!</value>
 	</data>
+	<data name="ValidationNameRequired">
+		<value>Моля, въведете име на обекта!</value>
+	</data>
+	<data name="ValidationAddressRequired">
+		<value>Моля, въведете адрес!</value>
+	</data>
+	<data name="ValidationTypeRequired">
+		<value>Моля, изберете тип!</value>
+	</data>
+	<data name="ValidationActivityRequired">
+		<value>Моля, изберете вид спорт!</value>
+	</data>
+	<data name="ValidationPriceRequired">
+		<value>Моля, въведете цена!</value>
+	</data>
+	<data name="ValidationPriceRange">
+		<value>Цената трябва да е между 0.01 и 9999 лв.!</value>
+	</data>
+	<data name="ValidationCapacityRequired">
+		<value>Моля, въведете капацитет!</value>
+	</data>
+	<data name="ValidationCapacityRange">
+		<value>Капацитетът трябва да е между 1 и 1000 души!</value>
+	</data>
+	<data name="ValidationNameTooLong">
+		<value>Името е твърде дълго! Максимум 200 символа.</value>
+	</data>
+	<data name="ValidationDescriptionRequired">
+		<value>Моля, въведете описание!</value>
+	</data>
+	<data name="ValidationDescriptionTooLong">
+		<value>Описанието трябва да е между 10 и 2000 символа.</value>
+	</data>
 	<data name="LabelActivity">
 		<value>Какво ще спортувате?</value>
 	</data>
@@ -570,7 +603,13 @@
 	<data name="JsToastSelectCity">
 		<value>Моля, изберете град от предложенията!</value>
 	</data>
-	<data name="JsToastSelectActivity">
-		<value>Моля, изберете валидна активност!</value>
-	</data>
+  <data name="JsToastSelectActivity">
+    <value>Моля, изберете валидна активност!</value>
+  </data>
+  <data name="PasswordTooShort">
+    <value>Паролата трябва да е минимум {0} символа.</value>
+  </data>
+  <data name="DefaultError">
+    <value>Възникна неочаквана грешка.</value>
+  </data>
 </root>

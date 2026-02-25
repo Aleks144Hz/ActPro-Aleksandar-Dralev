@@ -1,7 +1,7 @@
 ﻿@using ActPro.Domain.Models.Owner
 @model PlaceEntryViewModel
 @{
-    ViewData["Title"] = "Стани част от ActPro";
+    ViewData["Title"] = DomainResources.JoinActPro;
 }
 
 <div class="container py-5">
@@ -10,72 +10,80 @@
             <div class="card shadow-lg border-0" style="border-radius: 15px; overflow: hidden;">
                 <div class="card-header bg-success text-white p-4 border-0">
                     <h3 class="card-title fw-bold mb-0">
-                        <i class="bi bi-briefcase me-2"></i> СТАНЕТЕ ЧАСТ ОТ ACTPRO
+                        <i class="bi bi-briefcase me-2"></i> @DomainResources.JoinActPro
                     </h3>
-                    <p class="mb-0 mt-2 opacity-75">Попълнете данните за вашия обект и започнете да приемате резервации.</p>
+                    <p class="mb-0 mt-2 opacity-75">@DomainResources.FillPlaceDetails</p>
                 </div>
 
-                <form asp-action="Index" method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="All" class="text-danger"></div>                 
+                <form asp-action="Index" method="post" enctype="multipart/form-data" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>                 
                     <div class="card-body p-4 p-md-5">
                         <div class="row g-4">
                             <div class="col-md-12">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Име на обекта</label>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName</label>
                                 <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4"
-                                       placeholder="напр. Спортен комплекс 'Арена'..." required />
+                                       placeholder="@DomainResources.PlaceNamePlaceholder" />
+                                <span asp-validation-for="Name" class="text-danger small"></span>
                             </div>
                             <div class="col-md-8">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Точен адрес</label>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.ExactAddress</label>
                                 <input asp-for="Address" class="form-control rounded-pill shadow-sm px-4"
-                                       placeholder="ул. Свобода №12..." required />
+                                       placeholder="@DomainResources.ExactAddressPlaceholder" />
+                                <span asp-validation-for="Address" class="text-danger small"></span>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Тип база</label>
-                                <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4" required>
-                                    <option value="">-- Избери тип --</option>
-                                    <option value="true">Открито</option>
-                                    <option value="false">Закрито</option>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceType</label>
+                                <select asp-for="IsOutdoor" class="form-select rounded-pill shadow-sm px-4">
+                                    <option value="">@DomainResources.SelectType</option>
+                                    <option value="true">@DomainResources.Outdoor</option>
+                                    <option value="false">@DomainResources.Indoor</option>
                                 </select>
+                                <span asp-validation-for="IsOutdoor" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Град</label>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.City</label>
                                 <select asp-for="CityId" class="form-select rounded-pill shadow-sm px-4"
-                                        asp-items="ViewBag.Cities" required>
-                                    <option value="">-- Избери град --</option>
+                                        asp-items="ViewBag.Cities">
+                                    <option value="">@DomainResources.SelectCity</option>
                                 </select>
+                                <span asp-validation-for="CityId" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Тип дейност</label>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.ActivityType</label>
                                 <select asp-for="ActivityId" class="form-select rounded-pill shadow-sm px-4"
-                                        asp-items="ViewBag.ActivityTypes" required>
-                                    <option value="">-- Избери дейност --</option>
+                                        asp-items="ViewBag.ActivityTypes">
+                                    <option value="">@DomainResources.SelectActivity</option>
                                 </select>
+                                <span asp-validation-for="ActivityId" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Цена (€/ч)</label>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PricePerHour</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0 rounded-start-pill text-success fw-bold">€</span>
                                     <input asp-for="Price" type="number" step="0.01"
-                                           class="form-control border-start-0 rounded-end-pill shadow-sm px-3" required />
+                                           class="form-control border-start-0 rounded-end-pill shadow-sm px-3" />
                                 </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Капацитет (лица)</label>
-                                <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4" required />
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.CapacityLabel</label>
+                                <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4" />
+                                <span asp-validation-for="Capacity" class="text-danger small"></span>
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label small fw-bold text-muted text-uppercase">Описание</label>
+                                <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description</label>
                                 <textarea asp-for="Description" class="form-control shadow-sm px-4"
                                           rows="4" style="border-radius: 20px;"
-                                          placeholder="Разкажете повече за условията, които предлагате..."></textarea>
+                                          placeholder="@DomainResources.DescriptionPlaceholder"></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
                             </div>
                             <div class="col-md-12">
                                 <div id="drop-zone" class="p-3 bg-light rounded-4 text-center position-relative transition-all"
                                      style="border: 2px dashed #dee2e6; cursor: pointer;">
 
                                     <i class="bi bi-cloud-arrow-up-fill fs-1 text-primary mb-3"></i>
-                                    <h5 class="fw-bold">Плъзнете снимки тук или кликнете за избор</h5>
-                                    <p class="text-muted small">Поддържани формати: JPG, PNG (Максимум 5MB на файл)</p>
+                                    <h5 class="fw-bold">@DomainResources.DragDropImages</h5>
+                                    <p class="text-muted small">@DomainResources.SupportedFormats</p>
 
                                     <input type="file" name="imageFiles" id="file-input"
                                            class="position-absolute opacity-0 w-100 h-100 top-0 start-0"
@@ -88,7 +96,7 @@
                     </div>
                     <div class="card-footer border-0 p-4 bg-light text-center">
                         <button type="submit" class="btn btn-success text-white rounded-pill px-5 py-3 fw-bold shadow-sm mb-2 mb-md-0">
-                            <i class="bi bi-send me-2"></i> ИЗПРАТИ ЗАЯВКА ЗА ОДОБРЕНИЕ
+                            <i class="bi bi-send me-2"></i> @DomainResources.SubmitForApproval
                         </button>
                     </div>
                 </form>

@@ -20,20 +20,40 @@ namespace ActPro.Services
             .Take(3)
             .ToListAsync();
 
-            var cities = await cityRepo.AllAsNoTracking()
-            .Select(c => c.Name)
-            .Distinct()
+            var citiesAll = await cityRepo.AllAsNoTracking().ToListAsync();
+            var activitiesAll = await activityRepo.AllAsNoTracking().ToListAsync();
+            var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+            
+            var cities = citiesAll
+                .Select(c => isEnglish && !string.IsNullOrEmpty(c.NameEn) ? c.NameEn : c.Name)
+                .Distinct()
+                .ToList();
+
+            var activities = activitiesAll
+                .Select(a => isEnglish && !string.IsNullOrEmpty(a.NameEn) ? a.NameEn : a.Name)
+                .Distinct()
+                .ToList();
+
+            var sportCountsList = await placeRepo.AllAsNoTracking()
+            .Include(p => p.Activity)
+            .Where(p => p.Activity != null)
+            .GroupBy(p => p.Activity)
+            .Select(g => new { 
+                Activity = g.Key, 
+                Count = g.Count(),
+                Name = g.Key.Name,
+                NameEn = g.Key.NameEn
+            })
             .ToListAsync();
 
-            var activities = await activityRepo.AllAsNoTracking()
-            .Select(a => a.Name)
-            .Distinct()
-            .ToListAsync();
-
-            var sportCounts = await placeRepo.AllAsNoTracking()
-            .GroupBy(p => p.Activity.Name)
-            .Select(g => new { Name = g.Key, Count = g.Count() })
-            .ToDictionaryAsync(x => x.Name, x => x.Count);
+            var sportCounts = new Dictionary<string, int>();
+            foreach (var item in sportCountsList)
+            {
+                if (!string.IsNullOrEmpty(item.Name))
+                    sportCounts[item.Name] = item.Count;
+                if (!string.IsNullOrEmpty(item.NameEn))
+                    sportCounts[item.NameEn] = item.Count;
+            }
 
             return new HomeViewModel
             {

@@ -32,13 +32,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\images\places\" />
+	  <EmbeddedResource Update="MessageResources.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>MessageResources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="MessageResources.en.resx">
+	    <DependentUpon>MessageResources.resx</DependentUpon>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="wwwroot\Resources\MessageResources.en.resx">
-	    <SubType>Designer</SubType>
-	  </Content>
+	  <Compile Update="MessageResources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>MessageResources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\images\places\" />
 	</ItemGroup>
 
 </Project>

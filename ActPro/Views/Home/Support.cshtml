@@ -1,75 +1,75 @@
-﻿@model ActPro.Domain.Models.SupportTicketViewModel
+@model ActPro.Domain.Models.SupportTicketViewModel
 @{
-    ViewData["Title"] = "Помощ и поддръжка";
+    ViewData["Title"] = DomainResources.SupportTitleText;
 }
 
 <div class="container mt-5 pt-5 mb-5">
     <div class="text-center mb-5">
-        <h1 class="fw-bold text-success">Помощ и поддръжка</h1>
-        <p class="lead text-muted">Намерете отговори на често задавани въпроси и получете поддръжката, от която се нуждаете за ActPro.</p>
+        <h1 class="fw-bold text-success">@DomainResources.SupportTitleText</h1>
+        <p class="lead text-muted">@DomainResources.SupportSubtitleText</p>
     </div>
 
     <div class="row g-5">
         <div class="col-lg-7">
-            <h3 class="mb-4"><i class="bi bi-question-circle text-success me-2"></i>Често задавани въпроси</h3>
+            <h3 class="mb-4"><i class="bi bi-question-circle text-success me-2"></i>@DomainResources.SupportFAQs</h3>
             <div class="accordion shadow-sm" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                            Как да намеря свободни спортни обекти?
+                            @DomainResources.SupportFAQ1Question
                         </button>
                     </h2>
                     <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Използвайте търсачката на началната страница, като изберете град и вид спорт. Системата ще ви покаже всички налични обекти в реално време.
+                            @DomainResources.SupportFAQ1Answer
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                            Как да резервирам час за игра?
+                            @DomainResources.SupportFAQ2Question
                         </button>
                     </h2>
                     <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            След като изберете обект, кликнете върху свободния час, който ви е удобен, и потвърдете резервацията. Ще получите имейл за потвърждение.
+                            @DomainResources.SupportFAQ2Answer
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                            Мога ли да отменя резервацията си?
+                            @DomainResources.SupportFAQ3Question
                         </button>
                     </h2>
                     <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Да, можете да отмените резервация през вашия профил в секция "Моите резервации" поне 2 часа преди началния час.
+                            @DomainResources.SupportFAQ3Answer
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                            Как да добавя свой собствен спортен обект?
+                            @DomainResources.SupportFAQ4Question
                         </button>
                     </h2>
                     <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Отидете на секция "Добави своя обект" в главното меню. След регистрация като собственик, ще можете да управлявате графиците си.
+                            @DomainResources.SupportFAQ4Answer
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                            Как да се свържа с поддръжката на клиенти?
+                            @DomainResources.SupportFAQ5Question
                         </button>
                     </h2>
                     <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Можете да ни достигнете чрез приложението, имейл на contact@actprobg.com или телефон +359 897 734 888. Ние сме тук, за да помогнем с всякакви въпроси или проблеми.
+                            @DomainResources.SupportFAQ5Answer
                         </div>
                     </div>
                 </div>
@@ -78,42 +78,42 @@
         </div>
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm p-4 bg-light">
-                <h3 class="mb-3">Свържете се с нас</h3>
-                <p class="small text-muted mb-4">Изпратете ни заявка за поддръжка и ще се свържем с Вас възможно най-скоро.</p>
+                <h3 class="mb-3">@DomainResources.SupportContactTitle</h3>
+                <p class="small text-muted mb-4">@DomainResources.SupportContactSubtitle</p>
                 <form asp-action="ContactSupport" method="post">
                     <div class="mb-3">
-                        <label asp-for="FullName" class="form-label fw-bold small">Пълно име</label>
-                        <input asp-for="FullName" class="form-control shadow-sm" placeholder="Вашите имена">
+                        <label asp-for="FullName" class="form-label fw-bold small">@DomainResources.SupportFullNameLabel</label>
+                        <input asp-for="FullName" class="form-control shadow-sm" placeholder="@DomainResources.SupportFullNamePlaceholder">
                         <span asp-validation-for="FullName" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label fw-bold small">Имейл адрес</label>
-                        <input asp-for="Email" class="form-control shadow-sm" placeholder="email@example.com">
+                        <label asp-for="Email" class="form-label fw-bold small">@DomainResources.SupportEmailLabel</label>
+                        <input asp-for="Email" class="form-control shadow-sm" placeholder="@DomainResources.SupportEmailPlaceholder">
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Subject" class="form-label fw-bold small">Тип проблем</label>
+                        <label asp-for="Subject" class="form-label fw-bold small">@DomainResources.SupportIssueTypeLabel</label>
                         <select asp-for="Subject" class="form-select shadow-sm">
-                            <option value="Технически проблем">Технически проблем</option>
-                            <option value="Проблем с резервация">Проблем с резервация</option>
-                            <option value="Въпрос относно плащане">Въпрос относно плащане</option>
-                            <option value="Друго">Друго</option>
+                            <option value="Технически проблем">@DomainResources.SupportIssueTechnical</option>
+                            <option value="Проблем с резервация">@DomainResources.SupportIssueReservation</option>
+                            <option value="Въпрос относно плащане">@DomainResources.SupportIssuePayment</option>
+                            <option value="Друго">@DomainResources.SupportIssueOther</option>
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label asp-for="Description" class="form-label fw-bold small">Описание</label>
-                        <textarea asp-for="Description" class="form-control shadow-sm" rows="4" placeholder="Опишете проблема си тук..."></textarea>
+                        <label asp-for="Description" class="form-label fw-bold small">@DomainResources.SupportDescriptionLabel</label>
+                        <textarea asp-for="Description" class="form-control shadow-sm" rows="4" placeholder="@DomainResources.SupportDescriptionPlaceholder"></textarea>
                         <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
-                    <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm">Изпратете заявка</button>
+                    <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm">@DomainResources.SupportSubmitButton</button>
                 </form>
 
                 <hr class="my-4">
 
                 <div class="contact-fast-info">
-                    <p class="mb-1"><strong>Имейл:</strong> contact@actprobg.com</p>
-                    <p class="mb-1"><strong>Телефон:</strong> +359 897 734 888</p>
-                    <p class="small text-success mt-2"><i class="bi bi-clock me-1"></i> Време за отговор: В рамките на един работен ден</p>
+                    <p class="mb-1">@DomainResources.SupportEmailInfo</p>
+                    <p class="mb-1">@DomainResources.SupportPhoneInfo</p>
+                    <p class="small text-success mt-2"><i class="bi bi-clock me-1"></i> @DomainResources.SupportResponseTime</p>
                 </div>
             </div>
         </div>

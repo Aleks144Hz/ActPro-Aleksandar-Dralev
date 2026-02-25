@@ -1,12 +1,12 @@
-﻿using ActPro.DAL.Data;
+using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Admin.Controllers
 {
@@ -37,7 +37,7 @@ namespace ActPro.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await placeService.CreatePlaceAsync(place, imageFiles, userId, true);
-                TempData["Success"] = PlaceAddedSuccessfully;
+                TempData["Success"] = DomainResources.PlaceAddedSuccessfully;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -74,7 +74,7 @@ namespace ActPro.Areas.Admin.Controllers
             {
                 if (await placeService.UpdatePlaceAsync(place, imageFiles))
                 {
-                    TempData["Success"] = PlaceUpdatedSuccessfully;
+                    TempData["Success"] = DomainResources.PlaceUpdatedSuccessfully;
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -96,15 +96,17 @@ namespace ActPro.Areas.Admin.Controllers
             {
                 if (!place.IsApproved)
                 {
-                    await emailSender.SendPlaceRejectedAsync(place.Owner.Email, place.Owner.FirstName, place.Name);
+                    if (place.Owner != null && !string.IsNullOrEmpty(place.Owner.Email))
+                        await emailSender.SendPlaceRejectedAsync(place.Owner.Email, place.Owner.FirstName, place.Name);
                 }
-                else 
+                else
                 {
-                    await emailSender.SendPlaceDeletedAsync(place.Owner.Email, place.Owner.FirstName, place.Name);
+                    if (place.Owner != null && !string.IsNullOrEmpty(place.Owner.Email))
+                        await emailSender.SendPlaceDeletedAsync(place.Owner.Email, place.Owner.FirstName, place.Name);
                 }
             }
             await placeService.DeletePlaceAsync(id);
-            TempData["Success"] = PlaceDeletedSuccessfully;
+            TempData["Success"] = DomainResources.PlaceDeletedSuccessfully;
             return RedirectToAction(nameof(Index));
         }
 
@@ -118,11 +120,14 @@ namespace ActPro.Areas.Admin.Controllers
 
             if (place != null && await placeService.ApprovePlaceAsync(id))
             {
-                await emailSender.SendPlaceApprovedAsync(
-                    place.Owner.Email,
-                    place.Owner.FirstName,
-                    place.Name);
-                TempData["Success"] = PlaceApprovedSuccessfully;
+                if (place.Owner != null && !string.IsNullOrEmpty(place.Owner.Email))
+                {
+                    await emailSender.SendPlaceApprovedAsync(
+                        place.Owner.Email,
+                        place.Owner.FirstName,
+                        place.Name);
+                }
+                TempData["Success"] = DomainResources.PlaceApprovedSuccessfully;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -153,11 +158,11 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await placeService.AddClosuresAsync(placeId, startDate, endDate, reason))
             {
-                TempData["Success"] = DateClosedSuccessfully;
+                TempData["Success"] = DomainResources.DateClosedSuccessfully;
             }
             else
             {
-                TempData["Error"] = Error;
+                TempData["Error"] = DomainResources.Error;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -169,7 +174,7 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await placeService.RemoveClosureAsync(id))
             {
-                TempData["Success"] = DateOpenedSuccessfully;
+                TempData["Success"] = DomainResources.DateOpenedSuccessfully;
             }
             return RedirectToAction(nameof(Index));
         }

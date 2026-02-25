@@ -6,21 +6,21 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <span class="nav-link text-dark">Здравей, @User.Identity?.Name!</span>
+            <span class="nav-link text-dark">@DomainResources.Hello, @User.Identity?.Name!</span>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark">Изход</button>
+                <button type="submit" class="nav-link btn btn-link text-dark">@DomainResources.Logout</button>
             </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Регистрация</a>
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">@DomainResources.Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Вход</a>
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">@DomainResources.Login</a>
         </li>
     }
 </ul>

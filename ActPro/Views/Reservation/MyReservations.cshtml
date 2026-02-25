@@ -1,28 +1,29 @@
 ﻿@using ActPro.Domain.Models.User
 @model UserReservationsViewModel
 @{
-    ViewData["Title"] = "Моите резервации";
+    ViewData["Title"] = DomainResources.MyReservations;
+    ViewData["SeoTitle"] = "Моите резервации - ActPro";
+    ViewData["SeoDescription"] = "Виж всички свои резервации на спортни площадки и съоръжения. Управлявай предстоящи и минали резервации, отмяна или промяна на часове.";
+    ViewData["SeoKeywords"] = "моите резервации, управление, отмяна, промяна, спортни площадки";
 }
-
 <div class="container mt-4 min-vh-100">
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
                 <div>
-                    <h2 class="fw-bold mb-1">Моите резервации</h2>
-                    <p class="text-muted small mb-0">Управлявайте вашите предстоящи и изминали посещения
-                        <strong> Общо: @Model.TotalCount</strong>.
+                    <h2 class="fw-bold mb-1">@DomainResources.MyReservations</h2>
+                    <p class="text-muted small mb-0">@DomainResources.MyResManageText <strong> @Model.TotalCount</strong>.
                     </p>
                 </div>
                 <div class="btn-group">
                     <a asp-action="MyReservations" asp-route-filter="all"
-                       class="btn btn-sm rounded-pill m-1 @(Model.SelectedFilter == "all" ? "btn-primary" : "btn-outline-primary")">Всички</a>
+                       class="btn btn-sm rounded-pill m-1 @(Model.SelectedFilter == "all" ? "btn-primary" : "btn-outline-primary")">@DomainResources.MyResAll</a>
 
                     <a asp-action="MyReservations" asp-route-filter="upcoming"
-                       class="btn btn-sm rounded-pill m-1 @(Model.SelectedFilter == "upcoming" ? "btn-success" : "btn-outline-success")">Предстоящи</a>
+                       class="btn btn-sm rounded-pill m-1 @(Model.SelectedFilter == "upcoming" ? "btn-success" : "btn-outline-success")">@DomainResources.MyResUpcoming</a>
 
                     <a asp-action="MyReservations" asp-route-filter="past"
-                       class="btn btn-sm rounded-pill m-1 @(Model.SelectedFilter == "past" ? "btn-dark" : "btn-outline-dark")">Изминали</a>
+                       class="btn btn-sm rounded-pill m-1 @(Model.SelectedFilter == "past" ? "btn-dark" : "btn-outline-dark")">@DomainResources.MyResPast</a>
                 </div>
             </div>
 
@@ -33,9 +34,9 @@
                         <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-calendar-x text-muted fs-1"></i>
                         </div>
-                        <h4 class="fw-bold">Все още нямате резервации</h4>
-                        <p class="text-muted mx-auto" style="max-width: 300px;">Вашата история е празна. Открийте нови интересни места и направете първата си резервация.</p>
-                        <a href="/" class="btn btn-success px-4 rounded-pill shadow-sm">Разгледай обекти</a>
+                        <h4 class="fw-bold">@DomainResources.MyResNoReservations</h4>
+                        <p class="text-muted mx-auto" style="max-width: 300px;">@DomainResources.MyResEmptyHistory</p>
+                        <a href="/" class="btn btn-success px-4 rounded-pill shadow-sm">@DomainResources.MyResBrowsePlaces</a>
                     </div>
                 </div>
             }
@@ -84,7 +85,7 @@
                                                 </a>
                                             </h5>
                                             <div class="d-flex flex-wrap gap-2 text-muted small">
-                                                <span><i class="bi bi-clock me-1 text-success"></i>@res.ReservationTime?.ToString("HH:mm") ч.</span>
+                                                <span><i class="bi bi-clock me-1 text-success"></i>@res.ReservationTime?.ToString("HH:mm")</span>
                                                 <span><i class="bi bi-geo-alt me-1 text-danger"></i>@res.CityName</span>
                                             </div>
                                         </div>
@@ -92,17 +93,17 @@
                                         <div class="col-3 col-md-3 text-end pe-4">
                                             @if (isPast)
                                             {
-                                                <span class="badge rounded-pill bg-light text-secondary border px-3 mb-2">Изминала</span>
+                                                <span class="badge rounded-pill bg-light text-secondary border px-3 mb-2">@DomainResources.MyResPastBadge</span>
                                                 <br />
                                             }
                                             else
                                             {
-                                                <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3 mb-2">Предстояща</span>
+                                                <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3 mb-2">@DomainResources.MyResUpcomingBadge</span>
                                                 <br />
                                                 <button type="button"
                                                         class="btn btn-sm btn-outline-danger rounded-pill px-3 mt-2 shadow-sm btn-cancel-custom"
                                                         onclick="confirmCancel(@res.Id)">
-                                                    <i class="bi bi-x-circle me-1"></i> Откажи
+                                                    <i class="bi bi-x-circle me-1"></i> @DomainResources.MyResCancel
                                                 </button>
                                             }
                                         </div>
@@ -156,14 +157,14 @@
     <script>
         function confirmCancel(id){
             Swal.fire({
-                title: 'Сигурни ли сте?',
-                text: "Искате ли да откажете тази резервация?",
+                title: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResCancelConfirmTitle)),
+                text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResCancelConfirmText)),
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#2ecc71',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Да, откажи я!',
-                cancelButtonText: 'Не'
+                confirmButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResCancelConfirmBtn)),
+                cancelButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResCancelBtnText))
             }).then((result) => {
                 if (result.isConfirmed){
                     $.ajax({
@@ -176,7 +177,7 @@
                         success: function (response){
                             if (response.success){
                                 Swal.fire(
-                                    'Отказана!',
+                                    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResCancelledTitle)),
                                     response.message,
                                     'success'
                                 ).then(() => {
@@ -184,15 +185,15 @@
                                 });
                             } 
                             else{
-                                Swal.fire('Грешка!', response.message, 'error');
+                                Swal.fire(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResErrorTitle)), response.message, 'error');
                             }
                         },
                         error: function (){
-                            Swal.fire('Грешка!', 'Възникна проблем при комуникацията със сървъра.', 'error');
+                            Swal.fire(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResErrorTitle)), @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.MyResErrorText)), 'error');
                         }
                     });
                 }
-            })
+            });
         }
     </script>
 }

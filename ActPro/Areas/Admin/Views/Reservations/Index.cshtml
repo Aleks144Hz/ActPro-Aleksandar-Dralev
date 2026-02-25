@@ -1,7 +1,7 @@
 ﻿@using ActPro.Domain.Models.Areas
 @model ActPro.Domain.Models.Areas.ReservationsIndexViewModel
 @{
-    ViewData["Title"] = "Всички Резервации";
+    ViewData["Title"] = DomainResources.AllReservations;
 }
 
 <div class="container-fluid mt-4">
@@ -11,26 +11,26 @@
         </div>
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2><i class="bi bi-calendar-check"></i> Списък с всички резервации</h2>
+                <h2><i class="bi bi-calendar-check"></i> @DomainResources.AllReservations</h2>
             </div>
             <div class="card shadow-sm">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0 admin-table">
                         <thead class="table-dark">
                             <tr>
-                                <th>Обект</th>
-                                <th>Клиент</th>
-                                <th>Телефон</th>
-                                <th>Дата и Час</th>
-                                <th>Направена на</th>
-                                <th class="text-center no-sort">Действия</th>
+                                <th>@DomainResources.Place</th>
+                                <th>@DomainResources.CustomerLabel</th>
+                                <th>@DomainResources.PhoneNumber</th>
+                                <th>@DomainResources.DateAndTime</th>
+                                <th>@DomainResources.ReservationCreated</th>
+                                <th class="text-center no-sort">@DomainResources.Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var res in Model.Reservations)
                             {
                                 <tr>
-                                    <td data-label="ОБЕКТ">
+                                    <td data-label="@DomainResources.Place.ToUpper()">
                                         <div class="fw-bold">
                                             <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
                                                class="text-decoration-none text-dark hover-success">
@@ -38,25 +38,25 @@
                                             </a>
                                         </div>
                                     </td>
-                                    <td data-label="КЛИЕНТ">@res.FirstName @res.LastName</td>
-                                    <td data-label="ТЕЛЕФОН">@res.Phone</td>
-                                    <td data-label="ДАТА И ЧАС">
-                                        @res.ReservationDate @res.ReservationTime
+                                    <td data-label="@DomainResources.CustomerLabel.ToUpper()">@res.FirstName @res.LastName</td>
+                                    <td data-label="@DomainResources.PhoneNumber.ToUpper()">@res.Phone</td>
+                                    <td data-label="@DomainResources.DateAndTime.ToUpper()">
+                                        @(res.ReservationDate.HasValue && res.ReservationTime.HasValue ? res.ReservationDate.Value.ToString("d.M.yyyy") + " г. " + res.ReservationTime.Value.ToString("H:mm") : "")
                                     </td>
-                                    <td data-label ="НАПРАВЕНА НА">
-                                        <div class="fw-bold">@res.CreatedAt</div>
+                                    <td data-label ="@DomainResources.ReservationCreated.ToUpper()">
+                                        <div class="fw-bold">@res.CreatedAt.ToString("d.M.yyyy") г. @res.CreatedAt.ToString("H:mm:ss")</div>
                                     </td>
-                                    <td class="text-center" data-label="ДЕЙСТВИЯ">
+                                    <td class="text-center" data-label="@DomainResources.Actions.ToUpper()">
                                         <div class="d-flex justify-content-center gap-2">
                                             <button type="button" class="btn btn-sm btn-outline-primary"
                                                     data-bs-toggle="modal" data-bs-target="#editTimeModal-@res.Id">
-                                                <i class="bi bi-clock"></i> Промяна
+                                                <i class="bi bi-clock"></i> @DomainResources.EditTimeHour
                                             </button>
 
                                             <form asp-action="Delete" asp-route-id="@res.Id" method="post">
                                                 <button type="submit" class="btn btn-sm btn-danger confirm-action"
-                                                        data-message="Сигурни ли сте, че искате да анулирате тази резервация?">
-                                                    <i class="bi bi-trash"></i> Анулирай
+                                                        data-message="@DomainResources.ConfirmCancelReservation">
+                                                    <i class="bi bi-trash"></i> @DomainResources.Cancellation
                                                 </button>
                                             </form>
                                         </div>
@@ -73,7 +73,7 @@
                             @if (!Model.Reservations.Any())
                             {
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">Няма намерени резервации.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">@DomainResources.NoReservationsFound</td>
                                 </tr>
                             }
                         </tbody>

@@ -1,30 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Общи условия";
+@{
+    ViewData["Title"] = DomainResources.TermsOfService;
 }
 <div class="container my-5" style="max-width: 900px;">
     <div class="terms-header mb-5">
-        <h1 class="fw-bold">Общи условия</h1>
-        <p class="text-muted">Последна актуализация: Февруари 2026 г.</p>
+        <h1 class="fw-bold">@DomainResources.TermsOfService</h1>
+        <p class="text-muted">@DomainResources.TermsLastUpdated</p>
         <hr>
     </div>
     <div class="terms-body" style="line-height: 1.7; color: #333;">
-        <p>Настоящите Общи условия уреждат използването на платформата <strong>ActPro</strong> за резервиране на спортни занимания и обекти. С използването на нашите услуги, Вие се съгласявате с тези условия.</p>
-        <h4 class="mt-4 fw-bold">1. Резервации и плащания</h4>
-        <p>Потребителите могат да резервират спортни занимания само чрез наличната система в платформата. ActPro действа като посредник между спортните бази и крайните потребители.</p>
-        <h4 class="mt-4 fw-bold">2. Правила на платформата</h4>
-        <ul>
-            <li>Потребителите са длъжни да предоставят точна информация при регистрация.</li>
-            <li>Резервацията е валидна само за посочения час и обект.</li>
-            <li>Неразрешено използване на чужди профили или злоупотреба със системата за резервации е забранено.</li>
-        </ul>
-        <h4 class="mt-4 fw-bold">3. Рекламация и възстановяване на суми</h4>
-        <p>Всички направени плащания в ActPro са окончателни. Възстановяване на суми се допуска само при невъзможност на обекта да предостави услугата или при изрично посочени условия в конкретната обява.</p>
-        <h4 class="mt-4 fw-bold">4. Отговорност</h4>
-        <p>ActPro не носи отговорност за качеството на провежданите тренировки или инциденти, възникнали на територията на спортните обекти. Потребителите използват услугите на собствен риск.</p>
-        <h4 class="mt-4 fw-bold">5. Промени в условията</h4>
-        <p>Запазваме правото си да променяме тези условия по всяко време. Всички промени влизат в сила веднага след публикуването им на тази страница.</p>
+        <p>@DomainResources.TermsPageContent</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.TermsReservations</h4>
+        <p>@DomainResources.TermsReservationsText</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.TermsRules</h4>
+        <p>@DomainResources.TermsRulesList</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.TermsRefund</h4>
+        <p>@DomainResources.TermsRefundText</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.TermsLiability</h4>
+        <p>@DomainResources.TermsLiabilityText</p>
+        <h4 class="mt-4 fw-bold">@DomainResources.TermsChanges</h4>
+        <p>@DomainResources.TermsChangesText</p>
         <div class="mt-5 pt-4 border-top">
-            <p class="small text-muted italic">За въпроси относно нашите условия, моля свържете се с нас на: <strong>contact@actprobg.com</strong></p>
+            <p class="small text-muted italic"><strong>@DomainResources.TermsContactEmail</strong></p>
         </div>
     </div>
 </div>

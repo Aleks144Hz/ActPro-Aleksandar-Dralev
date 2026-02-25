@@ -1,0 +1,2418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>Name is required!</value>
+  </data>
+  <data name="JoinUsTitle" xml:space="preserve">
+    <value>Join ActPro</value>
+  </data>
+  <data name="EnterFirstName" xml:space="preserve">
+    <value>Please enter your first name.</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Please enter your email address.</value>
+  </data>
+  <data name="LastNameIsRequired" xml:space="preserve">
+    <value>Last name is required!</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="EmailPlaceholder" xml:space="preserve">
+    <value>Enter a valid email</value>
+  </data>
+  <data name="EmailIsRequired" xml:space="preserve">
+    <value>Email is required!</value>
+  </data>
+  <data name="CurrentPasswordIsRequired" xml:space="preserve">
+    <value>Current password is required!</value>
+  </data>
+  <data name="NewPasswordIsRequired" xml:space="preserve">
+    <value>New password is required!</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Passwords must match.</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>Password is required!</value>
+  </data>
+  <data name="ConfirmPasswordIsRequired" xml:space="preserve">
+    <value>Confirm password is required!</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Please enter a valid phone number.</value>
+  </data>
+  <data name="PhoneNumberRequired" xml:space="preserve">
+    <value>Phone number is required!</value>
+  </data>
+  <data name="AddressNotValid" xml:space="preserve">
+    <value>Field can contain letters, numbers and symbols "",.- №.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>An error occurred.</value>
+  </data>
+  <data name="OnlyLettersAllowed" xml:space="preserve">
+    <value>Field can contain only letters.</value>
+  </data>
+  <data name="OnlyNumbersAllowed" xml:space="preserve">
+    <value>Field can contain only numbers.</value>
+  </data>
+  <data name="OnlyDecimalNumbersAllowed" xml:space="preserve">
+    <value>Field can contain only decimal numbers.</value>
+  </data>
+  <data name="LettersNumbersAllowed" xml:space="preserve">
+    <value>Field can contain letters and numbers</value>
+  </data>
+  <data name="LettersNumbersEnglAllowed" xml:space="preserve">
+    <value>Field can contain Latin letters and numbers</value>
+  </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>Role does not exist.</value>
+  </data>
+  <data name="ErrorWhileCreatingCheckData" xml:space="preserve">
+    <value>Error while creating, please check the entered data!</value>
+  </data>
+  <data name="UserIsNotRegistered" xml:space="preserve">
+    <value>User does not exist in the system!</value>
+  </data>
+  <data name="NotValidPassword" xml:space="preserve">
+    <value>Invalid password! Please check again!</value>
+  </data>
+  <data name="InvalidPasswordFormat" xml:space="preserve">
+    <value>Invalid password. Password must be in Latin letters, contain at least 6 characters, at least one digit, one uppercase and one lowercase letter, and at least one special character.</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>Password must be at least {0} characters.</value>
+  </data>
+  <data name="UserWithThisEmailExists" xml:space="preserve">
+    <value>User with this email already exists.</value>
+  </data>
+  <data name="UserAccountIsBanned" xml:space="preserve">
+    <value>Your account is blocked.</value>
+  </data>
+  <data name="DefaultError" xml:space="preserve">
+    <value>An unknown error occurred. Please try again.</value>
+  </data>
+  <data name="EmailIsBanned" xml:space="preserve">
+    <value>This email address is blocked.</value>
+  </data>
+  <data name="UserLoggedInSuccessfully" xml:space="preserve">
+    <value>User logged in successfully.</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome to ActPro!</value>
+  </data>
+  <data name="AgreeWithTerms" xml:space="preserve">
+    <value>You must accept the terms and conditions.</value>
+  </data>
+  <data name="ProveYouAreNotRobot" xml:space="preserve">
+    <value>Please confirm you are not a robot.</value>
+  </data>
+  <data name="AccountApproved" xml:space="preserve">
+    <value>Account Confirmation - ActPro</value>
+  </data>
+  <data name="SuccsessfullRegistration" xml:space="preserve">
+    <value>Registration successful! Welcome.</value>
+  </data>
+  <data name="NewUserRegistered" xml:space="preserve">
+    <value>New user registered</value>
+  </data>
+  <data name="ValidEmailAddress" xml:space="preserve">
+    <value>If the email exists, we have sent a recovery link.</value>
+  </data>
+  <data name="PasswordResetSuccess" xml:space="preserve">
+    <value>Password changed successfully! You can now login with your new password.</value>
+  </data>
+  <data name="EmailApprovedSuccess" xml:space="preserve">
+    <value>Your email has been confirmed! You can now make reservations.</value>
+  </data>
+  <data name="EmailAlreadyApproved" xml:space="preserve">
+    <value>Account already confirmed or does not exist.</value>
+  </data>
+  <data name="AccountEmailApprovel" xml:space="preserve">
+    <value>Account Confirmation - ActPro</value>
+  </data>
+  <data name="AccountInfoUpadate" xml:space="preserve">
+    <value>User updated their profile data.</value>
+  </data>
+  <data name="UserUpdatePasswordSuccess" xml:space="preserve">
+    <value>User changed their password successfully.</value>
+  </data>
+  <data name="PasswordUpdatedSuccessfully" xml:space="preserve">
+    <value>Password changed successfully!</value>
+  </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>You entered the wrong password.</value>
+  </data>
+  <data name="UserDeleteAccountSuccess" xml:space="preserve">
+    <value>User deleted their profile</value>
+  </data>
+  <data name="WrongEmail" xml:space="preserve">
+    <value>Wrong email</value>
+  </data>
+  <data name="GoodBye" xml:space="preserve">
+    <value>Goodbye! We hope to see you again soon.</value>
+  </data>
+  <data name="SuccessfulDeletedAccount" xml:space="preserve">
+    <value>Profile deleted! See you next time.</value>
+  </data>
+  <data name="SuccessfulUserEdit" xml:space="preserve">
+    <value>You successfully edited the user data</value>
+  </data>
+  <data name="SuccessfulSaveChanges" xml:space="preserve">
+    <value>You successfully saved the changes</value>
+  </data>
+  <data name="NewsIsPublished" xml:space="preserve">
+    <value>New news published:</value>
+  </data>
+  <data name="NewsIsPublishedSuccessfully" xml:space="preserve">
+    <value>News published successfully!</value>
+  </data>
+  <data name="NewsDeleted" xml:space="preserve">
+    <value>Deleted news with ID:</value>
+  </data>
+  <data name="NewsDeletedSuccessfully" xml:space="preserve">
+    <value>News deleted successfully!</value>
+  </data>
+  <data name="FillInAllFields" xml:space="preserve">
+    <value>Please fill in all required fields correctly.</value>
+  </data>
+  <data name="TicketSendSuccessfully" xml:space="preserve">
+    <value>Your request was sent successfully! Check your email for confirmation.</value>
+  </data>
+  <data name="ProfileNotApprovedForCreatingPlace" xml:space="preserve">
+    <value>Your profile is not confirmed. Please confirm your email to add places.</value>
+  </data>
+  <data name="RequestSentSuccessfully" xml:space="preserve">
+    <value>Your request was sent successfully!</value>
+  </data>
+  <data name="ErrorWhileTryingToFill" xml:space="preserve">
+    <value>Error while saving: </value>
+  </data>
+  <data name="ReservationNeedApproval" xml:space="preserve">
+    <value>You must confirm your email before making a reservation!</value>
+  </data>
+  <data name="SportPlace" xml:space="preserve">
+    <value>Sports facility</value>
+  </data>
+  <data name="UserMadeReservation" xml:space="preserve">
+    <value>User made a reservation.</value>
+  </data>
+  <data name="UserDeletedReservation" xml:space="preserve">
+    <value>User cancelled a reservation.</value>
+  </data>
+  <data name="CommentNeedApproval" xml:space="preserve">
+    <value>You must confirm your email before adding a comment!</value>
+  </data>
+  <data name="UserMadeComment" xml:space="preserve">
+    <value>User added a comment.</value>
+  </data>
+  <data name="UserDeletedComment" xml:space="preserve">
+    <value>User deleted a comment.</value>
+  </data>
+  <data name="DescribeYourIssue" xml:space="preserve">
+    <value>Please describe your problem or question in detail.</value>
+  </data>
+  <data name="IssueLenght" xml:space="preserve">
+    <value>Description must be at least 10 characters.</value>
+  </data>
+  <data name="PlaceAddedSuccessfully" xml:space="preserve">
+    <value>Place added successfully.</value>
+  </data>
+  <data name="PlaceUpdatedSuccessfully" xml:space="preserve">
+    <value>You successfully edited the place data.</value>
+  </data>
+  <data name="PlaceDeletedSuccessfully" xml:space="preserve">
+    <value>Place and all related data were deleted.</value>
+  </data>
+  <data name="PlaceApprovedSuccessfully" xml:space="preserve">
+    <value>Place approved successfully.</value>
+  </data>
+  <data name="DateClosedSuccessfully" xml:space="preserve">
+    <value>Dates locked successfully.</value>
+  </data>
+  <data name="DateOpenedSuccessfully" xml:space="preserve">
+    <value>Date unlocked successfully.</value>
+  </data>
+  <data name="DateError" xml:space="preserve">
+    <value>End date cannot be before start date.</value>
+  </data>
+  <data name="ReservationClosed" xml:space="preserve">
+    <value>Reservation cancelled successfully!</value>
+  </data>
+  <data name="ReservationTimeEdited" xml:space="preserve">
+    <value>Time changed successfully!</value>
+  </data>
+  <data name="AdminRuleChanged" xml:space="preserve">
+    <value>Admin rights were changed.</value>
+  </data>
+  <data name="OwnerRuleChanged" xml:space="preserve">
+    <value>Owner rights were changed.</value>
+  </data>
+  <data name="UserBanned" xml:space="preserve">
+    <value>User was blocked and deleted successfully.</value>
+  </data>
+  <data name="ReservationApproved" xml:space="preserve">
+    <value>Reservation approved!</value>
+  </data>
+  <data name="ReservationBlocked" xml:space="preserve">
+    <value>Time blocked successfully!</value>
+  </data>
+  <data name="AddedToFavorites" xml:space="preserve">
+    <value>Added to favorites!</value>
+  </data>
+  <data name="RemovedFromFavorites" xml:space="preserve">
+    <value>Removed from favorites!</value>
+  </data>
+  <data name="NoCities" xml:space="preserve">
+    <value>No city</value>
+  </data>
+  <data name="NoActivities" xml:space="preserve">
+    <value>No activity</value>
+  </data>
+  <data name="NoPlace" xml:space="preserve">
+    <value>No place</value>
+  </data>
+  <data name="CreatedPlace" xml:space="preserve">
+    <value>Created place</value>
+  </data>
+  <data name="UpdatedPlace" xml:space="preserve">
+    <value>Updated data for</value>
+  </data>
+  <data name="DeletedPlace" xml:space="preserve">
+    <value>Deleted place</value>
+  </data>
+  <data name="ApprovedPlace" xml:space="preserve">
+    <value>Approved place</value>
+  </data>
+  <data name="PlaceClosed" xml:space="preserve">
+    <value>Closed period from</value>
+  </data>
+  <data name="PlaceOpened" xml:space="preserve">
+    <value>Unlocked date</value>
+  </data>
+  <data name="PlaceId" xml:space="preserve">
+    <value>for place with ID</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>for</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>on</value>
+  </data>
+  <data name="In" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="DeletedReservation" xml:space="preserve">
+    <value>Deleted reservation for</value>
+  </data>
+  <data name="ReservationUpdate" xml:space="preserve">
+    <value>Changed time for</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>MANUAL</value>
+  </data>
+  <data name="OwnerManualReservation" xml:space="preserve">
+    <value>Owner blocked time for</value>
+  </data>
+  <data name="PlanedManufacture" xml:space="preserve">
+    <value>planned maintenance</value>
+  </data>
+  <data name="PlaceIsClosedOnThisDate" xml:space="preserve">
+    <value>Place is closed for reservations on this date due to</value>
+  </data>
+  <data name="InvalidHour" xml:space="preserve">
+    <value>Invalid time.</value>
+  </data>
+  <data name="HourAlreadyPassed" xml:space="preserve">
+    <value>Time has already passed.</value>
+  </data>
+  <data name="HourAlreadyReserved" xml:space="preserve">
+    <value>This time was just reserved!</value>
+  </data>
+  <data name="SuccessfullReservation" xml:space="preserve">
+    <value>Reservation made successfully.</value>
+  </data>
+  <data name="MaximumComments" xml:space="preserve">
+    <value>You have already left the maximum number of comments (3) for this place.</value>
+  </data>
+  <data name="CommentAdded" xml:space="preserve">
+    <value>Comment added successfully.</value>
+  </data>
+  <data name="CommentNotFound" xml:space="preserve">
+    <value>Comment not found.</value>
+  </data>
+  <data name="CommentDeleted" xml:space="preserve">
+    <value>Comment deleted successfully.</value>
+  </data>
+  <data name="CommentUpdated" xml:space="preserve">
+    <value>Comment updated successfully.</value>
+  </data>
+  <data name="ReservationNotFound" xml:space="preserve">
+    <value>Reservation not found.</value>
+  </data>
+  <data name="CannotCancelPastReservation" xml:space="preserve">
+    <value>You cannot cancel a past reservation.</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Successfully cancelled.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not found.</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Updated.</value>
+  </data>
+  <data name="AddedRole" xml:space="preserve">
+    <value>Added role</value>
+  </data>
+  <data name="RemovedRole" xml:space="preserve">
+    <value>Removed role</value>
+  </data>
+  <data name="UserBan" xml:space="preserve">
+    <value>Blocked and deleted</value>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="ViewMore" xml:space="preserve">
+    <value>View more</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ObjectsCountSuffix" xml:space="preserve">
+    <value>places</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>RATING</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>View details</value>
+  </data>
+  <data name="SearchHeroTitle" xml:space="preserve">
+    <value>Find your sports place</value>
+  </data>
+  <data name="SearchHeroSubtitle" xml:space="preserve">
+    <value>Easy, fast and convenient booking anytime.</value>
+  </data>
+  <data name="LabelCity" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="PlaceholderCity" xml:space="preserve">
+    <value>Select or enter city</value>
+  </data>
+  <data name="ValidationCityRequired" xml:space="preserve">
+    <value>Please select a city!</value>
+  </data>
+  <data name="LabelActivity" xml:space="preserve">
+    <value>What will you play?</value>
+  </data>
+  <data name="PlaceholderActivity" xml:space="preserve">
+    <value>Select or enter activity</value>
+  </data>
+  <data name="SearchButton" xml:space="preserve">
+    <value>SEARCH</value>
+  </data>
+  <data name="AboutBadge" xml:space="preserve">
+    <value>What is ActPro?</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Your digital assistant for an active life</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>ActPro is an innovative platform that connects enthusiasts with sports facilities. Our mission is to remove barriers to sport by giving you access to hundreds of places with just a few clicks.</value>
+  </data>
+  <data name="FeatureRealTime" xml:space="preserve">
+    <value>Real-time reservations</value>
+  </data>
+  <data name="FeatureVariety" xml:space="preserve">
+    <value>Wide variety of sports</value>
+  </data>
+  <data name="FeatureAllDevices" xml:space="preserve">
+    <value>Accessible from any device</value>
+  </data>
+  <data name="CategoriesTitle" xml:space="preserve">
+    <value>Popular categories</value>
+  </data>
+  <data name="SportFootball" xml:space="preserve">
+    <value>Football</value>
+  </data>
+  <data name="SportBasketball" xml:space="preserve">
+    <value>Basketball</value>
+  </data>
+  <data name="SportVolleyball" xml:space="preserve">
+    <value>Volleyball</value>
+  </data>
+  <data name="SportTennis" xml:space="preserve">
+    <value>Tennis</value>
+  </data>
+  <data name="SportFitness" xml:space="preserve">
+    <value>Fitness</value>
+  </data>
+  <data name="SportSwimming" xml:space="preserve">
+    <value>Swimming</value>
+  </data>
+  <data name="BenefitsBadge" xml:space="preserve">
+    <value>Benefits</value>
+  </data>
+  <data name="BenefitsTitle" xml:space="preserve">
+    <value>How we help you?</value>
+  </data>
+  <data name="BenefitsDescription" xml:space="preserve">
+    <value>Forget the dozens of phone calls to find out if the tennis court is free. With us you save time and nerves:</value>
+  </data>
+  <data name="BenefitSpeed" xml:space="preserve">
+    <value>Speed in reservation</value>
+  </data>
+  <data name="BenefitSecurity" xml:space="preserve">
+    <value>Payment security</value>
+  </data>
+  <data name="BenefitAccessibility" xml:space="preserve">
+    <value>Accessibility from any device</value>
+  </data>
+  <data name="TopPlacesTitle" xml:space="preserve">
+    <value>Top places with highest rating</value>
+  </data>
+  <data name="SolutionsBadge" xml:space="preserve">
+    <value>Solutions</value>
+  </data>
+  <data name="SolutionsTitle" xml:space="preserve">
+    <value>The problems we solve</value>
+  </data>
+  <data name="ProbInfoTitle" xml:space="preserve">
+    <value>Lack of information</value>
+  </data>
+  <data name="ProbInfoDesc" xml:space="preserve">
+    <value>No need to search for contacts on forums - everything is in one place.</value>
+  </data>
+  <data name="ProbScheduleTitle" xml:space="preserve">
+    <value>Outdated schedules</value>
+  </data>
+  <data name="ProbScheduleDesc" xml:space="preserve">
+    <value>You see only available times, updated in real-time.</value>
+  </data>
+  <data name="ProbReviewTitle" xml:space="preserve">
+    <value>Possibility for review</value>
+  </data>
+  <data name="ProbReviewDesc" xml:space="preserve">
+    <value>You can now express your opinion about the place you visited.</value>
+  </data>
+  <data name="OwnerTitle" xml:space="preserve">
+    <value>Do you have a sports place?</value>
+  </data>
+  <data name="OwnerSubtitle" xml:space="preserve">
+    <value>Become part of our network in three easy steps and increase your customers.</value>
+  </data>
+  <data name="OwnerRegisterBtn" xml:space="preserve">
+    <value>Register it</value>
+  </data>
+  <data name="Step1Title" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Step1Desc" xml:space="preserve">
+    <value>Register your business.</value>
+  </data>
+  <data name="Step2Title" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="Step2Desc" xml:space="preserve">
+    <value>Provide ownership documents.</value>
+  </data>
+  <data name="Step3Title" xml:space="preserve">
+    <value>Earn</value>
+  </data>
+  <data name="Step3Desc" xml:space="preserve">
+    <value>Accept reservations online.</value>
+  </data>
+  <data name="StoryTitle" xml:space="preserve">
+    <value>Our story and goal</value>
+  </data>
+  <data name="StorySubtitle" xml:space="preserve">
+    <value>We don't just make software. We build a community where health and sports are a priority for everyone.</value>
+  </data>
+  <data name="MissionTitle" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="MissionDesc" xml:space="preserve">
+    <value>To make sport accessible for every Bulgarian through modern technology.</value>
+  </data>
+  <data name="VisionTitle" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="VisionDesc" xml:space="preserve">
+    <value>The largest ecosystem for active recreation and sports facility management in the country.</value>
+  </data>
+  <data name="ValuesTitle" xml:space="preserve">
+    <value>Values</value>
+  </data>
+  <data name="ValuesDesc" xml:space="preserve">
+    <value>Transparency, innovation and unwavering support for local business and sports clubs.</value>
+  </data>
+  <data name="JsFamousLocations" xml:space="preserve">
+    <value>Famous locations</value>
+  </data>
+  <data name="JsPopularActivities" xml:space="preserve">
+    <value>Popular activities</value>
+  </data>
+  <data name="JsAllSuggestions" xml:space="preserve">
+    <value>All suggestions</value>
+  </data>
+  <data name="JsToastSelectCity" xml:space="preserve">
+    <value>Please select a city from the suggestions!</value>
+  </data>
+  <data name="JsToastSelectActivity" xml:space="preserve">
+    <value>Please select a valid activity!</value>
+  </data>
+  <data name="EmailConfirmationSubject" xml:space="preserve">
+    <value>Account confirmation: {0}</value>
+  </data>
+  <data name="EmailConfirmationTitle" xml:space="preserve">
+    <value>Account confirmation</value>
+  </data>
+  <data name="ReservationConfirmationSubject" xml:space="preserve">
+    <value>Reservation confirmation: {0}</value>
+  </data>
+  <data name="ReservationConfirmationTitle" xml:space="preserve">
+    <value>Successful reservation</value>
+  </data>
+  <data name="ReservationCancelledSubject" xml:space="preserve">
+    <value>Cancelled reservation: {0}</value>
+  </data>
+  <data name="ReservationCancelledTitle" xml:space="preserve">
+    <value>Cancelled reservation</value>
+  </data>
+  <data name="PasswordResetSubject" xml:space="preserve">
+    <value>Password recovery</value>
+  </data>
+  <data name="PasswordResetTitle" xml:space="preserve">
+    <value>Password recovery</value>
+  </data>
+  <data name="PasswordChangedSubject" xml:space="preserve">
+    <value>Your password was changed</value>
+  </data>
+  <data name="PasswordChangedTitle" xml:space="preserve">
+    <value>Account security</value>
+  </data>
+  <data name="ProfileDeletedSubject" xml:space="preserve">
+    <value>Profile deletion confirmation</value>
+  </data>
+  <data name="ProfileDeletedTitle" xml:space="preserve">
+    <value>Deleted profile</value>
+  </data>
+  <data name="PlaceApprovedSubject" xml:space="preserve">
+    <value>Your place has been approved</value>
+  </data>
+  <data name="PlaceApprovedTitle" xml:space="preserve">
+    <value>Place is active</value>
+  </data>
+  <data name="PlaceRejectedSubject" xml:space="preserve">
+    <value>Place request status</value>
+  </data>
+  <data name="PlaceRejectedTitle" xml:space="preserve">
+    <value>Publication denied</value>
+  </data>
+  <data name="PlaceDeletedSubject" xml:space="preserve">
+    <value>Your place has been removed</value>
+  </data>
+  <data name="PlaceDeletedTitle" xml:space="preserve">
+    <value>Removed place</value>
+  </data>
+  <data name="ReservationTimeChangedSubject" xml:space="preserve">
+    <value>Reservation time changed</value>
+  </data>
+  <data name="ReservationTimeChangedTitle" xml:space="preserve">
+    <value>Changed time</value>
+  </data>
+  <data name="NewReservationSubject" xml:space="preserve">
+    <value>New reservation for {0}</value>
+  </data>
+  <data name="NewReservationTitle" xml:space="preserve">
+    <value>New reservation</value>
+  </data>
+  <data name="ReservationCancelledByOwnerSubject" xml:space="preserve">
+    <value>Cancelled reservation: {0}</value>
+  </data>
+  <data name="ReservationCancelledByOwnerTitle" xml:space="preserve">
+    <value>Cancelled reservation</value>
+  </data>
+  <data name="NewReviewSubject" xml:space="preserve">
+    <value>New review for {0}</value>
+  </data>
+  <data name="NewReviewTitle" xml:space="preserve">
+    <value>New review</value>
+  </data>
+  <data name="MaintenanceRequestSubject" xml:space="preserve">
+    <value>Support request</value>
+  </data>
+  <data name="MaintenanceRequestTitle" xml:space="preserve">
+    <value>Support request</value>
+  </data>
+  <data name="MyReservations" xml:space="preserve">
+    <value>My Reservations</value>
+  </data>
+  <data name="NewReservationBtn" xml:space="preserve">
+    <value>New reservation</value>
+  </data>
+  <data name="ChangePasswordBtn" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="AccountSecurityBtn" xml:space="preserve">
+    <value>Account security</value>
+  </data>
+  <data name="ManagePlaceBtn" xml:space="preserve">
+    <value>Manage place</value>
+  </data>
+  <data name="TryAgainBtn" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="GoToDashboardBtn" xml:space="preserve">
+    <value>To dashboard</value>
+  </data>
+  <data name="GoToSiteBtn" xml:space="preserve">
+    <value>To site</value>
+  </data>
+  <data name="ReservationCancelledSuccess" xml:space="preserve">
+    <value>Reservation was cancelled</value>
+  </data>
+  <data name="ReservationTimeChangedSuccess" xml:space="preserve">
+    <value>Time changed successfully!</value>
+  </data>
+  <data name="SystemAdmin" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="SystemAdministrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="SystemBanReason" xml:space="preserve">
+    <value>System ban</value>
+  </data>
+  <data name="ConfirmMyAccount" xml:space="preserve">
+    <value>CONFIRM MY ACCOUNT</value>
+  </data>
+  <data name="ButtonValid24Hours" xml:space="preserve">
+    <value>Button is valid for the next 24 hours.</value>
+  </data>
+  <data name="IgnoreEmail" xml:space="preserve">
+    <value>If you did not register with us, please ignore this email.</value>
+  </data>
+  <data name="Greeting" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="ReservationConfirmedText" xml:space="preserve">
+    <value>Your reservation has been confirmed.</value>
+  </data>
+  <data name="ReservationDetailsText" xml:space="preserve">
+    <value>Visit details:</value>
+  </data>
+  <data name="PlaceLabel" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="DateLabel" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="TimeLabel" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="ShowEmailOnArrival" xml:space="preserve">
+    <value>Please show this email upon arrival.</value>
+  </data>
+  <data name="ReservationCanceledText" xml:space="preserve">
+    <value>We inform you that the following reservation was cancelled:</value>
+  </data>
+  <data name="BookNewTime" xml:space="preserve">
+    <value>If you want to book a new time, you can do so through our platform.</value>
+  </data>
+  <data name="PasswordResetRequestText" xml:space="preserve">
+    <value>We received a request to recover your password. Click the button below to set a new one.</value>
+  </data>
+  <data name="IgnorePasswordReset" xml:space="preserve">
+    <value>If you did not request a change, please ignore this email.</value>
+  </data>
+  <data name="PasswordChangedConfirmText" xml:space="preserve">
+    <value>This email confirms that your password was successfully changed.</value>
+  </data>
+  <data name="ImportantSecurityWarning" xml:space="preserve">
+    <value>Important: If you did not initiate this change, please contact our support immediately as your account security may be compromised.</value>
+  </data>
+  <data name="IgnoreIfNoChange" xml:space="preserve">
+    <value>If you made the change, you can ignore this message.</value>
+  </data>
+  <data name="ProfileDeletedText" xml:space="preserve">
+    <value>Your profile in ActPro has been successfully deleted from our system, along with all associated personal data and history.</value>
+  </data>
+  <data name="SorryToSeeYouGo" xml:space="preserve">
+    <value>We're sorry to see you go. You're always welcome back!</value>
+  </data>
+  <data name="PlaceApprovedText" xml:space="preserve">
+    <value>We are pleased to inform you that your place has passed verification and is now active on the platform.</value>
+  </data>
+  <data name="PlaceCanBeBooked" xml:space="preserve">
+    <value>Users can now browse and make reservations at your place.</value>
+  </data>
+  <data name="PlaceRejectedText" xml:space="preserve">
+    <value>After reviewing your place, we found that it does not meet the platform requirements in its current form.</value>
+  </data>
+  <data name="MakeCorrectionsAndRetry" xml:space="preserve">
+    <value>Please make the necessary corrections and submit the request again.</value>
+  </data>
+  <data name="PlaceDeletedByAdminText" xml:space="preserve">
+    <value>We inform you that your place has been removed from our platform by an administrator.</value>
+  </data>
+  <data name="ContactSupportIfMistake" xml:space="preserve">
+    <value>If you think this is a mistake, please contact our support.</value>
+  </data>
+  <data name="ReservationTimeChangedText" xml:space="preserve">
+    <value>We inform you that the time of your reservation has been changed.</value>
+  </data>
+  <data name="OldTimeLabel" xml:space="preserve">
+    <value>Old time</value>
+  </data>
+  <data name="NewTimeLabel" xml:space="preserve">
+    <value>New time</value>
+  </data>
+  <data name="WelcomeToActPro" xml:space="preserve">
+    <value>Thank you for choosing ActPro. Just a few more steps before you can book your favorite sports halls.</value>
+  </data>
+  <data name="ThankYouForChoosing" xml:space="preserve">
+    <value>Thank you for choosing ActPro!</value>
+  </data>
+  <data name="NewSupportTicketSubject" xml:space="preserve">
+    <value>[Support Ticket] {0} - from {1}</value>
+  </data>
+  <data name="NewSupportTicketTitle" xml:space="preserve">
+    <value>New support ticket</value>
+  </data>
+  <data name="FromLabel" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="IssueTypeLabel" xml:space="preserve">
+    <value>Issue type</value>
+  </data>
+  <data name="DescriptionLabel" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="SupportTicketReceivedSubject" xml:space="preserve">
+    <value>ActPro - Your request has been received</value>
+  </data>
+  <data name="SupportTicketReceivedTitle" xml:space="preserve">
+    <value>Your request has been received</value>
+  </data>
+  <data name="ThankYouForContacting" xml:space="preserve">
+    <value>Thank you for contacting us! Your request regarding</value>
+  </data>
+  <data name="TicketReceivedSuccessfully" xml:space="preserve">
+    <value>has been received successfully.</value>
+  </data>
+  <data name="TeamWillContact" xml:space="preserve">
+    <value>Our team will review the information and contact you within 24 hours.</value>
+  </data>
+  <data name="AutoMessageDisclaimer" xml:space="preserve">
+    <value>This is an automatic message, please do not reply to it.</value>
+  </data>
+  <data name="NewBookingTitle" xml:space="preserve">
+    <value>New reservation</value>
+  </data>
+  <data name="CustomerLabel" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="NumberLabel" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="YouHaveNewBooking" xml:space="preserve">
+    <value>You have a new reservation for your place</value>
+  </data>
+  <data name="ManageReservationsFromPanel" xml:space="preserve">
+    <value>You can view details and manage the reservation from your panel.</value>
+  </data>
+  <data name="BookingCancelledByCustomerTitle" xml:space="preserve">
+    <value>Cancelled reservation</value>
+  </data>
+  <data name="CustomerCancelledBooking" xml:space="preserve">
+    <value>Customer cancelled their reservation at your place</value>
+  </data>
+  <data name="CancelledBookingDetails" xml:space="preserve">
+    <value>Cancelled reservation details:</value>
+  </data>
+  <data name="TimeNowAvailable" xml:space="preserve">
+    <value>The time is now available and can be reserved by other users.</value>
+  </data>
+  <data name="UserLeftComment" xml:space="preserve">
+    <value>User left a new comment for your place</value>
+  </data>
+  <data name="FeedbackImportantForBusiness" xml:space="preserve">
+    <value>Feedback is important for your business development!</value>
+  </data>
+  <data name="AllRightsReserved" xml:space="preserve">
+    <value>All rights reserved.</value>
+  </data>
+  <data name="OldTime" xml:space="preserve">
+    <value>Old time</value>
+  </data>
+  <data name="NewTime" xml:space="preserve">
+    <value>New time</value>
+  </data>
+  <data name="IfNewTimeNotConvenient" xml:space="preserve">
+    <value>If the new time is not convenient for you, you can cancel the reservation from your profile.</value>
+  </data>
+  <data name="AdminChangedReservationTime" xml:space="preserve">
+    <value>Admin changed the time of your reservation for</value>
+  </data>
+  <data name="TicketSubject" xml:space="preserve">
+    <value>the request regarding</value>
+  </data>
+  <data name="IsReceivedSuccessfully" xml:space="preserve">
+    <value>has been received successfully</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="News" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="AddPlace" xml:space="preserve">
+    <value>Add place</value>
+  </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>ADMIN PANEL</value>
+  </data>
+  <data name="BusinessPanel" xml:space="preserve">
+    <value>BUSINESS PANEL</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Reservations" xml:space="preserve">
+    <value>Reservations</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Reviews</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value>Your profile is not confirmed. Please check your email to unlock all features.</value>
+  </data>
+  <data name="ResendConfirmationEmail" xml:space="preserve">
+    <value>Resend confirmation email</value>
+  </data>
+  <data name="FindAndBookSports" xml:space="preserve">
+    <value>Find and book sports activities easily and quickly across the country with just one click. What are you waiting for?</value>
+  </data>
+  <data name="SupportFooter" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="HelpCenter" xml:space="preserve">
+    <value>Help Center</value>
+  </data>
+  <data name="TermsOfService" xml:space="preserve">
+    <value>Terms of Service</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>4 "Maritsa" Str., Blagoevgrad</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>All rights reserved.</value>
+  </data>
+  <data name="CreatedForNOIT" xml:space="preserve">
+    <value>Site created for NOIT 2025/2026. Authors: Alexander Dralev and Iliyan Mitev</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Cancellation" xml:space="preserve">
+    <value>Cancellation</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="EnlargeMap" xml:space="preserve">
+    <value>Enlarge map</value>
+  </data>
+  <data name="FilterBy" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="PricePerHour" xml:space="preserve">
+    <value>Price (€/h)</value>
+  </data>
+  <data name="PlaceType" xml:space="preserve">
+    <value>Place type</value>
+  </data>
+  <data name="Outdoor" xml:space="preserve">
+    <value>Outdoor</value>
+  </data>
+  <data name="Indoor" xml:space="preserve">
+    <value>Indoor</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="PlaceForSports" xml:space="preserve">
+    <value>place for sports</value>
+  </data>
+  <data name="PlacesForSports" xml:space="preserve">
+    <value>places for sports</value>
+  </data>
+  <data name="PlacesFound" xml:space="preserve">
+    <value>found</value>
+  </data>
+  <data name="PlaceFound" xml:space="preserve">
+    <value>found</value>
+  </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
+  <data name="PriceLowToHigh" xml:space="preserve">
+    <value>Price (lowest)</value>
+  </data>
+  <data name="PriceHighToLow" xml:space="preserve">
+    <value>Price (highest)</value>
+  </data>
+  <data name="RatingDescending" xml:space="preserve">
+    <value>Rating (descending)</value>
+  </data>
+  <data name="RatingAscending" xml:space="preserve">
+    <value>Rating (ascending)</value>
+  </data>
+  <data name="NoResultsFound" xml:space="preserve">
+    <value>Oops! We found nothing.</value>
+  </data>
+  <data name="NoPlacesMatchCriteria" xml:space="preserve">
+    <value>Currently there are no places matching your criteria for city</value>
+  </data>
+  <data name="TryChangingFilters" xml:space="preserve">
+    <value>Try changing the price or searching for another activity.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password</value>
+  </data>
+  <data name="DontHaveAccount" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="AlreadyHaveAccount" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="AgreeToTerms" xml:space="preserve">
+    <value>I agree to the</value>
+  </data>
+  <data name="TermsAndConditions" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="ConfirmEmail" xml:space="preserve">
+    <value>Confirm email</value>
+  </data>
+  <data name="RegistrationConfirmation" xml:space="preserve">
+    <value>Registration Confirmation</value>
+  </data>
+  <data name="RemoveOwner" xml:space="preserve">
+    <value>Remove Owner</value>
+  </data>
+  <data name="MakeOwner" xml:space="preserve">
+    <value>Make Owner</value>
+  </data>
+  <data name="BanUserWarning" xml:space="preserve">
+    <value>WARNING: This will add the email and phone to a blacklist and delete the profile!</value>
+  </data>
+  <data name="ConfirmDeletePlace" xml:space="preserve">
+    <value>Are you sure you want to delete</value>
+  </data>
+  <data name="ConfirmCancelReservation" xml:space="preserve">
+    <value>Are you sure you want to cancel this reservation?</value>
+  </data>
+  <data name="ConfirmDialogTitle" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="ConfirmYes" xml:space="preserve">
+    <value>Yes!</value>
+  </data>
+  <data name="ConfirmCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="OpenSlot" xml:space="preserve">
+    <value>Open (Unlock)</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="CheckEmailForConfirmation" xml:space="preserve">
+    <value>Check your email for a confirmation link.</value>
+  </data>
+  <data name="CheckEmailForResetLink" xml:space="preserve">
+    <value>Check your email for a password reset link.</value>
+  </data>
+  <data name="ResetPassword" xml:space="preserve">
+    <value>Reset password</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="DeleteProfile" xml:space="preserve">
+    <value>Delete profile</value>
+  </data>
+  <data name="EditProfile" xml:space="preserve">
+    <value>Edit profile</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Cancel2" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="MyReviews" xml:space="preserve">
+    <value>My Reviews</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="CancelReservation" xml:space="preserve">
+    <value>Cancel reservation</value>
+  </data>
+  <data name="Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="CancelledStatus" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="WriteReview" xml:space="preserve">
+    <value>Write review</value>
+  </data>
+  <data name="RatingPlaceholder" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="ReviewPlaceholder" xml:space="preserve">
+    <value>Share your opinion...</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="OwnerDashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="MyPlaces" xml:space="preserve">
+    <value>My places</value>
+  </data>
+  <data name="AddNewPlace" xml:space="preserve">
+    <value>Add new place</value>
+  </data>
+  <data name="PlaceName" xml:space="preserve">
+    <value>Place name</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Address2" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Activity" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="WorkingHours" xml:space="preserve">
+    <value>Working hours</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="ManageSchedule" xml:space="preserve">
+    <value>Manage schedule</value>
+  </data>
+  <data name="PendingApprovals" xml:space="preserve">
+    <value>Pending approvals</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="BlockTime" xml:space="preserve">
+    <value>Block time</value>
+  </data>
+  <data name="BlockDate" xml:space="preserve">
+    <value>Block date</value>
+  </data>
+  <data name="SelectDate" xml:space="preserve">
+    <value>Select date</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start date</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="BlockReason" xml:space="preserve">
+    <value>Block reason</value>
+  </data>
+  <data name="AdminDashboard" xml:space="preserve">
+    <value>Admin panel</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Places" xml:space="preserve">
+    <value>Places</value>
+  </data>
+  <data name="AllReservations" xml:space="preserve">
+    <value>List of all reservations</value>
+  </data>
+  <data name="AuditLogs" xml:space="preserve">
+    <value>Activity Log</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="Ban" xml:space="preserve">
+    <value>BAN</value>
+  </data>
+  <data name="Unban" xml:space="preserve">
+    <value>Unban</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="CreatedAt" xml:space="preserve">
+    <value>Created at</value>
+  </data>
+  <data name="UpdatedAt" xml:space="preserve">
+    <value>Updated at</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="ErrorOccurred" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="NoData" xml:space="preserve">
+    <value>No data</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Search...</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="Entries" xml:space="preserve">
+    <value>entries</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="YesDelete" xml:space="preserve">
+    <value>Yes, delete!</value>
+  </data>
+  <data name="NoKeep" xml:space="preserve">
+    <value>No, keep</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Confirm deletion</value>
+  </data>
+  <data name="DeleteConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete this item?</value>
+  </data>
+  <data name="OperationSuccessful" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
+  <data name="OperationFailed" xml:space="preserve">
+    <value>Operation failed.</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Decline</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="SelectCityPlaceholder" xml:space="preserve">
+    <value>Select or enter city</value>
+  </data>
+  <data name="SelectSportPlaceholder" xml:space="preserve">
+    <value>Select sport</value>
+  </data>
+  <data name="PleaseSelectCity" xml:space="preserve">
+    <value>Please select a city!</value>
+  </data>
+  <data name="SupportPageTitle" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="SupportSubtitle" xml:space="preserve">
+    <value>Contact us</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="ContactInfo" xml:space="preserve">
+    <value>Contact information</value>
+  </data>
+  <data name="TermsTitle" xml:space="preserve">
+    <value>Terms of Service</value>
+  </data>
+  <data name="PrivacyTitle" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="NewsTitle" xml:space="preserve">
+    <value>News</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Read more</value>
+  </data>
+  <data name="PostedOn" xml:space="preserve">
+    <value>Posted on</value>
+  </data>
+  <data name="ReservationConfirmed" xml:space="preserve">
+    <value>Reservation confirmed!</value>
+  </data>
+  <data name="ThankYouReservation" xml:space="preserve">
+    <value>Thank you for your reservation!</value>
+  </data>
+  <data name="ReservationDetails" xml:space="preserve">
+    <value>Reservation details:</value>
+  </data>
+  <data name="GoToMyReservations" xml:space="preserve">
+    <value>My reservations</value>
+  </data>
+  <data name="GoHome" xml:space="preserve">
+    <value>Go to home</value>
+  </data>
+  <data name="NewsSubtitle" xml:space="preserve">
+    <value>Be the first to learn about our new projects and achievements.</value>
+  </data>
+  <data name="NewPublication" xml:space="preserve">
+    <value>New Publication</value>
+  </data>
+  <data name="NoNewsAvailable" xml:space="preserve">
+    <value>No news available at the moment</value>
+  </data>
+  <data name="ShareArticle" xml:space="preserve">
+    <value>Share article:</value>
+  </data>
+  <data name="CopyLink" xml:space="preserve">
+    <value>Copy link</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Copied!</value>
+  </data>
+  <data name="CreateArticle" xml:space="preserve">
+    <value>Create article</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="TitlePlaceholder" xml:space="preserve">
+    <value>Enter title...</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="ContentPlaceholder" xml:space="preserve">
+    <value>Write content here...</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="ClickToUpload" xml:space="preserve">
+    <value>Click to upload image</value>
+  </data>
+  <data name="ImageFormats" xml:space="preserve">
+    <value>JPG, PNG or WebP</value>
+  </data>
+  <data name="PublishNews" xml:space="preserve">
+    <value>Publish news</value>
+  </data>
+  <data name="WillDeleteNews" xml:space="preserve">
+    <value>You will delete the news</value>
+  </data>
+  <data name="MustBeLoggedIn" xml:space="preserve">
+    <value>You must be logged in to like!</value>
+  </data>
+  <data name="ServerCommunicationError" xml:space="preserve">
+    <value>Server communication error.</value>
+  </data>
+  <data name="JoinActPro" xml:space="preserve">
+    <value>JOIN ACTPRO</value>
+  </data>
+  <data name="FillPlaceDetails" xml:space="preserve">
+    <value>Fill in the details of your place and start accepting reservations.</value>
+  </data>
+  <data name="PlaceNamePlaceholder" xml:space="preserve">
+    <value>e.g. Sports Complex 'Arena'...</value>
+  </data>
+  <data name="ExactAddress" xml:space="preserve">
+    <value>Exact address</value>
+  </data>
+  <data name="ExactAddressPlaceholder" xml:space="preserve">
+    <value>123 Freedom St...</value>
+  </data>
+  <data name="SelectType" xml:space="preserve">
+    <value>-- Select type --</value>
+  </data>
+  <data name="SelectCity" xml:space="preserve">
+    <value>-- Select city --</value>
+  </data>
+  <data name="ActivityType" xml:space="preserve">
+    <value>Activity type</value>
+  </data>
+  <data name="SelectActivity" xml:space="preserve">
+    <value>-- Select activity --</value>
+  </data>
+  <data name="CapacityLabel" xml:space="preserve">
+    <value>Capacity (people)</value>
+  </data>
+  <data name="DescriptionPlaceholder" xml:space="preserve">
+    <value>Tell more about the conditions you offer...</value>
+  </data>
+  <data name="DragDropImages" xml:space="preserve">
+    <value>Drag and drop images here or click to select</value>
+  </data>
+  <data name="SupportedFormats" xml:space="preserve">
+    <value>Supported formats: JPG, PNG (Maximum 5MB per file)</value>
+  </data>
+  <data name="UploadPlaceImages" xml:space="preserve">
+    <value>UPLOAD PLACE IMAGES</value>
+  </data>
+  <data name="PlaceDescriptionPlaceholder" xml:space="preserve">
+    <value>Brief description of the place...</value>
+  </data>
+  <data name="EnterPlaceName" xml:space="preserve">
+    <value>Enter name...</value>
+  </data>
+  <data name="SubmitForApproval" xml:space="preserve">
+    <value>SUBMIT FOR APPROVAL</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>Profile picture</value>
+  </data>
+  <data name="ActProCredits" xml:space="preserve">
+    <value>ActPro Credits</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="NoFavoritesYet" xml:space="preserve">
+    <value>You haven't added any favorite places yet.</value>
+  </data>
+  <data name="CreditsInfo" xml:space="preserve">
+    <value>Earn credits through activity on the platform and unlock exclusive levels and discounts!</value>
+  </data>
+  <data name="CreditsPerReservation" xml:space="preserve">
+    <value>per reservation</value>
+  </data>
+  <data name="CreditsPerComment" xml:space="preserve">
+    <value>per comment</value>
+  </data>
+  <data name="LevelsAndPrivileges" xml:space="preserve">
+    <value>Levels and Privileges</value>
+  </data>
+  <data name="Bronze" xml:space="preserve">
+    <value>Bronze (0-99 cr.)</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Silver" xml:space="preserve">
+    <value>Silver (100-499 cr.)</value>
+  </data>
+  <data name="SilverDiscount" xml:space="preserve">
+    <value>5% discount</value>
+  </data>
+  <data name="Gold" xml:space="preserve">
+    <value>Gold (500+ cr.)</value>
+  </data>
+  <data name="GoldDiscount" xml:space="preserve">
+    <value>10% discount</value>
+  </data>
+  <data name="Discount" xml:space="preserve">
+    <value>discount</value>
+  </data>
+  <data name="Understood" xml:space="preserve">
+    <value>Got it!</value>
+  </data>
+  <data name="PlaceRemovedSuccessfully" xml:space="preserve">
+    <value>The place was removed successfully!</value>
+  </data>
+  <data name="ManageYourReviews" xml:space="preserve">
+    <value>Here you can view and manage all your reviews for visited places.</value>
+  </data>
+  <data name="Review" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="NoComment" xml:space="preserve">
+    <value>No comment.</value>
+  </data>
+  <data name="EditReview" xml:space="preserve">
+    <value>Edit review</value>
+  </data>
+  <data name="CommentText" xml:space="preserve">
+    <value>Comment text</value>
+  </data>
+  <data name="NoReviewsYet" xml:space="preserve">
+    <value>You don't have any reviews yet.</value>
+  </data>
+  <data name="BrowsePlaces" xml:space="preserve">
+    <value>Browse places</value>
+  </data>
+  <data name="AddYourPlace" xml:space="preserve">
+    <value>Add your place</value>
+  </data>
+  <data name="EmailNotConfirmedText" xml:space="preserve">
+    <value>Your profile is not confirmed. Please check your email to unlock all features.</value>
+  </data>
+  <data name="DeleteProfileWarning" xml:space="preserve">
+    <value>This operation is irreversible. All your data and favorite places will be deleted forever.</value>
+  </data>
+  <data name="EnterPasswordConfirm" xml:space="preserve">
+    <value>Enter your password to confirm:</value>
+  </data>
+  <data name="PrivacyPageContent" xml:space="preserve">
+    <value>This Privacy Policy describes how ActPro collects, uses and protects your personal information when you use our sports activity reservation service.</value>
+  </data>
+  <data name="PrivacyInfoWeCollect" xml:space="preserve">
+    <value>Information we collect</value>
+  </data>
+  <data name="PrivacyInfoCollectedList" xml:space="preserve">
+    <value>We collect personal information provided directly by you when using the platform: Account data: Name, email address and phone number upon registration. Place information (for partners): Sports facility location, photos and schedules. Technical data: IP address, browser type and cookies to improve site performance.</value>
+  </data>
+  <data name="PrivacyHowWeUse" xml:space="preserve">
+    <value>How we use your information</value>
+  </data>
+  <data name="PrivacyHowWeUseList" xml:space="preserve">
+    <value>Your data is processed for the following purposes: Facilitating and managing your sports activity reservations. Communication regarding confirmations, time changes or responses to inquiries. Improving platform functionality and user experience. Ensuring security and preventing fraud.</value>
+  </data>
+  <data name="PrivacySharingInfo" xml:space="preserve">
+    <value>Sharing information</value>
+  </data>
+  <data name="PrivacySharingList" xml:space="preserve">
+    <value>We do not sell your personal data. We share information only with: Sports facilities: Only the necessary data for your reservation (name and time). Service providers: Partners like PMG "Akad. S. Korolyov" and hosting providers. Legal authorities: Only when required by law.</value>
+  </data>
+  <data name="PrivacyYourRights" xml:space="preserve">
+    <value>Your rights (GDPR)</value>
+  </data>
+  <data name="PrivacyYourRightsList" xml:space="preserve">
+    <value>As a user, you have the right to: Access your personal data and request a copy. Correct inaccurate information. Delete your data ("Right to be forgotten"). Object to processing your data for marketing purposes.</value>
+  </data>
+  <data name="PrivacySecurity" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="PrivacySecurityText" xml:space="preserve">
+    <value>We apply modern technical measures to protect your data, including SSL encryption and secure servers. However, please note that no method of transmission over the internet is 100% secure.</value>
+  </data>
+  <data name="PrivacyLastUpdated" xml:space="preserve">
+    <value>Last updated: February 2026</value>
+  </data>
+  <data name="PrivacyContactEmail" xml:space="preserve">
+    <value>For questions about your data, please contact us at: contact@actprobg.com</value>
+  </data>
+  <data name="TermsPageContent" xml:space="preserve">
+    <value>These Terms of Service govern the use of the ActPro platform for booking sports activities and places. By using our services, you agree to these terms.</value>
+  </data>
+  <data name="TermsReservations" xml:space="preserve">
+    <value>Reservations and payments</value>
+  </data>
+  <data name="TermsReservationsText" xml:space="preserve">
+    <value>Users can book sports activities only through the native system on the platform. ActPro acts as an intermediary between sports facilities and end users.</value>
+  </data>
+  <data name="TermsRules" xml:space="preserve">
+    <value>Platform rules</value>
+  </data>
+  <data name="TermsRulesList" xml:space="preserve">
+    <value>Users are required to provide accurate information upon registration. The reservation is valid only for the specified time and place. Unauthorized use of other profiles or abuse of the reservation system is prohibited.</value>
+  </data>
+  <data name="TermsRefund" xml:space="preserve">
+    <value>Complaints and refunds</value>
+  </data>
+  <data name="TermsRefundText" xml:space="preserve">
+    <value>All payments made in ActPro are final. Refunds are only allowed if the facility is unable to provide the service or under specific conditions stated in the particular listing.</value>
+  </data>
+  <data name="TermsLiability" xml:space="preserve">
+    <value>Liability</value>
+  </data>
+  <data name="TermsLiabilityText" xml:space="preserve">
+    <value>ActPro is not responsible for the quality of workouts conducted or incidents occurring at the sports facilities. Users use the services at their own risk.</value>
+  </data>
+  <data name="TermsChanges" xml:space="preserve">
+    <value>Changes to terms</value>
+  </data>
+  <data name="TermsChangesText" xml:space="preserve">
+    <value>We reserve the right to change these terms at any time. All changes take effect immediately after being posted on this page.</value>
+  </data>
+  <data name="TermsLastUpdated" xml:space="preserve">
+    <value>Last updated: February 2026</value>
+  </data>
+  <data name="TermsContactEmail" xml:space="preserve">
+    <value>For questions about our terms, please contact us at: contact@actprobg.com</value>
+  </data>
+  <data name="SupportTitleText" xml:space="preserve">
+    <value>Help and Support</value>
+  </data>
+  <data name="SupportSubtitleText" xml:space="preserve">
+    <value>Find answers to frequently asked questions and get the support you need for ActPro.</value>
+  </data>
+  <data name="SupportFAQs" xml:space="preserve">
+    <value>Frequently Asked Questions</value>
+  </data>
+  <data name="SupportFAQ1Question" xml:space="preserve">
+    <value>How do I find free sports facilities?</value>
+  </data>
+  <data name="SupportFAQ1Answer" xml:space="preserve">
+    <value>Use the search engine on the homepage by selecting city and sport type. The system will show you all available places in real time.</value>
+  </data>
+  <data name="SupportFAQ2Question" xml:space="preserve">
+    <value>How do I book a time to play?</value>
+  </data>
+  <data name="SupportFAQ2Answer" xml:space="preserve">
+    <value>After selecting a place, click on the available time that is convenient for you and confirm the reservation. You will receive an email confirmation.</value>
+  </data>
+  <data name="SupportFAQ3Question" xml:space="preserve">
+    <value>Can I cancel my reservation?</value>
+  </data>
+  <data name="SupportFAQ3Answer" xml:space="preserve">
+    <value>Yes, you can cancel a reservation through your profile in the "My Reservations" section at least 2 hours before the start time.</value>
+  </data>
+  <data name="SupportFAQ4Question" xml:space="preserve">
+    <value>How do I add my own sports facility?</value>
+  </data>
+  <data name="SupportFAQ4Answer" xml:space="preserve">
+    <value>Go to the "Add your place" section in the main menu. After registering as an owner, you will be able to manage your schedules.</value>
+  </data>
+  <data name="SupportFAQ5Question" xml:space="preserve">
+    <value>How do I contact customer support?</value>
+  </data>
+  <data name="SupportFAQ5Answer" xml:space="preserve">
+    <value>You can reach us through the app, email at contact@actprobg.com or phone +359 897 734 888. We are here to help with any questions or issues.</value>
+  </data>
+  <data name="SupportContactTitle" xml:space="preserve">
+    <value>Contact us</value>
+  </data>
+  <data name="SupportContactSubtitle" xml:space="preserve">
+    <value>Send us a support request and we will contact you as soon as possible.</value>
+  </data>
+  <data name="SupportFullNameLabel" xml:space="preserve">
+    <value>Full name</value>
+  </data>
+  <data name="SupportFullNamePlaceholder" xml:space="preserve">
+    <value>Your name</value>
+  </data>
+  <data name="SupportEmailLabel" xml:space="preserve">
+    <value>Email address</value>
+  </data>
+  <data name="SupportEmailPlaceholder" xml:space="preserve">
+    <value>email@example.com</value>
+  </data>
+  <data name="SupportIssueTypeLabel" xml:space="preserve">
+    <value>Issue type</value>
+  </data>
+  <data name="SupportIssueTechnical" xml:space="preserve">
+    <value>Technical issue</value>
+  </data>
+  <data name="SupportIssueReservation" xml:space="preserve">
+    <value>Reservation issue</value>
+  </data>
+  <data name="SupportIssuePayment" xml:space="preserve">
+    <value>Payment question</value>
+  </data>
+  <data name="SupportIssueOther" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="SupportDescriptionLabel" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="SupportDescriptionPlaceholder" xml:space="preserve">
+    <value>Describe your issue here...</value>
+  </data>
+  <data name="SupportSubmitButton" xml:space="preserve">
+    <value>Submit request</value>
+  </data>
+  <data name="SupportEmailInfo" xml:space="preserve">
+    <value>Email: contact@actprobg.com</value>
+  </data>
+  <data name="SupportPhoneInfo" xml:space="preserve">
+    <value>Phone: +359 897 734 888</value>
+  </data>
+  <data name="SupportResponseTime" xml:space="preserve">
+    <value>Response time: Within one business day</value>
+  </data>
+  <data name="SearchMobileFilters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="SearchMobileMap" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="SearchEnlargeMap" xml:space="preserve">
+    <value>Enlarge map</value>
+  </data>
+  <data name="SearchFilterBy" xml:space="preserve">
+    <value>Filter by</value>
+  </data>
+  <data name="SearchPricePerHour" xml:space="preserve">
+    <value>Price (euro/h)</value>
+  </data>
+  <data name="SearchCityPlaceholder" xml:space="preserve">
+    <value>Select city</value>
+  </data>
+  <data name="SearchActivityPlaceholder" xml:space="preserve">
+    <value>Select sport</value>
+  </data>
+  <data name="SearchCapacityLabel" xml:space="preserve">
+    <value>Capacity</value>
+  </data>
+  <data name="SearchPlaceTypeLabel" xml:space="preserve">
+    <value>Place type</value>
+  </data>
+  <data name="SearchClearFilters" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="SearchApplyFilters" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="SearchPlacesFound" xml:space="preserve">
+    <value>found</value>
+  </data>
+  <data name="SearchPlaceFound" xml:space="preserve">
+    <value>found</value>
+  </data>
+  <data name="SearchPlaceForSports" xml:space="preserve">
+    <value>place for sports</value>
+  </data>
+  <data name="SearchPlacesForSports" xml:space="preserve">
+    <value>places for sports</value>
+  </data>
+  <data name="SearchSortBy" xml:space="preserve">
+    <value>Sort by</value>
+  </data>
+  <data name="SearchNewSearch" xml:space="preserve">
+    <value>New search</value>
+  </data>
+  <data name="SearchSeeMore" xml:space="preserve">
+    <value>See more</value>
+  </data>
+  <data name="SearchPrice" xml:space="preserve">
+    <value>Price:</value>
+  </data>
+  <data name="SearchPerHour" xml:space="preserve">
+    <value>/hour</value>
+  </data>
+  <data name="SearchOutdoor" xml:space="preserve">
+    <value>Outdoor</value>
+  </data>
+  <data name="SearchIndoor" xml:space="preserve">
+    <value>Indoor</value>
+  </data>
+  <data name="SearchUpTo" xml:space="preserve">
+    <value>up to</value>
+  </data>
+  <data name="SearchPeople" xml:space="preserve">
+    <value>people</value>
+  </data>
+  <data name="NewsTitleLabel" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="NewsContentLabel" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="NewsDuplicateWarning" xml:space="preserve">
+    <value>Warning: You have duplicate fields in the modal!</value>
+  </data>
+  <data name="LayoutContactEmail" xml:space="preserve">
+    <value>contact@actprobg.com</value>
+  </data>
+  <data name="LayoutAddressLink" xml:space="preserve">
+    <value>ul. Maritsa 4, Blagoevgrad</value>
+  </data>
+  <data name="ConfirmationThankYou" xml:space="preserve">
+    <value>Thank you!</value>
+  </data>
+  <data name="ConfirmationSuccessText" xml:space="preserve">
+    <value>Your reservation was made successfully.</value>
+  </data>
+  <data name="ConfirmationManageText" xml:space="preserve">
+    <value>You can view your reservations in your profile or return to the homepage.</value>
+  </data>
+  <data name="ConfirmationGoHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ConfirmationMyReservations" xml:space="preserve">
+    <value>My reservations</value>
+  </data>
+  <data name="MyResManageText" xml:space="preserve">
+    <value>Manage your upcoming and past visits Total:</value>
+  </data>
+  <data name="MyResAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="MyResUpcoming" xml:space="preserve">
+    <value>Upcoming</value>
+  </data>
+  <data name="MyResPast" xml:space="preserve">
+    <value>Past</value>
+  </data>
+  <data name="MyResNoReservations" xml:space="preserve">
+    <value>You don't have any reservations yet</value>
+  </data>
+  <data name="MyResEmptyHistory" xml:space="preserve">
+    <value>Your history is empty. Discover new interesting places and make your first reservation.</value>
+  </data>
+  <data name="MyResBrowsePlaces" xml:space="preserve">
+    <value>Browse places</value>
+  </data>
+  <data name="MyResPastBadge" xml:space="preserve">
+    <value>Past</value>
+  </data>
+  <data name="MyResUpcomingBadge" xml:space="preserve">
+    <value>Upcoming</value>
+  </data>
+  <data name="MyResCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MyResCancelConfirmTitle" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="MyResCancelConfirmText" xml:space="preserve">
+    <value>Do you want to cancel this reservation?</value>
+  </data>
+  <data name="MyResCancelConfirmBtn" xml:space="preserve">
+    <value>Yes, cancel it!</value>
+  </data>
+  <data name="MyResCancelBtnText" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MyResCancelledTitle" xml:space="preserve">
+    <value>Cancelled!</value>
+  </data>
+  <data name="MyResErrorTitle" xml:space="preserve">
+    <value>Error!</value>
+  </data>
+  <data name="MyResErrorText" xml:space="preserve">
+    <value>A problem occurred while communicating with the server.</value>
+  </data>
+  <data name="SettingsPersonalInfo" xml:space="preserve">
+    <value>Personal information</value>
+  </data>
+  <data name="SettingsPhoneNotSet" xml:space="preserve">
+    <value>Not set</value>
+  </data>
+  <data name="SettingsMemberSince" xml:space="preserve">
+    <value>Member since</value>
+  </data>
+  <data name="SettingsChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="SettingsPasswordWarning" xml:space="preserve">
+    <value>Be careful who you share your password with. The ActPro team is not responsible for stolen accounts.</value>
+  </data>
+  <data name="SettingsSecurityZone" xml:space="preserve">
+    <value>Security zone</value>
+  </data>
+  <data name="SettingsSecurityWarning" xml:space="preserve">
+    <value>Be careful with actions in this panel. Profile deletion is irreversible.</value>
+  </data>
+  <data name="EditUploadPhoto" xml:space="preserve">
+    <value>Upload photo</value>
+  </data>
+  <data name="EditFirstNamePlaceholder" xml:space="preserve">
+    <value>Enter first name...</value>
+  </data>
+  <data name="EditLastNamePlaceholder" xml:space="preserve">
+    <value>Enter last name...</value>
+  </data>
+  <data name="ForgotEnterEmail" xml:space="preserve">
+    <value>Enter your email and we will send you instructions.</value>
+  </data>
+  <data name="ForgotSendLink" xml:space="preserve">
+    <value>Send link</value>
+  </data>
+  <data name="ForgotEnterNewPassword" xml:space="preserve">
+    <value>Enter your new password for</value>
+  </data>
+  <data name="ForgotSavePassword" xml:space="preserve">
+    <value>Save password</value>
+  </data>
+  <data name="ForgotBackToLogin" xml:space="preserve">
+    <value>Back to login</value>
+  </data>
+  <data name="LoginRememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="LoginForgotPassword" xml:space="preserve">
+    <value>Forgot password?</value>
+  </data>
+  <data name="LoginNoAccount" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+  <data name="LoginRegisterHere" xml:space="preserve">
+    <value>Register here</value>
+  </data>
+  <data name="RegisterHasAccount" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+  <data name="RegisterLoginHere" xml:space="preserve">
+    <value>Login here</value>
+  </data>
+  <data name="RegisterAgreeTerms" xml:space="preserve">
+    <value>I agree to the</value>
+  </data>
+  <data name="RegisterAgreePrivacy" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="RegisterTermsLink" xml:space="preserve">
+    <value>terms and conditions</value>
+  </data>
+  <data name="RegisterPrivacyLink" xml:space="preserve">
+    <value>privacy policy</value>
+  </data>
+  <data name="RegisterAcceptTermsError" xml:space="preserve">
+    <value>You must accept the terms and conditions.</value>
+  </data>
+  <data name="ResPlaceNoImage" xml:space="preserve">
+    <value>No image</value>
+  </data>
+  <data name="ResDiscount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="ResPricePerHour" xml:space="preserve">
+    <value>€/h</value>
+  </data>
+  <data name="ResInLocation" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="ResCapacity" xml:space="preserve">
+    <value>Capacity:</value>
+  </data>
+  <data name="ResCapacityUpTo" xml:space="preserve">
+    <value>up to</value>
+  </data>
+  <data name="ResPeople" xml:space="preserve">
+    <value>people</value>
+  </data>
+  <data name="ResBookTime" xml:space="preserve">
+    <value>Book time</value>
+  </data>
+  <data name="ResPlaceDescription" xml:space="preserve">
+    <value>Place description</value>
+  </data>
+  <data name="ResVerified" xml:space="preserve">
+    <value>Verified</value>
+  </data>
+  <data name="ResCommentsAndReviews" xml:space="preserve">
+    <value>Comments and reviews</value>
+  </data>
+  <data name="ResDeleteComment" xml:space="preserve">
+    <value>Delete comment</value>
+  </data>
+  <data name="ResNoReviews" xml:space="preserve">
+    <value>No reviews added yet.</value>
+  </data>
+  <data name="ResLeaveReview" xml:space="preserve">
+    <value>Leave review</value>
+  </data>
+  <data name="ResShareOpinion" xml:space="preserve">
+    <value>Share opinion...</value>
+  </data>
+  <data name="ResPublish" xml:space="preserve">
+    <value>Publish</value>
+  </data>
+  <data name="ResReviewLimit" xml:space="preserve">
+    <value>You have reached the limit of 3 comments for this place.</value>
+  </data>
+  <data name="ResLoginToReview" xml:space="preserve">
+    <value>To leave a comment</value>
+  </data>
+  <data name="ResLoginToReviewLink" xml:space="preserve">
+    <value>join</value>
+  </data>
+  <data name="ResSelectDate" xml:space="preserve">
+    <value>Select date</value>
+  </data>
+  <data name="ResBook" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="ResProfileRequired" xml:space="preserve">
+    <value>Profile required</value>
+  </data>
+  <data name="ResBookNeedProfile" xml:space="preserve">
+    <value>To make a reservation, you must be part of ActPro.</value>
+  </data>
+  <data name="ResLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="ResCreateAccount" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="ResToday" xml:space="preserve">
+    <value>TODAY</value>
+  </data>
+  <data name="ResMustBeLoggedIn" xml:space="preserve">
+    <value>You must be logged in to add to favorites!</value>
+  </data>
+  <data name="ResAddedToFavorites" xml:space="preserve">
+    <value>Added to favorites!</value>
+  </data>
+  <data name="ResRemovedFromFavorites" xml:space="preserve">
+    <value>Removed from favorites.</value>
+  </data>
+  <data name="ResErrorProcessing" xml:space="preserve">
+    <value>An error occurred while processing the request.</value>
+  </data>
+  <data name="ResSelectTime" xml:space="preserve">
+    <value>Please select a time!</value>
+  </data>
+  <data name="FillTimeManually" xml:space="preserve">
+    <value>Fill time manually</value>
+  </data>
+  <data name="TotalRevenue" xml:space="preserve">
+    <value>Total Revenue</value>
+  </data>
+  <data name="NumberOfReservations" xml:space="preserve">
+    <value>Number of Reservations</value>
+  </data>
+  <data name="RecentReservations" xml:space="preserve">
+    <value>Recent Reservations</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Date and Time</value>
+  </data>
+  <data name="ManualReservation" xml:space="preserve">
+    <value>Manual Reservation</value>
+  </data>
+  <data name="CustomerNote" xml:space="preserve">
+    <value>Note / Customer Name</value>
+  </data>
+  <data name="ThisSlotWillBeMarkedAsBusy" xml:space="preserve">
+    <value>This time slot will be marked as busy in the public calendar.</value>
+  </data>
+  <data name="PlaceManagement" xml:space="preserve">
+    <value>Place Management</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>Week</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="ErrorProcessing" xml:space="preserve">
+    <value>Error processing</value>
+  </data>
+  <data name="ScheduleFor" xml:space="preserve">
+    <value>Schedule for:</value>
+  </data>
+  <data name="CloseDate" xml:space="preserve">
+    <value>Close date</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>FROM DATE</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>TO DATE</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="LockPeriod" xml:space="preserve">
+    <value>LOCK PERIOD</value>
+  </data>
+  <data name="ClosedDatesList" xml:space="preserve">
+    <value>Closed dates list</value>
+  </data>
+  <data name="NoClosedDates" xml:space="preserve">
+    <value>No closed dates for this place</value>
+  </data>
+  <data name="CheckYourEmail" xml:space="preserve">
+    <value>Check your email!</value>
+  </data>
+  <data name="WeSentConfirmationLink" xml:space="preserve">
+    <value>We sent a confirmation link to:</value>
+  </data>
+  <data name="WhatNext" xml:space="preserve">
+    <value>What happens next?</value>
+  </data>
+  <data name="OpenEmailAndClick" xml:space="preserve">
+    <value>Open the email and click the button</value>
+  </data>
+  <data name="CheckSpamFolder" xml:space="preserve">
+    <value>If you don't see the email, check the "Spam" folder</value>
+  </data>
+  <data name="AfterConfirmationCanBook" xml:space="preserve">
+    <value>After confirmation you can make reservations immediately</value>
+  </data>
+  <data name="DidNotReceiveEmail" xml:space="preserve">
+    <value>Did not receive email?</value>
+  </data>
+  <data name="Resend" xml:space="preserve">
+    <value>Resend</value>
+  </data>
+  <data name="NoReservationsFound" xml:space="preserve">
+    <value>No reservations found.</value>
+  </data>
+  <data name="PhoneReservationExample" xml:space="preserve">
+    <value>e.g. phone reservation / John Doe</value>
+  </data>
+  <data name="Editing" xml:space="preserve">
+    <value>Editing:</value>
+  </data>
+  <data name="CurrentImages" xml:space="preserve">
+    <value>Current Images</value>
+  </data>
+  <data name="NoImages" xml:space="preserve">
+    <value>No images.</value>
+  </data>
+  <data name="AddNewImages" xml:space="preserve">
+    <value>ADD NEW IMAGES</value>
+  </data>
+  <data name="DragDropImagesOrClick" xml:space="preserve">
+    <value>Drag images here or click to select</value>
+  </data>
+  <data name="SupportedFormatsImage" xml:space="preserve">
+    <value>Supported formats: JPG, PNG (Maximum 5MB per file)</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>SAVE CHANGES</value>
+  </data>
+  <data name="CreatePlace" xml:space="preserve">
+    <value>CREATE PLACE</value>
+  </data>
+  <data name="EditTime" xml:space="preserve">
+    <value>EDIT TIME</value>
+  </data>
+  <data name="SelectNewTime" xml:space="preserve">
+    <value>Select new time for reservation</value>
+  </data>
+  <data name="CurrentTime" xml:space="preserve">
+    <value>Current time:</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="JsPopularCities" xml:space="preserve">
+    <value>Sofia, Plovdiv, Varna, Burgas, Blagoevgrad</value>
+  </data>
+  <data name="JsDefaultActivities" xml:space="preserve">
+    <value>Football, Volleyball, Basketball, Tennis, Fitness</value>
+  </data>
+  <data name="CurrencyEuro" xml:space="preserve">
+    <value>€</value>
+  </data>
+  <data name="PerHour" xml:space="preserve">
+    <value>/hr</value>
+  </data>
+  <data name="LanguageBg" xml:space="preserve">
+    <value>BG</value>
+  </data>
+  <data name="LanguageEn" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="CompanyAddressUrl" xml:space="preserve">
+    <value>ul. Maritsa 4, Blagoevgrad</value>
+  </data>
+  <data name="EditTimeHour" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="ReservationCreated" xml:space="preserve">
+    <value>Created on</value>
+  </data>
+  <data name="ActivityInSite" xml:space="preserve">
+    <value>Activity in site</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="ValidationNameRequired" xml:space="preserve">
+    <value>Please enter a place name!</value>
+  </data>
+  <data name="ValidationAddressRequired" xml:space="preserve">
+    <value>Please enter an address!</value>
+  </data>
+  <data name="ValidationTypeRequired" xml:space="preserve">
+    <value>Please select a venue type!</value>
+  </data>
+  <data name="ValidationActivityRequired" xml:space="preserve">
+    <value>Please select a sport type!</value>
+  </data>
+  <data name="ValidationPriceRequired" xml:space="preserve">
+    <value>Please enter a price!</value>
+  </data>
+  <data name="ValidationPriceRange" xml:space="preserve">
+    <value>Price must be between 0.01 and 9999!</value>
+  </data>
+  <data name="ValidationCapacityRequired" xml:space="preserve">
+    <value>Please enter a capacity!</value>
+  </data>
+  <data name="ValidationCapacityRange" xml:space="preserve">
+    <value>Capacity must be between 1 and 1000!</value>
+  </data>
+</root>

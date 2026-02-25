@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NameIsRequired" xml:space="preserve">
+    <value>Name is required!</value>
+  </data>
+  <data name="EnterFirstName" xml:space="preserve">
+    <value>Please enter your first name.</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Please enter your email address.</value>
+  </data>
+  <data name="LastNameIsRequired" xml:space="preserve">
+    <value>Last name is required!</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Please enter a valid email address.</value>
+  </data>
+  <data name="EmailIsRequired" xml:space="preserve">
+    <value>Email is required!</value>
+  </data>
+  <data name="CurrentPasswordIsRequired" xml:space="preserve">
+    <value>Current password is required!</value>
+  </data>
+  <data name="NewPasswordIsRequired" xml:space="preserve">
+    <value>New password is required!</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Passwords must match.</value>
+  </data>
+  <data name="PasswordIsRequired" xml:space="preserve">
+    <value>Password is required!</value>
+  </data>
+  <data name="ConfirmPasswordIsRequired" xml:space="preserve">
+    <value>Confirm password is required!</value>
+  </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Please enter a valid phone number.</value>
+  </data>
+  <data name="PhoneNumberRequired" xml:space="preserve">
+    <value>Phone number is required!</value>
+  </data>
+  <data name="AddressNotValid" xml:space="preserve">
+    <value>The field can contain letters, numbers and symbols "",.- №.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>An error occurred.</value>
+  </data>
+  <data name="OnlyLettersAllowed" xml:space="preserve">
+    <value>The field can only contain letters.</value>
+  </data>
+  <data name="OnlyNumbersAllowed" xml:space="preserve">
+    <value>The field can only contain numbers.</value>
+  </data>
+  <data name="OnlyDecimalNumbersAllowed" xml:space="preserve">
+    <value>The field can only contain decimal numbers.</value>
+  </data>
+  <data name="LettersNumbersAllowed" xml:space="preserve">
+    <value>The field can contain letters and numbers.</value>
+  </data>
+  <data name="LettersNumbersEnglAllowed" xml:space="preserve">
+    <value>The field can contain Latin letters and numbers.</value>
+  </data>
+  <data name="RoleNotFound" xml:space="preserve">
+    <value>Such role does not exist.</value>
+  </data>
+  <data name="ErrorWhileCreatingCheckData" xml:space="preserve">
+    <value>Error while creating, please check the entered data!</value>
+  </data>
+  <data name="UserIsNotRegistered" xml:space="preserve">
+    <value>User does not exist in the system!</value>
+  </data>
+  <data name="NotValidPassword" xml:space="preserve">
+    <value>Invalid password! Please check again!</value>
+  </data>
+  <data name="InvalidPasswordFormat" xml:space="preserve">
+    <value>Invalid password. Password must be in Latin letters, contain at least 6 characters, of which at least one digit, one uppercase and one lowercase letter, and at least one special character.</value>
+  </data>
+  <data name="UserWithThisEmailExists" xml:space="preserve">
+    <value>User with this email already exists.</value>
+  </data>
+  <data name="UserAccountIsBanned" xml:space="preserve">
+    <value>Your account has been blocked.</value>
+  </data>
+  <data name="EmailIsBanned" xml:space="preserve">
+    <value>This email address is blocked.</value>
+  </data>
+  <data name="UserLoggedInSuccessfully" xml:space="preserve">
+    <value>User logged in successfully.</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome to ActPro!</value>
+  </data>
+  <data name="AgreeWithTerms" xml:space="preserve">
+    <value>You must agree to the terms and conditions.</value>
+  </data>
+  <data name="ProveYouAreNotRobot" xml:space="preserve">
+    <value>Please confirm you are not a robot.</value>
+  </data>
+  <data name="AccountApproved" xml:space="preserve">
+    <value>Account Confirmation - ActPro</value>
+  </data>
+  <data name="SuccsessfullRegistration" xml:space="preserve">
+    <value>Registration successful! Welcome.</value>
+  </data>
+  <data name="NewUserRegistered" xml:space="preserve">
+    <value>New user registered</value>
+  </data>
+  <data name="ValidEmailAddress" xml:space="preserve">
+    <value>If the email exists, we have sent a recovery link.</value>
+  </data>
+  <data name="PasswordResetSuccess" xml:space="preserve">
+    <value>Password has been changed successfully! You can log in with your new password.</value>
+  </data>
+  <data name="EmailApprovedSuccess" xml:space="preserve">
+    <value>Your email has been verified successfully! You can now make reservations.</value>
+  </data>
+  <data name="EmailAlreadyApproved" xml:space="preserve">
+    <value>Account already verified or does not exist.</value>
+  </data>
+  <data name="AccountEmailApprovel" xml:space="preserve">
+    <value>Account Confirmation - ActPro</value>
+  </data>
+  <data name="AccountInfoUpadate" xml:space="preserve">
+    <value>User updated their profile data.</value>
+  </data>
+  <data name="UserUpdatePasswordSuccess" xml:space="preserve">
+    <value>User changed their password successfully.</value>
+  </data>
+  <data name="PasswordUpdatedSuccessfully" xml:space="preserve">
+    <value>Password changed successfully!</value>
+  </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>You entered the wrong password.</value>
+  </data>
+  <data name="UserDeleteAccountSuccess" xml:space="preserve">
+    <value>User deleted their profile</value>
+  </data>
+  <data name="WrongEmail" xml:space="preserve">
+    <value>Wrong email</value>
+  </data>
+  <data name="GoodBye" xml:space="preserve">
+    <value>Goodbye! We hope to see you again soon.</value>
+  </data>
+  <data name="SuccessfulDeletedAccount" xml:space="preserve">
+    <value>Profile has been deleted! See you next time.</value>
+  </data>
+  <data name="SuccessfulUserEdit" xml:space="preserve">
+    <value>You successfully edited the user data</value>
+  </data>
+  <data name="SuccessfulSaveChanges" xml:space="preserve">
+    <value>You successfully saved the changes</value>
+  </data>
+  <data name="NewsIsPublished" xml:space="preserve">
+    <value>New news published:</value>
+  </data>
+  <data name="NewsIsPublishedSuccessfully" xml:space="preserve">
+    <value>News published successfully!</value>
+  </data>
+  <data name="NewsDeleted" xml:space="preserve">
+    <value>Deleted news with ID:</value>
+  </data>
+  <data name="NewsDeletedSuccessfully" xml:space="preserve">
+    <value>News deleted successfully!</value>
+  </data>
+  <data name="FillInAllFields" xml:space="preserve">
+    <value>Please fill in all required fields correctly.</value>
+  </data>
+  <data name="TicketSendSuccessfully" xml:space="preserve">
+    <value>Your request was sent successfully! Check your email for confirmation.</value>
+  </data>
+  <data name="ProfileNotApprovedForCreatingPlace" xml:space="preserve">
+    <value>Your profile is not verified. Please verify your email to add places.</value>
+  </data>
+  <data name="RequestSentSuccessfully" xml:space="preserve">
+    <value>Your request was sent successfully!</value>
+  </data>
+  <data name="ErrorWhileTryingToFill" xml:space="preserve">
+    <value>Error while saving: </value>
+  </data>
+  <data name="ReservationNeedApproval" xml:space="preserve">
+    <value>You must verify your email before making a reservation!</value>
+  </data>
+  <data name="SportPlace" xml:space="preserve">
+    <value>Sports facility</value>
+  </data>
+  <data name="UserMadeReservation" xml:space="preserve">
+    <value>User made a reservation.</value>
+  </data>
+  <data name="UserDeletedReservation" xml:space="preserve">
+    <value>User cancelled a reservation.</value>
+  </data>
+  <data name="CommentNeedApproval" xml:space="preserve">
+    <value>You must verify your email before adding a comment!</value>
+  </data>
+  <data name="UserMadeComment" xml:space="preserve">
+    <value>User added a comment.</value>
+  </data>
+  <data name="UserDeletedComment" xml:space="preserve">
+    <value>User deleted a comment.</value>
+  </data>
+  <data name="DescribeYourIssue" xml:space="preserve">
+    <value>Please describe your issue or question in detail.</value>
+  </data>
+  <data name="IssueLenght" xml:space="preserve">
+    <value>Description must be at least 10 characters.</value>
+  </data>
+  <data name="PlaceAddedSuccessfully" xml:space="preserve">
+    <value>Place created successfully.</value>
+  </data>
+  <data name="PlaceUpdatedSuccessfully" xml:space="preserve">
+    <value>You successfully edited the place data.</value>
+  </data>
+  <data name="PlaceDeletedSuccessfully" xml:space="preserve">
+    <value>Place and all related data have been deleted.</value>
+  </data>
+  <data name="PlaceApprovedSuccessfully" xml:space="preserve">
+    <value>Place approved successfully.</value>
+  </data>
+  <data name="DateClosedSuccessfully" xml:space="preserve">
+    <value>Dates locked successfully.</value>
+  </data>
+  <data name="DateOpenedSuccessfully" xml:space="preserve">
+    <value>Date unlocked successfully.</value>
+  </data>
+  <data name="DateError" xml:space="preserve">
+    <value>End date cannot be before start date.</value>
+  </data>
+  <data name="ReservationClosed" xml:space="preserve">
+    <value>Reservation cancelled successfully!</value>
+  </data>
+  <data name="ReservationTimeEdited" xml:space="preserve">
+    <value>Time changed successfully!</value>
+  </data>
+  <data name="AdminRuleChanged" xml:space="preserve">
+    <value>Admin rights have been changed.</value>
+  </data>
+  <data name="OwnerRuleChanged" xml:space="preserve">
+    <value>Owner rights have been changed.</value>
+  </data>
+  <data name="UserBanned" xml:space="preserve">
+    <value>User has been blocked and deleted successfully.</value>
+  </data>
+  <data name="ReservationApproved" xml:space="preserve">
+    <value>Reservation approved!</value>
+  </data>
+  <data name="ReservationBlocked" xml:space="preserve">
+    <value>Time blocked successfully!</value>
+  </data>
+  <data name="AddedToFavorites" xml:space="preserve">
+    <value>Added to favorites!</value>
+  </data>
+  <data name="RemovedFromFavorites" xml:space="preserve">
+    <value>Removed from favorites!</value>
+  </data>
+  <data name="NoCities" xml:space="preserve">
+    <value>No city</value>
+  </data>
+  <data name="NoActivities" xml:space="preserve">
+    <value>No activity</value>
+  </data>
+  <data name="NoPlace" xml:space="preserve">
+    <value>No place</value>
+  </data>
+  <data name="CreatedPlace" xml:space="preserve">
+    <value>Created place</value>
+  </data>
+  <data name="UpdatedPlace" xml:space="preserve">
+    <value>Updated data for</value>
+  </data>
+  <data name="DeletedPlace" xml:space="preserve">
+    <value>Deleted place</value>
+  </data>
+  <data name="ApprovedPlace" xml:space="preserve">
+    <value>Approved place</value>
+  </data>
+  <data name="PlaceClosed" xml:space="preserve">
+    <value>Closed period from</value>
+  </data>
+  <data name="PlaceOpened" xml:space="preserve">
+    <value>Unlocked date</value>
+  </data>
+  <data name="PlaceId" xml:space="preserve">
+    <value>for place with ID</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="For" xml:space="preserve">
+    <value>for</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>on</value>
+  </data>
+  <data name="In" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="DeletedReservation" xml:space="preserve">
+    <value>Deleted reservation for</value>
+  </data>
+  <data name="ReservationUpdate" xml:space="preserve">
+    <value>Changed time for</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>MANUAL</value>
+  </data>
+  <data name="OwnerManualReservation" xml:space="preserve">
+    <value>Owner blocked time for</value>
+  </data>
+  <data name="PlanedManufacture" xml:space="preserve">
+    <value>planned maintenance</value>
+  </data>
+  <data name="PlaceIsClosedOnThisDate" xml:space="preserve">
+    <value>Place is closed for reservations on this date due to</value>
+  </data>
+  <data name="InvalidHour" xml:space="preserve">
+    <value>Invalid time.</value>
+  </data>
+  <data name="HourAlreadyPassed" xml:space="preserve">
+    <value>Time has already passed.</value>
+  </data>
+  <data name="HourAlreadyReserved" xml:space="preserve">
+    <value>This time was just taken!</value>
+  </data>
+  <data name="SuccessfullReservation" xml:space="preserve">
+    <value>Reservation made successfully.</value>
+  </data>
+  <data name="MaximumComments" xml:space="preserve">
+    <value>You have already left the maximum number of comments (3) for this place.</value>
+  </data>
+  <data name="CommentAdded" xml:space="preserve">
+    <value>Comment added successfully.</value>
+  </data>
+  <data name="CommentNotFound" xml:space="preserve">
+    <value>Comment not found.</value>
+  </data>
+  <data name="CommentDeleted" xml:space="preserve">
+    <value>Comment deleted successfully.</value>
+  </data>
+  <data name="CommentUpdated" xml:space="preserve">
+    <value>Comment updated successfully.</value>
+  </data>
+  <data name="ReservationNotFound" xml:space="preserve">
+    <value>Reservation not found.</value>
+  </data>
+  <data name="CannotCancelPastReservation" xml:space="preserve">
+    <value>You cannot cancel a past reservation.</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Successfully cancelled.</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not found.</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Updated.</value>
+  </data>
+  <data name="AddedRole" xml:space="preserve">
+    <value>Added role</value>
+  </data>
+  <data name="RemovedRole" xml:space="preserve">
+    <value>Removed role</value>
+  </data>
+  <data name="BAN" xml:space="preserve">
+    <value>Blocked and deleted</value>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="ViewMore" xml:space="preserve">
+    <value>View more</value>
+  </data>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ObjectsCountSuffix" xml:space="preserve">
+    <value>places</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>Rating: ⭐</value>
+  </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>View details</value>
+  </data>
+  <data name="SearchHeroTitle" xml:space="preserve">
+    <value>Find your sports place</value>
+  </data>
+  <data name="SearchHeroSubtitle" xml:space="preserve">
+    <value>Easy, fast and convenient booking anytime.</value>
+  </data>
+  <data name="LabelCity" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="PlaceholderCity" xml:space="preserve">
+    <value>Select or enter city</value>
+  </data>
+  <data name="ValidationCityRequired" xml:space="preserve">
+    <value>Please select a location!</value>
+  </data>
+  <data name="ValidationNameRequired" xml:space="preserve">
+    <value>Please enter a place name!</value>
+  </data>
+  <data name="ValidationAddressRequired" xml:space="preserve">
+    <value>Please enter an address!</value>
+  </data>
+  <data name="ValidationTypeRequired" xml:space="preserve">
+    <value>Please select a type!</value>
+  </data>
+  <data name="ValidationActivityRequired" xml:space="preserve">
+    <value>Please select a sport type!</value>
+  </data>
+  <data name="ValidationPriceRequired" xml:space="preserve">
+    <value>Please enter a price!</value>
+  </data>
+  <data name="ValidationPriceRange" xml:space="preserve">
+    <value>Price must be between 0.01 and 9999!</value>
+  </data>
+  <data name="ValidationCapacityRequired" xml:space="preserve">
+    <value>Please enter a capacity!</value>
+  </data>
+  <data name="ValidationCapacityRange" xml:space="preserve">
+    <value>Capacity must be between 1 and 1000!</value>
+  </data>
+  <data name="ValidationNameTooLong" xml:space="preserve">
+    <value>Name is too long! Maximum 200 characters.</value>
+  </data>
+  <data name="ValidationDescriptionRequired" xml:space="preserve">
+    <value>Please enter a description!</value>
+  </data>
+  <data name="ValidationDescriptionTooLong" xml:space="preserve">
+    <value>Description must be between 10 and 2000 characters.</value>
+  </data>
+  <data name="LabelActivity" xml:space="preserve">
+    <value>What will you play?</value>
+  </data>
+  <data name="PlaceholderActivity" xml:space="preserve">
+    <value>Select or enter activity</value>
+  </data>
+  <data name="SearchButton" xml:space="preserve">
+    <value>SEARCH</value>
+  </data>
+  <data name="AboutBadge" xml:space="preserve">
+    <value>What is ActPro?</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>Your digital assistant for an active life</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>ActPro is an innovative platform that connects enthusiasts with sports facilities. Our mission is to remove barriers to sport by giving you access to hundreds of places with just a few clicks.</value>
+  </data>
+  <data name="FeatureRealTime" xml:space="preserve">
+    <value>Real-time reservations</value>
+  </data>
+  <data name="FeatureVariety" xml:space="preserve">
+    <value>Wide variety of sports</value>
+  </data>
+  <data name="FeatureAllDevices" xml:space="preserve">
+    <value>Accessible from any device</value>
+  </data>
+  <data name="CategoriesTitle" xml:space="preserve">
+    <value>Popular categories</value>
+  </data>
+  <data name="SportFootball" xml:space="preserve">
+    <value>Football</value>
+  </data>
+  <data name="SportBasketball" xml:space="preserve">
+    <value>Basketball</value>
+  </data>
+  <data name="SportVolleyball" xml:space="preserve">
+    <value>Volleyball</value>
+  </data>
+  <data name="SportTennis" xml:space="preserve">
+    <value>Tennis</value>
+  </data>
+  <data name="SportFitness" xml:space="preserve">
+    <value>Fitness</value>
+  </data>
+  <data name="SportSwimming" xml:space="preserve">
+    <value>Swimming</value>
+  </data>
+  <data name="BenefitsBadge" xml:space="preserve">
+    <value>Benefits</value>
+  </data>
+  <data name="BenefitsTitle" xml:space="preserve">
+    <value>How do we help you?</value>
+  </data>
+  <data name="BenefitsDescription" xml:space="preserve">
+    <value>Forget the dozens of phone calls to find out if the tennis court is free. With us you save time and nerves:</value>
+  </data>
+  <data name="BenefitSpeed" xml:space="preserve">
+    <value>Fast reservations</value>
+  </data>
+  <data name="BenefitSecurity" xml:space="preserve">
+    <value>Secure payments</value>
+  </data>
+  <data name="BenefitAccessibility" xml:space="preserve">
+    <value>Accessible from any device</value>
+  </data>
+  <data name="TopPlacesTitle" xml:space="preserve">
+    <value>Top places with highest rating</value>
+  </data>
+  <data name="SolutionsBadge" xml:space="preserve">
+    <value>Solutions</value>
+  </data>
+  <data name="SolutionsTitle" xml:space="preserve">
+    <value>The problems we solve</value>
+  </data>
+  <data name="ProbInfoTitle" xml:space="preserve">
+    <value>Lack of information</value>
+  </data>
+  <data name="ProbInfoDesc" xml:space="preserve">
+    <value>No more searching for contacts on forums - everything is in one place.</value>
+  </data>
+  <data name="ProbScheduleTitle" xml:space="preserve">
+    <value>Outdated schedules</value>
+  </data>
+  <data name="ProbScheduleDesc" xml:space="preserve">
+    <value>You only see available times, updated in real time.</value>
+  </data>
+  <data name="ProbReviewTitle" xml:space="preserve">
+    <value>Ability to review</value>
+  </data>
+  <data name="ProbReviewDesc" xml:space="preserve">
+    <value>You can now express your opinion about the place you visited.</value>
+  </data>
+  <data name="OwnerTitle" xml:space="preserve">
+    <value>Do you have a sports facility?</value>
+  </data>
+  <data name="OwnerSubtitle" xml:space="preserve">
+    <value>Join our network in three easy steps and increase your customers.</value>
+  </data>
+  <data name="OwnerRegisterBtn" xml:space="preserve">
+    <value>Register it</value>
+  </data>
+  <data name="Step1Title" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Step1Desc" xml:space="preserve">
+    <value>Register your business.</value>
+  </data>
+  <data name="Step2Title" xml:space="preserve">
+    <value>Verify</value>
+  </data>
+  <data name="Step2Desc" xml:space="preserve">
+    <value>Provide ownership documents.</value>
+  </data>
+  <data name="Step3Title" xml:space="preserve">
+    <value>Earn</value>
+  </data>
+  <data name="Step3Desc" xml:space="preserve">
+    <value>Accept reservations online.</value>
+  </data>
+  <data name="StoryTitle" xml:space="preserve">
+    <value>Our story and goal</value>
+  </data>
+  <data name="StorySubtitle" xml:space="preserve">
+    <value>We don't just build software. We build a community where health and sport are a priority for everyone.</value>
+  </data>
+  <data name="MissionTitle" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="MissionDesc" xml:space="preserve">
+    <value>To make sport accessible to every Bulgarian through modern technology.</value>
+  </data>
+  <data name="VisionTitle" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="VisionDesc" xml:space="preserve">
+    <value>The largest ecosystem for active recreation and sports facility management in the country.</value>
+  </data>
+  <data name="ValuesTitle" xml:space="preserve">
+    <value>Values</value>
+  </data>
+  <data name="ValuesDesc" xml:space="preserve">
+    <value>Transparency, innovation and unwavering support for local businesses and sports clubs.</value>
+  </data>
+  <data name="JsFamousLocations" xml:space="preserve">
+    <value>Famous locations</value>
+  </data>
+  <data name="JsPopularActivities" xml:space="preserve">
+    <value>Popular activities</value>
+  </data>
+  <data name="JsAllSuggestions" xml:space="preserve">
+    <value>All suggestions</value>
+  </data>
+  <data name="JsToastSelectCity" xml:space="preserve">
+    <value>Please select a city from the suggestions!</value>
+  </data>
+  <data name="JsToastSelectActivity" xml:space="preserve">
+    <value>Please select a valid activity!</value>
+  </data>
+  <data name="DefaultError" xml:space="preserve">
+    <value>An error acure</value>
+  </data>
+</root>

@@ -1,7 +1,7 @@
 ﻿@using ActPro.Domain.Models.Areas
 @model UsersIndexViewModel
 @{
-    ViewData["Title"] = "Потребители";
+    ViewData["Title"] = DomainResources.Users;
 }
 
 <div class="container-fluid mt-4">
@@ -10,26 +10,26 @@
             @await Html.PartialAsync("_AdminMenu")
         </div>
         <div class="col-md-9">
-            <h2><i class="bi bi-people"></i> Управление на потребители</h2>
+            <h2><i class="bi bi-people"></i> @DomainResources.Users</h2>
             <div class="card shadow-sm">
                 <table class="table table-hover align-middle mb-0 admin-table">
                     <thead class="table-dark">
                         <tr>
-                            <th>Име</th>
-                            <th>Имейл</th>
-                            <th>Телефон</th>
-                            <th>Роля</th>
-                            <th class="text-center no-sort">Действия</th>
+                            <th>@DomainResources.FirstName</th>
+                            <th>@DomainResources.Email</th>
+                            <th>@DomainResources.PhoneNumber</th>
+                            <th>@DomainResources.Role</th>
+                            <th class="text-center no-sort">@DomainResources.Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var user in Model.Users)
                         {
                             <tr>
-                                <td data-label="ИМЕ"> <div class="fw-bold">@user.FullName</div></td>
-                                <td data-label="ИМЕЙЛ"> <div class="fw-bold">@user.Email</div></td>
-                                <td data-label="ТЕЛЕФОН"> <div class="fw-bold">@user.PhoneNumber</div></td>
-                                <td data-label="ДЕЙСТВИЯ">
+                                <td data-label="@DomainResources.FirstName.ToUpper()"> <div class="fw-bold">@user.FullName</div></td>
+                                <td data-label="@DomainResources.Email.ToUpper()"> <div class="fw-bold">@user.Email</div></td>
+                                <td data-label="@DomainResources.PhoneNumber.ToUpper()"> <div class="fw-bold">@user.PhoneNumber</div></td>
+                                <td data-label="@DomainResources.Actions.ToUpper()">
                                     @if (user.IsAdmin)
                                     {
                                         <span class="badge bg-danger">Admin</span>
@@ -54,13 +54,13 @@
                                         <form asp-action="ToggleOwner" method="post" class="d-inline">
                                             <input type="hidden" name="userId" value="@user.Id" />
                                             <button type="submit" class="btn btn-sm @(user.IsOwner ? "btn-outline-danger" : "btn-outline-primary")">
-                                                <i class="bi bi-shop"></i> @(user.IsOwner ? "Махни Owner" : "Направи Owner")
+                                                <i class="bi bi-shop"></i> @(user.IsOwner ? DomainResources.RemoveOwner : DomainResources.MakeOwner)
                                             </button>
                                         </form>
                                         <form asp-action="BanUser" asp-route-userId="@user.Id" method="post" class="d-inline">
                                             <button type="submit" class="btn btn-sm btn-danger confirm-action"
-                                                    data-message="ВНИМАНИЕ: Това ще добави имейла и телефона в черен списък и ще изтрие профила!">
-                                                <i class="bi bi-shield-slash"></i> БАН
+                                                    data-message="@DomainResources.BanUserWarning">
+                                                <i class="bi bi-shield-slash"></i> @DomainResources.Ban
                                             </button>
                                         </form>
                                     </div>

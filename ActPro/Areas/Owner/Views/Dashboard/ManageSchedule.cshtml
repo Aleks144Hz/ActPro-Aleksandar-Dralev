@@ -5,46 +5,46 @@
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <div class="modal-header bg-dark text-white p-3" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                 <h5 class="modal-title fw-bold">
-                    <i class="bi bi-calendar-x me-2"></i> График на: @Model.PlaceName
+                    <i class="bi bi-calendar-x me-2"></i> @DomainResources.ScheduleFor @Model.PlaceName
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
                 <div class="row">
                     <div class="col-md-5 border-end">
-                        <h6 class="fw-bold text-danger mb-3 text-uppercase small">Затвори дата</h6>
+                        <h6 class="fw-bold text-danger mb-3 text-uppercase small">@DomainResources.CloseDate</h6>
                         <form asp-area="Owner" asp-controller="Places" asp-action="CloseDateRange" method="post">
                             <input type="hidden" name="placeId" value="@Model.PlaceId" />
                             <div class="mb-3">
-                                <label class="form-label small fw-bold text-muted">ОТ ДАТА</label>
+                                <label class="form-label small fw-bold text-muted">@DomainResources.FromDate</label>
                                 <input type="date" name="startDate" class="form-control rounded-pill border-danger-subtle shadow-sm px-3"
                                        required min="@DateTime.Now.ToString("yyyy-MM-dd")" id="startDate-@Model.PlaceId"
                                        onchange="document.getElementById('endDate-@Model.PlaceId').min = this.value" />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label small fw-bold text-muted">ДО ДАТА</label>
+                                <label class="form-label small fw-bold text-muted">@DomainResources.ToDate</label>
                                 <input type="date" name="endDate" class="form-control rounded-pill border-danger-subtle shadow-sm px-3"
                                        required min="@DateTime.Now.ToString("yyyy-MM-dd")" id="endDate-@Model.PlaceId" />
                             </div>
                             <div class="mb-3">
-                                <label class="form-label small fw-bold text-muted">ПРИЧИНА</label>
+                                <label class="form-label small fw-bold text-muted">@DomainResources.Reason</label>
                                 <input type="text" name="reason" class="form-control rounded-pill border-danger-subtle shadow-sm px-3"
-                                       required placeholder="Ремонт, ваканция..." />
+                                       required placeholder="@DomainResources.Maintenance" />
                             </div>
                             <button type="submit" class="btn btn-danger w-100 rounded-pill py-2 fw-bold shadow-sm">
-                                <i class="bi bi-lock-fill"></i> ЗАКЛЮЧИ ПЕРИОДА
+                                <i class="bi bi-lock-fill"></i> @DomainResources.LockPeriod
                             </button>
                         </form>
                     </div>
                     <div class="col-md-7">
-                        <h6 class="fw-bold text-secondary mb-3 text-uppercase small ps-2">Списък със затворени дати</h6>
+                        <h6 class="fw-bold text-secondary mb-3 text-uppercase small ps-2">@DomainResources.ClosedDatesList</h6>
                         <div style="max-height: 350px; overflow-y: auto;">
                             <table class="table table-hover align-middle">
                                 <thead class="table-light sticky-top">
                                     <tr>
-                                        <th class="ps-2">Дата</th>
-                                        <th>Причина</th>
-                                        <th class="text-center">Действие</th>
+                                        <th class="ps-2">@DomainResources.Date</th>
+                                        <th>@DomainResources.Reason</th>
+                                        <th class="text-center">@DomainResources.Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,8 +57,8 @@
                                                 <td><span class="badge bg-light text-dark border">@closure.Reason</span></td>
                                                 <td class="text-center">
                                                     <form asp-area="Owner" asp-controller="Places" asp-action="OpenDate" asp-route-id="@closure.Id" method="post">
-                                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3" title="Отвори (Отключи)">
-                                                            <i class="bi bi-unlock-fill"></i> Отвори
+                                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3" title="@DomainResources.OpenSlot">
+                                                            <i class="bi bi-unlock-fill"></i> @DomainResources.Open
                                                         </button>
                                                     </form>
                                                 </td>
@@ -70,7 +70,7 @@
                                         <tr>
                                             <td colspan="3" class="text-center py-4 text-muted">
                                                 <i class="bi bi-info-circle d-block fs-4 mb-2"></i>
-                                                Няма затворени дати за този обект
+                                                @DomainResources.NoClosedDates
                                             </td>
                                         </tr>
                                     }

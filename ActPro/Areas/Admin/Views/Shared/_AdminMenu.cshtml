@@ -1,22 +1,22 @@
 ﻿<div class="list-group shadow-sm">
     <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
        class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
-        <i class="bi bi-speedometer2"></i> Табло
+        <i class="bi bi-speedometer2"></i> @DomainResources.Dashboard
     </a>
     <a asp-area="Admin" asp-controller="Reservations" asp-action="Index"
        class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reservations" ? "active" : "")">
-        <i class="bi bi-calendar-check"></i> Резервации
+        <i class="bi bi-calendar-check"></i> @DomainResources.Reservations
     </a>
     <a asp-area="Admin" asp-controller="Places" asp-action="Index"
        class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Places" ? "active" : "")">
-        <i class="bi bi-geo-alt"></i> Обекти
+        <i class="bi bi-geo-alt"></i> @DomainResources.Places
     </a>
     <a asp-area="Admin" asp-controller="Users" asp-action="Index"
        class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")">
-        <i class="bi bi-people"></i> Потребители
+        <i class="bi bi-people"></i> @DomainResources.Users
     </a>
     <a asp-area="Admin" asp-controller="AuditLogs" asp-action="Index"
        class="list-group-item list-group-item-action @(ViewContext.RouteData.Values["controller"]?.ToString() == "AuditLogs" ? "active" : "")">
-        <i class="bi bi-journal-text"></i> Логове
+        <i class="bi bi-journal-text"></i> @DomainResources.AuditLogs
     </a>
 </div>

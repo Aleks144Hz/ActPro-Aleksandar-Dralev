@@ -1,8 +1,8 @@
-﻿using ActPro.Domain.Models.Areas;
+using ActPro.Domain;
+using ActPro.Domain.Models.Areas;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Admin.Controllers
 {
@@ -27,7 +27,7 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await userService.ToggleRoleAsync(userId, "Admin"))
             {
-                TempData["Success"] = AdminRuleChanged;
+                TempData["Success"] = DomainResources.AdminRuleChanged;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -38,7 +38,7 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await userService.ToggleRoleAsync(userId, "Owner"))
             {
-                TempData["Success"] = OwnerRuleChanged;
+                TempData["Success"] = DomainResources.OwnerRuleChanged;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -50,11 +50,11 @@ namespace ActPro.Areas.Admin.Controllers
         {
             if (await userService.BanUserAsync(userId))
             {
-                TempData["Success"] = UserBanned;
+                TempData["Success"] = DomainResources.UserBanned;
             }
             else
             {
-                TempData["Error"] = Error;
+                TempData["Error"] = DomainResources.Error;
             }
             return RedirectToAction(nameof(Index));
         }

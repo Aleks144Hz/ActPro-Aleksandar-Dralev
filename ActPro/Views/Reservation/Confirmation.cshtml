@@ -1,18 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Успешна резервация";
+@{
+    ViewData["Title"] = DomainResources.SuccessfullReservation;
 }
 
 <div class="container mt-5 text-center">
     <div class="card shadow p-5 border-success">
         <div class="card-body">
             <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
-            <h1 class="display-4 fw-bold mt-3">Благодарим ви!</h1>
-            <p class="lead">Вашата резервация беше направена успешно.</p>
+            <h1 class="display-4 fw-bold mt-3">@DomainResources.ConfirmationThankYou</h1>
+            <p class="lead">@DomainResources.ConfirmationSuccessText</p>
             <hr />
-            <p>Можете да прегледате вашите резервации в профила си или да се върнете към началото.</p>
+            <p>@DomainResources.ConfirmationManageText</p>
             <div class="mt-4">
-                <a href="/" class="btn btn-success btn-lg px-4 me-2">Начало</a>
-                <a asp-controller="Reservation" asp-action="MyReservations" asp-route-id="@ViewBag.PlaceId" class="btn btn-outline-secondary btn-lg px-4">Мои резервации</a>
+                <a href="/" class="btn btn-success btn-lg px-4 me-2">@DomainResources.ConfirmationGoHome</a>
+                <a asp-controller="Reservation" asp-action="MyReservations" asp-route-id="@ViewBag.PlaceId" class="btn btn-outline-secondary btn-lg px-4">@DomainResources.ConfirmationMyReservations</a>
             </div>
         </div>
     </div>

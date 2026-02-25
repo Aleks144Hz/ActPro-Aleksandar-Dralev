@@ -1,16 +1,19 @@
 ﻿@model ActPro.Models.SearchViewModel
 @{
-    ViewData["Title"] = "Търсене";
+    ViewData["Title"] = DomainResources.Search;
+    ViewData["SeoTitle"] = "Търси спортни площадки и съоръжения - ActPro";
+    ViewData["SeoDescription"] = "Търси и резервирай спортни площадки, фитнеси, тенис кортове и други съоръжения. Филтрирай по град, спорт, цена и капацитет. Намери перфектното място за тренировка!";
+    ViewData["SeoKeywords"] = "търси спортни площадки, резервирай площадка, тенис корт, фитнес зала, басейн, спортно съоръжение, резервация";
 }
 <div class="container-fluid mt-4">
     <div class="row">
         <div class="col-12 d-md-none mb-3">
             <div class="d-flex gap-2 sticky-top py-2" style="z-index: 1020;">
                 <button class="btn btn-success flex-grow-1 shadow-sm rounded-pill" onclick="toggleMobileFilters()">
-                    <i class="bi bi-sliders me-1"></i> Филтри
+                    <i class="bi bi-sliders me-1"></i> @DomainResources.SearchMobileFilters
                 </button>
                 <button class="btn btn-outline-success flex-grow-1 shadow-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#largeMapModal">
-                    <i class="bi bi-map me-1"></i> Карта
+                    <i class="bi bi-map me-1"></i> @DomainResources.SearchMobileMap
                 </button>
             </div>
         </div>
@@ -25,19 +28,19 @@
                 </iframe>
                 <button type="button" class="btn btn-success btn-sm position-absolute bottom-0 start-50 translate-middle-x mb-2 shadow btn-map-static"
                         data-bs-toggle="modal" data-bs-target="#largeMapModal">
-                    <i class="bi bi-arrows-fullscreen me-1"></i> Уголеми картата
+                    <i class="bi bi-arrows-fullscreen me-1"></i> @DomainResources.SearchEnlargeMap
                 </button>
             </div>
             <div class="card shadow-sm border-success">
                 <div class="card-body">
                        <div class="d-flex align-items-center mb-3">
-                            <h5 class="card-title mb-0 flex-grow-1 text-center">Филтрирай</h5>
+                            <h5 class="card-title mb-0 flex-grow-1 text-center">@DomainResources.SearchFilterBy</h5>
                             <button type="button" class="btn-close d-md-none" onclick="toggleMobileFilters()" aria-label="Close"></button>
                        </div>
                     <form method="get" asp-controller="Search" asp-action="Index" id="filterForm">
                         <input type="hidden" name="sortOrder" id="currentSortOrder" value="@Context.Request.Query["sortOrder"]" />
 
-                        <label class="form-label fw-bold">Цена (евро/ч)</label>
+                        <label class="form-label fw-bold">@DomainResources.SearchPricePerHour</label>
                         <div class="price-slider-wrapper">
                             <div class="slider-track" id="sliderTrack"></div>
                             <input type="range" name="minPrice" class="form-range custom-range" min="0" max="200" id="minPriceRange" value="@Model.MinPrice">
@@ -57,34 +60,34 @@
                         </div>
                         <hr />
                         <div class="mb-4 position-relative">
-                            <label class="search-label-small">Населено място</label>
+                            <label class="search-label-small">@DomainResources.LabelCity</label>
                             <div class="input-wrapper" style="position: relative;">
                                 <i class="fas fa-map-marker-alt input-icon" style="left: 15px; top: 12px;"></i>
-                                <input type="text"
+                                    <input type="text"
                                        class="form-control form-control-custom"
                                        id="cityInput"
                                        name="city"
                                        value="@Model.City"
-                                       placeholder="Избери град"
+                                       placeholder="@DomainResources.SearchCityPlaceholder"
                                        style="padding-left: 40px; border: 1px solid #ced4da; border-radius: 25px; background: #f9f9f9;"
                                        autocomplete="off"
                                        required
-                                       oninvalid="this.setCustomValidity('Моля, изберете населено място!')"
+                                       oninvalid="this.setCustomValidity('@DomainResources.ValidationCityRequired')"
                                        oninput="this.setCustomValidity('')">
 
                             </div>
                             <div id="cityList" class="custom-dropdown-list" style="width: 100%; left: 0;"></div>
                         </div>
                         <div class="mb-4 position-relative">
-                            <label class="search-label-small">Активност</label>
+                            <label class="search-label-small">@DomainResources.Activity</label>
                             <div class="input-wrapper" style="position: relative;">
                                 <i class="fas fa-running input-icon" style="left: 15px; top: 12px;"></i>
-                                <input type="text"
+                                    <input type="text"
                                        class="form-control form-control-custom"
                                        id="activityInput"
                                        name="activity"
                                        value="@Model.Activity"
-                                       placeholder="Избери спорт"
+                                       placeholder="@DomainResources.SearchActivityPlaceholder"
                                        style="padding-left: 40px; border: 1px solid #ced4da; border-radius: 25px; background: #f9f9f9;"
                                        autocomplete="off">
                             </div>
@@ -93,7 +96,7 @@
                         <hr />
                         <div class="row g-0">
                             <div class="col-6 border-end pe-2">
-                                <label class="form-label fw-bold mb-3 small">Капацитет</label>
+                                <label class="form-label fw-bold mb-3 small">@DomainResources.SearchCapacityLabel</label>
                                 <div class="d-flex flex-column gap-2">
                                     <div class="form-check d-flex justify-content-between align-items-center p-0">
                                         <div class="d-flex align-items-center">
@@ -119,19 +122,19 @@
                                 </div>
                             </div>
                             <div class="col-6 ps-2">
-                                <label class="form-label fw-bold mb-3 small">Тип база</label>
+                                <label class="form-label fw-bold mb-3 small">@DomainResources.SearchPlaceTypeLabel</label>
                                 <div class="d-flex flex-column gap-2">
                                     <div class="form-check d-flex justify-content-between align-items-center p-0">
                                         <div class="d-flex align-items-center">
                                             <input class="form-check-input m-0 me-2" type="radio" name="isOutdoor" value="true" id="outdoorCheck" @(Context.Request.Query["isOutdoor"] == "true" ? "checked" : "")>
-                                            <label class="form-check-label small" for="outdoorCheck">Открито</label>
+                                            <label class="form-check-label small" for="outdoorCheck">@DomainResources.Outdoor</label>
                                         </div>
                                         <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@Model.OutdoorCount</span>
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center p-0">
                                         <div class="d-flex align-items-center">
                                             <input class="form-check-input m-0 me-2" type="radio" name="isOutdoor" value="false" id="indoorCheck" @(Context.Request.Query["isOutdoor"] == "false" ? "checked" : "")>
-                                            <label class="form-check-label small" for="indoorCheck">Закрито</label>
+                                            <label class="form-check-label small" for="indoorCheck">@DomainResources.Indoor</label>
                                         </div>
                                         <span class="badge rounded-pill bg-light text-dark border-0 fw-bold" style="font-size: 0.75rem;">@Model.IndoorCount</span>
                                     </div>
@@ -140,43 +143,43 @@
                         </div>
                         <hr />
                         <a href="javascript:void(0);" onclick="resetSecondaryFilters('@Model.City')" class="text-success text-decoration-none small fw-bold">
-                            <i class="bi bi-x-circle me-1"></i>Изчисти
+                            <i class="bi bi-x-circle me-1"></i>@DomainResources.SearchClearFilters
                         </a>
-                        <button type="submit" class="btn btn-success w-100 mt-3 shadow-sm">Приложи</button>
+                        <button type="submit" class="btn btn-success w-100 mt-3 shadow-sm">@DomainResources.SearchApplyFilters</button>
                     </form>
                 </div>
             </div>
         </aside>
         <main class="col-md-9">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
                @{
                     var resultsCount = Model.Results.Count();
-                    var resultText = resultsCount == 1 ? "място за спорт" : "места за спорт";
+                    var resultText = resultsCount == 1 ? DomainResources.SearchPlaceForSports : DomainResources.SearchPlacesForSports;
                 }
                 <h4 class="mb-0"> 
                     @Model.City@(!string.IsNullOrEmpty(Model.Activity) ? $" {Model.Activity}" : ""): 
-                    <small class="text-muted"> @(resultsCount == 1 ? "открито" : "открити") @resultsCount @resultText</small>
+                    <small class="text-muted"> @(resultsCount == 1 ? DomainResources.SearchPlaceFound : DomainResources.SearchPlacesFound) @resultsCount @resultText</small>
                 </h4>
             <div class="d-flex align-items-center gap-3 mb-4">
                <button type="button" class="btn btn-outline-success shadow-sm d-none d-md-inline-block" id="viewToggleBtn" onclick="toggleView()">
                     <i id="viewIcon" class="bi bi-grid-3x3-gap-fill"></i>
                </button>
-                    <div class="dropdown search-sort-dropdown">
+            <div class="dropdown search-sort-dropdown">
                        <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-sort-down"></i> <span>Подреди по</span>
+                            <i class="bi bi-sort-down"></i> <span>@DomainResources.SearchSortBy</span>
                        </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <button type="button" class="dropdown-item" onclick="submitWithSort('price_asc')">Цена (най-ниска)</button>
+                                <button type="button" class="dropdown-item" onclick="submitWithSort('price_asc')">@DomainResources.PriceLowToHigh</button>
                             </li>
                             <li>
-                                <button type="button" class="dropdown-item" onclick="submitWithSort('price_desc')">Цена (най-висока)</button>
+                                <button type="button" class="dropdown-item" onclick="submitWithSort('price_desc')">@DomainResources.PriceHighToLow</button>
                             </li>
                             <li>
-                                <button type="button" class="dropdown-item" onclick="submitWithSort('rating_des')">Рейтинг (низходящ ред)</button>
+                                <button type="button" class="dropdown-item" onclick="submitWithSort('rating_des')">@DomainResources.RatingDescending</button>
                             </li>
                             <li>
-                                <button type="button" class="dropdown-item" onclick="submitWithSort('rating_asc')">Рейтинг (възходящ ред)</button>
+                                <button type="button" class="dropdown-item" onclick="submitWithSort('rating_asc')">@DomainResources.RatingAscending</button>
                             </li>
                         </ul>
                     </div>
@@ -190,14 +193,14 @@
                             <i class="fas fa-search-location fa-4x text-success-dm opacity-25"></i>
                             <div class="icon-pulse"></div>
                         </div>
-                        <h3 class="fw-bold text-dark">Опа! Нищо не открихме.</h3>
+                        <h3 class="fw-bold text-dark">@DomainResources.NoResultsFound</h3>
                         <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">
-                            В момента няма места, които да отговарят на избраните критерии за град <strong>@Model.City</strong>.
-                            Опитайте да промените цената или да потърсите друга активност.
+                            @DomainResources.NoPlacesMatchCriteria <strong>@Model.City</strong>.
+                            @DomainResources.TryChangingFilters
                         </p>
                         <div class="d-flex justify-content-center gap-2">
                             <a href="@Url.Action("Index", "Home")" class="btn btn-success px-4 rounded-pill shadow-sm">
-                                <i class="bi bi-search me-2"></i>Ново търсене
+                                <i class="bi bi-search me-2"></i>@DomainResources.SearchNewSearch
                             </a>
                         </div>
                     </div>
@@ -223,29 +226,29 @@
                                         <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
                                             <i class="bi bi-geo-alt text-success me-1"></i> @place.Address, @place.City.Name
                                         </div>
-                                        <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
-                                            <i class="bi bi-people text-success me-1"></i> до @place.Capacity души
-                                        </div>
+                                            <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
+                                                <i class="bi bi-people text-success me-1"></i> @DomainResources.SearchUpTo @place.Capacity @DomainResources.SearchPeople
+                                            </div>
                                         <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
                                             @if (place.IsOutdoor.Value)
                                             {
-                                                <i class="bi bi-sun text-warning me-1"></i> <span>Открито</span>
+                                                <i class="bi bi-sun text-warning me-1"></i> <span>@DomainResources.SearchOutdoor</span>
                                             }
                                             else
                                             {
-                                                <i class="bi bi-house-door text-primary me-1"></i> <span>Закрито</span>
+                                                <i class="bi bi-house-door text-primary me-1"></i> <span>@DomainResources.SearchIndoor</span>
                                             }
                                         </div>
                                     </div>
 
                                     <div class="mt-auto pt-3 d-flex justify-content-between align-items-center border-top">
                                         <div>
-                                            <span class="text-muted small">Цена:</span>
-                                            <h4 class="text-success fw-bold mb-0">@place.Price евро<small class="fs-6 fw-light">/ч</small></h4>
+                                            <span class="text-muted small">@DomainResources.SearchPrice</span>
+                                            <h4 class="text-success fw-bold mb-0">@place.Price @DomainResources.CurrencyEuro<small class="fs-6 fw-light">@DomainResources.PerHour</small></h4>
                                         </div>
                         
                                         <a asp-controller="Reservation" asp-action="Index" asp-route-id="@place.Id" class="text-decoration-none">
-                                            <span class="btn btn-success rounded-pill px-3 shadow-sm">Вижте повече</span>
+                                            <span class="btn btn-success rounded-pill px-3 shadow-sm">@DomainResources.SearchSeeMore</span>
                                         </a>
                                     </div>
                                 </div>
@@ -262,7 +265,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="largeMapModalLabel"><i class="bi bi-geo-alt me-2"></i>Карта: @Model.City</h5>
+                <h5 class="modal-title" id="largeMapModalLabel"><i class="bi bi-geo-alt me-2"></i>@DomainResources.Map: @Model.City</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-0" style="height: 80vh; min-height: 500px;">
@@ -291,7 +294,7 @@
             form.submit();
         }
         else{
-            console.error("Формата или полето за сортиране не са намерени!");
+            console.error("@DomainResources.Error");
         }
     }
     const minR = document.getElementById('minPriceRange');
@@ -370,21 +373,25 @@
             }
         });
     });
-    const citiesData = @Html.Raw(Json.Serialize(Model.CitiesList)) || [];
-    const activitiesData = @Html.Raw(Json.Serialize(Model.ActivitiesList)) || [];
+</script>
+<span id="cities-data" style="display:none;">@string.Join("|", Model?.CitiesList ?? new List<string>())</span>
+<span id="activities-data" style="display:none;">@string.Join("|", Model?.ActivitiesList ?? new List<string>())</span>
+<script>
+    const citiesData = document.getElementById('cities-data').textContent.split('|').filter(x => x);
+    const activitiesData = document.getElementById('activities-data').textContent.split('|').filter(x => x);
 
     function setupAutocomplete(inputId, listId, dataArray, iconClass){
         const input = document.getElementById(inputId);
         const list = document.getElementById(listId);
 
         const popularItemsMap = {
-            'cityInput': ["София", "Пловдив", "Варна", "Бургас", "Благоевград"],
-            'activityInput': ["Футбол", "Волейбол", "Баскетбол", "Тенис", "Фитнес"]
+            'cityInput': @Html.Raw("['" + DomainResources.JsPopularCities.Replace(", ", "','") + "']"),
+            'activityInput': @Html.Raw("['" + DomainResources.JsDefaultActivities.Replace(", ", "','") + "']")
         };
 
         const labelsMap = {
-            'cityInput': "Известни локации",
-            'activityInput': "Популярни активности"
+            'cityInput': @Html.Raw("'" + DomainResources.JsFamousLocations + "'"),
+            'activityInput': @Html.Raw("'" + DomainResources.JsPopularActivities + "'")
         };
 
         function renderList(items){
@@ -400,9 +407,9 @@
                     list.appendChild(createItemDiv(item));
                 });
 
-                const divider = document.createElement('div');
+            const divider = document.createElement('div');
                 divider.className = 'dropdown-header-custom mt-2';
-                divider.innerHTML = `<strong>Всички предложения</strong>`;
+                divider.innerHTML = `<strong>@DomainResources.JsAllSuggestions</strong>`;
                 list.appendChild(divider);
             }
 
@@ -421,35 +428,65 @@
             div.innerHTML = `<i class="${iconClass}"></i> ${item}`;
             const activityIcons = {                 
                     'Бадминтон': 'fas fa-table-tennis',
+                    'Badminton': 'fas fa-table-tennis',
                     'Балет': 'fas fa-shoe-prints',
+                    'Ballet': 'fas fa-shoe-prints',
                     'Баскетбол': 'fas fa-basketball-ball',
+                    'Basketball': 'fas fa-basketball-ball',
                     'Бейзбол': 'fas fa-baseball-ball',
+                    'Baseball': 'fas fa-baseball-ball',
                     'Билярд': 'fas fa-circle',
+                    'Billiards': 'fas fa-circle',
                     'Бокс': 'fas fa-fist-raised',
+                    'Boxing': 'fas fa-fist-raised',
                     'Борба': 'fas fa-hand-rock',
+                    'Wrestling': 'fas fa-hand-rock',
                     'Боулинг': 'fas fa-bowling-ball',
+                    'Bowling': 'fas fa-bowling-ball',
                     'Волейбол': 'fas fa-volleyball-ball',
+                    'Volleyball': 'fas fa-volleyball-ball',
                     'Гимнастика': 'fas fa-walking',
+                    'Gymnastics': 'fas fa-walking',
                     'Голф': 'fas fa-golf-ball',
+                    'Golf': 'fas fa-golf-ball',
                     'Дартс': 'fas fa-bullseye',
+                    'Darts': 'fas fa-bullseye',
                     'Джудо': 'fas fa-user-ninja',
+                    'Judo': 'fas fa-user-ninja',
                     'Йога': 'fas fa-spa',
+                    'Yoga': 'fas fa-spa',
                     'Карате': 'fas fa-hand-rock',
+                    'Karate': 'fas fa-hand-rock',
                     'Конна езда': 'fas fa-horse',
+                    'Horseback Riding': 'fas fa-horse',
                     'Лека атлетика': 'fas fa-running',
+                    'Athletics': 'fas fa-running',
                     'ММА': 'fas fa-fist-raised',
+                    'MMA': 'fas fa-fist-raised',
                     'Падел': 'fas fa-table-tennis',
+                    'Padel': 'fas fa-table-tennis',
                     'Плуване': 'fas fa-swimmer',
+                    'Swimming': 'fas fa-swimmer',
                     'Ски': 'fas fa-skiing',
+                    'Skiing': 'fas fa-skiing',
                     'Стрелба': 'fas fa-crosshairs',
+                    'Shooting': 'fas fa-crosshairs',
                     'Таекуондо': 'fas fa-user-ninja',
+                    'Taekwondo': 'fas fa-user-ninja',
                     'Танци': 'fas fa-music',
+                    'Dancing': 'fas fa-music',
                     'Тенис': 'fas fa-table-tennis',
+                    'Tennis': 'fas fa-table-tennis',
                     'Тенис на маса': 'fas fa-table-tennis',
+                    'Table Tennis': 'fas fa-table-tennis',
                     'Фехтовка': 'fas fa-pen-nib',
+                    'Fencing': 'fas fa-pen-nib',
                     'Фитнес': 'fas fa-dumbbell',
+                    'Fitness': 'fas fa-dumbbell',
                     'Футбол': 'fas fa-futbol',
-                    'Хандбал': 'fas fa-volleyball-ball'
+                    'Football': 'fas fa-futbol',
+                    'Хандбал': 'fas fa-volleyball-ball',
+                    'Handball': 'fas fa-volleyball-ball'
              };
             const currentIcon = activityIcons[item] || iconClass;
             div.innerHTML = `<i class="${currentIcon}"></i> ${item}`;
@@ -565,9 +602,9 @@
             const cityValue = cityInput.value.trim().toLowerCase();
             const activityValue = activityInput.value.trim().toLowerCase();
             const isCityValid = citiesData.some(c => c.toLowerCase() === cityValue);
-            if (!isCityValid){
+        if (!isCityValid){
                 e.preventDefault();
-                toastr.info("Моля, изберете град от предложенията!");
+                toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.JsToastSelectCity)));
                 cityInput.classList.add('input-error');
                 cityInput.value = '';
                 cityInput.focus();
@@ -577,7 +614,7 @@
             const isActivityValid = activitiesData.some(a => a.toLowerCase() === activityValue);
             if (activityValue !== "" && !isActivityValid){
                 e.preventDefault();
-                toastr.info("Моля, изберете валидна активност!");
+                toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.JsToastSelectActivity)));
                 activityInput.classList.add('input-error');
                 activityInput.value = '';
                 activityInput.focus();

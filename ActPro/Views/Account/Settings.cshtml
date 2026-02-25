@@ -1,20 +1,20 @@
 ﻿@using ActPro.Models.User
 @model ProfileSettingsViewModel
 @{
-    ViewData["Title"] = "Настройки на профила";
+    ViewData["Title"] = DomainResources.Settings;
 }
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-9">
-            <h2 class="fw-bold mb-4"><i class="bi bi-gear-fill me-2 text-primary"></i> Настройки</h2>
+            <h2 class="fw-bold mb-4"><i class="bi bi-gear-fill me-2 text-primary"></i> @DomainResources.Settings</h2>
 
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h5 class="card-title fw-bold mb-0">Лична информация</h5>
+                        <h5 class="card-title fw-bold mb-0">@DomainResources.SettingsPersonalInfo</h5>
                         <button class="btn btn-outline-primary btn-sm rounded-pill px-3"
                                 data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                            <i class="bi bi-pencil me-1"></i> Редактирай
+                            <i class="bi bi-pencil me-1"></i> @DomainResources.Edit
                         </button>
                     </div>
                     <div class="row align-items-center">
@@ -33,19 +33,19 @@
                         <div class="col-md">
                             <div class="row g-3">
                                 <div class="col-sm-6">
-                                    <label class="text-muted small text-uppercase fw-bold">Име</label>
+                                    <label class="text-muted small text-uppercase fw-bold">@DomainResources.FirstName</label>
                                     <p class="h6 fw-normal">@Model.FirstName @Model.LastName</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="text-muted small text-uppercase fw-bold">Имейл</label>
+                                    <label class="text-muted small text-uppercase fw-bold">@DomainResources.Email</label>
                                     <p class="h6 fw-normal">@Model.Email</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="text-muted small text-uppercase fw-bold">Телефон</label>
-                                    <p class="h6 fw-normal">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Не е въведен" : Model.PhoneNumber)</p>
+                                    <label class="text-muted small text-uppercase fw-bold">@DomainResources.PhoneNumber</label>
+                                    <p class="h6 fw-normal">@(string.IsNullOrEmpty(Model.PhoneNumber) ? DomainResources.SettingsPhoneNotSet : Model.PhoneNumber)</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="text-muted small text-uppercase fw-bold">Член от</label>
+                                    <label class="text-muted small text-uppercase fw-bold">@DomainResources.SettingsMemberSince</label>
                                     <p class="h6 fw-normal">@Model.CreatedOn.ToString("dd MMMM yyyy")</p>
                                 </div>
                             </div>
@@ -55,24 +55,24 @@
             </div>
             <div class="card border-0 shadow-sm rounded-4 border-start border-primary border-4 mb-4">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-bold text-primary mb-3">Редактиране на парола</h5>
-                    <p class="text-muted small">Внимавайте с кого споделяте паролата. Екипът на ActPro не държи отговорност при открадване на акаунт.</p>
+                    <h5 class="card-title fw-bold text-primary mb-3">@DomainResources.SettingsChangePassword</h5>
+                    <p class="text-muted small">@DomainResources.SettingsPasswordWarning</p>
                     <div class="d-flex flex-wrap gap-2">
                         <button class="btn btn-primary rounded-pill px-4 text-white"
                                 data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                            <i class="bi bi-shield-lock me-1"></i> Смени парола
+                            <i class="bi bi-shield-lock me-1"></i> @DomainResources.ChangePassword
                         </button>
                     </div>
                 </div>
             </div>
             <div class="card border-0 shadow-sm rounded-4 border-start border-danger border-4">
                 <div class="card-body p-4">
-                    <h5 class="card-title fw-bold text-danger mb-3">Зона за сигурност</h5>
-                    <p class="text-muted small">Внимавайте с действията в този панел. Изтриването на профила е необратимо.</p>
+                    <h5 class="card-title fw-bold text-danger mb-3">@DomainResources.SettingsSecurityZone</h5>
+                    <p class="text-muted small">@DomainResources.SettingsSecurityWarning</p>
                     <div class="d-flex flex-wrap gap-2">
                         <button class="btn btn-danger rounded-pill px-4"
                                 data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
-                            <i class="bi bi-trash3 me-1"></i> Изтрий моя профил
+                            <i class="bi bi-trash3 me-1"></i> @DomainResources.DeleteProfile
                         </button>
                     </div>
                 </div>

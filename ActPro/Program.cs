@@ -48,9 +48,10 @@ namespace ActPro
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             })
            .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-           .AddDataAnnotationsLocalization(options => {
+           .AddDataAnnotationsLocalization(options =>
+           {
                options.DataAnnotationLocalizerProvider = (type, factory) =>
-                   factory.Create(typeof(Domain.Helpers.Resources.SharedResource));
+                   factory.Create(typeof(MessageResources));
            });
 
 
@@ -113,9 +114,10 @@ namespace ActPro
                     logger.LogError(ex, "Ãðåøêà ïðè ñúçäàâàíåòî íà Àäìèíà.");
                 }
             }
+
             var supportedCultures = new[] { "bg", "en" };
             var localizationOptions = new RequestLocalizationOptions()
-                .SetDefaultCulture(supportedCultures[0])
+                .SetDefaultCulture("bg")
                 .AddSupportedCultures(supportedCultures)
                 .AddSupportedUICultures(supportedCultures);
 

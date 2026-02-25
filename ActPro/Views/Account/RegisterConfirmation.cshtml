@@ -1,5 +1,5 @@
-﻿@{
-    ViewData["Title"] = "Потвърждение на регистрацията";
+@{
+    ViewData["Title"] = DomainResources.RegistrationConfirmation;
 }
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -10,31 +10,31 @@
                         <i class="bi bi-envelope-check-fill text-success" style="font-size: 4rem;"></i>
                     </div>
 
-                    <h2 class="fw-bold mb-3">Проверете пощата си!</h2>
+                    <h2 class="fw-bold mb-3">@DomainResources.CheckYourEmail</h2>
 
                     <p class="text-muted mb-4 fs-5">
-                        Изпратихме линк за потвърждение на: <br />
+                        @DomainResources.WeSentConfirmationLink <br />
                         <strong class="text-dark">@ViewBag.Email</strong>
                     </p>
 
                     <div class="alert alert-info border-0 bg-light p-4 mb-4 text-start">
-                        <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Какво следва?</h6>
+                        <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>@DomainResources.WhatNext</h6>
                         <ul class="mb-0 small text-secondary">
-                            <li>Отворете имейла и натиснете бутона <strong>"Потвърди моя акаунт"</strong>.</li>
-                            <li>Ако не виждате имейла, проверете папка <strong>"Спам"</strong>.</li>
-                            <li>След потвърждение ще можете да правите резервации веднага.</li>
+                            <li>@DomainResources.OpenEmailAndClick <strong>"@DomainResources.ConfirmMyAccount"</strong>.</li>
+                            <li>@DomainResources.CheckSpamFolder</li>
+                            <li>@DomainResources.AfterConfirmationCanBook</li>
                         </ul>
                     </div>
 
                     <div class="d-grid gap-2">
                         <a asp-controller="Home" asp-action="Index" class="btn btn-success btn-lg rounded-pill shadow-sm">
-                           Разбрах!
+                           @DomainResources.Understood
                         </a>
                     </div>
                 </div>
             </div>
             <p class="mt-4 text-secondary small">
-                Не сте получили имейл? <a asp-controller="Account" asp-action="ResendConfirmation" asp-route-email="@ViewBag.Email" class="text-success fw-bold text-decoration-none">Изпрати отново</a>
+                @DomainResources.DidNotReceiveEmail <a asp-controller="Account" asp-action="ResendConfirmation" asp-route-email="@ViewBag.Email" class="text-success fw-bold text-decoration-none">@DomainResources.Resend</a>
             </p>
         </div>
     </div>

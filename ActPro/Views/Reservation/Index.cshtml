@@ -4,16 +4,21 @@
 @{
     ViewData["Title"] = Model.Place.Name;
     bool IsLoggedIn = User.Identity?.IsAuthenticated ?? false;
-    var mainImage = Model.Place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/800x400?text=Няма+снимка";
+    var mainImage = Model.Place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/800x400?text=@DomainResources.ResPlaceNoImage";
     var subImages = Model.Place.PlaceImages?.Skip(1).Take(2).ToList();
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
     var userCommentsCount = Model.Place.Comments.Count(c => c.AspNetUserId == currentUserId);
+    ViewData["SeoTitle"] = $"{Model.Place.Name} - Резервирай онлайн | ActPro";
+    ViewData["SeoDescription"] = $"Резервирай {Model.Place.Name} в {Model.Place.City?.Name}. {Model.Place.Activity?.Name}, капацитет {Model.Place.Capacity} души, {DomainResources.CurrencyEuro}{Model.Place.Price}/час. Виж оценки, снимки и направи резервация сега!";
+    ViewData["SeoKeywords"] = $"{Model.Place.Name}, {Model.Place.Activity?.Name}, {Model.Place.City?.Name}, резервация, спорт, площадка";
+    ViewData["SeoImage"] = mainImage;
+}
 }
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
             <h1 class="display-6 fw-bold">@Model.Place.Name</h1>
-            <p class="text-muted fs-5">@Model.Place.Activity?.Name в @Model.Place.City?.Name</p>
+            <p class="text-muted fs-5">@Model.Place.Activity?.Name @DomainResources.ResInLocation @Model.Place.City?.Name</p>
         </div>
         <div class="text-end">
             <span class="fs-4 fw-bold text-warning">
@@ -48,29 +53,29 @@
                         double discountPercent = 0;
                         if (Model.UserCredits >= 500) discountPercent = 10;
                         else if (Model.UserCredits >= 100) discountPercent = 5;
-                        decimal originalPrice = (decimal)Model.Place.Price;
+                        decimal originalPrice = Model.Place.Price ?? 0;
                         decimal finalPrice = originalPrice * (1 - (decimal)discountPercent / 100);
                     }
                     @if (discountPercent > 0)
                     {
                         <div class="mb-1">
                             <span class="badge bg-warning text-dark shadow-sm">
-                                <i class="bi bi-patch-check-fill"></i> -@discountPercent% Отстъпка
+                                <i class="bi bi-patch-check-fill"></i> -@discountPercent% @DomainResources.ResDiscount
                             </span>
                         </div>
                         <h2 class="card-title mb-0">
                             <span class="text-muted text-decoration-line-through fs-4 me-2">@originalPrice.ToString("F2")€</span>
-                            <span class="text-success fw-bold">@finalPrice.ToString("F2") €/ч</span>
+                            <span class="text-success fw-bold">@finalPrice.ToString("F2") @DomainResources.CurrencyEuro@DomainResources.PerHour</span>
                         </h2>
                     }
                     else
                     {
-                        <h2 class="card-title text-success mb-3">@originalPrice.ToString("F2") €/ч</h2>
+                        <h2 class="card-title text-success mb-3">@originalPrice.ToString("F2") @DomainResources.CurrencyEuro@DomainResources.PerHour</h2>
                     }
-                    <p class="text-muted small">Капацитет: до @Model.Place.Capacity души</p>
+                        <p class="text-muted small">@DomainResources.ResCapacity @DomainResources.ResCapacityUpTo @Model.Place.Capacity @DomainResources.ResPeople</p>
 
                     <button type="button" class="btn btn-success btn-lg w-100 py-3 shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        Запази час
+                        @DomainResources.ResBookTime
                     </button>
                 </div>
             </div>
@@ -79,7 +84,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4 p-4 border-light shadow-sm">
-                <h5 class="fw-bold">Описание на обекта</h5>
+                <h5 class="fw-bold">@DomainResources.ResPlaceDescription</h5>
                 <p class="text-secondary">
                     @Model.Place.Description
                 </p>
@@ -87,7 +92,7 @@
                 <div class="row text-center">
                     <div class="col-4">
                         <i class="bi bi-people fs-3 text-success"></i>
-                        <p class="small mb-0">@Model.Place.Capacity души</p>
+                        <p class="small mb-0">@Model.Place.Capacity @DomainResources.ResPeople</p>
                     </div>
                     <div class="col-4">
                         <i class="bi bi-geo-alt fs-3 text-success"></i>
@@ -95,12 +100,12 @@
                     </div>
                     <div class="col-4">
                         <i class="bi bi-shield-check fs-3 text-success"></i>
-                        <p class="small mb-0">Проверен</p>
+                        <p class="small mb-0">@DomainResources.ResVerified</p>
                     </div>
                 </div>
             </div>
             <button class="btn btn-light w-100 py-3 border shadow-sm mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#reviewsSection">
-                <i class="bi bi-chat-left-text me-2"></i> Коментари и отзиви
+                <i class="bi bi-chat-left-text me-2"></i> @DomainResources.ResCommentsAndReviews
             </button>
 
             <div class="collapse" id="reviewsSection">
@@ -149,7 +154,7 @@
                                                         <input type="hidden" name="placeId" value="@Model.Place.Id" />
                                                         <button type="submit"
                                                                 class="btn btn-link text-danger p-0 ms-2"
-                                                                title="Изтрий коментара">
+                                                                title="@DomainResources.ResDeleteComment">
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
@@ -171,13 +176,13 @@
                         }
                         else
                         {
-                            <p class="text-muted text-center my-4 italic">Все още няма добавени отзиви.</p>
+                            <p class="text-muted text-center my-4 italic">@DomainResources.ResNoReviews</p>
                         }
                         @if (IsLoggedIn)
                         {
                             if (userCommentsCount < 3)
                             {
-                                <h6 class="fw-bold mb-3">Остави отзив</h6>
+                                <h6 class="fw-bold mb-3">@DomainResources.ResLeaveReview</h6>
                                 <form asp-action="AddReview" method="post" class="position-relative">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="placeId" value="@Model.Place.Id" />
@@ -192,7 +197,7 @@
                                     <div class="position-relative mb-3">
                                         <textarea name="commentText" id="commentArea"
                                           class="form-control" rows="3"
-                                          placeholder="Сподели мнение..."
+                                          placeholder="@DomainResources.ResShareOpinion"
                                           maxlength="250"></textarea>
                                         <div id="charCounter" class="text-muted small position-absolute"
                                              style="bottom: 5px; right: 10px; pointer-events: none;">
@@ -200,18 +205,18 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-success">Публикувай</button>
+                                    <button type="submit" class="btn btn-success">@DomainResources.ResPublish</button>
                                 </form>
                             }
                             else
                             {
-                                <div class="alert alert-info py-2 small">Достигнали сте лимита от 3 коментара за това място.</div>
+                                <div class="alert alert-info py-2 small">@DomainResources.ResReviewLimit</div>
                             }
                         }
                         else
                         {
                             <div class="alert alert-sm alert-light border text-center small">
-                                За да оставите коментар <a asp-controller="Account" asp-action="Login">присъединeте се</a>
+                                @DomainResources.ResLoginToReview <a asp-controller="Account" asp-action="Login">@DomainResources.ResLoginToReviewLink</a>
                             </div>
                         }
                     </div>
@@ -225,7 +230,7 @@
         <div class="modal-content border-success">
             <div class="modal-header bg-light d-flex flex-column align-items-center position-relative">
                 <div class="d-flex align-items-center" id="calendarTrigger" style="cursor: pointer;">
-                    <h5 class="modal-title fw-bold mb-0" id="displayDate">Изберете дата</h5>
+                    <h5 class="modal-title fw-bold mb-0" id="displayDate">@DomainResources.ResSelectDate</h5>
                     <i class="bi bi-chevron-down ms-2 text-success" id="calendarIcon"></i>
                 </div>
                 <div id="calendarAnchor" style="position: absolute; top: 100%;"></div>
@@ -257,7 +262,7 @@
             </div>
             <div class="modal-footer d-flex justify-content-center border-0 pb-4">
                 <button type="button" class="btn btn-success btn-lg px-5 shadow" onclick="handleBookingClick()">
-                    Резервирай
+                    @DomainResources.ResBook
                 </button>
             </div>
         </div>
@@ -267,15 +272,15 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <h5 class="modal-title fw-bold">Необходим е профил</h5>
+                <h5 class="modal-title fw-bold">@DomainResources.ResProfileRequired</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center pb-4">
                 <i class="bi bi-person-circle text-success" style="font-size: 4rem;"></i>
-                <p class="fs-5 mt-3">За да направите резервация, трябва да сте част от ActPro.</p>
+                <p class="fs-5 mt-3">@DomainResources.ResBookNeedProfile</p>
                 <div class="d-grid gap-2 mt-4">
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-success btn-lg">Вход</a>
-                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-success">Създаване на акаунт</a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-success btn-lg">@DomainResources.ResLogin</a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-success">@DomainResources.ResCreateAccount</a>
                 </div>
             </div>
         </div>
@@ -287,6 +292,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
 }
+@section Scripts {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/bg.js"></script>
@@ -296,7 +302,7 @@
         const selectedDateInput = document.getElementById('selectedDate');
         const displayDate = document.getElementById('displayDate');
         const slotsWrapper = document.getElementById('slotsWrapper');
-        const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
+        const isUserLoggedIn = @((User?.Identity?.IsAuthenticated == true).ToString().ToLower());
         const fp = flatpickr("#flatpickrDate",{
             locale: "bg",
             minDate: "today",
@@ -349,7 +355,7 @@
             let dayName = d.toLocaleDateString('bg-BG', { weekday: 'short' })
                            .replace('.', '').substring(0, 3).toUpperCase();
 
-            if (d.toDateString() === today.toDateString()) dayName = "ДНЕС";
+            if (d.toDateString() === today.toDateString()) dayName = "@DomainResources.ResToday";
 
             const div = document.createElement('div');
             div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
@@ -382,9 +388,9 @@
         };
         $(document).on('click', '.favorite-btn-large', function (e){
             e.preventDefault();
-            const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
+        const isUserLoggedIn = @(User?.Identity?.IsAuthenticated == true ? "true" : "false");
             if (!isUserLoggedIn) {
-                toastr.error("Трябва да сте влезли в профил, за да добавите в любими!");
+                toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResMustBeLoggedIn)));
                 return;
             }
             var btn = $(this);
@@ -400,17 +406,17 @@
                         if (response.isFavorite) {
                             btn.removeClass('btn-outline-warning').addClass('btn-warning');
                             icon.removeClass('bi-star').addClass('bi-star-fill');
-                            toastr.success("Добавено в любими!");
+                            toastr.success(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResAddedToFavorites)));
                         } 
                         else{
                             btn.removeClass('btn-warning').addClass('btn-outline-warning');
                             icon.removeClass('bi-star-fill').addClass('bi-star');
-                            toastr.info("Премахнато от любими.");
+                            toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResRemovedFromFavorites)));
                         }
                     }
                 },
                 error: function (xhr){
-                        toastr.error("Възникна грешка при обработката на заявката.");
+                        toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResErrorProcessing)));
                 }
             });
         });
@@ -482,7 +488,7 @@
     function handleBookingClick(){
         const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
         if (!selectedTimeInput){
-            toastr.info("Моля, изберете час!");
+            toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResSelectTime)));
             return;
         }
         const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
@@ -519,3 +525,4 @@
         form.submit();
     }
 </script>
+}

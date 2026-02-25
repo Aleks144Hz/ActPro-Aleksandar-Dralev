@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>Редактиране на профил</h5>
+                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square me-2"></i>@DomainResources.EditProfile</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form asp-controller="Account" asp-action="EditProfile" method="post" enctype="multipart/form-data" id="editProfileForm">
@@ -20,7 +20,7 @@
                                 {
                                     <div id="placeholderContainer" class="profile-placeholder">
                                         <i class="bi bi-camera-fill"></i>
-                                        <span>Качи снимка</span>
+                                        <span>@DomainResources.EditUploadPhoto</span>
                                     </div>
                                     <img id="previewImg" class="profile-avatar d-none" />
                                 }
@@ -34,17 +34,17 @@
 
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label asp-for="FirstName" class="form-label fw-semibold small">Име</label>
-                            <input asp-for="FirstName" class="form-control shadow-sm" placeholder="Въведете име..." />
+                            <label asp-for="FirstName" class="form-label fw-semibold small">@DomainResources.FirstName</label>
+                            <input asp-for="FirstName" class="form-control shadow-sm" placeholder="@DomainResources.EditFirstNamePlaceholder" />
                             <span asp-validation-for="FirstName" class="text-danger small"></span>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="LastName" class="form-label fw-semibold small">Фамилия</label>
-                            <input asp-for="LastName" class="form-control shadow-sm" placeholder="Въведете фамилия..." />
+                            <label asp-for="LastName" class="form-label fw-semibold small">@DomainResources.LastName</label>
+                            <input asp-for="LastName" class="form-control shadow-sm" placeholder="@DomainResources.EditLastNamePlaceholder" />
                             <span asp-validation-for="LastName" class="text-danger small"></span>
                         </div>
                         <div class="col-12">
-                            <label asp-for="PhoneNumber" class="form-label fw-semibold small">Телефонен номер</label>
+                            <label asp-for="PhoneNumber" class="form-label fw-semibold small">@DomainResources.PhoneNumber</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-phone"></i></span>
                                 <input asp-for="PhoneNumber" class="form-control shadow-sm" placeholder="08XXXXXXXX" />
@@ -54,9 +54,9 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-light border-top-0">
-                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Отказ</button>
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">@DomainResources.Cancel2</button>
                     <button type="submit" class="btn btn-info text-white px-4 fw-bold shadow-sm">
-                        <i class="bi bi-check2-circle me-1"></i>Запази
+                        <i class="bi bi-check2-circle me-1"></i>@DomainResources.Save
                     </button>
                 </div>
             </form>

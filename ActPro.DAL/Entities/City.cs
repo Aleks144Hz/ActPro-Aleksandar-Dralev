@@ -6,5 +6,7 @@ public partial class City
 
     public string? Name { get; set; }
 
+    public string? NameEn { get; set; }
+
     public virtual ICollection<Place> Places { get; set; } = new List<Place>();
 }

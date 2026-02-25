@@ -1,9 +1,9 @@
-﻿using ActPro.DAL.Data;
+using ActPro.DAL.Data;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Services.Services
 {
@@ -49,7 +49,7 @@ namespace ActPro.Services.Services
                 }
             }
 
-            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{CreatedPlace}: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{DomainResources.CreatedPlace}: {place.Name}");
             return true;
         }
     }

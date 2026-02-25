@@ -1,17 +1,20 @@
 ﻿@model ActPro.Models.User.RegisterViewModel
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
-    ViewData["Title"] = "Регистрация";
+    ViewData["Title"] = DomainResources.Register;
+    ViewData["SeoTitle"] = "Регистрация - ActPro";
+    ViewData["SeoDescription"] = "Създай безплатен профил в ActPro и започни да резервираш спортни площадки и съоръжения в цяла България. Само с няколко клика можеш да резервираш своята тренировка!";
+    ViewData["SeoKeywords"] = "регистрация, профил, създай акаунт, резервации, спорт, ActPro";
 }
 <div class="container d-flex align-items-center justify-content-center min-vh-100 py-5">
     <div class="col-md-8 col-lg-6 col-xl-6">
         <div class="card shadow-lg border-0">
             <div class="card-body p-5">
-                <h2 class="text-center mb-4 fw-bold text-dark">Присъедини се към нас</h2>
+                <h2 class="text-center mb-4 fw-bold text-dark">@DomainResources.JoinUsTitle</h2>
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger shadow-sm border-0 mb-4" style="font-size: 0.9rem;"></div>
                 <p class="text-center text-muted mb-4">
-                    Вече имаш акаунт?
-                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold text-success">Влез тук</a>
+                    @DomainResources.RegisterHasAccount
+                    <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold text-success">@DomainResources.RegisterLoginHere</a>
                 </p>
                 <form asp-controller="Account" asp-action="Register" method="post">
                     @Html.AntiForgeryToken()
@@ -19,36 +22,36 @@
                         <div class="col-6">
                             <div class="form-floating">
                                 <input asp-for="FirstName" class="form-control"/>
-                                <label asp-for="FirstName">Име</label>
+                                <label asp-for="FirstName">@DomainResources.FirstName</label>
                             </div>
                             <span asp-validation-for="FirstName" class="text-danger small ps-1"></span>
                         </div>
                         <div class="col-6">
                             <div class="form-floating">
                                 <input asp-for="LastName" class="form-control"/>
-                                <label asp-for="LastName">Фамилия</label>
+                                <label asp-for="LastName">@DomainResources.LastName</label>
                             </div>
                             <span asp-validation-for="LastName" class="text-danger small ps-1"></span>
                         </div>
                     </div>
                     <div class="form-floating mb-3">
                         <input asp-for="Email" class="form-control"/>
-                        <label asp-for="Email">Имейл</label>
+                        <label asp-for="Email">@DomainResources.Email</label>
                         <span asp-validation-for="Email" class="text-danger small ps-1"></span>
                     </div>
                     <div class="form-floating mb-3">
                         <input asp-for="PhoneNumber" class="form-control" type="tel" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                         <label asp-for="PhoneNumber">Телефон</label>
+                         <label asp-for="PhoneNumber">@DomainResources.PhoneNumber</label>
                         <span asp-validation-for="PhoneNumber" class="text-danger small ps-1"></span>
                     </div>
                     <div class="form-floating mb-3">
                         <input asp-for="Password" type="password" class="form-control"/>
-                        <label asp-for="Password">Парола</label>
+                        <label asp-for="Password">@DomainResources.Password</label>
                         <span asp-validation-for="Password" class="text-danger small ps-1"></span>
                     </div>
                     <div class="form-floating mb-4">
                         <input asp-for="ConfirmPassword" type="password" class="form-control"/>
-                        <label asp-for="ConfirmPassword">Потвърди парола</label>
+                        <label asp-for="ConfirmPassword">@DomainResources.ConfirmPassword</label>
                         <span asp-validation-for="ConfirmPassword" class="text-danger small ps-1"></span>
                     </div>
                     <div class="mb-4 d-flex flex-column align-items-center">
@@ -59,16 +62,16 @@
                         <div class="form-check custom-checkbox d-flex align-items-center">
                             <input type="checkbox" name="AcceptTerms" value="true" class="form-check-input me-2" id="acceptTermsCheck">
                             <label class="form-check-label text-muted small" for="acceptTermsCheck">
-                                Съгласен съм с <a href="/Home/Terms" target="_blank" class="text-success fw-bold">общите условия</a>
-                                и <a href="/Home/Privacy" target="_blank" class="text-success fw-bold">политиката за поверителност</a>.
+                                @DomainResources.RegisterAgreeTerms <a href="/Home/Terms" target="_blank" class="text-success fw-bold">@DomainResources.RegisterTermsLink</a>
+                                @DomainResources.RegisterAgreePrivacy <a href="/Home/Privacy" target="_blank" class="text-success fw-bold">@DomainResources.RegisterPrivacyLink</a>.
                             </label>
                         </div>
                         @if (!ViewData.ModelState.IsValid && ViewData.ModelState["AcceptTerms"]?.Errors.Count > 0)
                         {
-                            <span class="text-danger small d-block mt-1">Трябва да приемете общите условия.</span>
+                            <span class="text-danger small d-block mt-1">@DomainResources.RegisterAcceptTermsError</span>
                         }
                     </div>
-                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-5 shadow-sm">Регистрирай се</button>
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold fs-5 shadow-sm">@DomainResources.Register</button>
                 </form>
             </div>
         </div>

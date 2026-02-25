@@ -1,7 +1,7 @@
 ﻿@using ActPro.Domain.Models.Areas
 @model PlacesIndexViewModel
 @{
-    ViewData["Title"] = "Управление на обекти";
+    ViewData["Title"] = DomainResources.Places;
 }
 
 <div class="container-fluid mt-4">
@@ -11,28 +11,28 @@
         </div>
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2><i class="bi bi-geo-alt"></i> Управление на обекти</h2>
+                <h2><i class="bi bi-geo-alt"></i> @DomainResources.PlaceManagement</h2>
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createPlaceModal">
-                    <i class="bi bi-plus-circle"></i> Добави нов обект
+                    <i class="bi bi-plus-circle"></i> @DomainResources.AddPlace
                 </button>
             </div>
             <div class="card shadow-sm">
                 <table class="table table-hover align-middle mb-0 admin-table">
                     <thead class="table-dark">
                         <tr>
-                            <th>Обект</th>
-                            <th>Град</th>
-                            <th>Тип дейност</th>
-                            <th>Цена</th>
-                            <th>Статус</th>
-                            <th class="text-center no-sort">Действия</th>
+                            <th>@DomainResources.Place</th>
+                            <th>@DomainResources.City</th>
+                            <th>@DomainResources.ActivityType</th>
+                            <th>@DomainResources.Price</th>
+                            <th>@DomainResources.Status</th>
+                            <th class="text-center no-sort">@DomainResources.Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.Places)
                         {
                             <tr>
-                                <td data-label="ОБЕКТ">
+                                <td data-label="@DomainResources.Place.ToUpper()">
                                     <strong>
                                         <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@item.Id"
                                            class="text-decoration-none text-dark hover-success">
@@ -40,43 +40,43 @@
                                         </a>
                                     </strong>
                                 </td>
-                                <td data-label="ГРАД">@item.CityName</td>
-                                <td data-label ="ТИП ДЕЙНОСТ">@item.ActivityName</td>
-                                <td data-label="ЦЕНА" data-sort="@item.Price">
-                                    @item.Price €/ч
+                                <td data-label="@DomainResources.City.ToUpper()">@item.CityName</td>
+                                <td data-label ="@DomainResources.ActivityType.ToUpper()">@item.ActivityName</td>
+                                <td data-label="@DomainResources.Price.ToUpper()" data-sort="@item.Price">
+                                    @item.Price @DomainResources.CurrencyEuro@DomainResources.PerHour
                                 </td>
-                                <td data-label="СТАТУС">
+                                <td data-label="@DomainResources.Status.ToUpper()">
                                     @if (item.IsApproved)
                                     {
-                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Активен</span>
+                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> @DomainResources.Active</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-warning text-dark"><i class="bi bi-clock"></i> Чака одобрение</span>
+                                        <span class="badge bg-warning text-dark"><i class="bi bi-clock"></i> @DomainResources.PendingApprovals</span>
                                     }
                                 </td>
-                                <td class="text-center" data-label="ДЕЙСТВИЯ">
+                                <td class="text-center" data-label="@DomainResources.Actions.ToUpper()">
                                     <div class="d-flex justify-content-center gap-2">
 
                                         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#manageScheduleModal-@item.Id">
-                                            <i class="bi bi-calendar-x"></i> График
+                                            <i class="bi bi-calendar-x"></i> @DomainResources.Schedule
                                         </button>
                                         <button type="button" class="btn btn-sm btn-info text-white"
                                                 data-bs-toggle="modal" data-bs-target="#editPlaceModal-@item.Id">
                                             <i class="bi bi-pencil-square" style="font-style: normal;"></i>
-                                            <span style="font-style: normal;">Редактирай</span>
+                                            <span style="font-style: normal;">@DomainResources.Edit</span>
                                         </button>
                                         <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
                                             <button type="button" class="bi bi-trash btn btn-sm btn-danger confirm-action"
-                                                    data-message="Наистина ли искате да изтриете @item.Name?">
-                                                Изтрий
+                                                    data-message="@DomainResources.ConfirmDeletePlace @item.Name?">
+                                                @DomainResources.Delete
                                             </button>
-                                        </form>   
+                                        </form>
                                         @if (!item.IsApproved)
                                         {
                                             <form asp-action="Approve" asp-route-id="@item.Id" method="post">
                                                 <button type="submit" class="btn btn-sm btn-success">
-                                                    <i class="bi bi-check-lg"></i> Одобри
+                                                    <i class="bi bi-check-lg"></i> @DomainResources.Approve
                                                 </button>
                                             </form>
                                         }
@@ -133,7 +133,7 @@
             },
             error: function(xhr){
                 console.error(xhr.responseText);
-                alert("Грешка при изтриването. Сървърът върна: " + xhr.status);
+                alert("@DomainResources.ErrorProcessing: " + xhr.status);
             }
         });
     }

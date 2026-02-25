@@ -1,4 +1,5 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
+using ActPro.Domain;
 using ActPro.Domain.Models;
 using ActPro.Services;
 using ActPro.Services.Interfaces;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Controllers
 {
@@ -65,8 +65,8 @@ namespace ActPro.Controllers
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(content))
             {
                 await homeService.CreateNewsAsync(title, content, imageFile, webHostEnvironment.WebRootPath);
-                await auditService.LogAsync("Create News", "User", user.Id, $"{NewsIsPublished} \"{title}\"");
-                TempData["SuccessMessage"] = NewsIsPublishedSuccessfully;
+                await auditService.LogAsync("Create News", "User", user.Id, $"{DomainResources.NewsIsPublished} \"{title}\"");
+                TempData["SuccessMessage"] = DomainResources.NewsIsPublishedSuccessfully;
                 return RedirectToAction(nameof(News));
             }
             return RedirectToAction(nameof(News));
@@ -79,8 +79,8 @@ namespace ActPro.Controllers
         {
             var user = await userManager.GetUserAsync(User);
             await homeService.DeleteNewsAsync(id, webHostEnvironment.WebRootPath);
-            await auditService.LogAsync("Delete News", "User", user.Id, $"{NewsDeleted} {id}");
-            TempData["SuccessMessage"] = NewsDeletedSuccessfully;
+            await auditService.LogAsync("Delete News", "User", user.Id, $"{DomainResources.NewsDeleted} {id}");
+            TempData["SuccessMessage"] = DomainResources.NewsDeletedSuccessfully;
             return RedirectToAction(nameof(News));
         }
 
@@ -109,19 +109,19 @@ namespace ActPro.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = FillInAllFields;
+                TempData["Error"] = DomainResources.FillInAllFields;
                 return View("Support", model);
             }
 
             try
             {
                 await emailSender.SendSupportTicketAsync(model);
-                TempData["Success"] = TicketSendSuccessfully;
+                TempData["Success"] = DomainResources.TicketSendSuccessfully;
                 return RedirectToAction("Support");
             }
             catch
             {
-                TempData["Error"] = Error;
+                TempData["Error"] = DomainResources.Error;
                 return View("Support", model);
             }
         }

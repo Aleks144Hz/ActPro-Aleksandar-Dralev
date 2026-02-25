@@ -1,5 +1,6 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
 using ActPro.DAL.Entities;
+using ActPro.Domain;
 using ActPro.Domain.Models;
 using ActPro.Domain.Models.Reservation;
 using ActPro.Domain.Models.User;
@@ -7,7 +8,7 @@ using ActPro.Domain.Repository;
 using ActPro.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using static ActPro.Helpers.MessageConstants;
+using System.Globalization;
 
 namespace ActPro.Services
 {
@@ -51,19 +52,19 @@ namespace ActPro.Services
 
             if (closure != null)
             {
-                string reason = !string.IsNullOrEmpty(closure.Reason) ? closure.Reason : PlanedManufacture;
-                return (false, $"{PlaceIsClosedOnThisDate} {reason}.");
+                string reason = !string.IsNullOrEmpty(closure.Reason) ? closure.Reason : DomainResources.PlanedManufacture;
+                return (false, $"{DomainResources.PlaceIsClosedOnThisDate} {reason}.");
             }
 
-            if (!TimeOnly.TryParse(timeSlot, out TimeOnly parsedTime)) return (false, InvalidHour);
+            if (!TimeOnly.TryParse(timeSlot, out TimeOnly parsedTime)) return (false, DomainResources.InvalidHour);
 
             DateOnly parsedDate = DateOnly.FromDateTime(date);
             var combinedDateTime = parsedDate.ToDateTime(parsedTime);
 
-            if (combinedDateTime < DateTime.Now) return (false, HourAlreadyPassed);
+            if (combinedDateTime < DateTime.Now) return (false, DomainResources.HourAlreadyPassed);
 
             if (await resRepo.AllAsNoTracking().AnyAsync(r => r.PlaceId == placeId && r.ReservationDate == parsedDate && r.ReservationTime == parsedTime))
-                return (false, HourAlreadyReserved);
+                return (false, DomainResources.HourAlreadyReserved);
             var place = await placeRepo.AllAsNoTracking()
             .Include(p => p.Owner)
             .FirstOrDefaultAsync(p => p.Id == placeId);
@@ -90,19 +91,19 @@ namespace ActPro.Services
                     place.Owner.Email,
                     place.Owner.FirstName,
                     place.Name,
-                    $"{user.FirstName} {user.LastName}",                 
-                    parsedDate.ToString("dd.MM.yyyy"),
+                    $"{user.FirstName} {user.LastName}",
+                    parsedDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                     timeSlot,
                     user.PhoneNumber);
             }
 
-            return (true, SuccessfullReservation);
+            return (true, DomainResources.SuccessfullReservation);
         }
         //-- ADD REVIEW
         public async Task<(bool success, string message)> AddReviewAsync(int placeId, string userId, string commentText, int rating)
         {
             int userCommentCount = await commentRepo.AllAsNoTracking().CountAsync(c => c.PlaceId == placeId && c.AspNetUserId == userId);
-            if (userCommentCount >= 3) return (false, MaximumComments);
+            if (userCommentCount >= 3) return (false, DomainResources.MaximumComments);
 
             var newComment = new Comment
             {
@@ -135,14 +136,14 @@ namespace ActPro.Services
                     commentText);
             }
 
-            return (true, CommentAdded);
+            return (true, DomainResources.CommentAdded);
         }
 
         //-- DELETE REVIEW
         public async Task<(bool success, string message)> DeleteReviewAsync(int reviewId, string userId)
         {
             var comment = await commentRepo.All().FirstOrDefaultAsync(c => c.Id == reviewId && c.AspNetUserId == userId);
-            if (comment == null) return (false, CommentNotFound);
+            if (comment == null) return (false, DomainResources.CommentNotFound);
 
             int placeId = comment.PlaceId;
             await commentRepo.DeleteAsync(comment);
@@ -154,7 +155,7 @@ namespace ActPro.Services
             user.Credits = Math.Round(Math.Max(0, user.Credits - 0.1), 2);
             await userManager.UpdateAsync(user);
 
-            return (true, CommentDeleted);
+            return (true, DomainResources.CommentDeleted);
         }
 
         //-- UPDATE PLACE RATING
@@ -228,15 +229,15 @@ namespace ActPro.Services
                 .ThenInclude(p => p.Owner)
                 .FirstOrDefaultAsync(r => r.Id == reservationId && r.AspNetUserId == userId);
 
-            if (res == null) return (false, ReservationNotFound);
+            if (res == null) return (false, DomainResources.ReservationNotFound);
 
             var resDateTime = (res.ReservationDate ?? DateOnly.FromDateTime(DateTime.Now)).ToDateTime(res.ReservationTime ?? new TimeOnly(0, 0));
-            if (resDateTime < DateTime.Now) return (false, CannotCancelPastReservation);
+            if (resDateTime < DateTime.Now) return (false, DomainResources.CannotCancelPastReservation);
 
             var owner = res.Place?.Owner;
-            var placeName = res.Place?.Name ?? Helpers.MessageConstants.Place;
+            var placeName = res.Place?.Name ?? DomainResources.Place;
             var customerName = $"{res.FirstName} {res.LastName}";
-            var dateFormatted = res.ReservationDate?.ToString("dd.MM.yyyy") ?? "";
+            var dateFormatted = res.ReservationDate?.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture) ?? "";
             var timeSlot = res.ReservationTime?.ToString() ?? "";
             var number = res.Phone ?? "";
 
@@ -266,11 +267,11 @@ namespace ActPro.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{Error} {ex.Message}");
+                    Console.WriteLine($"{DomainResources.Error} {ex.Message}");
                 }
             }
 
-            return (true, Cancelled);
+            return (true, DomainResources.Cancelled);
         }
 
         //-- GET USER REVIEWS
@@ -296,13 +297,13 @@ namespace ActPro.Services
         public async Task<(bool success, string message)> EditReviewAsync(int commentId, string userId, string commentText, int rating)
         {
             var comment = await commentRepo.All().FirstOrDefaultAsync(c => c.Id == commentId && c.AspNetUserId == userId);
-            if (comment == null) return (false, NotFound);
+            if (comment == null) return (false, DomainResources.NotFound);
 
             comment.CommentText = commentText;
             comment.Rating = rating;
             await commentRepo.SaveChangesAsync();
             await UpdatePlaceRatingAsync(comment.PlaceId);
-            return (true, Update);
+            return (true, DomainResources.Update);
         }
 
         //-- GET CLOSED DATES

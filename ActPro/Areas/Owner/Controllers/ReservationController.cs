@@ -1,10 +1,10 @@
-﻿using ActPro.DAL;
+using ActPro.DAL;
+using ActPro.Domain;
 using ActPro.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static ActPro.Helpers.MessageConstants;
 
 namespace ActPro.Areas.Owner.Controllers
 {
@@ -34,7 +34,7 @@ namespace ActPro.Areas.Owner.Controllers
                 }
                 if (await resService.DeleteReservationAsync(id))
                 {
-                    TempData["Success"] = ReservationClosed;
+                    TempData["Success"] = DomainResources.ReservationClosed;
                 }
             }
 
@@ -44,8 +44,13 @@ namespace ActPro.Areas.Owner.Controllers
         //--- EDIT TIME ---
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTime(int id, TimeOnly reservationTime)
+        public async Task<IActionResult> EditTime(int id, string reservationTime)
         {
+            if (!TimeOnly.TryParse(reservationTime, out var newTimeOnly))
+            {
+                TempData["Error"] = DomainResources.Error;
+                return RedirectToAction("Index", "Dashboard");
+            }
 
             var res = await context.Reservations
             .Include(r => r.AspNetUser)
@@ -55,9 +60,9 @@ namespace ActPro.Areas.Owner.Controllers
             if (res == null) return NotFound();
 
             string oldTime = res.ReservationTime.ToString();
-            string newTime = reservationTime.ToString("HH:mm");
+            string newTime = newTimeOnly.ToString("HH:mm");
 
-            if (await resService.UpdateReservationTimeAsync(id, reservationTime))
+            if (await resService.UpdateReservationTimeAsync(id, newTimeOnly))
             {
                 await emailSender.SendReservationTimeChangedAsync(
                     res.AspNetUser.Email,
@@ -66,7 +71,7 @@ namespace ActPro.Areas.Owner.Controllers
                     oldTime,
                     newTime,
                     res.ReservationDate.ToString());
-                TempData["Success"] = ReservationTimeEdited;
+                TempData["Success"] = DomainResources.ReservationTimeEdited;
             }
 
             return RedirectToAction("Index", "Dashboard");
@@ -78,17 +83,17 @@ namespace ActPro.Areas.Owner.Controllers
         {
             if (string.IsNullOrEmpty(customerNote))
             {
-                TempData["Error"] = Error;
+                TempData["Error"] = DomainResources.Error;
                 return RedirectToAction("Index", "Dashboard");
             }
 
             if (await resService.CreateManualReservationAsync(placeId, customerNote, date, time))
             {
-                TempData["Success"] = ReservationBlocked;
+                TempData["Success"] = DomainResources.ReservationBlocked;
             }
             else
             {
-                TempData["Error"] = Error;
+                TempData["Error"] = DomainResources.Error;
             }
 
             return RedirectToAction("Index", "Dashboard");
