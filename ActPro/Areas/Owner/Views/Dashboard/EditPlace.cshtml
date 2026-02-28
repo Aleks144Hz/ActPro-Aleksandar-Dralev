@@ -1,11 +1,15 @@
-﻿@using ActPro.Domain.Models.Areas
+@using ActPro.Domain.Models.Areas
 @model PlaceFormViewModel
+@{
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    var editPlaceName = isEnglish && !string.IsNullOrEmpty(Model.NameEn) ? Model.NameEn : (Model.Name ?? "");
+}
 <div class="modal fade" id="editPlaceModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <div class="modal-header bg-info text-white p-3" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
                 <h5 class="modal-title fw-bold">
-                    <i class="bi bi-pencil-square me-2" style="font-style: normal;"></i> @DomainResources.Editing @Model.Name
+                    <i class="bi bi-pencil-square me-2" style="font-style: normal;"></i> @DomainResources.Editing @editPlaceName
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -43,9 +47,13 @@
                     <input type="hidden" asp-for="OwnerId" />
                     <input type="hidden" asp-for="Rating" />
                     <div class="row g-3">
-                        <div class="col-md-12">
-                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName</label>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName (BG)</label>
                             <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName (EN)</label>
+                            <input asp-for="NameEn" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" />
                         </div>
                         <div class="col-md-8">
                             <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.ExactAddress</label>
@@ -81,10 +89,15 @@
                             <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4 border-info-subtle" required />
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description (BG)</label>
                             <textarea asp-for="Description" class="form-control shadow-sm px-4 border-info-subtle"
                                       rows="3" style="border-radius: 20px;"></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description (EN)</label>
+                            <textarea asp-for="DescriptionEn" class="form-control shadow-sm px-4 border-info-subtle"
+                                      rows="3" style="border-radius: 20px;"></textarea>
                         </div>
                         <div class="col-md-12">
                             <div id="drop-zone" class="p-3 bg-light rounded-4 text-center position-relative transition-all"

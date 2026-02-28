@@ -3,9 +3,12 @@
 @model ActPro.Models.HomeViewModel
 @{
     ViewData["Title"] = DomainResources.PageTitle;
-    ViewData["SeoTitle"] = "ActPro - Резервирай спортни площадки и фитнес в цяла България";
-    ViewData["SeoDescription"] = "Открий и резервирай най-добрите спортни площадки, фитнеси, тенис кортове, басейни и други съоръжения. Безплатно и лесно онлайн резервиране в София, Пловдив, Варна и още много градове!";
-    ViewData["SeoKeywords"] = "спортни площадки, резервация онлайн, фитнес, тенис, плуване, волейбол, баскетбол, футбол, боулинг, йога, спорт, България";
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    ViewData["SeoTitle"] = isEnglish ? "ActPro - Book sports facilities and fitness all over Bulgaria" : "ActPro - Резервирай спортни площадки и фитнес в цяла България";
+    ViewData["SeoDescription"] = isEnglish 
+        ? "Discover and book the best sports grounds, fitness centers, tennis courts, pools and other facilities. Free and easy online reservation in Sofia, Plovdiv, Varna and many more cities!"
+        : "Открий и резервирай най-добрите спортни площадки, фитнеси, тенис кортове, басейни и други съоръжения. Безплатно и лесно онлайн резервиране в София, Пловдив, Варна и още много градове!";
+    ViewData["SeoKeywords"] = isEnglish ? "sports facilities, online reservation, fitness, tennis, swimming, volleyball, basketball, football, bowling, yoga, sports, Bulgaria" : "спортни площадки, резервация онлайн, фитнес, тенис, плуване, волейбол, баскетбол, футбол, боулинг, йога, спорт, България";
 }
 <div class="container-fluid p-0">
     <main>
@@ -146,15 +149,17 @@
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     @foreach (var place in Model.TopPlaces)
                     {
+                        var placeName = isEnglish && !string.IsNullOrEmpty(place.NameEn) ? place.NameEn : place.Name;
+                        var placeCityName = isEnglish && place.City != null && !string.IsNullOrEmpty(place.City.NameEn) ? place.City.NameEn : place.City?.Name;
                         <div class="col reveal reveal-up">
                             <div class="card h-100 shadow-sm border-0 top-place-card reveal reveal-up delay-1">
                                 <img src="@(place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/300x200")"
-                                     class="card-img-top" alt="@place.Name">
+                                     class="card-img-top" alt="@placeName">
                                 <div class="card-body d-flex flex-column">
                                     <div class="flex-grow-1">
-                                        <h5 class="card-title fw-bold card-title-limited">@place.Name</h5>
+                                        <h5 class="card-title fw-bold card-title-limited">@placeName</h5>
                                         <p class="text-muted small mb-2">
-                                            <i class="bi bi-geo-alt"></i> @place.City?.Name
+                                            <i class="bi bi-geo-alt"></i> @placeCityName
                                         </p>
                                         <p class="card-text text-warning fw-bold">@DomainResources.Rating: ⭐ @place.Rating</p>
                                     </div>

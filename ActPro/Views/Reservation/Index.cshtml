@@ -2,23 +2,31 @@
 @using ActPro.Domain.Models.Areas
 @model ReservationViewModel
 @{
-    ViewData["Title"] = Model.Place.Name;
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    var placeName = isEnglish && !string.IsNullOrEmpty(Model.Place.NameEn) ? Model.Place.NameEn : Model.Place.Name;
+    var placeDescription = isEnglish && !string.IsNullOrEmpty(Model.Place.DescriptionEn) ? Model.Place.DescriptionEn : Model.Place.Description;
+    ViewData["Title"] = placeName;
     bool IsLoggedIn = User.Identity?.IsAuthenticated ?? false;
     var mainImage = Model.Place.PlaceImages?.FirstOrDefault()?.ImageUrl ?? "https://via.placeholder.com/800x400?text=@DomainResources.ResPlaceNoImage";
     var subImages = Model.Place.PlaceImages?.Skip(1).Take(2).ToList();
     var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
     var userCommentsCount = Model.Place.Comments.Count(c => c.AspNetUserId == currentUserId);
-    ViewData["SeoTitle"] = $"{Model.Place.Name} - Резервирай онлайн | ActPro";
-    ViewData["SeoDescription"] = $"Резервирай {Model.Place.Name} в {Model.Place.City?.Name}. {Model.Place.Activity?.Name}, капацитет {Model.Place.Capacity} души, {DomainResources.CurrencyEuro}{Model.Place.Price}/час. Виж оценки, снимки и направи резервация сега!";
-    ViewData["SeoKeywords"] = $"{Model.Place.Name}, {Model.Place.Activity?.Name}, {Model.Place.City?.Name}, резервация, спорт, площадка";
+    var seoKeywords = isEnglish
+        ? $"{placeName}, {Model.Place.Activity?.NameEn ?? Model.Place.Activity?.Name}, {Model.Place.City?.NameEn ?? Model.Place.City?.Name}, reservation, sports, facility"
+        : $"{placeName}, {Model.Place.Activity?.Name}, {Model.Place.City?.Name}, резервация, спорт, площадка";
+    ViewData["SeoTitle"] = $"{placeName} - {(isEnglish ? "Book online" : "Резервирай онлайн")} | ActPro";
+    ViewData["SeoDescription"] = isEnglish
+        ? $"Book {placeName} in {Model.Place.City?.NameEn ?? Model.Place.City?.Name}. {Model.Place.Activity?.NameEn ?? Model.Place.Activity?.Name}, capacity {Model.Place.Capacity} people, {DomainResources.CurrencyEuro}{Model.Place.Price}/hour. See ratings, photos and make a reservation now!"
+        : $"Резервирай {placeName} в {Model.Place.City?.Name}. {Model.Place.Activity?.Name}, капацитет {Model.Place.Capacity} души, {DomainResources.CurrencyEuro}{Model.Place.Price}/час. Виж оценки, снимки и направи резервация сега!";
+    ViewData["SeoKeywords"] = seoKeywords;
     ViewData["SeoImage"] = mainImage;
 }
 }
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
-            <h1 class="display-6 fw-bold">@Model.Place.Name</h1>
-            <p class="text-muted fs-5">@Model.Place.Activity?.Name @DomainResources.ResInLocation @Model.Place.City?.Name</p>
+            <h1 class="display-6 fw-bold">@placeName</h1>
+            <p class="text-muted fs-5">@((isEnglish ? Model.Place.Activity?.NameEn ?? Model.Place.Activity?.Name : Model.Place.Activity?.Name) + " " + DomainResources.ResInLocation + " " + (isEnglish ? Model.Place.City?.NameEn ?? Model.Place.City?.Name : Model.Place.City?.Name))</p>
         </div>
         <div class="text-end">
             <span class="fs-4 fw-bold text-warning">
@@ -72,7 +80,7 @@
                     {
                         <h2 class="card-title text-success mb-3">@originalPrice.ToString("F2") @DomainResources.CurrencyEuro@DomainResources.PerHour</h2>
                     }
-                        <p class="text-muted small">@DomainResources.ResCapacity @DomainResources.ResCapacityUpTo @Model.Place.Capacity @DomainResources.ResPeople</p>
+                    <p class="text-muted small">@DomainResources.ResCapacity @DomainResources.ResCapacityUpTo @Model.Place.Capacity @DomainResources.ResPeople</p>
 
                     <button type="button" class="btn btn-success btn-lg w-100 py-3 shadow" data-bs-toggle="modal" data-bs-target="#bookingModal">
                         @DomainResources.ResBookTime
@@ -86,7 +94,7 @@
             <div class="card mb-4 p-4 border-light shadow-sm">
                 <h5 class="fw-bold">@DomainResources.ResPlaceDescription</h5>
                 <p class="text-secondary">
-                    @Model.Place.Description
+                    @placeDescription
                 </p>
                 <hr />
                 <div class="row text-center">
@@ -96,7 +104,7 @@
                     </div>
                     <div class="col-4">
                         <i class="bi bi-geo-alt fs-3 text-success"></i>
-                        <p class="small mb-0">@Model.Place.City?.Name</p>
+                        <p class="small mb-0">@(isEnglish && !string.IsNullOrEmpty(Model.Place.City?.NameEn) ? Model.Place.City?.NameEn : Model.Place.City?.Name)</p>
                     </div>
                     <div class="col-4">
                         <i class="bi bi-shield-check fs-3 text-success"></i>
@@ -268,6 +276,80 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-success">
+            <div class="modal-header bg-success bg-opacity-10">
+                <h5 class="modal-title fw-bold"><i class="bi bi-cash-stack me-2"></i>@(isEnglish ? "Choose Payment Method" : "Изберете начин на плащане")</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-calendar-check text-success" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <p class="mt-3 mb-0"><strong class="text-success">@(isEnglish ? "Selected time:" : "Избран час:")</strong> <span id="selectedTimeDisplay" class="fs-5 fw-bold"></span></p>
+                </div>
+
+                <div class="payment-options mb-4">
+                    <div class="form-check payment-option p-3 border rounded-3 mb-2 cursor-pointer" onclick="selectPayment('cash')">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentCash" value="cash" checked>
+                        <label class="form-check-label d-flex align-items-center w-100 cursor-pointer" for="paymentCash">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                <i class="bi bi-cash text-success"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">@(isEnglish ? "Cash at venue" : "На място (в брой)")</div>
+                                <small class="text-muted">@(isEnglish ? "Pay when you arrive" : "Плащате при пристигане")</small>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="form-check payment-option p-3 border rounded-3 cursor-pointer" onclick="selectPayment('online')">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentOnline" value="online">
+                        <label class="form-check-label d-flex align-items-center w-100 cursor-pointer" for="paymentOnline">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                <i class="bi bi-credit-card text-primary"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">@(isEnglish ? "Online payment" : "Онлайн плащане")</div>
+                                <small class="text-muted">@(isEnglish ? "Pay now securely" : "Платете сега сигурно")</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="onlinePaymentSection" class="mt-3" style="display: none;">
+                    <div class="p-4 border rounded-3 bg-light">
+                        <div class="mb-3 text-center">
+                            <i class="bi bi-credit-card-2-front text-muted" style="font-size: 2.5rem; opacity: 0.5;"></i>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-12">
+                                <input type="text" class="form-control" placeholder="**** **** **** ****" disabled>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control" placeholder="MM/YY" disabled>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control" placeholder="***" disabled>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                                <i class="bi bi-clock me-1"></i>@(isEnglish ? "Coming soon!" : "Очаквайте скоро!")
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center border-0 pb-4">
+                <button type="button" id="confirmBtn" class="btn btn-success btn-lg px-5 shadow" onclick="confirmBooking()">
+                    @(isEnglish ? "Confirm Reservation" : "Потвърди резервация")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="authPromptModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -293,236 +375,307 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
 }
 @section Scripts {
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/bg.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function (){
-        const container = document.getElementById('dateScrollContainer');
-        const selectedDateInput = document.getElementById('selectedDate');
-        const displayDate = document.getElementById('displayDate');
-        const slotsWrapper = document.getElementById('slotsWrapper');
-        const isUserLoggedIn = @((User?.Identity?.IsAuthenticated == true).ToString().ToLower());
-        const fp = flatpickr("#flatpickrDate",{
-            locale: "bg",
-            minDate: "today",
-            dateFormat: "Y-m-d",
-            defaultDate: "today",
-            positionElement: document.getElementById('calendarAnchor'),
-            disableMobile: true,
-            onChange: function(selectedDates, dateStr)
-            {
-                updateAll(dateStr);
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/bg.js"></script>
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            $(document).ready(function() {
+                toastr.success('@TempData["Success"]');
+            });
+        </script>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <script>
+            $(document).ready(function() {
+                toastr.error('@TempData["Error"]');
+            });
+        </script>
+    }
+    <script>
+            function selectPayment(method) {
+                const confirmBtn = document.getElementById('confirmBtn');
+                if (method === 'online') {
+                    document.getElementById('paymentOnline').checked = true;
+                    document.getElementById('onlinePaymentSection').style.display = 'block';
+                    if (confirmBtn) {
+                        confirmBtn.disabled = true;
+                        confirmBtn.classList.add('opacity-50');
+                    }
+                } else {
+                    document.getElementById('paymentCash').checked = true;
+                    document.getElementById('onlinePaymentSection').style.display = 'none';
+                    if (confirmBtn) {
+                        confirmBtn.disabled = false;
+                        confirmBtn.classList.remove('opacity-50');
+                    }
+                }
             }
-        });
-        function updateAll(dateStr){
-            if(slotsWrapper) slotsWrapper.style.opacity = "0";
 
-            setTimeout(() => {
-                const date = new Date(dateStr);
-                if(displayDate)
-                {
-                    displayDate.innerText = date.toLocaleDateString('bg-BG', {
-                        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+            document.addEventListener("DOMContentLoaded", function (){
+                const container = document.getElementById('dateScrollContainer');
+                const selectedDateInput = document.getElementById('selectedDate');
+                const displayDate = document.getElementById('displayDate');
+                const slotsWrapper = document.getElementById('slotsWrapper');
+                const onlinePaymentSection = document.getElementById('onlinePaymentSection');
+                const isUserLoggedIn = @((User?.Identity?.IsAuthenticated == true).ToString().ToLower());
+                const paymentOnlineEl = document.getElementById('paymentOnline');
+                const paymentCashEl = document.getElementById('paymentCash');
+
+                if(paymentOnlineEl && paymentCashEl && onlinePaymentSection){
+                    paymentOnlineEl.addEventListener('change', function() {
+                        if (this.checked) {
+                            onlinePaymentSection.style.display = 'block';
+                        }
+                    });
+
+                    paymentCashEl.addEventListener('change', function() {
+                        if (this.checked) {
+                            onlinePaymentSection.style.display = 'none';
+                        }
                     });
                 }
-                selectedDateInput.value = dateStr;
-                renderDateStrip(date);
-                updateTimeSlots();
 
-                if(slotsWrapper) slotsWrapper.style.opacity = "1";
-            }, 150);
-        }
-        function renderDateStrip(centerDate){
-        container.innerHTML = '';
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const formatDate = (date) => {
-            const d = new Date(date);
-            return d.getFullYear() + '-' +
-                    String(d.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(d.getDate()).padStart(2, '0');
+                const fp = flatpickr("#flatpickrDate",{
+                    locale: "bg",
+                    minDate: "today",
+                    dateFormat: "Y-m-d",
+                    defaultDate: "today",
+                    positionElement: document.getElementById('calendarAnchor'),
+                    disableMobile: true,
+                    onChange: function(selectedDates, dateStr)
+                    {
+                        updateAll(dateStr);
+                    }
+                });
+                    toastr.options = {
+            "positionClass": "toast-top-left",
+            "closeButton": true
         };
+                function updateAll(dateStr){
+                    if(slotsWrapper) slotsWrapper.style.opacity = "0";
 
-        const selectedStr = formatDate(centerDate);
-        for (let i = -3; i <= 14; i++){
-            let d = new Date(centerDate);
-            d.setDate(centerDate.getDate() + i);
-            if (d < today) continue;
+                    setTimeout(() => {
+                        const date = new Date(dateStr);
+                        if(displayDate)
+                        {
+                            displayDate.innerText = date.toLocaleDateString('bg-BG', {
+                                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+                            });
+                        }
+                        selectedDateInput.value = dateStr;
+                        renderDateStrip(date);
+                        updateTimeSlots();
 
-            const iso = formatDate(d);
-            const isSelected = (iso === selectedStr);
-            let dayName = d.toLocaleDateString('bg-BG', { weekday: 'short' })
-                           .replace('.', '').substring(0, 3).toUpperCase();
+                        if(slotsWrapper) slotsWrapper.style.opacity = "1";
+                    }, 150);
+                }
+                function renderDateStrip(centerDate){
+                container.innerHTML = '';
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const formatDate = (date) => {
+                    const d = new Date(date);
+                    return d.getFullYear() + '-' +
+                            String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                            String(d.getDate()).padStart(2, '0');
+                };
 
-            if (d.toDateString() === today.toDateString()) dayName = "@DomainResources.ResToday";
+                const selectedStr = formatDate(centerDate);
+                for (let i = -3; i <= 14; i++){
+                    let d = new Date(centerDate);
+                    d.setDate(centerDate.getDate() + i);
+                    if (d < today) continue;
 
-            const div = document.createElement('div');
-            div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
-            div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
-            div.onclick = () => {
-                if (iso !== selectedDateInput.value){
+                    const iso = formatDate(d);
+                    const isSelected = (iso === selectedStr);
+                    let dayName = d.toLocaleDateString('bg-BG', { weekday: 'short' })
+                                   .replace('.', '').substring(0, 3).toUpperCase();
+
+                    if (d.toDateString() === today.toDateString()) dayName = "@DomainResources.ResToday";
+
+                    const div = document.createElement('div');
+                    div.className = `date-item ${isSelected ? 'bg-success text-white' : 'bg-white text-dark'}`;
+                    div.innerHTML = `<small>${dayName}</small><strong>${d.getDate()}</strong>`;
+                    div.onclick = () => {
+                        if (iso !== selectedDateInput.value){
+                            fp.setDate(iso);
+                            updateAll(iso);
+                        }
+                    };
+                    container.appendChild(div);
+
+                    if (isSelected){
+                        requestAnimationFrame(() => {
+                            div.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+                        });
+                    }
+                }
+            }
+                window.scrollDays = function(direction){
+                    let d = new Date(selectedDateInput.value);
+                    d.setDate(d.getDate() + (direction === 'next' ? 1 : -1));
+
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (d < today) return;
+                    const iso = d.toISOString().split('T')[0];
                     fp.setDate(iso);
                     updateAll(iso);
+                };
+                $(document).on('click', '.favorite-btn-large', function (e){
+                    e.preventDefault();
+                const isUserLoggedIn = @(User?.Identity?.IsAuthenticated == true ? "true" : "false");
+                    if (!isUserLoggedIn) {
+                        toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResMustBeLoggedIn)));
+                        return;
+                    }
+                    var btn = $(this);
+                    var pId = btn.attr('data-id');
+                    $.ajax({
+                        url: '/Account/ToggleFavorite',
+                        type: 'POST',
+                        data: { placeId: pId },
+                        success: function (response)
+                        {
+                            if (response.success) {
+                                var icon = btn.find('i');
+                                if (response.isFavorite) {
+                                    btn.removeClass('btn-outline-warning').addClass('btn-warning');
+                                    icon.removeClass('bi-star').addClass('bi-star-fill');
+                                    toastr.success(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResAddedToFavorites)));
+                                }
+                                else{
+                                    btn.removeClass('btn-warning').addClass('btn-outline-warning');
+                                    icon.removeClass('bi-star-fill').addClass('bi-star');
+                                    toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResRemovedFromFavorites)));
+                                }
+                            }
+                        },
+                        error: function (xhr){
+                                toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResErrorProcessing)));
+                        }
+                    });
+                });
+                const textArea = document.getElementById('commentArea');
+                const charCounter = document.getElementById('charCounter');
+                if (textArea && charCounter){
+                    textArea.addEventListener('input', function (){
+                        const length = textArea.value.length;
+                        charCounter.textContent = `${length} / 250`;
+                        if (length >= 250){
+                            charCounter.classList.replace('text-muted', 'text-danger');
+                        }
+                        else{
+                            charCounter.classList.replace('text-danger', 'text-muted');
+                        }
+                    });
                 }
-            };
-            container.appendChild(div);
+                document.getElementById('nextDay').onclick = () => scrollDays('next');
+                document.getElementById('prevDay').onclick = () => scrollDays('prev');
+                document.getElementById('calendarTrigger').onclick = () => fp.open();
+                updateAll(selectedDateInput.value);
+            });
+            function updateTimeSlots(){
+                const selectedDateStr = document.getElementById('selectedDate').value;
+                const placeId = "@Model.Place.Id";
+                const url = '@Url.Action("GetOccupiedSlots", "Reservation")';
+                const now = new Date();
+                const todayStr = now.toISOString().split('T')[0];
+                const labels = document.querySelectorAll('.time-slot-label');
+                labels.forEach((label, index) => {
+                    label.style.opacity = "0";
+                    label.style.transform = "translateY(10px)";
 
-            if (isSelected){
-                requestAnimationFrame(() => {
-                    div.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+                    setTimeout(() => {
+                        label.style.transition = "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                        label.style.opacity = label.classList.contains('slot-occupied') ? "0.5" : "1";
+                        label.style.transform = "translateY(0)";
+                    }, index * 30);
+                });
+
+                $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots)
+                {
+                    document.querySelectorAll('input[name="timeSlot"]').forEach(input => {
+                        const label = document.querySelector(`label[for="${input.id}"]`);
+                        const hourValue = input.value;
+                        const isOccupied = occupiedSlots.includes(hourValue);
+                        let isPast = false;
+
+                        if (selectedDateStr === todayStr){
+                            const [hour, minute] = hourValue.split(':');
+                            const slotTime = new Date();
+                            slotTime.setHours(parseInt(hour), parseInt(minute), 0, 0);
+                            if (slotTime < now) isPast = true;
+                        }
+                        if (isOccupied || isPast){
+                            input.disabled = true;
+                            input.checked = false;
+                            label.classList.add('slot-occupied');
+                            label.style.opacity = "0.5";
+                        }
+                        else{
+                            input.disabled = false;
+                            label.classList.remove('slot-occupied');
+                            label.style.opacity = "1";
+                        }
+                    });
                 });
             }
-        }
-    }
-        window.scrollDays = function(direction){
-            let d = new Date(selectedDateInput.value);
-            d.setDate(d.getDate() + (direction === 'next' ? 1 : -1));
-
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            if (d < today) return;
-            const iso = d.toISOString().split('T')[0];
-            fp.setDate(iso);
-            updateAll(iso);
-        };
-        $(document).on('click', '.favorite-btn-large', function (e){
-            e.preventDefault();
-        const isUserLoggedIn = @(User?.Identity?.IsAuthenticated == true ? "true" : "false");
-            if (!isUserLoggedIn) {
-                toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResMustBeLoggedIn)));
-                return;
+            function handleBookingClick(){
+                const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
+                if (!selectedTimeInput){
+                    toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResSelectTime)));
+                    return;
+                }
+                const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
+                if (isUserLoggedIn){
+                    document.getElementById('selectedTimeDisplay').textContent = selectedTimeInput.value;
+                    const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+                    if(bookingModal) bookingModal.hide();
+                    new bootstrap.Modal(document.getElementById('paymentModal')).show();
+                }
+                else{
+                    const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+                    if(bookingModal) bookingModal.hide();
+                    new bootstrap.Modal(document.getElementById('authPromptModal')).show();
+                }
             }
-            var btn = $(this);
-            var pId = btn.attr('data-id');
-            $.ajax({
-                url: '/Account/ToggleFavorite',
-                type: 'POST',
-                data: { placeId: pId },
-                success: function (response)
-                {
-                    if (response.success) {
-                        var icon = btn.find('i');
-                        if (response.isFavorite) {
-                            btn.removeClass('btn-outline-warning').addClass('btn-warning');
-                            icon.removeClass('bi-star').addClass('bi-star-fill');
-                            toastr.success(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResAddedToFavorites)));
-                        } 
-                        else{
-                            btn.removeClass('btn-warning').addClass('btn-outline-warning');
-                            icon.removeClass('bi-star-fill').addClass('bi-star');
-                            toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResRemovedFromFavorites)));
-                        }
-                    }
-                },
-                error: function (xhr){
-                        toastr.error(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResErrorProcessing)));
-                }
-            });
-        });
-        const textArea = document.getElementById('commentArea');
-        const charCounter = document.getElementById('charCounter');
-        if (textArea && charCounter){
-            textArea.addEventListener('input', function (){
-                const length = textArea.value.length;
-                charCounter.textContent = `${length} / 250`;
-                if (length >= 250){
-                    charCounter.classList.replace('text-muted', 'text-danger');
-                }
-                else{
-                    charCounter.classList.replace('text-danger', 'text-muted');
-                }
-            });
-        }
-        document.getElementById('nextDay').onclick = () => scrollDays('next');
-        document.getElementById('prevDay').onclick = () => scrollDays('prev');
-        document.getElementById('calendarTrigger').onclick = () => fp.open();
-        updateAll(selectedDateInput.value);
-    });
-    function updateTimeSlots(){
-        const selectedDateStr = document.getElementById('selectedDate').value;
-        const placeId = "@Model.Place.Id";
-        const url = '@Url.Action("GetOccupiedSlots", "Reservation")';
-        const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
-        const labels = document.querySelectorAll('.time-slot-label');
-        labels.forEach((label, index) => {
-            label.style.opacity = "0";
-            label.style.transform = "translateY(10px)";
 
-            setTimeout(() => {
-                label.style.transition = "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)";
-                label.style.opacity = label.classList.contains('slot-occupied') ? "0.5" : "1";
-                label.style.transform = "translateY(0)";
-            }, index * 30);
-        });
+            function confirmBooking(){
+                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+                if (paymentMethod && paymentMethod.value === 'online') {
+                    return;
+                }
+                const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                if(paymentModal) paymentModal.hide();
+                executeBooking();
+            }
 
-        $.get(`${url}?placeId=${placeId}&date=${selectedDateStr}`, function(occupiedSlots)
+            function executeBooking(){
+                const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
+                const date = document.getElementById('selectedDate').value;
+                const placeId = "@Model.Place.Id";
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '@Url.Action("Book", "Reservation")';
+
+                const data = { 'placeId': placeId, 'date': date, 'timeSlot': selectedTimeInput.value, 'paymentMethod': paymentMethod, '__RequestVerificationToken': token };
+                for (const key in data)
         {
-            document.querySelectorAll('input[name="timeSlot"]').forEach(input => {
-                const label = document.querySelector(`label[for="${input.id}"]`);
-                const hourValue = input.value;
-                const isOccupied = occupiedSlots.includes(hourValue);
-                let isPast = false;
-
-                if (selectedDateStr === todayStr){
-                    const [hour, minute] = hourValue.split(':');
-                    const slotTime = new Date();
-                    slotTime.setHours(parseInt(hour), parseInt(minute), 0, 0);
-                    if (slotTime < now) isPast = true;
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = data[key];
+                    form.appendChild(input);
                 }
-                if (isOccupied || isPast){
-                    input.disabled = true;
-                    input.checked = false;
-                    label.classList.add('slot-occupied');
-                    label.style.opacity = "0.5";
-                }
-                else{
-                    input.disabled = false;
-                    label.classList.remove('slot-occupied');
-                    label.style.opacity = "1";
-                }
-            });
-        });
-    }
-    function handleBookingClick(){
-        const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
-        if (!selectedTimeInput){
-            toastr.info(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.ResSelectTime)));
-            return;
-        }
-        const isUserLoggedIn = @(User.Identity.IsAuthenticated ? "true" : "false");
-        if (isUserLoggedIn){
-            executeBooking();
-        }
-        else{
-            const bookingModal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
-            if(bookingModal) bookingModal.hide();
-            new bootstrap.Modal(document.getElementById('authPromptModal')).show();
-        }
-    }
-
-    function executeBooking(){
-        const selectedTimeInput = document.querySelector('input[name="timeSlot"]:checked');
-        const date = document.getElementById('selectedDate').value;
-        const placeId = "@Model.Place.Id";
-        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
-
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '@Url.Action("Book", "Reservation")';
-
-        const data = { 'placeId': placeId, 'date': date, 'timeSlot': selectedTimeInput.value, '__RequestVerificationToken': token };
-        for (const key in data)
-{
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = data[key];
-            form.appendChild(input);
-        }
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
+                document.body.appendChild(form);
+                form.submit();
+            }
+    </script>
 }

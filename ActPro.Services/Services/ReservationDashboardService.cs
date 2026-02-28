@@ -31,6 +31,7 @@ namespace ActPro.Services
                     Id = r.Id,
                     PlaceId = r.PlaceId ?? 0,
                     PlaceName = r.Place?.Name ?? DomainResources.NoPlace,
+                    PlaceNameEn = r.Place?.NameEn,
                     FirstName = r.FirstName,
                     LastName = r.LastName,
                     Phone = r.Phone,
@@ -58,7 +59,7 @@ namespace ActPro.Services
             context.Reservations.Remove(res);
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"{DomainResources.DeletedReservation} {res.FirstName} {res.LastName} {DomainResources.For} {res.ReservationDate:dd.MM.yyyy}");
+            await auditService.LogAsync("Delete Reservation", "Reservation", id.ToString(), $"Изтрита резервация на {res.FirstName} {res.LastName} за {res.ReservationDate:dd.MM.yyyy}");
 
             return true;
         }
@@ -73,7 +74,7 @@ namespace ActPro.Services
             res.ReservationTime = newTime;
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"{DomainResources.ReservationUpdate} {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
+            await auditService.LogAsync("Edit Reservation", "Reservation", id.ToString(), $"Променен час за {res.FirstName} {res.LastName}: {oldTime} -> {newTime}");
 
             return true;
         }
@@ -113,7 +114,7 @@ namespace ActPro.Services
                     "Manual Reservation",
                     "Reservation",
                     reservation.Id.ToString(),
-                    $"{DomainResources.OwnerManualReservation} {customerNote} {DomainResources.On} {date:dd.MM.yyyy} {DomainResources.In} {time:HH:mm}");
+                    $"Собственик блокира час за {customerNote} на {date:dd.MM.yyyy} в {time:HH:mm}");
 
                 return true;
             }

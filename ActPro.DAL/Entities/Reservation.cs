@@ -2,6 +2,12 @@
 
 namespace ActPro.DAL.Entities;
 
+public enum PaymentMethod
+{
+    Cash = 0,
+    Online = 1
+}
+
 public partial class Reservation
 {
     public int Id { get; set; }
@@ -21,6 +27,8 @@ public partial class Reservation
     public TimeOnly? ReservationTime { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+
+    public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.Cash;
 
     public virtual Place? Place { get; set; }
 

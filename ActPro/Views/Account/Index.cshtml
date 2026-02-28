@@ -1,10 +1,13 @@
-﻿@using ActPro.Models.User
+@using ActPro.Models.User
 @model UserProfileViewModel
 @{
     ViewData["Title"] = DomainResources.Profile;
-    ViewData["SeoTitle"] = "Моят профил - ActPro";
-    ViewData["SeoDescription"] = "Управлявай своя профил в ActPro. Виж любими площадки, кредити, ниво и привилегии. Промени лични данни и настройки.";
-    ViewData["SeoKeywords"] = "профил, акаунт, любими, кредити, ниво, настройки, ActPro";
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    ViewData["SeoTitle"] = isEnglish ? "My Profile - ActPro" : "Моят профил - ActPro";
+    ViewData["SeoDescription"] = isEnglish 
+        ? "Manage your ActPro profile. View favorite facilities, credits, level and privileges. Update personal info and settings."
+        : "Управлявай своя профил в ActPro. Виж любими площадки, кредити, ниво и привилегии. Промени лични данни и настройки.";
+    ViewData["SeoKeywords"] = isEnglish ? "profile, account, favorites, credits, level, settings, ActPro" : "профил, акаунт, любими, кредити, ниво, настройки, ActPro";
 }
 <div class="container mt-5 mb-5">
     <div class="row">
@@ -78,10 +81,10 @@
                                                             <i class="bi bi-image text-muted"></i>
                                                         </div>
                                                     }
-                                                    <span class="fw-bold text-dark">@favorite.Place.Name</span>
+                                                    <span class="fw-bold text-dark">@(isEnglish && !string.IsNullOrEmpty(favorite.Place.NameEn) ? favorite.Place.NameEn : favorite.Place.Name)</span>
                                                 </div>
                                             </td>
-                                            <td>@favorite.Place.City?.Name</td>
+                                            <td>@(isEnglish && favorite.Place.City != null && !string.IsNullOrEmpty(favorite.Place.City.NameEn) ? favorite.Place.City.NameEn : favorite.Place.City?.Name)</td>
                                             <td>
                                                 <span class="badge bg-success-subtle text-dark">
                                                     ⭐ @favorite.Place.Rating.ToString()/5

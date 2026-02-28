@@ -1,4 +1,8 @@
 ﻿@model ActPro.Domain.Models.Areas.EditTimeViewModel
+@{
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    var editPlaceName = isEnglish && !string.IsNullOrEmpty(Model.PlaceNameEn) ? Model.PlaceNameEn : Model.PlaceName;
+}
 
 <div class="modal fade" id="editTimeModal-@Model.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -23,7 +27,7 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">@DomainResources.Place</div>
-                                <div class="text-dark fw-bold" style="font-size: 1rem; line-height: 1.2;">@Model.PlaceName</div>
+                                <div class="text-dark fw-bold" style="font-size: 1rem; line-height: 1.2;">@editPlaceName</div>
                             </div>
                         </div>
 

@@ -1384,7 +1384,7 @@
     <value>List of all reservations</value>
   </data>
   <data name="AuditLogs" xml:space="preserve">
-    <value>Activity Log</value>
+    <value>Audit Logs</value>
   </data>
   <data name="Approve" xml:space="preserve">
     <value>Approve</value>
@@ -2414,5 +2414,14 @@
   </data>
   <data name="ValidationCapacityRange" xml:space="preserve">
     <value>Capacity must be between 1 and 1000!</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="PaymentCash" xml:space="preserve">
+    <value>Pay at venue (cash)</value>
+  </data>
+  <data name="PaymentOnline" xml:space="preserve">
+    <value>Online payment</value>
   </data>
 </root>

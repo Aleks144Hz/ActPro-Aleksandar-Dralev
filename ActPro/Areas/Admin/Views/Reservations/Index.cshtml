@@ -1,7 +1,8 @@
-﻿@using ActPro.Domain.Models.Areas
+@using ActPro.Domain.Models.Areas
 @model ActPro.Domain.Models.Areas.ReservationsIndexViewModel
 @{
     ViewData["Title"] = DomainResources.AllReservations;
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
 }
 
 <div class="container-fluid mt-4">
@@ -27,17 +28,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var res in Model.Reservations)
-                            {
-                                <tr>
-                                    <td data-label="@DomainResources.Place.ToUpper()">
-                                        <div class="fw-bold">
-                                            <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
-                                               class="text-decoration-none text-dark hover-success">
-                                                @res.PlaceName
-                                            </a>
-                                        </div>
-                                    </td>
+                        @foreach (var res in Model.Reservations)
+                        {
+                            var resPlaceName = isEnglish && !string.IsNullOrEmpty(res.PlaceNameEn) ? res.PlaceNameEn : res.PlaceName;
+                            <tr>
+                                <td data-label="@DomainResources.Place.ToUpper()">
+                                    <div class="fw-bold">
+                                        <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
+                                           class="text-decoration-none text-dark hover-success">
+                                            @resPlaceName
+                                        </a>
+                                    </div>
+                                </td>
                                     <td data-label="@DomainResources.CustomerLabel.ToUpper()">@res.FirstName @res.LastName</td>
                                     <td data-label="@DomainResources.PhoneNumber.ToUpper()">@res.Phone</td>
                                     <td data-label="@DomainResources.DateAndTime.ToUpper()">
@@ -64,6 +66,7 @@
                                         {
                                             Id = res.Id,
                                             PlaceName = res.PlaceName,
+                                            PlaceNameEn = res.PlaceNameEn,
                                             CustomerName = res.FullName,
                                             ReservationTime = res.ReservationTime?.ToString("HH:mm") ?? ""
                                         })

@@ -203,8 +203,10 @@ namespace ActPro.Services
                 {
                     Id = r.Id,
                     PlaceId = (int)r.PlaceId,
-                    PlaceName = r.Place.Name,
+                    PlaceName = r.Place.Name ?? string.Empty,
+                    PlaceNameEn = r.Place.NameEn,
                     CityName = r.Place.City.Name,
+                    CityNameEn = r.Place.City.NameEn,
                     ReservationDate = r.ReservationDate,
                     ReservationTime = r.ReservationTime,
                     ImageUrl = r.Place.PlaceImages.OrderBy(i => i.Id).FirstOrDefault().ImageUrl
@@ -285,7 +287,8 @@ namespace ActPro.Services
                 {
                     Id = c.Id,
                     PlaceId = c.PlaceId,
-                    PlaceName = c.Place.Name,
+                    PlaceName = c.Place.Name ?? string.Empty,
+                    PlaceNameEn = c.Place.NameEn,
                     CommentText = c.CommentText,
                     Rating = c.Rating,
                     CreatedAt = (DateTime)c.CreatedAt

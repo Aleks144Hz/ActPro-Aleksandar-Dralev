@@ -44,10 +44,18 @@ namespace ActPro.Services.Services
                 {
                     Id = p.Id,
                     Name = p.Name ?? string.Empty,
+                    NameEn = p.NameEn,
+                    Description = p.Description,
+                    DescriptionEn = p.DescriptionEn,
                     CityName = p.City?.Name ?? DomainResources.NoCities,
+                    CityNameEn = p.City?.NameEn,
                     ActivityName = p.Activity?.Name ?? DomainResources.NoActivities,
+                    ActivityNameEn = p.Activity?.NameEn,
                     Price = p.Price ?? 0,
-                    IsApproved = p.IsApproved
+                    IsApproved = p.IsApproved,
+                    IsOutdoor = p.IsOutdoor ?? false,
+                    CityId = p.CityId ?? 0,
+                    ActivityId = p.ActivityId ?? 0
                 }).ToList(),
 
                 CityOptions = cities,
@@ -57,8 +65,10 @@ namespace ActPro.Services.Services
                 {
                     Id = p.Id,
                     Name = p.Name ?? string.Empty,
+                    NameEn = p.NameEn,
                     Address = p.Address,
                     Description = p.Description,
+                    DescriptionEn = p.DescriptionEn,
                     Price = p.Price ?? 0,
                     Capacity = p.Capacity.GetValueOrDefault(),
                     IsOutdoor = p.IsOutdoor ?? false,
@@ -78,7 +88,8 @@ namespace ActPro.Services.Services
                 PlaceSchedules = places.ToDictionary(p => p.Id, p => new PlaceScheduleViewModel
                 {
                     PlaceId = p.Id,
-                    PlaceName = p.Name,
+                    PlaceName = p.Name ?? string.Empty,
+                    PlaceNameEn = p.NameEn,
                     Closures = p.PlaceClosures?.Select(c => new ClosureViewModel
                     {
                         Id = c.Id,
@@ -123,7 +134,7 @@ namespace ActPro.Services.Services
                 }
             }
 
-            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{DomainResources.CreatedPlace}: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
             return true;
         }
 
@@ -148,7 +159,7 @@ namespace ActPro.Services.Services
                 await ProcessImagesRawSql(place.Id, images);
             }
 
-            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"{DomainResources.UpdatedPlace}: {place.Name}");
+            await auditService.LogAsync("Edit Place", "Place", place.Id.ToString(), $"Променени данни за: {place.Name}");
             return true;
         }
 
@@ -184,7 +195,7 @@ namespace ActPro.Services.Services
             context.Places.Remove(place);
             await context.SaveChangesAsync();
 
-            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"{DomainResources.DeletedPlace}: {place.Name}");
+            await auditService.LogAsync("Delete Place", "Place", id.ToString(), $"Изтрит обект: {place.Name}");
             return true;
         }
 
@@ -205,7 +216,7 @@ namespace ActPro.Services.Services
             }
 
             await context.SaveChangesAsync();
-            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"{DomainResources.ApprovedPlace}: {place.Name}");
+            await auditService.LogAsync("Approve Place", "Place", id.ToString(), $"Одобрен обект: {place.Name}");
             return true;
         }
 
@@ -260,7 +271,7 @@ namespace ActPro.Services.Services
             {
                 context.PlaceClosures.AddRange(closuresToAdd);
                 await context.SaveChangesAsync();
-                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"{DomainResources.PlaceClosed} {start:dd.MM.yyyy} {DomainResources.To} {end:dd.MM.yyyy}. {DomainResources.Reason}: {reason}");
+                await auditService.LogAsync("Add Closure", "Place", placeId.ToString(), $"Заключен период от {start:dd.MM.yyyy} до {end:dd.MM.yyyy}. ПРИЧИНА: {reason}");
             }
             return true;
         }
@@ -273,7 +284,7 @@ namespace ActPro.Services.Services
             DateTime closedDate = closure.ClosureDate;
             context.PlaceClosures.Remove(closure);
             await context.SaveChangesAsync();
-            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"{DomainResources.PlaceOpened} {closedDate:dd.MM.yyyy} {DomainResources.PlaceId}: {closureId}");
+            await auditService.LogAsync("Remove Closure", "Place", placeId.ToString(), $"Отключен дата {closedDate:dd.MM.yyyy} за обект с ID: {closureId}");
             return true;
         }
     }

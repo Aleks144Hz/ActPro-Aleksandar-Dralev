@@ -66,7 +66,7 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
-                await auditService.LogAsync("User Login", "User", user.Id, DomainResources.UserLoggedInSuccessfully);
+                await auditService.LogAsync("User Login", "User", user.Id, "Потребителят влезе в системата.");
                 TempData["Success"] = DomainResources.Welcome;
                 return RedirectToAction("Index", "Home");
             }
@@ -125,7 +125,7 @@ namespace ActPro.Controllers
                     var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
                     await emailSender.SendEmailAsync(user.Email, DomainResources.AccountApproved, confirmationLink);
                     TempData["Success"] = DomainResources.SuccsessfullRegistration;
-                    await auditService.LogAsync("Create User", "User", user.Id, DomainResources.NewUserRegistered);
+                    await auditService.LogAsync("Create User", "User", user.Id, "Нов потребител се регистрира");
                     return RedirectToAction("RegisterConfirmation", new { email = model.Email });
                 }
 
@@ -294,7 +294,7 @@ namespace ActPro.Controllers
             if (result.Succeeded)
             {
                 TempData["Success"] = DomainResources.SuccessfulUserEdit;
-                await auditService.LogAsync("Update Settings", "User", userId, DomainResources.AccountInfoUpadate);
+                await auditService.LogAsync("Update Settings", "User", userId, "Потребителят обнови профилните си данни.");
             }
 
             return RedirectToAction("Settings");
@@ -318,7 +318,7 @@ namespace ActPro.Controllers
 
             if (result.Succeeded)
             {
-                await auditService.LogAsync("Update Settings", "User", userId, DomainResources.UserUpdatePasswordSuccess);
+                await auditService.LogAsync("Update Settings", "User", userId, "Потребителят смени паролата си успешно.");
                 TempData["Success"] = DomainResources.PasswordUpdatedSuccessfully;
                 return RedirectToAction("Settings");
             }
@@ -367,7 +367,7 @@ namespace ActPro.Controllers
                 await emailSender.SendProfileDeletedAsync(user.Email, user.FirstName);
                 await accountService.LogoutAsync();
                 TempData["Success"] = DomainResources.SuccessfulDeletedAccount;
-                await auditService.LogAsync("Delete User", "User", userId, DomainResources.UserDeleteAccountSuccess);
+                await auditService.LogAsync("Delete User", "User", userId, "Потребителят изтри профила си");
                 return RedirectToAction("Index", "Home");
             }
 

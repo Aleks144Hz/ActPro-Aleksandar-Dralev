@@ -1,10 +1,13 @@
-﻿@using ActPro.Domain.Models.User
+@using ActPro.Domain.Models.User
 @model UserReservationsViewModel
 @{
     ViewData["Title"] = DomainResources.MyReservations;
-    ViewData["SeoTitle"] = "Моите резервации - ActPro";
-    ViewData["SeoDescription"] = "Виж всички свои резервации на спортни площадки и съоръжения. Управлявай предстоящи и минали резервации, отмяна или промяна на часове.";
-    ViewData["SeoKeywords"] = "моите резервации, управление, отмяна, промяна, спортни площадки";
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    ViewData["SeoTitle"] = isEnglish ? "My Reservations - ActPro" : "Моите резервации - ActPro";
+    ViewData["SeoDescription"] = isEnglish 
+        ? "View all your sports facility reservations. Manage upcoming and past reservations, cancel or change times."
+        : "Виж всички свои резервации на спортни площадки и съоръжения. Управлявай предстоящи и минали резервации, отмяна или промяна на часове.";
+    ViewData["SeoKeywords"] = isEnglish ? "my reservations, management, cancel, change, sports facilities" : "моите резервации, управление, отмяна, промяна, спортни площадки";
 }
 <div class="container mt-4 min-vh-100">
     <div class="row justify-content-center">
@@ -49,6 +52,8 @@
                         var resTime = res.ReservationTime ?? new TimeOnly(0, 0);
                         var reservationFullDateTime = resDate.ToDateTime(resTime);
                         var isPast = reservationFullDateTime < DateTime.Now;
+                        var resPlaceName = isEnglish && !string.IsNullOrEmpty(res.PlaceNameEn) ? res.PlaceNameEn : res.PlaceName;
+                        var resCityName = isEnglish && !string.IsNullOrEmpty(res.CityNameEn) ? res.CityNameEn : res.CityName;
 
                         <div class="col-12 res-card" data-status="@(isPast ? "past" : "upcoming")">
                             <div class="card border-0 shadow-sm rounded-4 overflow-hidden position-relative transition-hover @(isPast ? "bg-light-subtle" : "")">
@@ -59,7 +64,7 @@
                                         <div class="col-md-2 d-none d-md-block">
                                             @if (!string.IsNullOrEmpty(res.ImageUrl))
                                             {
-                                                <img src="@res.ImageUrl" class="img-fluid search-card-img" alt="@res.PlaceName">
+                                                <img src="@res.ImageUrl" class="img-fluid search-card-img" alt="@resPlaceName">
                                             }
                                             else
                                             {
@@ -81,12 +86,12 @@
                                             <h5 class="mb-1 fw-bold">
                                                 <a asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
                                                    class="text-decoration-none text-dark hover-success">
-                                                    @res.PlaceName
+                                                    @resPlaceName
                                                 </a>
                                             </h5>
                                             <div class="d-flex flex-wrap gap-2 text-muted small">
                                                 <span><i class="bi bi-clock me-1 text-success"></i>@res.ReservationTime?.ToString("HH:mm")</span>
-                                                <span><i class="bi bi-geo-alt me-1 text-danger"></i>@res.CityName</span>
+                                                <span><i class="bi bi-geo-alt me-1 text-danger"></i>@resCityName</span>
                                             </div>
                                         </div>
 

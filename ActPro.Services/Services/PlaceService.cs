@@ -49,7 +49,7 @@ namespace ActPro.Services.Services
                 }
             }
 
-            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"{DomainResources.CreatedPlace}: {place.Name}");
+            await auditService.LogAsync("Create Place", "Place", place.Id.ToString(), $"Създаден обект: {place.Name}");
             return true;
         }
     }

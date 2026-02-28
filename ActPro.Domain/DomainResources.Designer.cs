@@ -412,7 +412,7 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Логове.
+        ///   Looks up a localized string similar to Отчет.
         /// </summary>
         public static string AuditLogs {
             get {
@@ -3524,6 +3524,33 @@ namespace ActPro.Domain {
         public static string PasswordUpdatedSuccessfully {
             get {
                 return ResourceManager.GetString("PasswordUpdatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to На място (в брой).
+        /// </summary>
+        public static string PaymentCash {
+            get {
+                return ResourceManager.GetString("PaymentCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начин на плащане.
+        /// </summary>
+        public static string PaymentMethod {
+            get {
+                return ResourceManager.GetString("PaymentMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Онлайн плащане.
+        /// </summary>
+        public static string PaymentOnline {
+            get {
+                return ResourceManager.GetString("PaymentOnline", resourceCulture);
             }
         }
         

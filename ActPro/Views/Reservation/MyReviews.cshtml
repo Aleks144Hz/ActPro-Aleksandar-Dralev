@@ -1,7 +1,8 @@
-﻿@using ActPro.Domain.Models.Reservation
+@using ActPro.Domain.Models.Reservation
 @model IEnumerable<UserReviewItemViewModel>
 @{
     ViewData["Title"] = DomainResources.MyReviews;
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
 }
 
 <div class="container py-5">
@@ -25,6 +26,7 @@
         {
             @foreach (var review in Model)
             {
+                var reviewPlaceName = isEnglish && !string.IsNullOrEmpty(review.PlaceNameEn) ? review.PlaceNameEn : review.PlaceName;
                 <div class="col-12 col-xl-6">
                     <div class="card h-100 border-0 shadow-sm transition-hover" style="border-radius: 20px;">
                         <div class="card-body p-4">
@@ -37,7 +39,7 @@
                                         <h5 class="fw-bold mb-0 text-truncate" style="max-width: 400px;">
                                         <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@review.PlaceId"
                                            class="text-decoration-none text-dark hover-success">
-                                                @review.PlaceName
+                                                @reviewPlaceName
                                             </a>
                                         </h5>
                                         <small class="text-muted">@review.CreatedAt</small>

@@ -52,18 +52,20 @@ namespace ActPro.Services.Services
                     model.EditPlaces[place.Id] = new PlaceFormViewModel
                     {
                         Id = place.Id,
-                        Name = place.Name,
+                        Name = place.Name ?? "",
+                        NameEn = place.NameEn,
                         Address = place.Address ?? "",
-                        Price = place.Price,
-                        Capacity = place.Capacity,
+                        Price = place.Price ?? 0,
+                        Capacity = place.Capacity ?? 0,
                         Description = place.Description,
+                        DescriptionEn = place.DescriptionEn,
                         IsOutdoor = place.IsOutdoor,
                         CityId = place.CityId ?? 0,
                         ActivityId = place.ActivityId ?? 0,
                         CityOptions = cityOptions,
                         ActivityOptions = activityOptions,
-                        OwnerId = place.OwnerId,
-                        Rating = place.Rating,
+                        OwnerId = place.OwnerId ?? "",
+                        Rating = place.Rating ?? 0,
                         ExistingImages = place.PlaceImages?.Select(img => new PlaceImageViewModel
                         {
                             Id = img.Id,
@@ -74,7 +76,8 @@ namespace ActPro.Services.Services
                     model.PlaceSchedules[place.Id] = new PlaceScheduleViewModel
                     {
                         PlaceId = place.Id,
-                        PlaceName = place.Name,
+                        PlaceName = place.Name ?? "",
+                        PlaceNameEn = place.NameEn,
                         Closures = place.PlaceClosures?.Select(c => new ClosureViewModel
                         {
                             Id = c.Id,

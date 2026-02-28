@@ -1,4 +1,4 @@
-﻿namespace ActPro.Domain.Models.Areas
+namespace ActPro.Domain.Models.Areas
 {
     public class ReservationsIndexViewModel
     {
@@ -10,6 +10,7 @@
         public int Id { get; set; }
         public int PlaceId { get; set; }
         public string? PlaceName { get; set; }
+        public string? PlaceNameEn { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string FullName => $"{FirstName} {LastName}";
@@ -22,6 +23,7 @@
     {
         public int Id { get; set; }
         public string? PlaceName { get; set; }
+        public string? PlaceNameEn { get; set; }
         public string? CustomerName { get; set; }
         public string? ReservationTime { get; set; }
     }

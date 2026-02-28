@@ -1,7 +1,8 @@
-﻿@using ActPro.Domain.Models.Areas
+@using ActPro.Domain.Models.Areas
 @model PlacesIndexViewModel
 @{
     ViewData["Title"] = DomainResources.Places;
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
 }
 
 <div class="container-fluid mt-4">
@@ -31,16 +32,18 @@
                     <tbody>
                         @foreach (var item in Model.Places)
                         {
+                            var placeName = isEnglish && !string.IsNullOrEmpty(item.NameEn) ? item.NameEn : item.Name;
+                            var placeCity = isEnglish && !string.IsNullOrEmpty(item.CityNameEn) ? item.CityNameEn : item.CityName;
                             <tr>
                                 <td data-label="@DomainResources.Place.ToUpper()">
                                     <strong>
                                         <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@item.Id"
                                            class="text-decoration-none text-dark hover-success">
-                                            @item.Name
+                                            @placeName
                                         </a>
                                     </strong>
                                 </td>
-                                <td data-label="@DomainResources.City.ToUpper()">@item.CityName</td>
+                                <td data-label="@DomainResources.City.ToUpper()">@placeCity</td>
                                 <td data-label ="@DomainResources.ActivityType.ToUpper()">@item.ActivityName</td>
                                 <td data-label="@DomainResources.Price.ToUpper()" data-sort="@item.Price">
                                     @item.Price @DomainResources.CurrencyEuro@DomainResources.PerHour
@@ -67,8 +70,8 @@
                                             <span style="font-style: normal;">@DomainResources.Edit</span>
                                         </button>
                                         <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
-                                            <button type="button" class="bi bi-trash btn btn-sm btn-danger confirm-action"
-                                                    data-message="@DomainResources.ConfirmDeletePlace @item.Name?">
+                                        <button type="button" class="bi bi-trash btn btn-sm btn-danger confirm-action"
+                                                data-message="@DomainResources.ConfirmDeletePlace @placeName?">
                                                 @DomainResources.Delete
                                             </button>
                                         </form>

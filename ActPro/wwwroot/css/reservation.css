@@ -213,3 +213,26 @@ input[name="timeSlot"]:checked + .time-slot-label {
     color: #dc3545 !important;
     opacity: 0.6;
 }
+
+.payment-option {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.payment-option:hover {
+    border-color: var(--bs-success) !important;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.payment-option:has(input:checked) {
+    border-color: var(--bs-success) !important;
+    background-color: rgba(25, 135, 84, 0.1);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.payment-option input[type="radio"] {
+    display: none;
+}

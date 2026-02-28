@@ -1,9 +1,12 @@
-﻿@model ActPro.Domain.Models.NewsViewModel
+@model ActPro.Domain.Models.NewsViewModel
 @{
     ViewData["Title"] = DomainResources.News;
-    ViewData["SeoTitle"] = "Новини и статии за спорта - ActPro";
-    ViewData["SeoDescription"] = "Прочети най-новите новини и статии за спорта, фитнеса и здравословния начин на живот. Намери полезна информация за тренировки, хранене и мотивация в блога на ActPro.";
-    ViewData["SeoKeywords"] = "новини, спорт, фитнес, здраве, тренировки, блог, статии";
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
+    ViewData["SeoTitle"] = isEnglish ? "News and articles about sports - ActPro" : "Новини и статии за спорта - ActPro";
+    ViewData["SeoDescription"] = isEnglish 
+        ? "Read the latest news and articles about sports, fitness and healthy lifestyle. Find useful information about training, nutrition and motivation in the ActPro blog."
+        : "Прочети най-новите новини и статии за спорта, фитнеса и здравословния начин на живот. Намери полезна информация за тренировки, хранене и мотивация в блога на ActPro.";
+    ViewData["SeoKeywords"] = isEnglish ? "news, sports, fitness, health, training, blog, articles" : "новини, спорт, фитнес, здраве, тренировки, блог, статии";
 }
 <section class="news-page py-5 bg-light-custom">
     <div class="container">
@@ -28,11 +31,13 @@
                 {
                     var imageUrl = string.IsNullOrEmpty(item.ImageURL) ? "default.jpg" : item.ImageURL;
                     var dateStr = item.CreatedAt.ToString("dd.MM.yyyy");
-                    var dataAttrs = $"data-id=\"{item.Id}\" data-title=\"{item.Title}\" data-content=\"{item.Content}\" data-img=\"{imageUrl}\" data-date=\"{dateStr}\" data-likes=\"{item.Likes}\" data-is-liked=\"{item.IsLikedByCurrentUser.ToString().ToLower()}\"";
+                    var itemTitle = isEnglish && !string.IsNullOrEmpty(item.TitleEn) ? item.TitleEn : item.Title;
+                    var itemContent = isEnglish && !string.IsNullOrEmpty(item.ContentEn) ? item.ContentEn : item.Content;
+                    var dataAttrs = $"data-id=\"{item.Id}\" data-title=\"{itemTitle}\" data-content=\"{System.Web.HttpUtility.JavaScriptStringEncode(itemContent)}\" data-img=\"{imageUrl}\" data-date=\"{dateStr}\" data-likes=\"{item.Likes}\" data-is-liked=\"{item.IsLikedByCurrentUser.ToString().ToLower()}\"";
                     <div class="col-lg-4 col-md-6">
                         <article class="news-card">
                             <div class="card-image-wrapper js-view-news" @Html.Raw(dataAttrs)>
-                                <img src="/images/news/@imageUrl" alt="@item.Title" loading="lazy">
+                                <img src="/images/news/@imageUrl" alt="@itemTitle" loading="lazy">
                                 <div class="date-badge">
                                     <span class="day">@item.CreatedAt.Day</span>
                                     <span class="month">@item.CreatedAt.ToString("MMM")</span>
@@ -44,9 +49,9 @@
 
                             <div class="card-content">
                                 <h3 class="card-title-link js-view-news" @Html.Raw(dataAttrs)>
-                                    @item.Title
+                                    @itemTitle
                                 </h3>
-                                <p class="card-excerpt">@item.Content</p>
+                                <p class="card-excerpt">@itemContent</p>
 
                                 <div class="card-footer-custom">
                                     <button class="btn-read-more js-view-news" @Html.Raw(dataAttrs)>
@@ -55,7 +60,7 @@
 
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <button class="btn-delete-icon" onclick="NewsApp.deleteConfirm('@item.Id', '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(item.Title))')">
+                                        <button class="btn-delete-icon" onclick="NewsApp.deleteConfirm('@item.Id', '@Html.Raw(System.Web.HttpUtility.JavaScriptStringEncode(itemTitle))')">
                                             <i class="bi bi-trash3"></i>
                                         </button>
                                     }

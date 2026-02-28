@@ -1386,7 +1386,7 @@
     <value>Списък с всички резервации</value>
   </data>
   <data name="AuditLogs" xml:space="preserve">
-    <value>Логове</value>
+    <value>Отчет</value>
   </data>
   <data name="Approve" xml:space="preserve">
     <value>Одобри</value>
@@ -2416,5 +2416,14 @@
   </data>
   <data name="ValidationCapacityRange" xml:space="preserve">
     <value>Капацитетът трябва да е между 1 и 1000 души!</value>
+  </data>
+  <data name="PaymentMethod" xml:space="preserve">
+    <value>Начин на плащане</value>
+  </data>
+  <data name="PaymentCash" xml:space="preserve">
+    <value>На място (в брой)</value>
+  </data>
+  <data name="PaymentOnline" xml:space="preserve">
+    <value>Онлайн плащане</value>
   </data>
 </root>

@@ -1,3 +1,4 @@
+using System.Threading;
 using ActPro.DAL;
 using ActPro.Domain;
 using ActPro.Services;
@@ -23,7 +24,7 @@ namespace ActPro.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot, string placeName)
+        public async Task<IActionResult> Book(int placeId, DateTime date, string timeSlot, string placeName, string paymentMethod = "cash")
         {
             var user = await userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
@@ -32,6 +33,15 @@ namespace ActPro.Controllers
                 TempData["Error"] = DomainResources.ReservationNeedApproval;
                 return RedirectToAction("Index", new { id = placeId });
             }
+
+            if (paymentMethod == "online")
+            {
+                var isEnglish = Request.Cookies[".AspNetCore.Culture"]?.Contains("en") == true 
+                              || Thread.CurrentThread.CurrentUICulture.Name == "en";
+                TempData["Error"] = isEnglish ? "Coming soon! Online payment is not active yet." : "Очаквайте скоро! Онлайн плащането все още не е активно.";
+                return RedirectToAction("Index", new { id = placeId });
+            }
+
             var result = await reservationService.BookAsync(placeId, date, timeSlot, user);
 
             if (result.success)
@@ -57,7 +67,7 @@ namespace ActPro.Controllers
                 {
 
                 }
-                await auditService.LogAsync("Create Reservation", "User", user.Id, DomainResources.UserMadeReservation);
+                await auditService.LogAsync("Create Reservation", "User", user.Id, "Потребителят направи резервация.");
                 return RedirectToAction("Confirmation", new { id = placeId });
             }
 
@@ -81,7 +91,7 @@ namespace ActPro.Controllers
 
             if (result.success)
             {
-                await auditService.LogAsync("Cancel Reservation", "User", userId, DomainResources.UserDeletedReservation);
+                await auditService.LogAsync("Cancel Reservation", "User", userId, "Потребителят отказа резервация.");
 
                 if (reservationToDelete != null)
                 {
@@ -122,7 +132,7 @@ namespace ActPro.Controllers
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await auditService.LogAsync("Add Review", "User", userId, DomainResources.UserMadeComment);
+                await auditService.LogAsync("Add Review", "User", userId, "Потребителят добави коментар.");
             }
             else TempData["Error"] = result.message;
 
@@ -152,7 +162,7 @@ namespace ActPro.Controllers
             if (result.success)
             {
                 TempData["Success"] = result.message;
-                await auditService.LogAsync("Delete Review", "User", userId, DomainResources.UserDeletedComment);
+                await auditService.LogAsync("Delete Review", "User", userId, "Потребителят изтри коментар.");
             }
 
             if (Request.Headers["Referer"].ToString().Contains("MyReviews")) return RedirectToAction("MyReviews");

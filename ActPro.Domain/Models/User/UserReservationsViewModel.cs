@@ -1,4 +1,4 @@
-﻿namespace ActPro.Domain.Models.User
+namespace ActPro.Domain.Models.User
 {
     public class UserReservationsViewModel
     {
@@ -14,8 +14,10 @@
         public int Id { get; set; }
         public int PlaceId { get; set; }
         public string PlaceName { get; set; } = string.Empty;
+        public string? PlaceNameEn { get; set; }
         public string? ImageUrl { get; set; }
         public string? CityName { get; set; }
+        public string? CityNameEn { get; set; }
         public DateOnly? ReservationDate { get; set; }
         public TimeOnly? ReservationTime { get; set; }
 

@@ -1,7 +1,8 @@
-﻿@using ActPro.Domain.Models.Areas
+@using ActPro.Domain.Models.Areas
 @model OwnerDashboardViewModel
 @{
     ViewData["Title"] = DomainResources.BusinessPanel;
+    var isEnglish = System.Threading.Thread.CurrentThread.CurrentUICulture.Name == "en";
 }
 <div class="container-fluid mt-4">
     <div class="row g-3 mb-4">
@@ -13,19 +14,22 @@
                 <div class="card-body pt-0 px-2" style="max-height: 300px; overflow-y: auto;">
                     @foreach (var item in Model.MyPlaces)
                     {
+                        var placeName = isEnglish && !string.IsNullOrEmpty(item.NameEn) ? item.NameEn : (item.Name ?? "");
+                        var placeCity = isEnglish && item.City != null && !string.IsNullOrEmpty(item.City.NameEn) ? item.City.NameEn : (item.City?.Name ?? "");
+                        var placeActivity = isEnglish && item.Activity != null && !string.IsNullOrEmpty(item.Activity.NameEn) ? item.Activity.NameEn : (item.Activity?.Name ?? "");
                         <div class="place-item px-2 pb-1 pt-0 border-bottom mb-1">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="fw-bold small" style="line-height: 1.2;">
                                     <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@item.Id"
                                        class="text-decoration-none text-dark hover-success">
-                                        @item.Name
+                                        @placeName
                                     </a>
                                 </span>
                                 <div class="btn-group gap-1">
                                 <button class="btn btn-outline-success btn-sm border-0 p-1" title="@DomainResources.FillTimeManually"
                                             data-bs-toggle="modal" data-bs-target="#manualReservationModal-@item.Id">
-                                        <i class="bi bi-plus-circle-fill"></i>
-                                    </button>
+                                    <i class="bi bi-plus-circle-fill"></i>
+                                </button>
                                 <button class="btn btn-outline-primary btn-sm border-0 p-1" title="@DomainResources.EditTimeHour"
                                             data-bs-toggle="modal" data-bs-target="#editPlaceModal-@item.Id">
                                         <i class="bi bi-pencil-square"></i>
@@ -38,11 +42,11 @@
                             </div>
                             <div class="text-muted d-flex align-items-center" style="font-size: 0.8rem; margin-top: -3px;">
                                 <span class="me-2">
-                                    <i class="bi bi-geo-alt me-1"></i>@item.City?.Name
+                                    <i class="bi bi-geo-alt me-1"></i>@placeCity
                                 </span>
                                 <span class="mx-1">|</span>
                                 <span class="ms-2 text-truncate">
-                                    <i class="fas fa-running me-1"></i>@item.Activity?.Name
+                                    <i class="fas fa-running me-1"></i>@placeActivity
                                 </span>
                                 <span class="mx-1">|</span>
                                 <span class="ms-2 fw-bold text-success">
@@ -98,12 +102,13 @@
                             {
                                 @foreach (var res in Model.RecentReservations)
                                 {
+                                    var resPlaceName = isEnglish && !string.IsNullOrEmpty(res.Place?.NameEn) ? res.Place.NameEn : (res.Place?.Name ?? "");
                                     <tr>
                                         <td data-label="@DomainResources.Place.ToUpper()">
                                             <div class="fw-bold">
                                                 <a asp-area="" asp-controller="Reservation" asp-action="Index" asp-route-id="@res.PlaceId"
                                                    class="text-decoration-none text-dark hover-success">
-                                                    @res.Place?.Name
+                                                    @resPlaceName
                                                 </a>
                                             </div>
                                         </td>
@@ -141,11 +146,12 @@
 </div>
 @foreach (var item in Model.MyPlaces)
 {
+    var placeName = isEnglish && !string.IsNullOrEmpty(item.NameEn) ? item.NameEn : (item.Name ?? "");
     <div class="modal fade" id="manualReservationModal-@item.Id" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>@DomainResources.ManualReservation - @item.Name</h5>
+                    <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>@DomainResources.ManualReservation - @placeName</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form asp-area="Owner" asp-controller="Reservations" asp-action="CreateManual" method="post">
@@ -201,6 +207,7 @@
         {
             Id = res.Id,
             PlaceName = res.Place?.Name,
+            PlaceNameEn = res.Place?.NameEn,
             CustomerName = $"{res.FirstName} {res.LastName}",
             ReservationTime = res.ReservationTime?.ToString("HH:mm") ?? ""
         })
