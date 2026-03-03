@@ -25,22 +25,22 @@
                     <tbody>
                         @foreach (var user in Model.Users)
                         {
-                            <tr>
+                            <tr class="text-center">
                                 <td data-label="@DomainResources.FirstName.ToUpper()"> <div class="fw-bold">@user.FullName</div></td>
                                 <td data-label="@DomainResources.Email.ToUpper()"> <div class="fw-bold">@user.Email</div></td>
                                 <td data-label="@DomainResources.PhoneNumber.ToUpper()"> <div class="fw-bold">@user.PhoneNumber</div></td>
                                 <td data-label="@DomainResources.Actions.ToUpper()">
                                     @if (user.IsAdmin)
                                     {
-                                        <span class="badge bg-danger">Admin</span>
+                                        <span class="badge bg-danger">@DomainResources.Admin</span>
                                     }
                                     @if (user.IsOwner)
                                     {
-                                        <span class="badge bg-warning text-dark">Owner</span>
+                                        <span class="badge bg-warning text-dark">@DomainResources.Owner</span>
                                     }
                                     @if (!user.IsAdmin && !user.IsOwner)
                                     {
-                                        <span class="badge bg-secondary">User</span>
+                                        <span class="badge bg-secondary">@DomainResources.User</span>
                                     }
                                 </td>
                                 <td class="text-center">
@@ -48,13 +48,13 @@
                                         <form asp-action="ToggleAdmin" method="post" class="d-inline">
                                             <input type="hidden" name="userId" value="@user.Id" />
                                             <button type="submit" class="btn btn-sm @(user.IsAdmin ? "btn-outline-danger" : "btn-outline-success")">
-                                                <i class="bi @(user.IsAdmin ? "bi-person-dash" : "bi-person-check")"></i> Admin
+                                                <i class="bi @(user.IsAdmin ? "bi-person-dash" : "bi-person-check")"></i> @DomainResources.Admin
                                             </button>
                                         </form>
                                         <form asp-action="ToggleOwner" method="post" class="d-inline">
                                             <input type="hidden" name="userId" value="@user.Id" />
                                             <button type="submit" class="btn btn-sm @(user.IsOwner ? "btn-outline-danger" : "btn-outline-primary")">
-                                                <i class="bi bi-shop"></i> @(user.IsOwner ? DomainResources.RemoveOwner : DomainResources.MakeOwner)
+                                                <i class="bi bi-shop"></i> @DomainResources.Owner
                                             </button>
                                         </form>
                                         <form asp-action="BanUser" asp-route-userId="@user.Id" method="post" class="d-inline">

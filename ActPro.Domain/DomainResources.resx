@@ -828,7 +828,7 @@
     <value>Здравейте</value>
   </data>
   <data name="ReservationConfirmedText" xml:space="preserve">
-    <value>Вашата резервация беше успешно потворена.</value>
+    <value>Вашата резервация беше успешно потвърдена.</value>
   </data>
   <data name="ReservationDetailsText" xml:space="preserve">
     <value>Детайли за посещението:</value>
@@ -1193,11 +1193,8 @@
   <data name="RegistrationConfirmation" xml:space="preserve">
     <value>Потвърждение на регистрацията</value>
   </data>
-  <data name="RemoveOwner" xml:space="preserve">
-    <value>Махни Owner</value>
-  </data>
-  <data name="MakeOwner" xml:space="preserve">
-    <value>Направи Owner</value>
+  <data name="Owner" xml:space="preserve">
+    <value>Собственик</value>
   </data>
   <data name="BanUserWarning" xml:space="preserve">
     <value>ВНИМАНИЕ: Това ще добави имейла и телефона в черен списък и ще изтрие профила!</value>
@@ -1563,7 +1560,7 @@
     <value>Създаване на статия</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Задание</value>
+    <value>Заглавие</value>
   </data>
   <data name="TitlePlaceholder" xml:space="preserve">
     <value>Въведете заглавието...</value>
@@ -2373,10 +2370,10 @@
     <value>/ч</value>
   </data>
   <data name="LanguageBg" xml:space="preserve">
-    <value>БГ</value>
+    <value>Български</value>
   </data>
   <data name="LanguageEn" xml:space="preserve">
-    <value>EN</value>
+    <value>English</value>
   </data>
   <data name="CompanyAddressUrl" xml:space="preserve">
     <value>ул. Марица 4, Благоевград</value>
@@ -2425,5 +2422,11 @@
   </data>
   <data name="PaymentOnline" xml:space="preserve">
     <value>Онлайн плащане</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Админ</value>
+  </data>
+  <data name="BusinessDahboard" xml:space="preserve">
+    <value>Бизнес панел</value>
   </data>
 </root>

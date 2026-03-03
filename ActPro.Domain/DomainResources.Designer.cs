@@ -277,6 +277,15 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Админ.
+        /// </summary>
+        public static string Admin {
+            get {
+                return ResourceManager.GetString("Admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Администратор промени часа на Вашата резервация за.
         /// </summary>
         public static string AdminChangedReservationTime {
@@ -570,6 +579,15 @@ namespace ActPro.Domain {
         public static string BrowsePlaces {
             get {
                 return ResourceManager.GetString("BrowsePlaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Бизнес панел.
+        /// </summary>
+        public static string BusinessDahboard {
+            get {
+                return ResourceManager.GetString("BusinessDahboard", resourceCulture);
             }
         }
         
@@ -2331,7 +2349,7 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to БГ.
+        ///   Looks up a localized string similar to Български.
         /// </summary>
         public static string LanguageBg {
             get {
@@ -2340,7 +2358,7 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EN.
+        ///   Looks up a localized string similar to English.
         /// </summary>
         public static string LanguageEn {
             get {
@@ -2516,15 +2534,6 @@ namespace ActPro.Domain {
         public static string MakeCorrectionsAndRetry {
             get {
                 return ResourceManager.GetString("MakeCorrectionsAndRetry", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Направи Owner.
-        /// </summary>
-        public static string MakeOwner {
-            get {
-                return ResourceManager.GetString("MakeOwner", resourceCulture);
             }
         }
         
@@ -3353,6 +3362,15 @@ namespace ActPro.Domain {
         public static string Outdoor {
             get {
                 return ResourceManager.GetString("Outdoor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Собственик.
+        /// </summary>
+        public static string Owner {
+            get {
+                return ResourceManager.GetString("Owner", resourceCulture);
             }
         }
         
@@ -4437,15 +4455,6 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Махни Owner.
-        /// </summary>
-        public static string RemoveOwner {
-            get {
-                return ResourceManager.GetString("RemoveOwner", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Вашата заявка е изпратена успешно!.
         /// </summary>
         public static string RequestSentSuccessfully {
@@ -4689,7 +4698,7 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вашата резервация беше успешно потворена..
+        ///   Looks up a localized string similar to Вашата резервация беше успешно потвърдена..
         /// </summary>
         public static string ReservationConfirmedText {
             get {
@@ -6426,7 +6435,7 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Задание.
+        ///   Looks up a localized string similar to Заглавие.
         /// </summary>
         public static string Title {
             get {

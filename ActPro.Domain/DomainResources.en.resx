@@ -1191,11 +1191,8 @@
   <data name="RegistrationConfirmation" xml:space="preserve">
     <value>Registration Confirmation</value>
   </data>
-  <data name="RemoveOwner" xml:space="preserve">
-    <value>Remove Owner</value>
-  </data>
-  <data name="MakeOwner" xml:space="preserve">
-    <value>Make Owner</value>
+  <data name="Owner" xml:space="preserve">
+    <value>Owner</value>
   </data>
   <data name="BanUserWarning" xml:space="preserve">
     <value>WARNING: This will add the email and phone to a blacklist and delete the profile!</value>
@@ -2423,5 +2420,17 @@
   </data>
   <data name="PaymentOnline" xml:space="preserve">
     <value>Online payment</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="BusinessDahboard" xml:space="preserve">
+    <value>Business panel</value>
+  </data>
+  <data name="LanguageBG" xml:space="preserve">
+    <value>Bulgarian</value>
+  </data>
+  <data name="LanguageEN" xml:space="preserve">
+    <value>English</value>
   </data>
 </root>

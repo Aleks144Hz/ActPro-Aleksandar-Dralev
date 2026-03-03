@@ -123,6 +123,39 @@
     box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.15);
 }
 
+.mobile-card {
+    transition: transform 0.2s ease;
+    border: 1px solid #eee !important;
+}
+
+.mobile-card:active {
+    transform: scale(0.98);
+}
+
+.btn-remove-mobile {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    padding: 0;
+    line-height: 1;
+    z-index: 10;
+}
+
+.pagination-container .page-link {
+    border-radius: 8px;
+    margin: 0 3px;
+    color: #333;
+}
+
+.pagination-container .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
 @media (max-width: 400px) {
     .g-recaptcha {
         transform: scale(0.75);

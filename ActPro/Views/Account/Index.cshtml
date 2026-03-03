@@ -52,9 +52,9 @@
                         <i class="bi bi-star-fill me-2 text-warning"></i>@DomainResources.Favorites
                     </h5>
                 </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
+                <div class="card-body p-0 p-md-3">
+                    <div class="table-responsive d-none d-md-block">
+                        <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th style="cursor:pointer;" onclick="sortTable(0)">@DomainResources.Place <i class="bi bi-arrow-down-up small"></i></th>
@@ -68,57 +68,72 @@
                                 {
                                     @foreach (var favorite in Model.Favorites)
                                     {
-                                        <tr>
+                                        <tr class="favorite-item" data-place-id="@favorite.PlaceId">
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     @if (favorite.Place.PlaceImages != null && favorite.Place.PlaceImages.Any())
                                                     {
-                                                        <img src="@favorite.Place.PlaceImages.First().ImageUrl" class="rounded me-2" alt="img" style="width: 50px; height: 50px; object-fit: cover;">
+                                                        <img src="@favorite.Place.PlaceImages.First().ImageUrl" class="rounded me-2 shadow-sm" alt="img" style="width: 50px; height: 50px; object-fit: cover;">
                                                     }
-                                                    else
-                                                    {
-                                                        <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
-                                                            <i class="bi bi-image text-muted"></i>
-                                                        </div>
-                                                    }
-                                                    <span class="fw-bold text-dark">@(isEnglish && !string.IsNullOrEmpty(favorite.Place.NameEn) ? favorite.Place.NameEn : favorite.Place.Name)</span>
+                                                    <span class="fw-bold">@(isEnglish && !string.IsNullOrEmpty(favorite.Place.NameEn) ? favorite.Place.NameEn : favorite.Place.Name)</span>
                                                 </div>
                                             </td>
-                                            <td>@(isEnglish && favorite.Place.City != null && !string.IsNullOrEmpty(favorite.Place.City.NameEn) ? favorite.Place.City.NameEn : favorite.Place.City?.Name)</td>
-                                            <td>
-                                                <span class="badge bg-success-subtle text-dark">
-                                                    ⭐ @favorite.Place.Rating.ToString()/5
-                                                </span>
-                                            </td>
+                                            <td>@(isEnglish? favorite.Place.City?.NameEn : favorite.Place.City?.Name)</td>
+                                            <td class="text-center"><span class="badge bg-success-subtle text-dark">⭐ @favorite.Place.Rating/5</span></td>
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <a asp-controller="Reservation" asp-action="Index" asp-route-id="@favorite.PlaceId" class="btn btn-sm btn-outline-primary">@DomainResources.View</a>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger ms-1 remove-favorite" data-id="@favorite.PlaceId">
-                                                        <i class="bi bi-x-lg"></i>
-                                                    </button>
+                                                    <a asp-controller="Reservation" asp-action="Index" asp-route-id="@favorite.PlaceId" class="btn btn-sm btn-outline-success">@DomainResources.View</a>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger ms-1 remove-favorite" data-id="@favorite.PlaceId"><i class="bi bi-trash"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
                                     }
                                 }
-                                else
-                                {
-                                    <tr class="no-favorites-row">
-                                        <td colspan="4" class="text-center py-4 text-muted">
-                                            <i class="bi bi-star me-2"></i>@DomainResources.NoFavoritesYet
-                                        </td>
-                                    </tr>
-                                }
                             </tbody>
                         </table>
-                        <div class="pagination-container">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <nav>
-                                    <ul class="pagination pagination-sm mb-0" id="favoritesPagination">
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                    </div>
+
+                    <div class="d-md-none px-3 pt-2" id="mobileFavoritesList">
+                        @if (Model.Favorites != null && Model.Favorites.Any())
+                        {
+                            @foreach (var favorite in Model.Favorites)
+                            {
+                                <div class="favorite-item mobile-card border rounded-3 p-3 mb-3 shadow-sm bg-white position-relative" data-place-id="@favorite.PlaceId">
+                                    <button type="button" class="btn-remove-mobile remove-favorite" data-id="@favorite.PlaceId">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                    </button>
+
+                                    <div class="d-flex align-items-center mb-2">
+                                        @if (favorite.Place.PlaceImages != null && favorite.Place.PlaceImages.Any())
+                                        {
+                                            <img src="@favorite.Place.PlaceImages.First().ImageUrl" class="rounded-3 me-3" style="width: 70px; height: 70px; object-fit: cover;">
+                                        }
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-bold text-dark pe-4">@(isEnglish && !string.IsNullOrEmpty(favorite.Place.NameEn) ? favorite.Place.NameEn : favorite.Place.Name)</h6>
+                                            <div class="text-muted small"><i class="bi bi-geo-alt me-1"></i>@(isEnglish? favorite.Place.City?.NameEn : favorite.Place.City?.Name)</div>
+                                            <div class="mt-1"><span class="text-warning">★</span> <span class="small fw-bold">@favorite.Place.Rating/5</span></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <a asp-controller="Reservation" asp-action="Index" asp-route-id="@favorite.PlaceId" class="btn btn-success w-100 rounded-pill btn-sm">
+                                            @DomainResources.View
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <div id="noFavoritesMessage" class="text-center py-5 text-muted @(Model.Favorites != null && Model.Favorites.Any() ? "d-none" : "")">
+                        <i class="bi bi-star fs-1 d-block mb-3 opacity-50"></i>
+                        @DomainResources.NoFavoritesYet
+                    </div>
+
+                    <div class="pagination-container p-3 border-top @(Model.Favorites != null && Model.Favorites.Count() <= 5 ? "d-none" : "")">
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0 justify-content-center" id="favoritesPagination"></ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -185,53 +200,58 @@
          $(document).ready(function (){
              const rowsPerPage = 5;
              let currentPage = 1;
-             function paginateTable(){
-                 const rows = $('.table tbody tr:not(.no-favorites-row)');
-                 const totalRows = rows.length;
-                 const totalPages = Math.ceil(totalRows / rowsPerPage);
-                 rows.hide();
-                 rows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).show();
-                 const paginationHtml = $('#favoritesPagination');
-                 paginationHtml.empty();
-                 if (totalPages > 1){
-                     for (let i = 1; i <= totalPages; i++){
-                         const li = $(`<li class="page-item ${i === currentPage ? 'active' : ''}">
-                                         <a class="page-link" href="javascript:void(0);">${i}</a>
-                                      </li>`);
-                         li.click(function ()
-                         {
-                             currentPage = i;
-                             paginateTable();
-                         });
-                         paginationHtml.append(li);
-                     }
-                 }
-             }
+             function paginateTable() {
+                const isMobile = window.innerWidth < 768;
+                const selector = isMobile ? '#mobileFavoritesList .favorite-item' : '.table tbody tr.favorite-item';
+                const allItems = $(selector);
+                const totalItems = allItems.length;
+                const totalPages = Math.ceil(totalItems / rowsPerPage);
+                $('.favorite-item').hide();
+                allItems.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).show();
+                const paginationHtml = $('#favoritesPagination');
+                paginationHtml.empty();
+                if (totalPages > 1) {
+                    $('.pagination-container').removeClass('d-none');
+                    for (let i = 1; i <= totalPages; i++) {
+                        const li = $(`<li class="page-item ${i === currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="javascript:void(0);">${i}</a>
+                                     </li>`);
+                        li.click(function () {
+                            currentPage = i;
+                            paginateTable();
+                        });
+                        paginationHtml.append(li);
+                    }
+                } else {
+                    $('.pagination-container').addClass('d-none');
+                }
+            }
              paginateTable();
-
+             $(window).resize(paginateTable);
              $(document).on('click', '.remove-favorite', function (){
                  var btn = $(this);
                  var id = btn.data('id');
-                 var row = btn.closest('tr');
+                 const elementsToRemove = $(`.favorite-item[data-place-id="${id}"]`);
                  $.post('/Account/ToggleFavorite', { placeId: id }, function (response)
                  {
-                     if (response.success && !response.isFavorite)
-                     {
-                         row.fadeOut(300, function ()
-                         {
-                             $(this).remove();
-                             const remainingRows = $('.table tbody tr:not(.no-favorites-row)').length;
-                             if (remainingRows > 0 && $('.table tbody tr:visible').length === 0)
-                             {
-                                 currentPage = Math.max(1, currentPage - 1);
-                             }
-                              toastr.success(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.PlaceRemovedSuccessfully)));
-                             paginateTable()
-                             paginateTable();
-                         });
-                     }
+                    if (response.success && !response.isFavorite) {
+                    $.when(elementsToRemove.fadeOut(300)).done(function () {
+                    elementsToRemove.remove();
+                    if ($('.favorite-item').length === 0) {
+                        $('#noFavoritesMessage').removeClass('d-none');
+                        $('.pagination-container').addClass('d-none');
+                    }
+                        const remainingRows = $('.table tbody tr:not(.no-favorites-row)').length;
+                        if (remainingRows > 0 && $('.table tbody tr:visible').length === 0)
+                        {
+                            currentPage = Math.max(1, currentPage - 1);
+                        }
+                        toastr.success(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.PlaceRemovedSuccessfully)));
+                        paginateTable()
+                        });
+                    }
                  });
-             });
+             });              
              const originalSortTable = window.sortTable;
              window.sortTable = function(n){
                  originalSortTable(n);

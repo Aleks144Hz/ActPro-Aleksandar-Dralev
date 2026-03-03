@@ -34,7 +34,7 @@ body {
 
 .offcanvas-backdrop {
     top: 70px !important;
-    z-index: 1040 !important;
+    z-index: 1055 !important;
 }
 
 body.offcanvas-open {
@@ -43,13 +43,17 @@ body.offcanvas-open {
 
 .custom-mobile-menu {
     top: 70px !important;
-    height: calc(100vh - 70px) !important;
-    z-index: 1050 !important;
+    height: auto !important;
+    max-height: calc(100vh - 70px) !important;
+    z-index: 1060 !important;
     position: fixed;
     width: 280px !important;
     border-left: 1px solid #dee2e6 !important;
     right: 0 !important;
     visibility: visible !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 .custom-mobile-menu .list-group-item-action {
@@ -69,7 +73,7 @@ body.offcanvas-open {
 
 .offcanvas-backdrop {
     top: 70px !important;
-    z-index: 1040 !important;
+    z-index: 1055 !important;
 }
 
 .menu-toggle-btn {

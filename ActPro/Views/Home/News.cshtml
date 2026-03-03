@@ -338,5 +338,20 @@
                 }, 2000);
             });
         }
+        document.getElementById('mainFileInput').addEventListener('change', function (e) {
+            const preview = document.getElementById('imgPreview');
+            const prompt = document.getElementById('prompt');
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    preview.src = event.target.result;
+                    preview.classList.remove('d-none');
+                    prompt.classList.add('d-none');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 }
