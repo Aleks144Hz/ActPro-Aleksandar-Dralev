@@ -2368,10 +2368,10 @@
     <value>/hr</value>
   </data>
   <data name="LanguageBg" xml:space="preserve">
-    <value>BG</value>
+    <value>Bulgarian</value>
   </data>
   <data name="LanguageEn" xml:space="preserve">
-    <value>EN</value>
+    <value>English</value>
   </data>
   <data name="CompanyAddressUrl" xml:space="preserve">
     <value>ul. Maritsa 4, Blagoevgrad</value>
@@ -2427,10 +2427,7 @@
   <data name="BusinessDahboard" xml:space="preserve">
     <value>Business panel</value>
   </data>
-  <data name="LanguageBG" xml:space="preserve">
-    <value>Bulgarian</value>
-  </data>
-  <data name="LanguageEN" xml:space="preserve">
-    <value>English</value>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Change</value>
   </data>
 </root>

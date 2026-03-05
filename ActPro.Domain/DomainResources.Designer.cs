@@ -6561,6 +6561,15 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Смени.
+        /// </summary>
+        public static string UpdatePassword {
+            get {
+                return ResourceManager.GetString("UpdatePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to КАЧИ СНИМКИ НА ОБЕКТА.
         /// </summary>
         public static string UploadPlaceImages {

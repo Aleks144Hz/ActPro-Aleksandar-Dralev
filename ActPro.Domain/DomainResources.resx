@@ -2429,4 +2429,7 @@
   <data name="BusinessDahboard" xml:space="preserve">
     <value>Бизнес панел</value>
   </data>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Смени</value>
+  </data>
 </root>

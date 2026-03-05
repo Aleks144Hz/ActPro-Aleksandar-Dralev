@@ -144,7 +144,7 @@
 @if (User.IsInRole("Admin"))
 {
     <div class="modal fade" id="createModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content border-0 rounded-4 shadow-lg">
                 <form asp-action="CreateNews" method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
@@ -153,13 +153,25 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body p-4">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small">@DomainResources.Title</label>
-                            <input name="Title" class="form-control modern-input" placeholder="@DomainResources.TitlePlaceholder" required />
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">@DomainResources.Title (BG)</label>
+                                <input name="Title" class="form-control modern-input" placeholder="@DomainResources.TitlePlaceholder" required />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">@DomainResources.Title (EN)</label>
+                                <input name="TitleEn" class="form-control modern-input" placeholder="@DomainResources.TitlePlaceholder" />
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold small">@DomainResources.Content</label>
-                            <textarea name="Content" class="form-control modern-input" rows="6" placeholder="@DomainResources.ContentPlaceholder" required></textarea>
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">@DomainResources.Content (BG)</label>
+                                <textarea name="Content" class="form-control modern-input" style="min-height: 120px;" placeholder="@DomainResources.ContentPlaceholder" required></textarea>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">@DomainResources.Content (EN)</label>
+                                <textarea name="ContentEn" class="form-control modern-input" style="min-height: 120px;" placeholder="@DomainResources.ContentPlaceholder"></textarea>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-semibold small">@DomainResources.Image</label>
@@ -203,14 +215,14 @@
         const NewsApp = {
             deleteConfirm: function (id, title){
                 Swal.fire({
-                    title: '@DomainResources.AreYouSure',
-                    text: `@DomainResources.WillDeleteNews: "${title}"`,
+                    title: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.AreYouSure)),
+                    text: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.WillDeleteNews)) + ': "' + title + '"',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: '@DomainResources.YesDelete',
-                    cancelButtonText: '@DomainResources.Cancel'
+                    confirmButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.YesDelete)),
+                    cancelButtonText: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(DomainResources.Cancel))
                 }).then((result) => {
                     if (result.isConfirmed){
                         const form = document.createElement('form');

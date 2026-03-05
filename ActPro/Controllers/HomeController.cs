@@ -136,12 +136,12 @@ namespace ActPro.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateNews(string title, string content, IFormFile? imageFile)
+        public async Task<IActionResult> CreateNews(string title, string content, string titleEn, string contentEn, IFormFile? imageFile)
         {
             var user = await userManager.GetUserAsync(User);
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(content))
             {
-                await homeService.CreateNewsAsync(title, content, imageFile, webHostEnvironment.WebRootPath);
+                await homeService.CreateNewsAsync(title, content, titleEn, contentEn, imageFile, webHostEnvironment.WebRootPath);
                 await auditService.LogAsync("Create News", "User", user.Id, $"Публикувана е новина: \"{title}\"");
                 TempData["SuccessMessage"] = DomainResources.NewsIsPublishedSuccessfully;
                 return RedirectToAction(nameof(News));

@@ -94,7 +94,7 @@ namespace ActPro.Services
         }
 
         //---Admin News Management---
-        public async Task CreateNewsAsync(string title, string content, IFormFile? imageFile, string webRootPath)
+        public async Task CreateNewsAsync(string title, string content, string titleEn, string contentEn, IFormFile? imageFile, string webRootPath)
         {
             if (imageFile != null)
             {
@@ -113,6 +113,8 @@ namespace ActPro.Services
                 {
                     Title = title,
                     Content = content,
+                    TitleEn = titleEn,
+                    ContentEn = contentEn,
                     CreatedAt = DateTime.Now,
                     ImageURL = fileName
                 };

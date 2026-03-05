@@ -25,11 +25,11 @@
                     <tbody>
                         @foreach (var user in Model.Users)
                         {
-                            <tr class="text-center">
+                            <tr>
                                 <td data-label="@DomainResources.FirstName.ToUpper()"> <div class="fw-bold">@user.FullName</div></td>
                                 <td data-label="@DomainResources.Email.ToUpper()"> <div class="fw-bold">@user.Email</div></td>
                                 <td data-label="@DomainResources.PhoneNumber.ToUpper()"> <div class="fw-bold">@user.PhoneNumber</div></td>
-                                <td data-label="@DomainResources.Actions.ToUpper()">
+                                <td data-label="@DomainResources.Actions.ToUpper()" class="text-center">
                                     @if (user.IsAdmin)
                                     {
                                         <span class="badge bg-danger">@DomainResources.Admin</span>
@@ -43,7 +43,7 @@
                                         <span class="badge bg-secondary">@DomainResources.User</span>
                                     }
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <div class="d-flex justify-content-center gap-2">
                                         <form asp-action="ToggleAdmin" method="post" class="d-inline">
                                             <input type="hidden" name="userId" value="@user.Id" />

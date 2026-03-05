@@ -14,7 +14,7 @@
                 <div class="modal-body p-4">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName (BG)</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.PlaceName (БГ)</label>
                             <input asp-for="Name" class="form-control rounded-pill shadow-sm px-4"
                                    placeholder="@DomainResources.EnterPlaceName" required />
                         </div>
@@ -63,8 +63,13 @@
                             <input asp-for="Capacity" type="number" class="form-control rounded-pill shadow-sm px-4" required />
                         </div>
                         <div class="col-md-12">
-                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description</label>
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description (БГ)</label>
                             <textarea asp-for="Description" class="form-control shadow-sm px-4"
+                                      rows="3" style="border-radius: 20px;" placeholder="@DomainResources.PlaceDescriptionPlaceholder"></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold text-muted text-uppercase">@DomainResources.Description (EN)</label>
+                            <textarea asp-for="DescriptionEn" class="form-control shadow-sm px-4"
                                       rows="3" style="border-radius: 20px;" placeholder="@DomainResources.PlaceDescriptionPlaceholder"></textarea>
                         </div>
                         <div class="col-md-12">
