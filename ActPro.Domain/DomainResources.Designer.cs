@@ -1132,11 +1132,11 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сайтът е създаден за НОИТ 2025/2026. Автори: Александър Дралев и Илиян Митев.
+        ///   Looks up a localized string similar to Сайтът е създаден с любов към спорта ♡.
         /// </summary>
-        public static string CreatedForNOIT {
+        public static string CreatedFor {
             get {
-                return ResourceManager.GetString("CreatedForNOIT", resourceCulture);
+                return ResourceManager.GetString("CreatedFor", resourceCulture);
             }
         }
         
@@ -5445,6 +5445,15 @@ namespace ActPro.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Опасна зона.
+        /// </summary>
+        public static string SettingsDangerZone {
+            get {
+                return ResourceManager.GetString("SettingsDangerZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Член от.
         /// </summary>
         public static string SettingsMemberSince {
@@ -5486,15 +5495,6 @@ namespace ActPro.Domain {
         public static string SettingsSecurityWarning {
             get {
                 return ResourceManager.GetString("SettingsSecurityWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Зона за сигурност.
-        /// </summary>
-        public static string SettingsSecurityZone {
-            get {
-                return ResourceManager.GetString("SettingsSecurityZone", resourceCulture);
             }
         }
         

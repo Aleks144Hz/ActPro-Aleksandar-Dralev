@@ -228,15 +228,16 @@
                                         <h5 class="card-title text-dark fw-bold">@placeName</h5>
                                         <span class="badge bg-success-subtle text-dark border border-success-subtle">⭐ @place.Rating/5</span>
                                     </div>
-                                    <p class="card-text text-muted small mb-2 text-truncate-2">@(isEnglish && !string.IsNullOrEmpty(place.DescriptionEn) ? place.DescriptionEn : place.Description)</p>
-                    
+                                    <p class="card-text text-muted small mb-2 text-truncate-2" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; ">
+                                        @(isEnglish && !string.IsNullOrEmpty(place.DescriptionEn) ? place.DescriptionEn : place.Description)
+                                    </p>   
                                     <div class="d-flex flex-wrap gap-2 mb-3">
-                                        <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
+                                        <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2 text-truncate" style="max-width: 100%;">
                                             <i class="bi bi-geo-alt text-success me-1"></i> @place.Address, @placeCityName
                                         </div>
-                                            <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
-                                                <i class="bi bi-people text-success me-1"></i> @DomainResources.SearchUpTo @place.Capacity @DomainResources.SearchPeople
-                                            </div>
+                                        <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
+                                            <i class="bi bi-people text-success me-1"></i> @DomainResources.SearchUpTo @place.Capacity @DomainResources.SearchPeople
+                                        </div>
                                         <div class="badge rounded-pill bg-light text-dark fw-normal border py-1 px-2">
                                             @if (place.IsOutdoor.Value)
                                             {

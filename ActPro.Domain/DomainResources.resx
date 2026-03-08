@@ -1064,8 +1064,8 @@
   <data name="Copyright" xml:space="preserve">
     <value>Всички права запазени.</value>
   </data>
-  <data name="CreatedForNOIT" xml:space="preserve">
-    <value>Сайтът е създаден за НОИТ 2025/2026. Автори: Александър Дралев и Илиян Митев</value>
+  <data name="CreatedFor" xml:space="preserve">
+    <value>Сайтът е създаден с любов към спорта ♡</value>
   </data>
   <data name="AreYouSure" xml:space="preserve">
     <value>Сигурни ли сте?</value>
@@ -2069,8 +2069,8 @@
   <data name="SettingsPasswordWarning" xml:space="preserve">
     <value>Внимавайте с кого споделяте паролата. Екипът на ActPro не държи отговорност при открадване на акаунт.</value>
   </data>
-  <data name="SettingsSecurityZone" xml:space="preserve">
-    <value>Зона за сигурност</value>
+  <data name="SettingsDangerZone" xml:space="preserve">
+    <value>Опасна зона</value>
   </data>
   <data name="SettingsSecurityWarning" xml:space="preserve">
     <value>Внимавайте с действията в този панел. Изтриването на профила е необратимо.</value>

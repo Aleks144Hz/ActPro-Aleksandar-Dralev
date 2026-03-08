@@ -1062,8 +1062,8 @@
   <data name="Copyright" xml:space="preserve">
     <value>All rights reserved.</value>
   </data>
-  <data name="CreatedForNOIT" xml:space="preserve">
-    <value>Site created for NOIT 2025/2026. Authors: Alexander Dralev and Iliyan Mitev</value>
+  <data name="CreatedFor" xml:space="preserve">
+    <value>Site created for the love of sport ♡</value>
   </data>
   <data name="AreYouSure" xml:space="preserve">
     <value>Are you sure?</value>
@@ -2067,8 +2067,8 @@
   <data name="SettingsPasswordWarning" xml:space="preserve">
     <value>Be careful who you share your password with. The ActPro team is not responsible for stolen accounts.</value>
   </data>
-  <data name="SettingsSecurityZone" xml:space="preserve">
-    <value>Security zone</value>
+  <data name="SettingsDangerZone" xml:space="preserve">
+    <value>Danger zone</value>
   </data>
   <data name="SettingsSecurityWarning" xml:space="preserve">
     <value>Be careful with actions in this panel. Profile deletion is irreversible.</value>
